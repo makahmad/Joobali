@@ -1,0 +1,23 @@
+application: joobali
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+# Handlers match in order, put above the default handler.
+handlers:
+- url: /static
+  static_dir: static
+- url: /.*
+  script: main.application
+
+libraries:
+- name: django
+  version: "1.5"
+- name: jinja2
+  version: "2.6"
+- name: markupsafe
+  version: "0.15"
+
+builtins:
+- django_wsgi: on
