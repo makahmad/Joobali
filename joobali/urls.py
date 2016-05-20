@@ -5,6 +5,8 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^home', include('home.urls')),
+	url(r'^$', include('login.urls')),
 	url(r'^login/', include('login.urls')),
 	url(r'^referal/', include('referal.urls')),
     # Examples:
