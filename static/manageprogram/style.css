@@ -1,0 +1,45 @@
+.programTable {
+    width: 80%;
+    min-height: 400px;
+    padding: 100px 25px;
+    margin: 0 auto;
+}
+.programList {
+}
+.programTableButtonDiv {
+	overflow: hidden;
+    margin: 10px 100px;
+}
+
+.programTableButton {
+	float: right;
+}
+
+.programOverviewForm {
+
+
+}
+
+.stepsDiv {
+	width: 380px;
+	margin: 0 auto;
+}
+
+.form-content {
+	visibility: hidden;
+}
+
+.form-content.active {
+	visibility: visible;
+}
+
+#nextButton {
+	visibility: visible;
+}
+
+#saveButton {
+	display: none;
+}
+
+/* Override Datepicker z-index in order to pop out before modal window. */
+.datepicker{z-index:1151 !important;}
