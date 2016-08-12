@@ -1,0 +1,25 @@
+.fundingTable {
+    width: 80%;
+    min-height: 400px;
+    padding: 100px 25px;
+    margin: 0 auto;
+}
+.fundingList {
+}
+.fundingTableButtonDiv {
+	overflow: hidden;
+    margin: 10px 100px;
+}
+
+.fundingTableButton {
+	float: right;
+}
+
+.fundingOverviewForm {
+
+
+}
+
+label {
+  white-space: nowrap;
+}

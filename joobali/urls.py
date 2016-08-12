@@ -6,7 +6,8 @@ from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('',
     url(r'^home', include('home.urls')),
-    url(r'^manageprogram', include('manageprogram.urls')),
+    url(r'^manageprogram/', include('manageprogram.urls')),
+    url(r'^funding/', include('funding.urls')),
 	url(r'^$', include('login.urls')),
 	url(r'^login/', include('login.urls')),
 	url(r'^referal/', include('referal.urls')),

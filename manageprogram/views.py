@@ -5,7 +5,8 @@ from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 from time import strftime, strptime
-import datetime
+from datetime import datetime, date, time
+import json
 
 from manageprogram import models
 
@@ -36,8 +37,8 @@ def index(request):
 			program.put()
 			print "INFO: successfully stored program:" + str(program)
 			sessionForm.populate_obj(session)
-			session.startTime = datetime.datetime.strptime(startTime, '%I:%M %p').time()
-			session.endTime = datetime.datetime.strptime(endTime, '%I:%M %p').time()
+			session.startTime = datetime.strptime(startTime, '%I:%M %p').time()
+			session.endTime = datetime.strptime(endTime, '%I:%M %p').time()
 			session.repeatOn = repeatOn
 			session.put()
 			print "INFO: successfully stored session:" + str(session)
@@ -47,3 +48,17 @@ def index(request):
 		{},
 		template.RequestContext(request)
 	)
+
+def listPrograms(request):
+	programs = models.Program.query()
+	for program in programs:
+		print JEncoder().encode(program)
+	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
+
+class JEncoder(json.JSONEncoder):
+
+    def default(self, o):
+        if isinstance(o, ndb.Model):
+            return o.to_dict()
+        elif isinstance(o, (datetime, date, time)):
+            return o.isoformat()	  # Or whatever other date format you're OK with...

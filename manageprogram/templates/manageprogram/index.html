@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/nav-wizard.bootstrap.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 
+  <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -49,11 +50,19 @@
     <table class="table" ng-controller="ProgramCtrl">
       <thead>
         <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Maximum Capacity</th>
+        <th>Registration Fee</th>
         <th>Fee</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="program in programs">
-          <td>{{ program.name }}</td>
+        <tr data-ng-repeat="program in programs track by $index">
+          <td>{{ program.programName }}</td>
+          <td>{{ program.startDate }}</td>
+          <td>{{ program.endDate }}</td>
+          <td>{{ program.maxCapacity }}</td>
+          <td>{{ program.registrationFee }}</td>
           <td>{{ program.fee }}</td>
         </tr>
       </tbody>
@@ -87,7 +96,7 @@
       </div>
       <div class="modal-body">
           <div class="col-centered programOverviewForm">
-            <form id="programForm" role="form" class="well" action="/manageprogram" method="POST">
+            <form id="programForm" role="form" class="well" action="/manageprogram/" method="POST">
               {% csrf_token %}
               <div id="step1" class="form-content active">
                 <div class="form-group">
@@ -251,6 +260,7 @@
 </footer>
 
 <script>
+
 $(document).ready(function(){
     $('#startDate').datetimepicker({
         format: 'YYYY-MM-DD',

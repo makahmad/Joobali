@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'referal',
     'home',
     'manageprogram',
+    'funding',
 )
 
 # A sample logging configuration. The only tangible logging
