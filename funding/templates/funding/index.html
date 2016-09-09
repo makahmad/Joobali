@@ -21,7 +21,8 @@
 
 </head>
 
-<body id="myPage" ng-app="fundingApp">
+<body id="myPage" ng-app="fundingApp" ng-controller="FundingCtrl">
+
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -47,7 +48,7 @@
 <div class="fundingTable">
   <div class="fundingList">
     <h2>Your Funding Sources:</h2> 
-    <table class="table" ng-controller="FundingCtrl">
+    <table class="table">
       <thead>
         <th>Bank Name</th>
         <th>Account Type</th>
@@ -64,6 +65,8 @@
   </div>
   <div class="fundingTableButtonDiv">
     <button class="fundingTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#addFundingModal">Add Funding</button>
+    <button class="makeTransferButton btn btn-primary btn-lg" data-toggle="modal" data-target="#makeTransferModal">Make Transfer</button>
+    <button class="fundingTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#iavModal" ng-disabled="!iavToken" ng-click="handleIAV()">Add Funding (IAV)</button>
   </div>
 </div>
 {% endverbatim %} 
@@ -143,9 +146,84 @@
   </div>
 </div>
 
+<!-- Modal -->
+<div id="makeTransferModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Make a Transfer:</h4>
+      </div>
+      <div class="modal-body">
+          <div class="col-centered makeTransferForm">
+            <form id="transferForm" role="form" class="form-horizontal well" action="/funding/" method="POST">
+              {% csrf_token %}
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="name">From:</label>
+
+                  <div class="col-sm-10">
+                    <select class="form-control" id="source" name="source" required="true">
+                      {% verbatim %}
+                      <option ng-repeat="funding in fundings track by $index" value="{{funding.id}}">
+                        {{ funding.name }}
+                      </option>
+                      {% endverbatim %} 
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="name">To:</label>
+
+                  <div class="col-sm-10">
+                    <select class="form-control" id="destination" name="destination" required="true">
+                      {% verbatim %}
+                      <option ng-repeat="provider in providers track by $index" value="{{provider.id}}">
+                        {{ provider.firstName }} {{ provider.lastName }}
+                      </option>
+                      {% endverbatim %} 
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="control-label col-sm-2" for="amount">Amount:</label>
+                  
+                  <div class="col-sm-10">
+                    <input type="text" pattern="[0-9]+(\\.[0-9][0-9]?)?" class="form-control" id="amount" name="amount" required="true">
+                  </div>
+                </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="sendButton" type="button" class="btn btn-primary" ng-click="makeTransfer()">Send</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
-
+<!-- Modal -->
+<div id="iavModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add verified funding source:</h4>
+      </div>
+      <div class="modal-body">
+          
+        <!-- IAV verification flow container -->
+        <div id="iavContainer"></div>
+        <!-- END: IAV verification flow container -->
+      </div>
+    </div>
+  </div>
+</div>
 
 
 <div class="container-fluid">
@@ -195,6 +273,29 @@ var handleSave = function() {
     $("#fundingForm").submit();
   }
 };
+
+
+var handleSend = function() {
+  var curContent = $("#transferForm");
+
+  var curInputs = curContent.find("input"),
+  isValid = true;
+
+      $(".form-group").removeClass("has-error");
+      for(var i=0; i< curInputs.length; i++){
+          if (!curInputs[i].validity.valid){
+              isValid = false;
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+          }
+      }
+      console.log(isValid);
+  if (isValid) {
+    console.log($('#source :selected').val());
+    console.log($('#destination :selected').val());
+    console.log($('#amount').val());
+  }
+};
+
 
 </script>
 </body>

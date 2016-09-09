@@ -1,0 +1,13 @@
+#userProfile {
+
+	width: 800px;
+    margin: 100px auto;
+	align-content: center;
+}
+
+#saveButton {
+	right: 80px;
+}
+
+/* Override Datepicker z-index in order to pop out before modal window. */
+.datetimepicker{z-index:1151 !important;}

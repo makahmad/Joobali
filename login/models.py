@@ -9,3 +9,11 @@ class Provider(ndb.Model):
 	phone = ndb.StringProperty()
 	website = ndb.StringProperty()
 	license = ndb.StringProperty()
+	# Additional fields for Dwolla verified customer.
+	address = ndb.StringProperty()
+	city = ndb.StringProperty()
+	state = ndb.StringProperty()
+	postalCode = ndb.StringProperty()
+	dateOfBirth = ndb.DateProperty()
+	# Only last four digits is required
+	ssn = ndb.StringProperty()

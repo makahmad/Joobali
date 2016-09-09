@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'home',
     'manageprogram',
     'funding',
+    'users',
 )
 
 # A sample logging configuration. The only tangible logging
