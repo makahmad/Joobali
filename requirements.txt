@@ -1,4 +1,4 @@
 Django==1.9
 pyaml
 WTForms-Appengine
-dwollav2=1.1.7
+dwollav2==1.1.7
