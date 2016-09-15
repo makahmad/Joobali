@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Theme Company</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/style.css" />
+  <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/nav-wizard.bootstrap.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+
+  <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+  </script>
+  <script src="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/js/bootstrap-timepicker.min.js"></script>
+  <script src="{{ STATIC_URL }}manageprogram/program_app.js"></script>
+
+</head>
+
+<body id="myPage" ng-app="programApp">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <img src="{{ STATIC_URL }}logo/logo-1.jpg" alt="Logo" width="100" height="50">
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="#services">PROGRAMS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% verbatim %}
+<div class="programTable">
+  <div class="programList">
+    <h2>Listed Programs:</h2> 
+    <table class="table" ng-controller="ProgramCtrl">
+      <thead>
+        <th>Name</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Maximum Capacity</th>
+        <th>Registration Fee</th>
+        <th>Fee</th>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="program in programs track by $index">
+          <td>{{ program.programName }}</td>
+          <td>{{ program.startDate }}</td>
+          <td>{{ program.endDate }}</td>
+          <td>{{ program.maxCapacity }}</td>
+          <td>{{ program.registrationFee }}</td>
+          <td>{{ program.fee }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="programTableButtonDiv">
+    <button class="programTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#addProgramModal">Add Program</button>
+  </div>
+</div>
+{% endverbatim %} 
+
+
+
+
+<!-- Modal -->
+<div id="addProgramModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add a New Program:</h4>
+        <div class="stepsDiv">
+          <ul class="nav nav-pills nav-wizard">
+              <li id="navStep1" class="form-nav active"><a href="#" >Overview</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="form-nav"><div class="nav-wedge"></div><a href="#" >Program Schedule</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="form-nav"><div class="nav-wedge"></div><a href="#" >Done</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-body">
+          <div class="col-centered programOverviewForm">
+            <form id="programForm" role="form" class="well" action="/manageprogram/" method="POST">
+              {% csrf_token %}
+              <div id="step1" class="form-content active">
+                <div class="form-group">
+                  <label class="control-label" for="programName">Program Name:</label>
+                  <input type="text" class="form-control" id="programName" name="programName" required="true" value="{{ form.programName.data|safe }}">
+                </div>
+                  {% if form.programName.errors %}
+                      <div class="form-group">
+                      <span class="label label-warning">Program name already registered...</span>
+                    </div>
+                  {% endif %}
+                <div class="form-group">
+                  <label class="control-label" for="startDate">Start Date:</label>
+                    <div class="input-group date" id="startDate" required="true" value="{{ form.startDate.data|safe }}">
+                        <input type="text" class="form-control" name="startDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="endDate">End Date:</label>
+                    <div class="input-group date" id="endDate" required="true" value="{{ form.endDate.data|safe }}">
+                        <input type="text" class="form-control" name="endDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="maxCapacity" data-toggle="tooltip" title="The maximum capacity of students for the program.">Maximum Capacity:</label>
+                  <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" value="{{ form.maxCapacity.data|safe }}">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="registrationFee">Registration Fee:</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee" name="registrationFee" required="true" value="{{ form.registrationFee.data|safe }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="fee">Fee:</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" value="{{ form.fee.data|safe }}">
+                    <span class="input-group-addon">
+                      <label class="radio-inline"><input type="radio" name="feeType" checked value="Hourly">Hourly</label>
+                      <label class="radio-inline"><input type="radio" name="feeType" value="Hourly">Tuition</label>
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="lateFee">Late Fee:</label>
+                  <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" required="true" value="{{ form.lateFee.data|safe }}">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="dueDate">Due Date:</label>
+                    <div class="input-group date" id="dueDate" required="true" value="{{ form.dueDate.data|safe }}">
+                        <input type="text" class="form-control" name="dueDate">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="registrationFee">Billing Frequency:</label>
+                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly">Weekly</label>
+                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" checked>Monthly</label>
+                </div>
+              </div>
+              <div id="step2" class="form-content">
+                <label class="control-label">Sessions</label>
+                <div class="well">
+                  <div class="form-group">
+                    <label class="control-label" for="sessionName">Session Name:</label>
+                    <input type="text" class="form-control" id="sessionName" name="sessionName" required="true">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="startTime">Start Time:</label>
+                      <div class="input-group bootstrap-timepicker timepicker" required="true">
+                          <input id="startTime" type="text" name="startTime" class="form-control">
+                          <span class="input-group-addon">
+                              <i class="glyphicon glyphicon-time"></i>
+                          </span>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="endTime">End Time:</label>
+                      <div class="input-group bootstrap-timepicker timepicker" required="true">
+                          <input id="endTime" type="text" name="endTime" class="form-control">
+                          <span class="input-group-addon">
+                              <i class="glyphicon glyphicon-time"></i>
+                          </span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group">
+                      <label class="control-label" for="registrationFee">Repeats On:&nbsp</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun">Sun</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon">Mon</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue">Tue</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed">Wed</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu">Thu</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri">Fri</label>
+                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat">Sat</label>
+
+                      <!--
+                      <span class="input-group-addon">
+                        <label class="radio-inline"><input type="radio" name="feeType" checked>Hourly</label>
+                        <label class="radio-inline"><input type="radio" name="feeType">Tuition</label>
+                      </span>
+                      -->     
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+              <div id="step3" class="form-content">
+                
+
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="nextButton" type="button" class="btn btn-default" onclick="handleNext()">Next</button>
+        <button id="saveButton" type="button" class="btn btn-primary" onclick="handleSave()">Save</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 text-center">
+      <img class="logo" src="{{ STATIC_URL }}logo/logo-2.jpg" alt="Logo">
+    </div>
+    <div class="col-sm-6">
+      <h2>About Joobali</h2>
+      <h4>We provides services for both parents and childcare providers.</h4> 
+      <button class="btn btn-default btn-lg">Get in Touch</button>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <a href="#myPage" title="To Top">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a>
+  <p>Joobali Inc. 2016 <a href="http://joobali-1310.appspot.com" title="Joobali">www.joobali.com</a></p> 
+</footer>
+
+<script>
+
+$(document).ready(function(){
+    $('#startDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    })
+    .on('changeDate', function(e) {
+        $('#endDate').data('DateTimePicker').setMinDate(e.date);
+    });
+
+    $('#endDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    });
+    $('#dueDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    });
+
+    $('#startTime').datetimepicker({
+        format: 'hh:mm A',
+    });
+    $('#endTime').datetimepicker({
+        format: 'hh:mm A',
+    });
+    $('[data-toggle="tooltip"]').tooltip(); 
+});
+
+var handleNext = function() {
+  console.log($(".form-content.active"));
+  var curContent = $(".form-content.active");
+  var curNav = $(".form-nav.active");
+
+  var curInputs = curContent.find("input"),
+  isValid = true;
+
+      $(".form-group").removeClass("has-error");
+      for(var i=0; i< curInputs.length; i++){
+          if (!curInputs[i].validity.valid){
+              isValid = false;
+              $(curInputs[i]).closest(".form-group").addClass("has-error");
+          }
+      }
+      console.log(isValid);
+
+  if (isValid) {
+    curNav.removeClass("active");
+    curNav.next().addClass("active");
+    curContent.removeClass("active").hide();
+    curContent.next().addClass("active").show();
+
+    if (curNav.next().attr('id') === "navStep3") {
+      $("#nextButton").toggle();
+      $("#saveButton").toggle();
+    }
+  }
+};
+
+var handleSave = function() {
+  console.log($("save"));
+  $("#programForm").submit();
+};
+
+</script>
+</body>
+
+</html>
