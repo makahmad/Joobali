@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from referal import views
 
-urlpatterns = patterns('',
+urlpatterns = [
 	url(r'^$', views.referalForm),
-)
+]
