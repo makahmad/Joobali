@@ -101,6 +101,8 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'google.appengine.ext.ndb.django_middleware.NdbDjangoMiddleware',
+    # Session Middleware
+    'gaesessions.DjangoSessionMiddleware',
 )
 
 ROOT_URLCONF = 'joobali.urls'
