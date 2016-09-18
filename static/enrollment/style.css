@@ -1,21 +1,21 @@
-.programTable {
+.enrollmentTable {
     width: 80%;
     min-height: 400px;
     padding: 100px 25px;
     margin: 0 auto;
 }
-.programList {
+.enrollmentList {
 }
-.programTableButtonDiv {
+.enrollmentTableButtonDiv {
 	overflow: hidden;
     margin: 10px 100px;
 }
 
-.programTableButton {
+.enrollmentTableButton {
 	float: right;
 }
 
-.programOverviewForm {
+.enrollmentOverviewForm {
 
 
 }

@@ -1,6 +1,6 @@
 
-ProgramController = function($scope, $http) {
-	console.log('haha1');
+EnrollmentController = function($scope, $http) {
+	console.log('EnrollmentController running');
 	this.scope_ = $scope;
     $scope.num = 0;
     $scope.programs = [{"name":"haha", "fee":"12"}, {"name":"123123123", "fee":"13"}];
@@ -9,7 +9,7 @@ ProgramController = function($scope, $http) {
 
     $http({
 	  method: 'GET',
-	  url: '/manageprogram/listprograms'
+	  url: '/enrollment/listEnrollment'
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
@@ -35,5 +35,5 @@ ProgramController.prototype.addProgram = function() {
 
 
 
-app = angular.module('programApp', []);
-app.controller('ProgramCtrl', ProgramController);
+app = angular.module('enrollmentApp', []);
+app.controller('EnrollmentCtrl', EnrollmentController);
