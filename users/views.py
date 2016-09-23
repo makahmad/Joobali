@@ -63,10 +63,12 @@ ProviderForm = model_form(models.Provider, field_args={
 
 
 def form(request):
-
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
 	form = ProviderForm()
 	if request.method == 'GET':
-		query = models.Provider.query().filter(models.Provider.email == "rongjian.lan@gmail.com")
+		query = models.Provider.query().filter(models.Provider.email == email)
 		result = query.fetch(1)[0]
 
 		if result:
@@ -85,13 +87,18 @@ def form(request):
 		if query.fetch(1):
 			provider = query.fetch(1)[0]
 
-		print 'FORM:::::::'
-		print form.email.errors
-		print form.email.filters
-		print provider.ssn
+		# memorize fields that's not in the form
+		# TODO: think of a way to keep the fields that's not specified in the form,
+		# right now the fields not specified will be set to None.
+		customerId = provider.customerId
+		password = provider.password
+
 		form.validate()
 		form.populate_obj(provider)
 		print provider.ssn
+		# Restore the memorized fields
+		provider.customerId = customerId
+		provider.password = password
 
 		provider.put()
 		print "INFO: successfully stored Provider:" + str(provider)
@@ -113,12 +120,18 @@ def form(request):
 		  "ssn": provider.ssn
 		}
 		# TODO: store customer key in DB and use the real customer key in the url.
-		customer_url = 'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
+		customer_url = getCustomerUrl(email)
 		customer = account_token.post(customer_url, request_body)
-		
+
 
 	return render_to_response(
 		'users/index.html',
 		{'form': form},
 		template.RequestContext(request)
 	)
+
+def getCustomerUrl(email):
+	result = models.Provider.get_by_id(email)
+	if result is not None:
+		return result.customerId
+	raise Exception('user does not exist')

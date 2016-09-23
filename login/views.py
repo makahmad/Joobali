@@ -7,6 +7,7 @@ from django.http import HttpResponse
 
 from login import models
 from gaesessions import get_current_session
+from dwollav2.error import ValidationError
 
 import dwollav2
 
@@ -55,31 +56,54 @@ LoginForm = model_form(models.Provider, field_args={
 def signup(request):
 	form = ProviderForm()
 	if request.method == 'POST':
-		provider = models.Provider()
 		form = ProviderForm(request.POST)
 		print 'FORM:::::::'
 		print form.email.errors
 		print form.email.filters
 		form.validate()
 		if form.validate():
+			email = request.POST.get('email')
+			provider = models.Provider(id=email)
 			form.populate_obj(provider)
-			query = models.Provider.query().filter(models.Provider.email == provider.email)
-			result = query.fetch(1)
-			if result:
-				form.email.errors.append('error: user exists')
-			else:
-				provider.put()
+
+			(provider, created) = get_or_insert(email, provider)
+			if created:
 				request.session['email'] = provider.email
-				print "INFO: successfully stored Provider:" + str(provider)
 
-
+				client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
+				account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
+				request_body = {
+				  'firstName': provider.firstName,
+				  'lastName': provider.lastName,
+				  'email': provider.email,
+				  'ipAddress': '99.99.99.99'
+				}
+				try:
+					customer = account_token.post('customers', request_body)
+					provider.customerId = customer.headers['location']
+					provider.put()
+				except ValidationError as err:  # ValidationError as err
+					# Do nothing
+					pass
 				return HttpResponseRedirect('/home')
+			else:
+				form.email.errors.append('error: user exists')
+
 
 	return render_to_response(
 		'login/userform.html',
 		{'form': form},
 		template.RequestContext(request)
 	)
+
+@ndb.transactional
+def get_or_insert(email, provider):
+	result = models.Provider.get_by_id(email)
+	if result is not None:
+		return (result, False)
+	provider.put()
+	print "INFO: successfully stored Provider:" + str(provider)
+	return (provider, True)
 
 def login(request):
 	form = LoginForm()

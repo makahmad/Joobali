@@ -8,6 +8,8 @@ from time import strftime, strptime
 from datetime import datetime, date, time
 import json
 
+from login.models import Provider
+
 from manageprogram import models
 
 
@@ -15,10 +17,15 @@ ProgramForm = model_form(models.Program)
 SessionForm = model_form(models.Session)
 
 def index(request):
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
 	programForm = ProgramForm()
 	sessionForm = SessionForm()
 	if request.method == 'POST':
-		program = models.Program()
+		provider = Provider.get_by_id(email)
+
+		program = models.Program(parent = provider.key)
 		session = models.Session()
 		programForm = ProgramForm(request.POST)
 		sessionForm = SessionForm(request.POST)
@@ -50,7 +57,11 @@ def index(request):
 	)
 
 def listPrograms(request):
-	programs = models.Program.query()
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+	provider = Provider.get_by_id(email)
+	programs = models.Program.query(ancestor=provider.key)
 	for program in programs:
 		print JEncoder().encode(program)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
