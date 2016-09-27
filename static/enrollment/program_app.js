@@ -3,22 +3,21 @@ EnrollmentController = function($scope, $http) {
 	console.log('EnrollmentController running');
 	this.scope_ = $scope;
     $scope.num = 0;
-    $scope.programs = [{"name":"haha", "fee":"12"}, {"name":"123123123", "fee":"13"}];
-	console.log('haha1');
-    this.addProgram();
+	console.log($scope);
+    this.addEnrollment();
 
     $http({
 	  method: 'GET',
-	  url: '/enrollment/listEnrollment'
+	  url: '/enrollment/list'
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    console.log(response);
-	    this.scope_.programs = [];
-	    angular.forEach(response.data, angular.bind(this, function(program) {
-	    	this.scope_.programs.push(JSON.parse(program));
+	    this.scope_.enrollments = [];
+	    angular.forEach(response.data, angular.bind(this, function(enrollment) {
+	    	this.scope_.enrollments.push(JSON.parse(enrollment));
 	    }));
-	    console.log(this.scope_.programs);
+	    console.log(this.scope_.enrollments);
 
 	  }), function errorCallback(response) {
 	    // called asynchronously if an error occurs
@@ -27,13 +26,9 @@ EnrollmentController = function($scope, $http) {
 	  });
 };
 
-ProgramController.prototype.addProgram = function() {
-	console.log('haha2');
-	this.scope_.programs.push({"name":"test", "fee":"3333"});
+EnrollmentController.prototype.addEnrollment = function() {
+    console.log("EnrollmentController.protoType.addEnrollment()");
 };
-
-
-
 
 app = angular.module('enrollmentApp', []);
 app.controller('EnrollmentCtrl', EnrollmentController);

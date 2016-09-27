@@ -49,15 +49,20 @@
     <h2>Listed Enrollment:</h2>
     <table class="table" ng-controller="EnrollmentCtrl">
       <thead>
-        <th>First Name</th>
-        <th>Last Name</th>
+        <th>Child First Name</th>
+        <th>Child Last Name</th>
+        <th>Parent First Name</th>
+        <th>Parent Last Name</th>
         <th>Program</th>
         <th>Status</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="program in programs track by $index">
-          <td>{{ enrollment.firstName }}</td>
-          <td>{{ enrollment.lastName }}</td>
+        <tr data-ng-repeat="enrollment in enrollments track by $index">
+          <td>{{ enrollment.childFirstName }}</td>
+          <td>{{ enrollment.childLastName }}</td>
+          <td>{{ enrollment.parentFirstName }}</td>
+          <td>{{ enrollment.parentFirstName }}</td>
+          <td>{{ enrollment.email }}</td>
           <td>{{ enrollment.program }}</td>
           <td>{{ enrollment.status }}</td>
         </tr>
@@ -82,139 +87,38 @@
         <h4 class="modal-title">Add a New Enrollment:</h4>
         <div class="stepsDiv">
           <ul class="nav nav-pills nav-wizard">
-              <li id="navStep1" class="form-nav active"><a href="#" >Overview</a><div class="nav-arrow"></div></li>
-              <li id="navStep2" class="form-nav"><div class="nav-wedge"></div><a href="#" >Program Schedule</a><div class="nav-arrow"></div></li>
-              <li id="navStep3" class="form-nav"><div class="nav-wedge"></div><a href="#" >Done</a></li>
+              <li id="navStep1" class="form-nav active"><a href="#" >Enter Child's Information</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="form-nav"><div class="nav-wedge"></div><a href="#" >Select Program</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="form-nav"><div class="nav-wedge"></div><a href="#" >Overview</a></li>
           </ul>
         </div>
       </div>
       <div class="modal-body">
-          <div class="col-centered programOverviewForm">
-            <form id="programForm" role="form" class="well" action="/manageprogram/" method="POST">
+          <div class="col-centered enrollmentOverviewForm">
+            <form id="enrollmentForm" role="form" class="well" action="/enrollment/add" method="POST">
               {% csrf_token %}
               <div id="step1" class="form-content active">
                 <div class="form-group">
-                  <label class="control-label" for="programName">Program Name:</label>
-                  <input type="text" class="form-control" id="programName" name="programName" required="true" value="{{ form.programName.data|safe }}">
-                </div>
-                  {% if form.programName.errors %}
-                      <div class="form-group">
-                      <span class="label label-warning">Program name already registered...</span>
-                    </div>
-                  {% endif %}
-                <div class="form-group">
-                  <label class="control-label" for="startDate">Start Date:</label>
-                    <div class="input-group date" id="startDate" required="true" value="{{ form.startDate.data|safe }}">
-                        <input type="text" class="form-control" name="startDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="endDate">End Date:</label>
-                    <div class="input-group date" id="endDate" required="true" value="{{ form.endDate.data|safe }}">
-                        <input type="text" class="form-control" name="endDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="maxCapacity" data-toggle="tooltip" title="The maximum capacity of students for the program.">Maximum Capacity:</label>
-                  <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" value="{{ form.maxCapacity.data|safe }}">
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="registrationFee">Registration Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee" name="registrationFee" required="true" value="{{ form.registrationFee.data|safe }}">
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="fee">Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" value="{{ form.fee.data|safe }}">
-                    <span class="input-group-addon">
-                      <label class="radio-inline"><input type="radio" name="feeType" checked value="Hourly">Hourly</label>
-                      <label class="radio-inline"><input type="radio" name="feeType" value="Hourly">Tuition</label>
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="lateFee">Late Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" required="true" value="{{ form.lateFee.data|safe }}">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="dueDate">Due Date:</label>
-                    <div class="input-group date" id="dueDate" required="true" value="{{ form.dueDate.data|safe }}">
-                        <input type="text" class="form-control" name="dueDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="registrationFee">Billing Frequency:</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly">Weekly</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" checked>Monthly</label>
+                  <label class="control-label" for="childFirstName">Child First Name</label>
+                  <input type="text" class="form-control" id="childFirstName" required="true" value="{{ form.childFirstName.data|safe }}">
+                  <label class="control-label" for="childLastName">Child Last Name</label>
+                  <input type="text" class="form-control" id="childLastName" required="true" value="{{ form.childLastName.data|safe }}">
+                  <label class="control-label" for="parentFirstName">Parent First Name</label>
+                  <input type="text" class="form-control" id="parentFirstName" required="true" value="{{ form.parentFirstName.data|safe }}">
+                  <label class="control-label" for="parentLastName">Parent Last Name</label>
+                  <input type="text" class="form-control" id="parentLastName" required="true" value="{{ form.parentLastName.data|safe }}">
+                  <label class="control-label" for="email">Email</label>
+                  <input type="text" class="form-control" id="email" required="true" value="{{ form.email.data|safe }}">
                 </div>
               </div>
               <div id="step2" class="form-content">
-                <label class="control-label">Sessions</label>
-                <div class="well">
-                  <div class="form-group">
-                    <label class="control-label" for="sessionName">Session Name:</label>
-                    <input type="text" class="form-control" id="sessionName" name="sessionName" required="true">
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="startTime">Start Time:</label>
-                      <div class="input-group bootstrap-timepicker timepicker" required="true">
-                          <input id="startTime" type="text" name="startTime" class="form-control">
-                          <span class="input-group-addon">
-                              <i class="glyphicon glyphicon-time"></i>
-                          </span>
-                      </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="control-label" for="endTime">End Time:</label>
-                      <div class="input-group bootstrap-timepicker timepicker" required="true">
-                          <input id="endTime" type="text" name="endTime" class="form-control">
-                          <span class="input-group-addon">
-                              <i class="glyphicon glyphicon-time"></i>
-                          </span>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="input-group">
-                      <label class="control-label" for="registrationFee">Repeats On:&nbsp</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun">Sun</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon">Mon</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue">Tue</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed">Wed</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu">Thu</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri">Fri</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat">Sat</label>
-
-                      <!--
-                      <span class="input-group-addon">
-                        <label class="radio-inline"><input type="radio" name="feeType" checked>Hourly</label>
-                        <label class="radio-inline"><input type="radio" name="feeType">Tuition</label>
-                      </span>
-                      -->
-                    </div>
-                  </div>
+                <div class="form-group">
+                  <label class="control-label" for="programName">Program  Name:</label>
+                  <input type="text" class="form-control" id="programName" required="true">
                 </div>
-
-
               </div>
               <div id="step3" class="form-content">
-
-
+                <!-- TODO(zilong): show previous entered content-->
               </div>
             </form>
           </div>
@@ -309,7 +213,7 @@ var handleNext = function() {
 
 var handleSave = function() {
   console.log($("save"));
-  $("#programForm").submit();
+  $("#enrollmentForm").submit();
 };
 
 </script>

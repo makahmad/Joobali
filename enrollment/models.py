@@ -1,5 +1,12 @@
-from __future__ import unicode_literals
+from google.appengine.ext import ndb
 
-from django.db import models
 
-# Create your models here.
+class Enrollment(ndb.Model):
+    child_first_name = ndb.StringProperty()
+    child_last_name = ndb.StringProperty()
+    parent_first_name = ndb.StringProperty()
+    parent_last_name = ndb.StringProperty()
+    status = ndb.StringProperty()
+    email = ndb.StringProperty()
+    # Key to the Program Entity
+    program_id = ndb.IntegerProperty()
