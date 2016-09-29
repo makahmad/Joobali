@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Theme Company</title>
+  <title>Joobali - Enrollment</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/style.css" />
   <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/nav-wizard.bootstrap.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-
   <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
-  </script>
-  <script src="https://cdn.jsdelivr.net/bootstrap.timepicker/0.2.6/js/bootstrap-timepicker.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/enrollment-table.component.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/enrollment-form.component.js"></script>
 
 </head>
 
@@ -43,94 +41,16 @@
   </div>
 </nav>
 
-{% verbatim %}
 <div class="enrollmentTable">
-  <div class="enrollmentList">
-    <h2>Listed Enrollment:</h2>
-    <table class="table" ng-controller="EnrollmentCtrl">
-      <thead>
-        <th>Child First Name</th>
-        <th>Child Last Name</th>
-        <th>Parent First Name</th>
-        <th>Parent Last Name</th>
-        <th>Program</th>
-        <th>Status</th>
-      </thead>
-      <tbody>
-        <tr data-ng-repeat="enrollment in enrollments track by $index">
-          <td>{{ enrollment.childFirstName }}</td>
-          <td>{{ enrollment.childLastName }}</td>
-          <td>{{ enrollment.parentFirstName }}</td>
-          <td>{{ enrollment.parentFirstName }}</td>
-          <td>{{ enrollment.email }}</td>
-          <td>{{ enrollment.program }}</td>
-          <td>{{ enrollment.status }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <enrollment-table></enrollment-table>
   <div class="enrollmentTableButtonDiv">
-    <button class="enrollmentTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#addEnrollmentModal">Add Enrollment</button>
+    <button class="enrollmentTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#addEnrollmentModal">
+      Add Enrollment
+    </button>
   </div>
 </div>
-{% endverbatim %} 
 
-
-<!-- Modal -->
-<div id="addEnrollmentModal" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-lg">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Add a New Enrollment:</h4>
-        <div class="stepsDiv">
-          <ul class="nav nav-pills nav-wizard">
-              <li id="navStep1" class="form-nav active"><a href="#" >Enter Child's Information</a><div class="nav-arrow"></div></li>
-              <li id="navStep2" class="form-nav"><div class="nav-wedge"></div><a href="#" >Select Program</a><div class="nav-arrow"></div></li>
-              <li id="navStep3" class="form-nav"><div class="nav-wedge"></div><a href="#" >Overview</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="modal-body">
-          <div class="col-centered enrollmentOverviewForm">
-            <form id="enrollmentForm" role="form" class="well" action="/enrollment/add" method="POST">
-              {% csrf_token %}
-              <div id="step1" class="form-content active">
-                <div class="form-group">
-                  <label class="control-label" for="childFirstName">Child First Name</label>
-                  <input type="text" class="form-control" id="childFirstName" required="true" value="{{ form.childFirstName.data|safe }}">
-                  <label class="control-label" for="childLastName">Child Last Name</label>
-                  <input type="text" class="form-control" id="childLastName" required="true" value="{{ form.childLastName.data|safe }}">
-                  <label class="control-label" for="parentFirstName">Parent First Name</label>
-                  <input type="text" class="form-control" id="parentFirstName" required="true" value="{{ form.parentFirstName.data|safe }}">
-                  <label class="control-label" for="parentLastName">Parent Last Name</label>
-                  <input type="text" class="form-control" id="parentLastName" required="true" value="{{ form.parentLastName.data|safe }}">
-                  <label class="control-label" for="email">Email</label>
-                  <input type="text" class="form-control" id="email" required="true" value="{{ form.email.data|safe }}">
-                </div>
-              </div>
-              <div id="step2" class="form-content">
-                <div class="form-group">
-                  <label class="control-label" for="programName">Program  Name:</label>
-                  <input type="text" class="form-control" id="programName" required="true">
-                </div>
-              </div>
-              <div id="step3" class="form-content">
-                <!-- TODO(zilong): show previous entered content-->
-              </div>
-            </form>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button id="nextButton" type="button" class="btn btn-default" onclick="handleNext()">Next</button>
-        <button id="saveButton" type="button" class="btn btn-primary" onclick="handleSave()">Save</button>
-      </div>
-    </div>
-
-  </div>
-</div>
+<enrollment-form></enrollment-form>
 
 <div class="container-fluid">
   <div class="row">
@@ -153,69 +73,6 @@
 </footer>
 
 <script>
-
-$(document).ready(function(){
-    $('#startDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    })
-    .on('changeDate', function(e) {
-        $('#endDate').data('DateTimePicker').setMinDate(e.date);
-    });
-
-    $('#endDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    });
-    $('#dueDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    });
-
-    $('#startTime').datetimepicker({
-        format: 'hh:mm A',
-    });
-    $('#endTime').datetimepicker({
-        format: 'hh:mm A',
-    });
-    $('[data-toggle="tooltip"]').tooltip(); 
-});
-
-var handleNext = function() {
-  console.log($(".form-content.active"));
-  var curContent = $(".form-content.active");
-  var curNav = $(".form-nav.active");
-
-  var curInputs = curContent.find("input"),
-  isValid = true;
-
-      $(".form-group").removeClass("has-error");
-      for(var i=0; i< curInputs.length; i++){
-          if (!curInputs[i].validity.valid){
-              isValid = false;
-              $(curInputs[i]).closest(".form-group").addClass("has-error");
-          }
-      }
-      console.log(isValid);
-
-  if (isValid) {
-    curNav.removeClass("active");
-    curNav.next().addClass("active");
-    curContent.removeClass("active").hide();
-    curContent.next().addClass("active").show();
-
-    if (curNav.next().attr('id') === "navStep3") {
-      $("#nextButton").toggle();
-      $("#saveButton").toggle();
-    }
-  }
-};
-
-var handleSave = function() {
-  console.log($("save"));
-  $("#enrollmentForm").submit();
-};
-
 </script>
 </body>
 
