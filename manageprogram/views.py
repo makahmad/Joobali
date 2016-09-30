@@ -8,6 +8,8 @@ from time import strftime, strptime
 from datetime import datetime, date, time
 import json
 
+from login.models import Provider
+
 from manageprogram import models
 
 
@@ -15,10 +17,15 @@ ProgramForm = model_form(models.Program)
 SessionForm = model_form(models.Session)
 
 def index(request):
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
 	programForm = ProgramForm()
 	sessionForm = SessionForm()
 	if request.method == 'POST':
-		program = models.Program()
+		provider = Provider.get_by_id(email)
+
+		program = models.Program(parent = provider.key)
 		session = models.Session()
 		programForm = ProgramForm(request.POST)
 		sessionForm = SessionForm(request.POST)
@@ -50,10 +57,51 @@ def index(request):
 	)
 
 def listPrograms(request):
-	programs = models.Program.query()
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+	provider = Provider.get_by_id(email)
+	programs = models.Program.query(ancestor=provider.key)
 	for program in programs:
 		print JEncoder().encode(program)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
+
+def addProgram(request):
+	email = request.session.get('email')
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+
+	data = json.loads(request.body)
+	print data
+
+	newProgram = data['program']
+	sessions = data['sessions']
+
+	provider = Provider.get_by_id(email)
+	program = models.Program(parent=provider.key)
+	program.programName = newProgram['programName']
+
+	program.maxCapacity = newProgram['maxCapacity']
+	program.registrationFee = newProgram['registrationFee']
+	program.fee = newProgram['fee']
+	program.feeType = newProgram['feeType']
+	program.lateFee = newProgram['lateFee']
+	program.billingFrequency = newProgram['billingFrequency']
+
+	program.startDate = datetime.strptime(newProgram['startDate'], '%Y-%m-%d').date()
+	program.endDate = datetime.strptime(newProgram['endDate'], '%Y-%m-%d').date()
+	program.dueDate = datetime.strptime(newProgram['dueDate'], '%Y-%m-%d').date()
+
+	program.put()
+
+	for newSession in sessions:
+		session = models.Session(parent=program.key)
+		session.sessionName = newSession['sessionName']
+		session.repeatOn = newSession['repeatOn']
+		session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
+		session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
+		session.put()
+	return HttpResponse("success")
 
 class JEncoder(json.JSONEncoder):
 

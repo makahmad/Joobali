@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 from funding import models
+from login.models import Provider
 #from django.core.exceptions import ValidationError
 
 from dwollav2.error import ValidationError
@@ -37,7 +38,16 @@ FundingForm = model_form(models.Funding, field_args={
 # Choose the one as test customer.
 test_customer_url = 'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
 
+def getCustomerUrl(email):
+	result = Provider.get_by_id(email)
+	if result is not None:
+		return result.customerId
+	raise Exception('user does not exist')
+
 def index(request):
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+	customer_url = getCustomerUrl(request.session.get('email'))
 	form = FundingForm()
 	if request.method == 'POST':
 		form = FundingForm(request.POST)
@@ -61,7 +71,7 @@ def index(request):
 		  "name": name
 		}
 		try:
-			funding = account_token.post('%s/funding-sources' % test_customer_url, request_body)
+			funding = account_token.post('%s/funding-sources' % customer_url, request_body)
 		except ValidationError as err: # ValidationError as err
 			print "EEEEEEEERRRRRRRRRRRRRRR";
 			# e.g.: {"code":"ValidationError","message":"Validation error(s) present. See embedded errors list for more details.","_embedded":{"errors":[{"code":"Invalid","message":"Invalid parameter.","path":"/routingNumber"}]}}
@@ -80,6 +90,9 @@ def index(request):
 	)
 
 def listFunding(request):
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+	customer_url = getCustomerUrl(request.session.get('email'))
 	client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
 	account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
 	#request_body = {
@@ -90,7 +103,7 @@ def listFunding(request):
 	#}
 
 	fundings = [];
-	funding_sources = account_token.get('%s/funding-sources' % test_customer_url)
+	funding_sources = account_token.get('%s/funding-sources' % customer_url)
 	for funding in funding_sources.body['_embedded']['funding-sources']:
 		print funding
 		fundings.append({
@@ -121,10 +134,13 @@ def listProvider(request):
 	return HttpResponse(json.dumps([JEncoder().encode(provider) for provider in providers]))
 
 def getIAVToken(request):
+	if not request.session.get('email'):
+		return HttpResponseRedirect('/login')
+	customer_url = getCustomerUrl(request.session.get('email'))
 	client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
 	account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
 
-	customer = account_token.post(test_customer_url + '/iav-token')
+	customer = account_token.post(customer_url + '/iav-token')
 
 	return HttpResponse(customer.body['token'])
 

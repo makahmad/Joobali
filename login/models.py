@@ -17,3 +17,6 @@ class Provider(ndb.Model):
 	dateOfBirth = ndb.DateProperty()
 	# Only last four digits is required
 	ssn = ndb.StringProperty()
+
+	# Dwolla customer id
+	customerId = ndb.StringProperty()
