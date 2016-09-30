@@ -15,9 +15,15 @@
 	float: right;
 }
 
-.programOverviewForm {
+.programField {
+	width: 150px;
+	text-align: right;
+	display: inline-block;
+}
 
-
+.programValue {
+	margin-left: 10px;
+	display: inline-block;
 }
 
 .stepsDiv {
@@ -25,12 +31,13 @@
 	margin: 0 auto;
 }
 
-.form-content {
-	visibility: hidden;
+
+.form-content.current {
+	display: block;
 }
 
-.form-content.active {
-	visibility: visible;
+.form-content {
+	display: none;
 }
 
 #nextButton {

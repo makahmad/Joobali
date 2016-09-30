@@ -55,12 +55,25 @@
   background-color: #aaa;
   color: #fff;
 }
+
 .nav-pills.nav-wizard > li.active .nav-arrow {
-  border-color: transparent transparent transparent #428bca;
+  border-color: transparent transparent transparent #5cb85c;
 }
 .nav-pills.nav-wizard > li.active .nav-wedge {
-  border-color: #428bca #428bca #428bca transparent;
+  border-color: #5cb85c #5cb85c #5cb85c transparent;
 }
 .nav-pills.nav-wizard > li.active a {
+  background-color: #5cb85c;
+  color: #fff;
+}
+
+.nav-pills.nav-wizard > li.current .nav-arrow {
+  border-color: transparent transparent transparent #428bca;
+}
+.nav-pills.nav-wizard > li.current .nav-wedge {
+  border-color: #428bca #428bca #428bca transparent;
+}
+.nav-pills.nav-wizard > li.current a {
   background-color: #428bca;
+  color: #fff;
 }

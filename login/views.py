@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from login import models
 from gaesessions import get_current_session
 from dwollav2.error import ValidationError
+from passlib.apps import custom_app_context as pwd_context
 
 import dwollav2
 
@@ -66,6 +67,8 @@ def signup(request):
 			provider = models.Provider(id=email)
 			form.populate_obj(provider)
 
+			provider.password = pwd_context.encrypt(provider.password)
+
 			(provider, created) = get_or_insert(email, provider)
 			if created:
 				request.session['email'] = provider.email
@@ -122,7 +125,7 @@ def login(request):
 			print result
 			if not result:
 				form.email.errors.append('error: user does not exist')
-			elif result[0].password == password:
+			elif pwd_context.verify(password, result[0].password):
 				# authentication succeeded.
 				print 'login successful'
 				request.session['email'] = email

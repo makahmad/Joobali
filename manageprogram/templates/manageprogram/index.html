@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="myPage" ng-app="programApp">
+<body id="myPage" ng-app="programApp" ng-controller="ProgramCtrl as programCtrl">
 
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
@@ -46,8 +46,9 @@
 {% verbatim %}
 <div class="programTable">
   <div class="programList">
-    <h2>Listed Programs:</h2> 
-    <table class="table" ng-controller="ProgramCtrl">
+    <h2>Listed Programs:</h2>
+    <label ng-show="!programs.length" class="control-label" ng>No Program is Registered.</label>
+    <table ng-show="programs.length"class="table table-striped">
       <thead>
         <th>Name</th>
         <th>Start Date</th>
@@ -88,9 +89,9 @@
         <h4 class="modal-title">Add a New Program:</h4>
         <div class="stepsDiv">
           <ul class="nav nav-pills nav-wizard">
-              <li id="navStep1" class="form-nav active"><a href="#" >Overview</a><div class="nav-arrow"></div></li>
-              <li id="navStep2" class="form-nav"><div class="nav-wedge"></div><a href="#" >Program Schedule</a><div class="nav-arrow"></div></li>
-              <li id="navStep3" class="form-nav"><div class="nav-wedge"></div><a href="#" >Done</a></li>
+              <li id="navStep1" class="form-nav current active" ng-click='programCtrl.setCurrent($event)'><a href="#" >Program</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="form-nav" ng-click='programCtrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="form-nav" ng-click='programCtrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Confirm</a></li>
           </ul>
         </div>
       </div>
@@ -98,10 +99,10 @@
           <div class="col-centered programOverviewForm">
             <form id="programForm" role="form" class="well" action="/manageprogram/" method="POST">
               {% csrf_token %}
-              <div id="step1" class="form-content active">
+              <div id="step1" class="navStep1 form-content current">
                 <div class="form-group">
                   <label class="control-label" for="programName">Program Name:</label>
-                  <input type="text" class="form-control" id="programName" name="programName" required="true" value="{{ form.programName.data|safe }}">
+                  <input type="text" class="form-control" id="programName" name="programName" required="true" ng-model="newProgram.programName">
                 </div>
                   {% if form.programName.errors %}
                       <div class="form-group">
@@ -110,8 +111,8 @@
                   {% endif %}
                 <div class="form-group">
                   <label class="control-label" for="startDate">Start Date:</label>
-                    <div class="input-group date" id="startDate" required="true" value="{{ form.startDate.data|safe }}">
-                        <input type="text" class="form-control" name="startDate">
+                    <div class="input-group date">
+                        <input type="text" id="startDate" required="true" class="form-control" name="startDate" ng-model="newProgram.startDate">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -119,8 +120,8 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="endDate">End Date:</label>
-                    <div class="input-group date" id="endDate" required="true" value="{{ form.endDate.data|safe }}">
-                        <input type="text" class="form-control" name="endDate">
+                    <div class="input-group date">
+                        <input type="text" id="endDate" required="true"  class="form-control" name="endDate" ng-model="newProgram.endDate">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -128,23 +129,23 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="maxCapacity" data-toggle="tooltip" title="The maximum capacity of students for the program.">Maximum Capacity:</label>
-                  <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" value="{{ form.maxCapacity.data|safe }}">
+                  <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" ng-model="newProgram.maxCapacity">
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="registrationFee">Registration Fee:</label>
                   <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee" name="registrationFee" required="true" value="{{ form.registrationFee.data|safe }}">
+                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee" name="registrationFee" required="true" ng-model="newProgram.registrationFee">
                     </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="fee">Fee:</label>
                   <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" value="{{ form.fee.data|safe }}">
+                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" ng-model="newProgram.fee">
                     <span class="input-group-addon">
-                      <label class="radio-inline"><input type="radio" name="feeType" checked value="Hourly">Hourly</label>
-                      <label class="radio-inline"><input type="radio" name="feeType" value="Hourly">Tuition</label>
+                      <label class="radio-inline"><input type="radio" name="feeType" ng-model="newProgram.feeType" value="Hourly" checked="checked" >Hourly</label>
+                      <label class="radio-inline"><input type="radio" name="feeType" ng-model="newProgram.feeType" value="Tuition">Tuition</label>
                     </span>
                   </div>
                 </div>
@@ -152,13 +153,13 @@
                   <label class="control-label" for="lateFee">Late Fee:</label>
                   <div class="input-group">
                     <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" required="true" value="{{ form.lateFee.data|safe }}">
+                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" required="true" ng-model="newProgram.lateFee">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="dueDate">Due Date:</label>
-                    <div class="input-group date" id="dueDate" required="true" value="{{ form.dueDate.data|safe }}">
-                        <input type="text" class="form-control" name="dueDate">
+                    <div class="input-group date">
+                        <input type="text" id="dueDate" required="true"  class="form-control" name="dueDate" ng-model="newProgram.dueDate">
                         <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </span>
@@ -166,21 +167,39 @@
                 </div>
                 <div class="form-group">
                   <label class="control-label" for="registrationFee">Billing Frequency:</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly">Weekly</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" checked>Monthly</label>
+                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly" ng-model="newProgram.billingFrequency">Weekly</label>
+                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" ng-model="newProgram.billingFrequency" checked>Monthly</label>
                 </div>
               </div>
-              <div id="step2" class="form-content">
-                <label class="control-label">Sessions</label>
-                <div class="well">
+              {% verbatim %}
+              <div id="step2" class="navStep2 form-content">
+                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ newProgram.programName }}</span>.</div>
+                <div ng-show="sessions.length" class="control-label text-center">Sessions for Program - <span>{{ newProgram.programName }}</span>:</div>
+                <table ng-show="sessions.length" class="table table-striped">
+                  <thead>
+                    <th>Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Repeat On</th>
+                  </thead>
+                  <tbody>
+                    <tr  data-ng-repeat="session in sessions track by $index">
+                      <td>{{ session.sessionName }}</td>
+                      <td>{{ session.startTime }}</td>
+                      <td>{{ session.endTime }}</td>
+                      <td>{{ session.repeatOn }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="sessionForm well">
                   <div class="form-group">
                     <label class="control-label" for="sessionName">Session Name:</label>
-                    <input type="text" class="form-control" id="sessionName" name="sessionName" required="true">
+                    <input type="text" class="form-control" id="sessionName" name="sessionName" required="true" ng-model="newSession.sessionName">
                   </div>
                   <div class="form-group">
                     <label class="control-label" for="startTime">Start Time:</label>
                       <div class="input-group bootstrap-timepicker timepicker" required="true">
-                          <input id="startTime" type="text" name="startTime" class="form-control">
+                          <input id="startTime" type="text" name="startTime" class="form-control" required="true" ng-model="newSession.startTime">
                           <span class="input-group-addon">
                               <i class="glyphicon glyphicon-time"></i>
                           </span>
@@ -189,7 +208,7 @@
                   <div class="form-group">
                     <label class="control-label" for="endTime">End Time:</label>
                       <div class="input-group bootstrap-timepicker timepicker" required="true">
-                          <input id="endTime" type="text" name="endTime" class="form-control">
+                          <input id="endTime" type="text" name="endTime" class="form-control" required="true"  ng-model="newSession.endTime">
                           <span class="input-group-addon">
                               <i class="glyphicon glyphicon-time"></i>
                           </span>
@@ -197,14 +216,17 @@
                   </div>
                   <div class="form-group">
                     <div class="input-group">
-                      <label class="control-label" for="registrationFee">Repeats On:&nbsp</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun">Sun</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon">Mon</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue">Tue</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed">Wed</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu">Thu</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri">Fri</label>
-                      <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat">Sat</label>
+                      <label class="control-label" for="repeatOn">Repeats On:&nbsp</label>
+                        <div class="checkbox-group required">
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun" ng-model="newSession.Sun">Sun</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon" ng-model="newSession.Mon">Mon</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue" ng-model="newSession.Tue">Tue</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed" ng-model="newSession.Wed">Wed</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu" ng-model="newSession.Thu">Thu</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri" ng-model="newSession.Fri">Fri</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat" ng-model="newSession.Sat">Sat</label>
+                        </div>
+
 
                       <!--
                       <span class="input-group-addon">
@@ -215,22 +237,80 @@
                     </div>
                   </div>
                 </div>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="programCtrl.addNewSession()">Add New Session</button>
+
 
 
               </div>
-              <div id="step3" class="form-content">
-                
+              <div id="step3" class="navStep3 form-content">
+                  <div class="text-center">Program Information</div>
+                  <div>
+                      <div class="programField">Program Name:</div>
+                      <span class="programValue">{{ newProgram.programName }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Start Date:</div>
+                      <span class="programValue">{{ newProgram.startDate }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">End Date:</div>
+                      <span class="programValue">{{ newProgram.endDate }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Maximum Capacity:</div>
+                      <span class="programValue">{{ newProgram.maxCapacity }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Registration Fee:</div>
+                      <span class="programValue">{{ newProgram.registrationFee }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Fee:</div>
+                      <span class="programValue">{{ newProgram.fee }} ({{ newProgram.feeType }})</span>
+                  </div>
+                  <div>
+                      <div class="programField">Late Fee:</div>
+                      <span class="programValue">{{ newProgram.lateFee }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Due Date:</div>
+                      <span class="programValue">{{ newProgram.dueDate }}</span>
+                  </div>
+                  <div>
+                      <div class="programField">Billing Frequency:</div>
+                      <span class="programValue">{{ newProgram.billingFrequency }}</span>
+                  </div>
 
+
+                  <hr class="divider">
+                  <div ng-show="sessions.length"  class="text-center">Program Sessions</div>
+                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ newProgram.programName }}</span>.</div>
+                <table ng-show="sessions.length" class="table table-striped">
+                  <thead>
+                    <th>Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Repeat On</th>
+                  </thead>
+                  <tbody>
+                    <tr  data-ng-repeat="session in sessions track by $index">
+                      <td>{{ session.sessionName }}</td>
+                      <td>{{ session.startTime }}</td>
+                      <td>{{ session.endTime }}</td>
+                      <td>{{ session.repeatOn }}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </form>
           </div>
       </div>
       <div class="modal-footer">
-        <button id="nextButton" type="button" class="btn btn-default" onclick="handleNext()">Next</button>
-        <button id="saveButton" type="button" class="btn btn-primary" onclick="handleSave()">Save</button>
+        <button id="nextButton" type="button" class="btn btn-default" ng-click="programCtrl.handleNext()">Next</button>
+        <button id="saveButton" type="button" class="btn btn-primary" ng-click="programCtrl.handleSave()">Save</button>
       </div>
     </div>
-
+    {% endverbatim %}
   </div>
 </div>
 
@@ -288,40 +368,6 @@ $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip(); 
 });
 
-var handleNext = function() {
-  console.log($(".form-content.active"));
-  var curContent = $(".form-content.active");
-  var curNav = $(".form-nav.active");
-
-  var curInputs = curContent.find("input"),
-  isValid = true;
-
-      $(".form-group").removeClass("has-error");
-      for(var i=0; i< curInputs.length; i++){
-          if (!curInputs[i].validity.valid){
-              isValid = false;
-              $(curInputs[i]).closest(".form-group").addClass("has-error");
-          }
-      }
-      console.log(isValid);
-
-  if (isValid) {
-    curNav.removeClass("active");
-    curNav.next().addClass("active");
-    curContent.removeClass("active").hide();
-    curContent.next().addClass("active").show();
-
-    if (curNav.next().attr('id') === "navStep3") {
-      $("#nextButton").toggle();
-      $("#saveButton").toggle();
-    }
-  }
-};
-
-var handleSave = function() {
-  console.log($("save"));
-  $("#programForm").submit();
-};
 
 </script>
 </body>
