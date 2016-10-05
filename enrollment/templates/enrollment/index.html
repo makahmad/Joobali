@@ -14,8 +14,7 @@
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
-  <script src="{{ STATIC_URL }}enrollment/enrollment-table.component.js"></script>
-  <script src="{{ STATIC_URL }}enrollment/enrollment-form.component.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/enrollment.component.js"></script>
 
 </head>
 
@@ -41,16 +40,7 @@
   </div>
 </nav>
 
-<div class="enrollmentTable">
-  <enrollment-table></enrollment-table>
-  <div class="enrollmentTableButtonDiv">
-    <button class="enrollmentTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#addEnrollmentModal">
-      Add Enrollment
-    </button>
-  </div>
-</div>
-
-<enrollment-form></enrollment-form>
+<enrollment></enrollment>
 
 <div class="container-fluid">
   <div class="row">
