@@ -12,8 +12,8 @@ component('enrollment', {
             'Child Last Name',
             'Parent First Name',
             'Parent Last Name',
-            'Program',
             'Email',
+            'Program Id',
             'Status'];
 
             this.refreshData = function() {
@@ -60,15 +60,19 @@ component('enrollment', {
                 console.log(this.form);
                 $http.post('/enrollment/add', this.form).then(function successCallback(response) {
                     // TODO(zilong): Judge whether the save is success
-                    var isSaveSuccess = true;
+                    var isSaveSuccess = false;
+                    if (response.status == 'success') {
+                        isSaveSuccess = true;
+                    }
                     if (isSaveSuccess) {
                         $("#saveSuccessLabel").removeClass('hide');
                         $("#saveFailureLabel").addClass('hide');
+                        $("#saveButton").hide();
+                        $("#doneButton").show();
                     } else {
                         $("#saveSuccessLabel").addClass('hide');
                         $("#saveFailureLabel").removeClass('hide');
                     }
-                    $("#doneButton").show();
                 }, function errorCallback(response) {
                     $("#saveSuccessLabel").addClass('hide');
                     $("#saveFailureLabel").removeClass('hide');
