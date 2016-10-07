@@ -15,14 +15,19 @@ function getCookie(name) {
 }
 var csrftoken = getCookie('csrftoken');
 
-ProgramController = function($scope, $http) {
+
+var TIME_FORMAT =  'hh:mm A';
+
+ProgramController = function($scope, $http, $window) {
 	this.http_ = $http;
+	this.window_ = $window;
 	this.scope_ = $scope;
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
 	this.scope_.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 
+    this.scope_.showConflictLabel = false;
     $http({
 	  method: 'GET',
 	  url: '/manageprogram/listprograms'
@@ -41,7 +46,70 @@ ProgramController = function($scope, $http) {
 	    // or server returns response with an error status.
 	    console.log(response);
 	  });
+
+	this.initializeTimePickers();
 };
+
+ProgramController.prototype.initializeTimePickers = function() {
+    $('#startDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    })
+    .on('dp.change', function(e) {
+        $('#endDate').data('DateTimePicker').minDate(e.date);
+    });
+
+    $('#endDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    });
+    $('#dueDate').datetimepicker({
+        format: 'YYYY-MM-DD',
+        minDate: new Date(),
+    });
+
+    $('#startTime').datetimepicker({
+        format: 'hh:mm A',
+    })
+    .on('dp.hide', angular.bind(this, function(e) {
+		this.scope_.newSession.startTime = $('#startTime').val();
+
+		this.rollUpEndTime();
+
+		this.scope_.showConflictLabel = false;
+		this.scope_.$apply();
+    }));
+    $('#endTime').datetimepicker({
+        format: 'hh:mm A',
+    })
+    .on('dp.hide', angular.bind(this, function(e) {
+		this.scope_.newSession.endTime = $('#endTime').val();
+
+		this.rollUpEndTime();
+
+		this.scope_.showConflictLabel = false;
+		this.scope_.$apply();
+    }));
+    $('[data-toggle="tooltip"]').tooltip();
+};
+
+
+ProgramController.prototype.rollUpEndTime = function() {
+	var startTime = moment(this.scope_.newSession.startTime, TIME_FORMAT);
+	var endTime = moment(this.scope_.newSession.endTime, TIME_FORMAT);
+
+	if (startTime.isAfter(endTime)) {
+		// Roll up end time to equal start time.
+		$('#endTime').val($('#startTime').val());
+		this.scope_.newSession.endTime = $('#endTime').val();
+	}
+};
+
+
+ProgramController.prototype.onSessionChange = function() {
+	this.scope_.showConflictLabel = false;
+};
+
 
 ProgramController.prototype.setNewProgram = function() {
 	var newProgram = {};
@@ -61,13 +129,18 @@ ProgramController.prototype.setNewProgram = function() {
 };
 
 
+ProgramController.prototype.editProgram = function(id) {
+	console.log(id);
+	this.window_.location.href = '/manageprogram/edit?id=' + id;
+};
+
+
 ProgramController.prototype.addNewSession = function() {
 	if (this.validateCurrentForm()) {
 		var newSession = {};
 		newSession.sessionName = this.scope_.newSession.sessionName;
-		// Temp Hack: datetimepicker doesn't work with Angular ng-model, so here we manually copy the value over.
-		newSession.startTime = $('#startTime').val();
-		newSession.endTime = $('#endTime').val();
+		newSession.startTime = this.scope_.newSession.startTime;
+		newSession.endTime = this.scope_.newSession.endTime;
 
 		var dates = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 		var selectedDates = [];
@@ -81,13 +154,59 @@ ProgramController.prototype.addNewSession = function() {
 		newSession.repeatOn = selectedDates.toString();
 		console.log(newSession);
 
-		this.scope_.sessions.push(newSession);
+		if (this.validateNewSession(newSession)) {
+			this.scope_.sessions.push(newSession);
+		} else {
+    		this.scope_.showConflictLabel = true;
+		}
 	}
 };
 
+
+/**
+ * Makes sure the new session doesn't conflict with existing sessions.
+ * NOTE: the {newSession} input must be fully populated.
+ */
+ProgramController.prototype.validateNewSession = function(newSession) {
+
+	var dates = newSession.repeatOn.split(',');
+	var startTime = moment(newSession.startTime, TIME_FORMAT);
+	var endTime = moment(newSession.endTime, TIME_FORMAT);
+
+	dateToSessionMap = {};
+	for (i in this.scope_.sessions) {
+		var session = this.scope_.sessions[i];
+		tempDates = session.repeatOn.split(',');
+		for (j in tempDates) {
+			var date = tempDates[j];
+			if (dateToSessionMap[date]) {
+				dateToSessionMap[date].push({'startTime': session.startTime, 'endTime': session.endTime});
+			} else {
+				dateToSessionMap[date] = [{'startTime': session.startTime, 'endTime': session.endTime}];
+			}
+		}
+	}
+
+	for (i in dates) {
+		var date = dates[i];
+		if (dateToSessionMap[date]) {
+			for (j in dateToSessionMap[date]) {
+				var session = dateToSessionMap[date][j];
+				var start = moment(session.startTime, TIME_FORMAT);
+				var end = moment(session.endTime, TIME_FORMAT);
+
+				if (startTime.isBetween(start, end, null, '[]') || endTime.isBetween(start, end, null, '[]') || start.isBetween(startTime, endTime, null, '[]') || end.isBetween(startTime, endTime, null, '[]')) {
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+};
+
+
 ProgramController.prototype.validateCurrentForm = function() {
 	var curContent = $(".form-content.current");
-  	var curNav = $(".form-nav.current");
 
   	var curInputs = curContent.find("input"),
   	isValid = true;
@@ -140,7 +259,7 @@ ProgramController.prototype.handleSave = function() {
 	var data = {
 		'program': this.scope_.newProgram,
 		'sessions': this.scope_.sessions
-	}
+	};
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/addprogram',
@@ -151,7 +270,6 @@ ProgramController.prototype.handleSave = function() {
 	}).then(
 		function (response) {
 			console.log('post suceeded');
-			$('#addProgramModal').modal({ show: false})
 			location.reload();
 		},
 		function (response) {

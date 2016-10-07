@@ -1,3 +1,10 @@
+.editProgramTable {
+    width: 60%;
+    min-height: 400px;
+    padding: 100px 25px;
+    margin: 0 auto;
+}
+
 .programTable {
     width: 80%;
     min-height: 400px;
@@ -13,6 +20,24 @@
 
 .programTableButton {
 	float: right;
+}
+
+.programRow:hover td {
+	background-color: #5bc0de;
+	cursor: pointer;
+}
+
+.sessionInEdit {
+	background-color: #f4511e !important;
+}
+
+.sessionRow:not(.sessionInEdit):hover td {
+	background-color: #5bc0de;
+	cursor: pointer;
+}
+
+.sessionRow:hover td {
+	cursor: pointer;
 }
 
 .programField {
@@ -50,3 +75,24 @@
 
 /* Override Datepicker z-index in order to pop out before modal window. */
 .datepicker{z-index:1151 !important;}
+
+.buttonDiv {
+	height: 50px;
+}
+
+.saveProgramButton {
+	width: 100px;
+	float: right;
+}
+
+.sessionButton {
+	width: 100px;
+	margin: 0 5px;
+	float: right;
+}
+
+.deleteButton {
+	display: block;
+	width: 200px;
+	margin: 30px auto 0 auto;
+}

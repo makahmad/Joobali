@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 
   <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -58,7 +58,7 @@
         <th>Fee</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="program in programs track by $index">
+        <tr class="programRow" ng-click="programCtrl.editProgram(program.id)" data-ng-repeat="program in programs track by $index">
           <td>{{ program.programName }}</td>
           <td>{{ program.startDate }}</td>
           <td>{{ program.endDate }}</td>
@@ -199,7 +199,7 @@
                   <div class="form-group">
                     <label class="control-label" for="startTime">Start Time:</label>
                       <div class="input-group bootstrap-timepicker timepicker" required="true">
-                          <input id="startTime" type="text" name="startTime" class="form-control" required="true" ng-model="newSession.startTime">
+                          <input id="startTime" type="text" name="startTime" class="form-control" required="true" ng-model="newSession.startTime" ng-change="programCtrl.onTimeChange()">
                           <span class="input-group-addon">
                               <i class="glyphicon glyphicon-time"></i>
                           </span>
@@ -218,13 +218,13 @@
                     <div class="input-group">
                       <label class="control-label" for="repeatOn">Repeats On:&nbsp</label>
                         <div class="checkbox-group required">
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun" ng-model="newSession.Sun">Sun</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon" ng-model="newSession.Mon">Mon</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue" ng-model="newSession.Tue">Tue</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed" ng-model="newSession.Wed">Wed</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu" ng-model="newSession.Thu">Thu</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri" ng-model="newSession.Fri">Fri</label>
-                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat" ng-model="newSession.Sat">Sat</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sun" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Sun">Sun</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Mon" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Mon">Mon</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Tue" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Tue">Tue</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Wed" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Wed">Wed</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Thu" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Thu">Thu</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Fri" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Fri">Fri</label>
+                          <label class="checkbox-inline"><input name="repeatOn" type="checkbox" value="Sat" ng-change="programCtrl.onSessionChange()" ng-model="newSession.Sat">Sat</label>
                         </div>
 
 
@@ -236,6 +236,9 @@
                       -->     
                     </div>
                   </div>
+                    <div ng-show="showConflictLabel" class="form-group">
+                        <span class="label label-warning">The time is conflicting with existing sessions.</span>
+                    </div>
                 </div>
                 <button type="button" class="btn btn-primary btn-lg" ng-click="programCtrl.addNewSession()">Add New Session</button>
 
@@ -338,38 +341,6 @@
   </a>
   <p>Joobali Inc. 2016 <a href="http://joobali-1310.appspot.com" title="Joobali">www.joobali.com</a></p> 
 </footer>
-
-<script>
-
-$(document).ready(function(){
-    $('#startDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    })
-    .on('changeDate', function(e) {
-        $('#endDate').data('DateTimePicker').setMinDate(e.date);
-    });
-
-    $('#endDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    });
-    $('#dueDate').datetimepicker({
-        format: 'YYYY-MM-DD',
-        minDate: new Date(),
-    });
-
-    $('#startTime').datetimepicker({
-        format: 'hh:mm A',
-    });
-    $('#endTime').datetimepicker({
-        format: 'hh:mm A',
-    });
-    $('[data-toggle="tooltip"]').tooltip(); 
-});
-
-
-</script>
 </body>
 
 </html>
