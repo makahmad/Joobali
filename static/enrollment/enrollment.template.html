@@ -1,0 +1,120 @@
+<div>
+  <div class="enrollmentTable">
+    <div class="enrollmentList">
+      <h2>Listed Enrollment:</h2>
+      <table class="table">
+        <thead>
+        <th ng-repeat="header in $ctrl.headers">{{ header }}</th>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="enrollment in $ctrl.enrollments">
+          <td>{{ enrollment.child_first_name }}</td>
+          <td>{{ enrollment.child_last_name }}</td>
+          <td>{{ enrollment.parent_first_name }}</td>
+          <td>{{ enrollment.parent_first_name }}</td>
+          <td>{{ enrollment.email }}</td>
+          <td>{{ enrollment.program_id }}</td>
+          <td>{{ enrollment.status }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="enrollmentTableButtonDiv">
+      <button class="enrollmentTableButton btn btn-primary btn-lg" data-toggle="modal"
+              data-target="#addEnrollmentModal">
+        Add Enrollment
+      </button>
+    </div>
+  </div>
+
+  <div id="addEnrollmentModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Add a New Enrollment:</h4>
+          <div class="stepsDiv">
+            <ul class="nav nav-pills nav-wizard">
+              <li id="navStep1" class="form-nav active"><a href="#">Enter Enrollment Information</a>
+                <div class="nav-arrow"></div>
+              </li>
+              <li id="navStep2" class="form-nav">
+                <div class="nav-wedge"></div>
+                <a href="#">Review</a>
+                <div class="nav-arrow"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="col-centered enrollmentOverviewForm">
+            <form name="enrollmentForm" role="form" class="well">
+
+              <div id="step1" class="form-content active">
+                <div class="form-group">
+                  <label class="control-label" for="childFirstName">Child First Name</label>
+                  <input type="text" class="form-control" id="childFirstName" required="true"
+                         ng-model="$ctrl.form.childFirstName">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="childLastName">Child Last Name</label>
+                  <input type="text" class="form-control" id="childLastName" required="true"
+                         ng-model="$ctrl.form.childLastName">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="parentFirstName">Parent First Name</label>
+                  <input type="text" class="form-control" id="parentFirstName" required="true"
+                         ng-model="$ctrl.form.parentFirstName">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="parentLastName">Parent Last Name</label>
+                  <input type="text" class="form-control" id="parentLastName" required="true"
+                         ng-model="$ctrl.form.parentLastName">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="email">Email</label>
+                  <input name="email" type="email" class="form-control" id="email" required="true"
+                         ng-model="$ctrl.form.email">
+                </div>
+                <div class="form-group">
+                  <label class="control-label" for="programId">Program Id</label>
+                  <input type="text" class="form-control" id="programId" required="true"
+                         ng-model="$ctrl.form.programId">
+                </div>
+              </div>
+              <div id="step2" class="form-content">
+                <div class="form-group">
+                  <label class="control-label">Child First Name</label>
+                  <div>{{$ctrl.form.childFirstName}}</div>
+                  <label class="control-label">Child Last Name</label>
+                  <div>{{$ctrl.form.childLastName}}</div>
+                  <label class="control-label">Parent First Name</label>
+                  <div>{{$ctrl.form.parentFirstName}}</div>
+                  <label class="control-label">Parent Last Name</label>
+                  <div>{{$ctrl.form.parentLastName}}</div>
+                  <label class="control-label">email</label>
+                  <div>{{$ctrl.form.email}}</div>
+                  <label class="control-label">Program Id</label>
+                  <div>{{$ctrl.form.programId}}</div>
+                </div>
+                <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
+                <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next
+          </button>
+          <button id="saveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save
+          </button>
+          <button id="doneButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleDone()">Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^login/', include('login.urls')),
 	url(r'^referal/', include('referal.urls')),
     url(r'^users/', include('users.urls')),
+    url(r'^enrollment/', include('enrollment.urls'))
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),

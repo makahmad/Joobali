@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Joobali - Enrollment</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/style.css" />
+  <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/nav-wizard.bootstrap.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+  <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/enrollment.component.js"></script>
+
+</head>
+
+<body id="myPage" ng-app="enrollmentApp">
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span> 
+      </button>
+      <img src="{{ STATIC_URL }}logo/logo-1.jpg" alt="Logo" width="100" height="50">
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#about">ABOUT</a></li>
+        <li><a href="/manageprogram">PROGRAMS</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<enrollment></enrollment>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6 text-center">
+      <img class="logo" src="{{ STATIC_URL }}logo/logo-2.jpg" alt="Logo">
+    </div>
+    <div class="col-sm-6">
+      <h2>About Joobali</h2>
+      <h4>We provides services for both parents and childcare providers.</h4> 
+      <button class="btn btn-default btn-lg">Get in Touch</button>
+    </div>
+  </div>
+</div>
+
+<footer class="container-fluid text-center">
+  <a href="#myPage" title="To Top">
+    <span class="glyphicon glyphicon-chevron-up"></span>
+  </a>
+  <p>Joobali Inc. 2016 <a href="http://joobali-1310.appspot.com" title="Joobali">www.joobali.com</a></p> 
+</footer>
+
+<script>
+</script>
+</body>
+
+</html>
