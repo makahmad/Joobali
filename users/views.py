@@ -1,5 +1,5 @@
+from common.session import check_session
 from django.shortcuts import render_to_response
-from django import template
 from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
@@ -9,12 +9,10 @@ from django import template
 from login import models
 
 import dwollav2
+import logging
 
-register = template.Library()
+logger = logging.getLogger(__name__)
 
-@register.filter(name='dateformat')
-def dateformat(value):
-    return value.strftime('%Y-%m-%d')
 
 
 def home(request):
@@ -63,8 +61,9 @@ ProviderForm = model_form(models.Provider, field_args={
 
 
 def form(request):
+	"""A form function to handle user profile form GET and POST requests"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 	form = ProviderForm()
 	if request.method == 'GET':
@@ -76,8 +75,6 @@ def form(request):
 		else:
 			raise Exception('No Result Found.')
 
-	print 'test:::::::'
-	print form.dateOfBirth.data
 	if request.method == 'POST':
 		form = ProviderForm(request.POST)
 		
@@ -95,13 +92,12 @@ def form(request):
 
 		form.validate()
 		form.populate_obj(provider)
-		print provider.ssn
 		# Restore the memorized fields
 		provider.customerId = customerId
 		provider.password = password
 
 		provider.put()
-		print "INFO: successfully stored Provider:" + str(provider)
+		logger.info("INFO: successfully stored Provider:" + str(provider))
 
 		client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
 		account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
@@ -116,7 +112,7 @@ def form(request):
 		  "city": provider.city,
 		  "state": provider.state,
 		  "postalCode": provider.postalCode,
-		  "dateOfBirth": provider.dateOfBirth.strftime('%Y-%m-%d'),
+		  "dateOfBirth": provider.dateOfBirth.strftime('%Y-%m-%d') if provider.dateOfBirth else '',
 		  "ssn": provider.ssn
 		}
 		# TODO: store customer key in DB and use the real customer key in the url.
@@ -131,6 +127,7 @@ def form(request):
 	)
 
 def getCustomerUrl(email):
+	"""Gets the dwolla customer identifying URL"""
 	result = models.Provider.get_by_id(email)
 	if result is not None:
 		return result.customerId

@@ -1,3 +1,4 @@
+from common.dwolla import create_account_token
 from django.shortcuts import render_to_response
 from django import template
 from django.http import HttpResponseRedirect
@@ -11,13 +12,15 @@ from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 
 import dwollav2
+import logging
+
+account_token = create_account_token('sandbox')
+logger = logging.getLogger(__name__)
 
 def home(request):
-	client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
-	account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
 
 	customers = account_token.get('customers')
-	print customers.body['_embedded']['customers']
+	logger.info("Customer info: %s" % customers.body['_embedded']['customers'])
 	return HttpResponse(customers.body['_embedded']['customers'])
 
 stripFilter = lambda x: x.strip()  if x else ''
@@ -58,9 +61,6 @@ def signup(request):
 	form = ProviderForm()
 	if request.method == 'POST':
 		form = ProviderForm(request.POST)
-		print 'FORM:::::::'
-		print form.email.errors
-		print form.email.filters
 		form.validate()
 		if form.validate():
 			email = request.POST.get('email')
@@ -73,8 +73,6 @@ def signup(request):
 			if created:
 				request.session['email'] = provider.email
 
-				client = dwollav2.Client(id = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9', secret = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9', environment = 'sandbox')
-				account_token = client.Token(access_token = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB', refresh_token = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke')
 				request_body = {
 				  'firstName': provider.firstName,
 				  'lastName': provider.lastName,
@@ -105,7 +103,7 @@ def get_or_insert(email, provider):
 	if result is not None:
 		return (result, False)
 	provider.put()
-	print "INFO: successfully stored Provider:" + str(provider)
+	logger.info("INFO: successfully stored Provider:" + str(provider))
 	return (provider, True)
 
 def login(request):
@@ -115,21 +113,15 @@ def login(request):
 		form.validate()
 		email = request.POST.get('email')
 		password = request.POST.get('password')
-		print 'FORM:::::::'
-		print email
-		print password
 		if email and password:
-			print 'haha'
 			query = models.Provider.query().filter(models.Provider.email == email)
 			result = query.fetch(1)
-			print result
 			if not result:
 				form.email.errors.append('error: user does not exist')
 			elif pwd_context.verify(password, result[0].password):
 				# authentication succeeded.
-				print 'login successful'
+				logger.info('login successful')
 				request.session['email'] = email
-				print request.session
 				return HttpResponseRedirect('/home')
 			else:
 				form.email.errors.append('error: password wrong')

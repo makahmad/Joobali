@@ -55,18 +55,25 @@ ProgramController.prototype.initializeTimePickers = function() {
         format: 'YYYY-MM-DD',
         minDate: new Date(),
     })
-    .on('dp.change', function(e) {
+    .on('dp.change', angular.bind(this, function(e) {
         $('#endDate').data('DateTimePicker').minDate(e.date);
-    });
+        this.scope_.newProgram.startDate = $('#startDate').val();
+    }));
 
     $('#endDate').datetimepicker({
         format: 'YYYY-MM-DD',
         minDate: new Date(),
-    });
+    })
+    .on('dp.change', angular.bind(this, function(e) {
+        this.scope_.newProgram.endDate = $('#endDate').val();
+    }));
     $('#dueDate').datetimepicker({
         format: 'YYYY-MM-DD',
         minDate: new Date(),
-    });
+    })
+    .on('dp.change', angular.bind(this, function(e) {
+        this.scope_.newProgram.dueDate = $('#dueDate').val();
+    }));
 
     $('#startTime').datetimepicker({
         format: 'hh:mm A',

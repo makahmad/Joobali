@@ -1,3 +1,5 @@
+from common.json_encoder import JEncoder
+from common.session import check_session
 from django.shortcuts import render_to_response
 from django import template
 from django.http import HttpResponse
@@ -6,50 +8,23 @@ from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 from time import strftime, strptime
 from datetime import datetime, date, time
-import json
-
 from login.models import Provider
-
 from manageprogram import models
 
+import json
+import logging
+
+logger = logging.getLogger(__name__)
 
 ProgramForm = model_form(models.Program)
 SessionForm = model_form(models.Session)
 
 def index(request):
+	"""Handles the landing page request for program management page"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
-	programForm = ProgramForm()
-	sessionForm = SessionForm()
-	if request.method == 'POST':
-		provider = Provider.get_by_id(email)
 
-		program = models.Program(parent = provider.key)
-		session = models.Session()
-		programForm = ProgramForm(request.POST)
-		sessionForm = SessionForm(request.POST)
-		print 'FORM:::::::'
-		print request.POST
-		print sessionForm.data
-		print programForm.data
-		repeatOn = ','.join(request.POST.getlist('repeatOn'))
-		startTime = request.POST.get('startTime');
-		endTime = request.POST.get('endTime');
-		if 'startTime' in sessionForm._fields: del sessionForm._fields['startTime']
-		if 'endTime' in sessionForm._fields: del sessionForm._fields['endTime']
-		if 'repeatOn' in sessionForm._fields: del sessionForm._fields['repeatOn']
-		if programForm.validate() and sessionForm.validate():
-			programForm.populate_obj(program)
-			program.put()
-			print "INFO: successfully stored program:" + str(program)
-			sessionForm.populate_obj(session)
-			session.startTime = datetime.strptime(startTime, '%I:%M %p').time()
-			session.endTime = datetime.strptime(endTime, '%I:%M %p').time()
-			session.repeatOn = repeatOn
-			session.put()
-			print "INFO: successfully stored session:" + str(session)
-			return HttpResponseRedirect('/manageprogram')
 	return render_to_response(
 		'manageprogram/index.html',
 		{},
@@ -57,8 +32,9 @@ def index(request):
 	)
 
 def edit(request):
+	"""Handles the program editing page request"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	return render_to_response(
@@ -68,19 +44,21 @@ def edit(request):
 	)
 
 def listPrograms(request):
+	"""Handles program listing request. Returns programs associated with the logged in user"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 	provider = Provider.get_by_id(email)
 	programs = models.Program.query(ancestor=provider.key)
-	for program in programs:
-		print JEncoder().encode(program)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
 
 def listSessions(request):
+	"""Handles session listing request. Returns sessions associated with provided program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
+	if not request.GET.get('id'):
+		raise Exception('no program id is provided')
 
 	provider = Provider.get_by_id(email)
 	# Must specify parent since id is not unique in DataStore
@@ -90,9 +68,12 @@ def listSessions(request):
 	return HttpResponse(json.dumps([JEncoder().encode(session) for session in sessions]))
 
 def getProgram(request):
+	"""Handles get program request. Returns the program with provided program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
+	if not request.GET.get('id'):
+		raise Exception('no program id is provided')
 
 	provider = Provider.get_by_id(email)
 	# Must specify parent since id is not unique in DataStore
@@ -100,11 +81,15 @@ def getProgram(request):
 	return HttpResponse(json.dumps([JEncoder().encode(program)]))
 
 def updateProgram(request):
+	"""Updates the program with provided program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	newProgram = json.loads(request.body)
+
+	if not newProgram['id']:
+		raise Exception('no program id is provided')
 
 	provider = Provider.get_by_id(email)
 	# Must specify parent since id is not unique in DataStore
@@ -128,18 +113,22 @@ def updateProgram(request):
 	return HttpResponse('success')
 
 def updateSession(request):
+	"""Updates the session with provided session ID and program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	data = json.loads(request.body)
 
 	programId = data['programId']
+	sessionId = data['id']
 
+	if not programId or not sessionId:
+		raise Exception('no program id or session id is provided')
 	provider = Provider.get_by_id(email)
 	program = models.Program.get_by_id(int(programId), parent = provider.key)
 
-	session = models.Session.get_by_id(int(data['id']), parent = program.key)
+	session = models.Session.get_by_id(int(sessionId), parent = program.key)
 	session.sessionName = data['sessionName']
 	session.repeatOn = data['repeatOn']
 	session.startTime = datetime.strptime(data['startTime'], '%I:%M %p').time()
@@ -148,29 +137,36 @@ def updateSession(request):
 	return HttpResponse("success")
 
 def deleteSession(request):
+	"""Deletes the session with provided session ID and program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	data = json.loads(request.body)
 
 	programId = data['programId']
+	sessionId = data['id']
+	if not programId or not sessionId:
+		raise Exception('no program id or session id is provided')
 
 	provider = Provider.get_by_id(email)
 	program = models.Program.get_by_id(int(programId), parent = provider.key)
 
-	session = models.Session.get_by_id(int(data['id']), parent = program.key)
+	session = models.Session.get_by_id(int(sessionId), parent = program.key)
 	session.key.delete()
 	return HttpResponse("success")
 
 def deleteProgram(request):
+	"""Deletes the program with provided program ID"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	data = json.loads(request.body)
 
 	programId = data['id']
+	if not programId:
+		raise Exception('no program id is provided')
 
 	provider = Provider.get_by_id(email)
 	program = models.Program.get_by_id(int(programId), parent = provider.key)
@@ -179,8 +175,9 @@ def deleteProgram(request):
 	return HttpResponse("success")
 
 def addProgram(request):
+	"""Adds a new program along with associated sessions to the logged in user"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	data = json.loads(request.body)
@@ -215,14 +212,16 @@ def addProgram(request):
 	return HttpResponse("success")
 
 def addSession(request):
+	"""Adds a new session under the provided program ID for the logged in user"""
 	email = request.session.get('email')
-	if not request.session.get('email'):
+	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
 	data = json.loads(request.body)
 
-	print data
 	programId = data['programId']
+	if not programId:
+		raise Exception('no program id is provided')
 
 	provider = Provider.get_by_id(email)
 	program = models.Program.get_by_id(int(programId), parent = provider.key)
@@ -234,15 +233,3 @@ def addSession(request):
 	session.endTime = datetime.strptime(data['endTime'], '%I:%M %p').time()
 	session.put()
 	return HttpResponse("success")
-
-class JEncoder(json.JSONEncoder):
-
-    def default(self, o):
-        if isinstance(o, ndb.Model):
-			result = o.to_dict()
-			result['id'] = o.key.id()
-			return result
-        elif isinstance(o, (datetime, date)):
-            return o.isoformat()	  # Or whatever other date format you're OK with...
-        elif isinstance(o, time):
-            return o.strftime('%I:%M %p')	  # Or whatever other date format you're OK with...
