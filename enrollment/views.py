@@ -1,4 +1,5 @@
 from common.session import check_session
+from common.json_encoder import JEncoder
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -6,7 +7,6 @@ from django import template
 from wtforms_appengine.ndb import model_form
 from google.appengine.ext import ndb
 from models import Enrollment
-from manageprogram.views import JEncoder
 from manageprogram.models import Program
 from login.models import Provider
 import json

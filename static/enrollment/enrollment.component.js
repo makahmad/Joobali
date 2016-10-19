@@ -16,7 +16,25 @@ component('enrollment', {
             'Program Id',
             'Status'];
 
-            this.refreshData = function() {
+            this.getProgramData = function() {
+                $http({
+                    method: 'GET',
+	                url: '/manageprogram/listprograms'
+	            }).then(angular.bind(this, function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log(response);
+                    this.programs = [];
+                    angular.forEach(response.data, angular.bind(this, function(program) {
+                        this.programs.push(JSON.parse(program));
+                    }));
+                    console.log(this.programs)
+                }), function errorCallback(response) {
+                    // TODO(zilong): deal with error here
+                });
+            }
+
+            this.refreshEnrollment = function() {
                 $http({
                     method: 'GET',
                     url: '/enrollment/list'
@@ -29,10 +47,8 @@ component('enrollment', {
                         this.enrollments.push(JSON.parse(enrollment));
                     }));
                     console.log(this.enrollments);
-
                 }), function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    // TODO(zilong): deal with erro here
                     console.log(response);
                 });
             };
@@ -52,16 +68,21 @@ component('enrollment', {
                 formStep1.addClass("active").show();
                 this.resetButton();
                 this.resetSaveResult();
-                this.refreshData();
+                this.refreshEnrollment();
             };
 
             this.handleSave = function() {
                 console.log("save");
                 console.log(this.form);
-                $http.post('/enrollment/add', this.form).then(function successCallback(response) {
-                    // TODO(zilong): Judge whether the save is success
+                var submittingForm = angular.copy(this.form);
+                console.log(submittingForm);
+                submittingForm.programId = submittingForm.program.id;
+                delete submittingForm['program'];
+                console.log("submitting " + submittingForm);
+                $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
                     var isSaveSuccess = false;
-                    if (response.status == 'success') {
+                    console.log(response);
+                    if (response.data.status == 'success') {
                         isSaveSuccess = true;
                     }
                     if (isSaveSuccess) {
@@ -103,6 +124,7 @@ component('enrollment', {
                     curContent.next().addClass("active").show();
 
                     if (curNav.next().attr('id') === "navStep2") {
+                        $("#step2").removeClass("hide");
                         $("#nextButton").hide();
                         $("#saveButton").show();
                     } else {
@@ -124,7 +146,8 @@ component('enrollment', {
             }
 
             this.$onInit = function() {
-                this.refreshData();
+                this.refreshEnrollment();
+                this.getProgramData();
             }
         }
     ]

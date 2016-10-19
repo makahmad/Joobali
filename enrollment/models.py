@@ -9,4 +9,4 @@ class Enrollment(ndb.Model):
     status = ndb.StringProperty()
     email = ndb.StringProperty()
     # Key to the Program Entity
-    program_id = ndb.StringProperty()
+    program_id = ndb.IntegerProperty()
