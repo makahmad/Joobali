@@ -1,6 +1,6 @@
-angular.
-module('enrollmentApp').
-component('enrollment', {
+angular
+.module('enrollmentApp')
+.component('enrollment', {
     templateUrl: '/static/enrollment/enrollment.template.html',
     controller: ['$http',
         function EnrollmentFormController($http) {

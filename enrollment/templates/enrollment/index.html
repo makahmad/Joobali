@@ -13,8 +13,10 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
   <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
   <script src="{{ STATIC_URL }}enrollment/enrollment.component.js"></script>
+  <script src="{{ STATIC_URL }}enrollment/enrollment-editor.component.js"></script>
 
 </head>
 
@@ -40,7 +42,7 @@
   </div>
 </nav>
 
-<enrollment></enrollment>
+<div ng-view></div>
 
 <div class="container-fluid">
   <div class="row">
