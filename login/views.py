@@ -86,7 +86,7 @@ def signup(request):
 				except ValidationError as err:  # ValidationError as err
 					# Do nothing
 					pass
-				return HttpResponseRedirect('/home')
+				return HttpResponseRedirect('/home/dashboard')
 			else:
 				form.email.errors.append('error: user exists')
 
@@ -122,7 +122,7 @@ def login(request):
 				# authentication succeeded.
 				logger.info('login successful')
 				request.session['email'] = email
-				return HttpResponseRedirect('/home')
+				return HttpResponseRedirect('/home/dashboard')
 			else:
 				form.email.errors.append('error: password wrong')
 

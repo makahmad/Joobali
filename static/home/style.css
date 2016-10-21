@@ -1,11 +1,11 @@
 .jumbotron {
-    background-color: #f4511e;
+    background-color: #fa5d26;
     color: #ffffff;
     padding: 100px 25px;
 }
 
-.container-fluid {
-    padding: 60px 50px;
+.navbar-container {
+    padding: 0 20px;
 }
 
 .bg-grey {
@@ -13,13 +13,13 @@
 }
 
 .logo {
-    color: #f4511e;
+    color: #fa5d26;
     font-size: 200px;
 }
 
 /* Add an orange color to all icons and set the font-size */
 .logo-small {
-    color: #f4511e;
+    color: #fa5d26;
     font-size: 50px;
 }
 
@@ -45,15 +45,15 @@
 
 .carousel-control.right, .carousel-control.left {
     background-image: none;
-    color: #f4511e;
+    color: #fa5d26;
 }
 
 .carousel-indicators li {
-    border-color: #f4511e;
+    border-color: #fa5d26;
 }
 
 .carousel-indicators li.active {
-    background-color: #f4511e;
+    background-color: #fa5d26;
 }
 
 .item h4 {
@@ -70,7 +70,7 @@
 
 .navbar {
     margin-bottom: 0;
-    background-color: #f4511e;
+    background-color: #fa5d26;
     z-index: 9999;
     border: 0;
     font-size: 12px !important;
@@ -84,7 +84,7 @@
 }
 
 .navbar-nav li a:hover,.navbar-nav .dropdown-menu a, .navbar-nav li.active a {
-    color: #f4511e !important;
+    color: #fa5d26 !important;
     background-color: #fff !important;
 }
 
@@ -98,5 +98,5 @@
 footer .glyphicon {
     font-size: 20px;
     margin-bottom: 20px;
-    color: #f4511e;
+    color: #fa5d26;
 }

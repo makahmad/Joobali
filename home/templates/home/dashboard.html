@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Joobali Main Dashboard</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img src="{{ STATIC_URL }}logo/logo-1.jpg" alt="Logo" width="100" height="50">
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                {% if loggedIn %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{ email }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                    </ul>
+                </li>
+
+
+                {% else %}
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+                <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+<div id="wrapper">
+
+    <div class="nav-side-menu">
+        <div class="brand">Joobali</div>
+
+        <div class="menu-list">
+
+            <ul id="menu-content" class="menu-content collapse out">
+                <li>
+                    <a href="#">
+                        <i class="fa fa-home fa-lg"></i> Dashboard
+                    </a>
+                </li>
+
+                <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                    <a href="#"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="products">
+                    <li class="active"><a href="#">Program 1</a></li>
+                    <li><a href="#">Program 2</a></li>
+                </ul>
+
+
+                <li data-toggle="collapse" data-target="#service" class="collapsed">
+                    <a href="#"><i class="fa fa-calendar-o fa-lg"></i> Schedule <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="service">
+                    <li>Schedule 1</li>
+                    <li>Schedule 2</li>
+                </ul>
+
+
+                <li data-toggle="collapse" data-target="#new" class="collapsed">
+                    <a href="#"><i class="fa fa-dollar fa-lg"></i> Payment <span class="arrow"></span></a>
+                </li>
+
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-user fa-lg"></i> Profile
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-cog fa-lg"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div class="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Content Coming Soon...</h1>
+                    <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+</script>
+
+</body>
+</html>
