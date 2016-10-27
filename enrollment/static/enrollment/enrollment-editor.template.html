@@ -1,0 +1,34 @@
+<div class="enrollmentEditor">
+    <label>You're editing {{$ctrl.enrollmentId}}</label>
+    <form name="enrollmentForm" role="form" class="well">
+        <div class="form-content active">
+            <div class="form-group">
+                <label class="control-label" for="childFirstName">Child First Name</label>
+                <input type="text" class="form-control" id="childFirstName" required="true"
+                       ng-model="$ctrl.enrollmentInfo.child_first_name">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="childLastName">Child Last Name</label>
+                <input type="text" class="form-control" id="childLastName" required="true"
+                       ng-model="$ctrl.enrollmentInfo.child_last_name">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="parentFirstName">Parent First Name</label>
+                <input type="text" class="form-control" id="parentFirstName" required="true"
+                       ng-model="$ctrl.enrollmentInfo.parent_first_name">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="parentLastName">Parent Last Name</label>
+                <input type="text" class="form-control" id="parentLastName" required="true"
+                       ng-model="$ctrl.enrollmentInfo.parent_last_name">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="email">Email</label>
+                <input name="email" type="email" class="form-control" id="email" required="true"
+                       ng-model="$ctrl.enrollmentInfo.email">
+            </div>
+        </div>
+    </form>
+    <button type="button" class="btn btn-primary">update</button>
+    <button type="button" class="btn btn-default">back to list</button>
+</div>

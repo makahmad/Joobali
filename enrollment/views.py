@@ -9,12 +9,15 @@ from google.appengine.ext import ndb
 from models import Enrollment
 from manageprogram.models import Program
 from login.models import Provider
+from EnrollmentHelper import EnrollmentHelper
 import json
 import logging
 import re
 
 EnrollmentForm = model_form(Enrollment)
 logger = logging.getLogger(__name__)
+
+enrollment_helper = EnrollmentHelper()
 
 # TODO(zilong): Add session protection for all view methods here
 
@@ -75,22 +78,41 @@ def list_enrollment(request):
     if not check_session(request):
         return HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     provider_id = request.session.get('email')
-    enrollments = list_enrollment_by_provider(provider_id)
+    enrollments = enrollment_helper.list_enrollment_by_provider(provider_id)
     response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     logger.info("response is %s" % response)
     return response
 
 
-def list_enrollment_by_provider(provider_id):
-    """List all enrollment given a provider id"""
-    provider_key = ndb.Key('Provider', provider_id)
-    enrollment_query = Enrollment.query(ancestor=provider_key)
-    enrollments = []
-    for enrollment in enrollment_query:
-        enrollments.append(enrollment)
-    return enrollments
+# TODO(zilong): finish this two methods
+def edit_enrollment(request):
+    enrollment = enrollment_helper.upsert(request.enrollment)
+    response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
+    return response
 
 
+def get_enrollment(request):
+    status = "Failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    provider_id = request.session.get('email')
+    if request.method != 'GET':
+        logger.info("get non-post http request")
+        # TODO(zilong): return error in this case
+        return
+    enrollment_id = request.GET.get('enrollmentId', '')
+    program_id = request.GET.get('programId', '')
+    if len(enrollment_id) == 0:
+        logger.info("did not receive an enrollmentId")
+        return
+    enrollment_id = int(enrollment_id)
+    program_id = int(program_id)
+    enrollment = enrollment_helper.get(provider_id, program_id, enrollment_id)
+    response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
+    return response
+
+
+# Misc Methods
 def convert_post_enrollment_data(enrollment_data):
     """Converts frontend form key into backend form key"""
     new_enrollment_data = dict()

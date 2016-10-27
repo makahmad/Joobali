@@ -11,7 +11,7 @@ angular.module('enrollmentApp', ['ngRoute'])
             $locationProvider.hashPrefix('!');
             $routeProvider
                 .when('/view', {template: '<enrollment></enrollment>'})
-                .when('/edit/:enrollmentId', {template: '<enrollment-editor></enrollment-editor>'})
+                .when('/edit/:enrollmentKey', {template: '<enrollment-editor></enrollment-editor>'})
                 .otherwise('/view');
         }]);
 
