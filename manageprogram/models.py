@@ -12,6 +12,13 @@ class Program(ndb.Model):
 	dueDate = ndb.DateProperty(required=True) # initial payment due date.
 	billingFrequency = ndb.StringProperty(required=True) #enum: weekly, monthly(defualt)
 
+	# Example model static method:
+	#  @staticmethod
+	# def listProgramsByProvider(provider):
+	# 	''' Returns a list of Programs associated with the provider'''
+	# 	programs = Program.query(ancestor=provider.key)
+	# 	return programs
+
 class Session(ndb.Model):
 	sessionName = ndb.StringProperty(required=True)
 	startTime = ndb.TimeProperty(required=True) #TODO:change DateTime to Time

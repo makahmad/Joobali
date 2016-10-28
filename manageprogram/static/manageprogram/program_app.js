@@ -16,7 +16,6 @@ function getCookie(name) {
 var csrftoken = getCookie('csrftoken');
 
 
-var TIME_FORMAT =  'hh:mm A';
 
 ProgramController = function($scope, $http, $window) {
 	this.http_ = $http;

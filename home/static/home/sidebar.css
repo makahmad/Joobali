@@ -3,8 +3,11 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+html,body { height:100%;
+    background-color: #f1f1f1;}
 
 #wrapper {
+    height: 100%;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -165,10 +168,17 @@ body {
 }
 
 .page-content-wrapper {
+    background-color: #f1f1f1;
+    height: 100%;
   padding-left: 300px;
   padding-top: 50px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
+}
+
+.page-content-container {
+    background-color: #f1f1f1;
+    padding: 30px;
 }

@@ -1,23 +1,7 @@
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        var cookies = document.cookie.split(';');
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
-var csrftoken = getCookie('csrftoken');
+var TIME_FORMAT =  'hh:mm A';
 
-
-
-ProgramController = function($scope, $http, $window) {
+AddProgramComponentController = function($scope, $http, $window) {
+    console.log('AddProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.scope_ = $scope;
@@ -27,29 +11,11 @@ ProgramController = function($scope, $http, $window) {
 	this.scope_.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 
     this.scope_.showConflictLabel = false;
-    $http({
-	  method: 'GET',
-	  url: '/manageprogram/listprograms'
-	}).then(angular.bind(this, function successCallback(response) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-	    console.log(response);
-	    this.scope_.programs = [];
-	    angular.forEach(response.data, angular.bind(this, function(program) {
-	    	this.scope_.programs.push(JSON.parse(program));
-	    }));
-	    console.log(this.scope_.programs);
-
-	  }), function errorCallback(response) {
-	    // called asynchronously if an error occurs
-	    // or server returns response with an error status.
-	    console.log(response);
-	  });
 
 	this.initializeTimePickers();
 };
 
-ProgramController.prototype.initializeTimePickers = function() {
+AddProgramComponentController.prototype.initializeTimePickers = function() {
     $('#startDate').datetimepicker({
         format: 'YYYY-MM-DD',
         minDate: new Date(),
@@ -100,7 +66,7 @@ ProgramController.prototype.initializeTimePickers = function() {
 };
 
 
-ProgramController.prototype.rollUpEndTime = function() {
+AddProgramComponentController.prototype.rollUpEndTime = function() {
 	var startTime = moment(this.scope_.newSession.startTime, TIME_FORMAT);
 	var endTime = moment(this.scope_.newSession.endTime, TIME_FORMAT);
 
@@ -112,12 +78,12 @@ ProgramController.prototype.rollUpEndTime = function() {
 };
 
 
-ProgramController.prototype.onSessionChange = function() {
+AddProgramComponentController.prototype.onSessionChange = function() {
 	this.scope_.showConflictLabel = false;
 };
 
 
-ProgramController.prototype.setNewProgram = function() {
+AddProgramComponentController.prototype.setNewProgram = function() {
 	var newProgram = {};
 	newProgram.programName = this.scope_.newProgram.programName;
 	newProgram.maxCapacity = this.scope_.newProgram.maxCapacity;
@@ -135,13 +101,7 @@ ProgramController.prototype.setNewProgram = function() {
 };
 
 
-ProgramController.prototype.editProgram = function(id) {
-	console.log(id);
-	this.window_.location.href = '/manageprogram/edit?id=' + id;
-};
-
-
-ProgramController.prototype.addNewSession = function() {
+AddProgramComponentController.prototype.addNewSession = function() {
 	if (this.validateCurrentForm()) {
 		var newSession = {};
 		newSession.sessionName = this.scope_.newSession.sessionName;
@@ -173,7 +133,7 @@ ProgramController.prototype.addNewSession = function() {
  * Makes sure the new session doesn't conflict with existing sessions.
  * NOTE: the {newSession} input must be fully populated.
  */
-ProgramController.prototype.validateNewSession = function(newSession) {
+AddProgramComponentController.prototype.validateNewSession = function(newSession) {
 
 	var dates = newSession.repeatOn.split(',');
 	var startTime = moment(newSession.startTime, TIME_FORMAT);
@@ -211,7 +171,7 @@ ProgramController.prototype.validateNewSession = function(newSession) {
 };
 
 
-ProgramController.prototype.validateCurrentForm = function() {
+AddProgramComponentController.prototype.validateCurrentForm = function() {
 	var curContent = $(".form-content.current");
 
   	var curInputs = curContent.find("input"),
@@ -236,7 +196,7 @@ ProgramController.prototype.validateCurrentForm = function() {
 };
 
 
-ProgramController.prototype.handleNext = function() {
+AddProgramComponentController.prototype.handleNext = function() {
 	var curContent = $(".form-content.current");
 	var curNav = $(".form-nav.current");
   if (curNav.attr('id') === "navStep2" || this.validateCurrentForm()) {
@@ -261,7 +221,7 @@ ProgramController.prototype.handleNext = function() {
 };
 
 
-ProgramController.prototype.handleSave = function() {
+AddProgramComponentController.prototype.handleSave = function() {
 	var data = {
 		'program': this.scope_.newProgram,
 		'sessions': this.scope_.sessions
@@ -269,9 +229,6 @@ ProgramController.prototype.handleSave = function() {
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/addprogram',
-		headers: {
-			'X-CSRFToken': csrftoken
-		},
 		data: JSON.stringify(data)
 	}).then(
 		function (response) {
@@ -286,7 +243,7 @@ ProgramController.prototype.handleSave = function() {
 };
 
 
-ProgramController.prototype.setCurrent = function(event) {
+AddProgramComponentController.prototype.setCurrent = function(event) {
 	// User can only move to the visited tabs.
 	if ($(event.target).parent().hasClass('active')) {
 		$('.nav-pills.nav-wizard > li').removeClass('current');
@@ -305,6 +262,3 @@ ProgramController.prototype.setCurrent = function(event) {
 		  $("#saveButton").hide();
 	  }
 };
-
-app = angular.module('programApp', []);
-app.controller('ProgramCtrl', ProgramController);
