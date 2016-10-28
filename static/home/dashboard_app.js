@@ -32,12 +32,20 @@ DashboardController.prototype.initialize = function() {
 	});
 }
 
-app = angular.module('dashboardApp', [])
+app = angular.module('dashboardApp', ['ngRoute'])
     .config(['$httpProvider',
         function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
             $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
         }])
+    .config(['$locationProvider', '$routeProvider',
+         function($locationProvider, $routeProvider) {
+             $locationProvider.hashPrefix('!');
+             $routeProvider
+                 .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
+                 .when('/program/:programId', {templateUrl: '/static/manageprogram/add_program_component_tmpl.html'})
+                 .otherwise('/programs');
+          }])
     .controller('DashboardCtrl', DashboardController)
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',
@@ -49,5 +57,9 @@ app = angular.module('dashboardApp', [])
     .component('addProgramComponent', {
         templateUrl: '/static/manageprogram/add_program_component_tmpl.html',
         controller: AddProgramComponentController
+    })
+    .component('editProgramComponent', {
+        templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',
+        controller: EditProgramComponentController
     });
 

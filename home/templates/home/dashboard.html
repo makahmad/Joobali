@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 
@@ -22,9 +23,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/add_program_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}manageprogram/edit_program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -124,15 +127,8 @@
     <!-- Page Content -->
     <div class="page-content-wrapper">
         <div class="page-content-container">
-            <span class="programHeader"><b>Select A Program:</b></span>
-            <div class="programsContainer">
-                <div class="programsDiv">
-                    <program-component data-ng-repeat="program in programs" program="program"></program-component>
-                </div>
-                <div class="buttonDiv">
-                    <a href="#menu-toggle" class="pull-right programHeader" data-toggle="modal" data-target="#addProgramModal">ADD A PROGRAM <i class="fa fa-plus-circle fa-lg"></i></a>
-                </div>
-            </div>
+            <div ng-view></div>
+
             <!--<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>-->
         </div>
     </div>
