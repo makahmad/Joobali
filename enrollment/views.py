@@ -8,8 +8,7 @@ from wtforms_appengine.ndb import model_form
 from google.appengine.ext import ndb
 from models import Enrollment
 from manageprogram.models import Program
-from login.models import Provider
-from EnrollmentHelper import EnrollmentHelper
+import enrollment_util
 import json
 import logging
 import re
@@ -17,7 +16,6 @@ import re
 EnrollmentForm = model_form(Enrollment)
 logger = logging.getLogger(__name__)
 
-enrollment_helper = EnrollmentHelper()
 
 # TODO(zilong): Add session protection for all view methods here
 
@@ -46,22 +44,20 @@ def add_enrollment(request):
         logger.info("get non-post http request")
         return
     logger.info("request.body %s", request.body)
-    request_body_dict = convert_post_enrollment_data(json.loads(request.body))
+    provider_id = request.session.get("email")
+    request_body_dict = json.loads(request.body)
     enrollment_form = EnrollmentForm(data=request_body_dict)
     if enrollment_form.validate():
-        # TODO(zilong): Add Program as parent for enrollment
-        provider = Provider.get_by_id(request.session.get("email"))
-        program_id = int(request_body_dict['program_id'])
-        program_entity = Program.get_by_id(program_id, parent=provider.key)
-        logger.info("program_id %d, program_entity %s" % (program_id, program_entity))
-        if program_entity is None:
+        program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
+        logger.info("program_key %s" % program_key)
+        if program_key.get() is None:
             programs = Program.query()
             for program in programs:
                 logger.info("program %s" % program)
             status = "failure"
         else:
             # TODO(zilong): check whether program belongs to the current provider
-            enrollment = Enrollment(parent=program_entity.key)
+            enrollment = Enrollment(parent=program_key)
             enrollment_form.populate_obj(enrollment)
             enrollment.status = "initiated"
             enrollment.put()
@@ -78,15 +74,15 @@ def list_enrollment(request):
     if not check_session(request):
         return HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     provider_id = request.session.get('email')
-    enrollments = enrollment_helper.list_enrollment_by_provider(provider_id)
+    enrollments = enrollment_util.list_enrollment_by_provider(provider_id)
     response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     logger.info("response is %s" % response)
     return response
 
 
 # TODO(zilong): finish this two methods
-def edit_enrollment(request):
-    enrollment = enrollment_helper.upsert(request.enrollment)
+def update_enrollment(request):
+    enrollment = enrollment_util.upsert(request.enrollment)
     response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
     return response
 
@@ -107,19 +103,9 @@ def get_enrollment(request):
         return
     enrollment_id = int(enrollment_id)
     program_id = int(program_id)
-    enrollment = enrollment_helper.get(provider_id, program_id, enrollment_id)
+    enrollment = enrollment_util.get_enrollment(provider_id, program_id, enrollment_id)
     response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
     return response
-
-
-# Misc Methods
-def convert_post_enrollment_data(enrollment_data):
-    """Converts frontend form key into backend form key"""
-    new_enrollment_data = dict()
-    logger.info(enrollment_data)
-    for key in enrollment_data:
-        new_enrollment_data[convert_camel_case_to_snake_case(key)] = enrollment_data[key]
-    return new_enrollment_data
 
 
 def convert_camel_case_to_snake_case(name):

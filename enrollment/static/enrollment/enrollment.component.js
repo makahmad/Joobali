@@ -2,10 +2,10 @@ angular
 .module('enrollmentApp')
 .component('enrollment', {
     templateUrl: '/static/enrollment/enrollment.template.html',
-    controller: ['$http',
-        function EnrollmentFormController($http) {
+    controller: ['$http', '$location',
+        function EnrollmentFormController($http, $location) {
             console.log('EnrollmentFormController running');
-            this.form = {};
+            this.enrollmentInfo = {};
 
             this.headers = [
             'Child First Name',
@@ -48,13 +48,13 @@ angular
                     }));
                     console.log(this.enrollments);
                 }), function errorCallback(response) {
-                    // TODO(zilong): deal with erro here
+                    // TODO(zilong): deal with error here
                     console.log(response);
                 });
             };
 
             this.handleDone = function() {
-                this.form = {};
+                this.enrollmentInfo = {};
                 $("#addEnrollmentModal").modal('hide');
                 console.log($(".form-content.active"));
                 var curContent = $(".form-content.active");
@@ -73,10 +73,10 @@ angular
 
             this.handleSave = function() {
                 console.log("save");
-                console.log(this.form);
-                var submittingForm = angular.copy(this.form);
+                console.log(this.enrollmentInfo);
+                var submittingForm = angular.copy(this.enrollmentInfo);
                 console.log(submittingForm);
-                submittingForm.programId = submittingForm.program.id;
+                submittingForm.program_id = submittingForm.program.id;
                 delete submittingForm['program'];
                 console.log("submitting " + submittingForm);
                 $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
@@ -143,6 +143,12 @@ angular
             this.resetSaveResult = function() {
                 $("#saveSuccessLabel").addClass('hide');
                 $("#saveFailureLabel").addClass('hide');
+            }
+
+            this.editView = function(enrollmentId, programId) {
+                console.log("enrollmentId: " + enrollmentId + ", programId: " + programId);
+                $location.path("/edit/" + enrollmentId + "/" + programId);
+                console.log($location.path());
             }
 
             this.$onInit = function() {

@@ -10,8 +10,8 @@ angular.module('enrollmentApp', ['ngRoute'])
         function($locationProvider, $routeProvider) {
             $locationProvider.hashPrefix('!');
             $routeProvider
-                .when('/view', {template: '<enrollment></enrollment>'})
-                .when('/edit/:enrollmentKey', {template: '<enrollment-editor></enrollment-editor>'})
-                .otherwise('/view');
+                .when('/', {template: '<enrollment></enrollment>'})
+                .when('/edit/:programId/:enrollmentId', {template: '<enrollment-editor></enrollment-editor>'})
+                .otherwise('/');
         }]);
 
