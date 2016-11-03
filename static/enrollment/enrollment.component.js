@@ -1,11 +1,11 @@
-angular.
-module('enrollmentApp').
-component('enrollment', {
+angular
+.module('enrollmentApp')
+.component('enrollment', {
     templateUrl: '/static/enrollment/enrollment.template.html',
-    controller: ['$http',
-        function EnrollmentFormController($http) {
+    controller: ['$http', '$location',
+        function EnrollmentFormController($http, $location) {
             console.log('EnrollmentFormController running');
-            this.form = {};
+            this.enrollmentInfo = {};
 
             this.headers = [
             'Child First Name',
@@ -16,7 +16,25 @@ component('enrollment', {
             'Program Id',
             'Status'];
 
-            this.refreshData = function() {
+            this.getProgramData = function() {
+                $http({
+                    method: 'GET',
+	                url: '/manageprogram/listprograms'
+	            }).then(angular.bind(this, function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log(response);
+                    this.programs = [];
+                    angular.forEach(response.data, angular.bind(this, function(program) {
+                        this.programs.push(JSON.parse(program));
+                    }));
+                    console.log(this.programs)
+                }), function errorCallback(response) {
+                    // TODO(zilong): deal with error here
+                });
+            }
+
+            this.refreshEnrollment = function() {
                 $http({
                     method: 'GET',
                     url: '/enrollment/list'
@@ -29,16 +47,14 @@ component('enrollment', {
                         this.enrollments.push(JSON.parse(enrollment));
                     }));
                     console.log(this.enrollments);
-
                 }), function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
+                    // TODO(zilong): deal with error here
                     console.log(response);
                 });
             };
 
             this.handleDone = function() {
-                this.form = {};
+                this.enrollmentInfo = {};
                 $("#addEnrollmentModal").modal('hide');
                 console.log($(".form-content.active"));
                 var curContent = $(".form-content.active");
@@ -52,16 +68,21 @@ component('enrollment', {
                 formStep1.addClass("active").show();
                 this.resetButton();
                 this.resetSaveResult();
-                this.refreshData();
+                this.refreshEnrollment();
             };
 
             this.handleSave = function() {
                 console.log("save");
-                console.log(this.form);
-                $http.post('/enrollment/add', this.form).then(function successCallback(response) {
-                    // TODO(zilong): Judge whether the save is success
+                console.log(this.enrollmentInfo);
+                var submittingForm = angular.copy(this.enrollmentInfo);
+                console.log(submittingForm);
+                submittingForm.program_id = submittingForm.program.id;
+                delete submittingForm['program'];
+                console.log("submitting " + submittingForm);
+                $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
                     var isSaveSuccess = false;
-                    if (response.status == 'success') {
+                    console.log(response);
+                    if (response.data.status == 'success') {
                         isSaveSuccess = true;
                     }
                     if (isSaveSuccess) {
@@ -103,6 +124,7 @@ component('enrollment', {
                     curContent.next().addClass("active").show();
 
                     if (curNav.next().attr('id') === "navStep2") {
+                        $("#step2").removeClass("hide");
                         $("#nextButton").hide();
                         $("#saveButton").show();
                     } else {
@@ -123,8 +145,15 @@ component('enrollment', {
                 $("#saveFailureLabel").addClass('hide');
             }
 
+            this.editView = function(enrollmentId, programId) {
+                console.log("enrollmentId: " + enrollmentId + ", programId: " + programId);
+                $location.path("/edit/" + enrollmentId + "/" + programId);
+                console.log($location.path());
+            }
+
             this.$onInit = function() {
-                this.refreshData();
+                this.refreshEnrollment();
+                this.getProgramData();
             }
         }
     ]
