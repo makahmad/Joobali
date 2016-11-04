@@ -19,6 +19,8 @@ logger = logging.getLogger(__name__)
 ProgramForm = model_form(models.Program)
 SessionForm = model_form(models.Session)
 
+DATE_FORMAT = '%m/%d/%Y'
+
 def index(request):
 	"""Handles the landing page request for program management page"""
 	email = request.session.get('email')
@@ -105,9 +107,9 @@ def updateProgram(request):
 	program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
-	program.startDate = datetime.strptime(newProgram['startDate'], '%Y-%m-%d').date()
-	program.endDate = datetime.strptime(newProgram['endDate'], '%Y-%m-%d').date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], '%Y-%m-%d').date()
+	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
+	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 	program.put()
 
 	return HttpResponse('success')
@@ -196,9 +198,9 @@ def addProgram(request):
 	program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
-	program.startDate = datetime.strptime(newProgram['startDate'], '%Y-%m-%d').date()
-	program.endDate = datetime.strptime(newProgram['endDate'], '%Y-%m-%d').date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], '%Y-%m-%d').date()
+	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
+	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 
 	program.put()
 

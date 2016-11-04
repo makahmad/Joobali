@@ -17,7 +17,7 @@ AddProgramComponentController = function($scope, $http, $window) {
 
 AddProgramComponentController.prototype.initializeTimePickers = function() {
     $('#startDate').datetimepicker({
-        format: 'YYYY-MM-DD',
+        format: 'MM/DD/YYYY',
         minDate: new Date(),
     })
     .on('dp.change', angular.bind(this, function(e) {
@@ -26,14 +26,14 @@ AddProgramComponentController.prototype.initializeTimePickers = function() {
     }));
 
     $('#endDate').datetimepicker({
-        format: 'YYYY-MM-DD',
+        format: 'MM/DD/YYYY',
         minDate: new Date(),
     })
     .on('dp.change', angular.bind(this, function(e) {
         this.scope_.newProgram.endDate = $('#endDate').val();
     }));
     $('#dueDate').datetimepicker({
-        format: 'YYYY-MM-DD',
+        format: 'MM/DD/YYYY',
         minDate: new Date(),
     })
     .on('dp.change', angular.bind(this, function(e) {

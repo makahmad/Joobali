@@ -17,19 +17,24 @@ DashboardController.prototype.initialize = function() {
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
-	    console.log(response);
 	    this.scope_.programs = [];
 	    angular.forEach(response.data, angular.bind(this, function(program) {
 	    	this.scope_.programs.push(JSON.parse(program));
 	    }));
-	    console.log(this.scope_.programs);
-	    console.log(this.scope_.programs[0].programName);
 
 	}), function errorCallback(response) {
 		// called asynchronously if an error occurs
 		// or server returns response with an error status.
 		console.log(response);
 	});
+}
+
+DashboardController.prototype.selectProgram = function(program) {
+    for (index in this.scope_.programs) {
+        this.scope_.programs[index].selected = false;
+    }
+    program.selected = true;
+    this.location_.path('/program/' + program.id);
 }
 
 app = angular.module('dashboardApp', ['ngRoute'])
@@ -43,7 +48,7 @@ app = angular.module('dashboardApp', ['ngRoute'])
              $locationProvider.hashPrefix('!');
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
-                 .when('/program/:programId', {templateUrl: '/static/manageprogram/add_program_component_tmpl.html'})
+                 .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .otherwise('/programs');
           }])
     .controller('DashboardCtrl', DashboardController)
@@ -60,6 +65,9 @@ app = angular.module('dashboardApp', ['ngRoute'])
     })
     .component('editProgramComponent', {
         templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',
-        controller: EditProgramComponentController
+        controller: EditProgramComponentController,
+        bindings: {
+          programs: '<'
+        }
     });
 

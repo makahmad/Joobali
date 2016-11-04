@@ -112,7 +112,7 @@ def form(request):
 		  "city": provider.city,
 		  "state": provider.state,
 		  "postalCode": provider.postalCode,
-		  "dateOfBirth": provider.dateOfBirth.strftime('%Y-%m-%d') if provider.dateOfBirth else '',
+		  "dateOfBirth": provider.dateOfBirth.strftime('%m/%d/%Y') if provider.dateOfBirth else '',
 		  "ssn": provider.ssn
 		}
 		# TODO: store customer key in DB and use the real customer key in the url.
