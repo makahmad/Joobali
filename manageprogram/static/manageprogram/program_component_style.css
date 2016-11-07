@@ -1,24 +1,26 @@
 .programCard {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
     transition: 0.1s;
-    width: 500px;
-    height: 460px;
-    margin: 30px;
+    width: 300px;
+    height: 340px;
+    margin: 12px;
 }
 
 .programCard:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.1);
     cursor: pointer;
+	border: 1px solid #1E988A;
 }
 
 .container {
     width: inherit;
-    height: 140px;
+    height: auto;
     padding: 10px 20px;
 }
 
 .programText {
-    font-size: 26px;
+    font-size: 14px;
+	font-family:'Roboto', sans-serif;
 }
 
 .row {

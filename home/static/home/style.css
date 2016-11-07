@@ -75,7 +75,7 @@
     border: 0;
     font-size: 12px !important;
     line-height: 1.42857143 !important;
-    letter-spacing: 4px;
+    /*letter-spacing: 2px;*/
     border-radius: 0;
 }
 
@@ -128,5 +128,5 @@ footer .glyphicon {
 
 .programHeader {
     color: #2a9d90;
-    font-size: 26px;
+    font-size: 14px;
 }

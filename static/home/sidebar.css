@@ -15,16 +15,17 @@ html,body { height:100%;
 }
 .nav-side-menu {
   overflow: auto;
-  font-family: verdana;
-  font-size: 16px;
-  font-weight: 200;
+/*  font-family: verdana;*/
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  font-weight: 100;
   background-color: #2e353d;
   position: fixed;
   top: 0px;
-  width: 300px;
+  width: 180px;
   height: 100%;
-  color: #e1ffff;
-  padding-top: 50px;
+  color: #F2F2F2;
+  padding: 48px 0 0 0;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
     -o-transition: all 0.5s ease;
@@ -36,6 +37,7 @@ html,body { height:100%;
   display: block;
   text-align: center;
   font-size: 18px;
+  display:none;
 }
 #wrapper.toggled .nav-side-menu{
     margin-left: -300px;
@@ -115,7 +117,7 @@ html,body { height:100%;
 }
 .nav-side-menu li a {
   text-decoration: none;
-  color: #e1ffff;
+  color: #F2F2F2;
 }
 .nav-side-menu li a i {
   padding-left: 10px;
@@ -165,12 +167,13 @@ html,body { height:100%;
 body {
   margin: 0px;
   padding: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .page-content-wrapper {
     background-color: #f1f1f1;
     height: 100%;
-  padding-left: 300px;
+  padding-left: 180px;
   padding-top: 50px;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;

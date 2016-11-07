@@ -14,7 +14,8 @@
   <div class="container">
   <div class="col-centered login-form">
   	<img src="{{ STATIC_URL }}logo.png" class="img-responsive logo col-centered">
-    <p class="text-center">Welcome to Joobali. The first step is to register a account with us.</p>
+	<br />
+    <!-- <p class="text-center">Welcome to Joobali. The first step is to register a account with us.</p> -->
 	  <form role="form" class="well" action="/login/signup/" method="POST">
 	  	{% csrf_token %}
 		  <div class="form-group">

@@ -13,8 +13,9 @@
 <body>
   <div class="container">
   <div class="col-centered login-form">
-  	<img src="{{ STATIC_URL }}logo.png" class="img-responsive logo col-centered">
-    <p class="text-center">Welcome to Joobali. Please login here.</p>
+  	<img src="{{ STATIC_URL }}logo.png" class="img-responsive logo col-centered" alt="Joobali Website Logo">
+	<br />
+    <!-- <p class="text-center">Welcome to Joobali. Please login here.</p> -->
 	  <form role="form" class="well" action="/login/" method="POST">
 	  	  {% csrf_token %}
 		    {% if form.email.errors or form.password.erros %}
