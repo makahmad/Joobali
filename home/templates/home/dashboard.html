@@ -34,6 +34,12 @@
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
+
+    <!-- Enrollment Related JS -->
+    <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
+    <script src="{{ STATIC_URL }}enrollment/enrollment.component.js"></script>
+    <script src="{{ STATIC_URL }}enrollment/enrollment-editor.component.js"></script>
+
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -104,6 +110,10 @@
                 <ul class="sub-menu collapse" id="products">
                     <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)">{{ program.programName }}</li>
                 </ul>
+
+                <li data-toggle="collapse" data-target="#children" class="collapsed active">
+                    <a ng-click="changeView('/enrollment/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
+                </li>
 
 
                 <li>

@@ -9,6 +9,10 @@ DashboardController = function($scope, $http, $window, $location) {
 
 	this.initialize();
 
+    $scope.changeView = function(view) {
+        console.log("changeView(" + view + ")");
+        $location.path(view);
+    }
 };
 
 DashboardController.prototype.initialize = function() {
@@ -67,7 +71,7 @@ app = angular.module('dashboardApp', ['ngRoute'])
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
-                 .otherwise('/programs');
+                 .otherwise('/');
           }])
     .controller('DashboardCtrl', DashboardController)
     .component('programComponent', {
