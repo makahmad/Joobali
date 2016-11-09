@@ -97,8 +97,8 @@ enrollmentListController = function EnrollmentFormController($http, $location) {
     };
 
     this.handleNext = function() {
-        console.log($(".form-content.active"));
-        var curContent = $(".form-content.active");
+        console.log($(".enrollment-form-content.active"));
+        var curContent = $(".enrollment-form-content.active");
         var curNav = $(".form-nav.active");
 
         var curInputs = curContent.find("input");
