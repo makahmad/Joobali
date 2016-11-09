@@ -14,7 +14,8 @@
 @media (min-width: 992px) {
 .login-form{
     max-width:500px;
-}}
+}
+}
 
 @media (min-width: 1200px) {
 .login-form{

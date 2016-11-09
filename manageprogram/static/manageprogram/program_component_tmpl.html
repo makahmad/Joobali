@@ -1,31 +1,47 @@
-<div>
+<div id="programs">
     <div class="programCard" ng-click="$ctrl.click()">
         <div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					&nbsp; <i class="fa fa-pencil fa-fw" style="float:right;"></i>
+				</div>
+			</div>
             <div class="row">
-                <div class="col-md-6">
-                    <div class="programText"><b>{{ $ctrl.program.programName }}</b></div>
+                <div class="actions col-md-9">
+                    <div class="programText main"><b>{{ $ctrl.program.programName }}</b></div>
+					<div class="programText text-left">2/{{ $ctrl.program.maxCapacity }}</div>
                 </div>
-                <div class="col-md-6">
-                    <div class="programText text-right">[enrollment rate]</div>
+                <div class="actions col-md-3">
+                    <div class="programText rate text-right"><sup>$</sup>{{ $ctrl.program.fee }}</div>
+                    <div class="programText text-right">{{ $ctrl.program.billingFrequency }}</div>
                 </div>
             </div>
 		</div>
-		<img src="http://placehold.it/300x168" alt="Avatar" style="width:100%">
+		<!-- <img src="http://placehold.it/300x168" alt="Avatar" style="width:100%"> -->
         <div class="container">
-            <!-- <div class="row">
-                <div class="col-md-6">
-                    <div class="programText"><b>{{ $ctrl.program.programName }}</b></div>
-                </div>
-                <div class="col-md-6">
-                    <div class="programText text-right">[enrollment rate]</div>
-                </div>
-            </div> -->
             <div class="row"></div>
             <div class="row">
-                <div class="col-md-8">
-                    <div class="programText">{{ $ctrl.program.startDate }} - {{ $ctrl.program.endDate }}</div>
+                <div class="actions col-md-12">
+                    <div class="programText">Start Date: <span>{{ $ctrl.program.startDate }}</span></div>
+					<div class="programText">End Date: <span>{{ $ctrl.program.endDate }}</span></div>
+					<div class="programText">Payment Due: <span>{{ $ctrl.program.dueDate }}</span> </div>
                 </div>
             </div>
         </div>
     </div>
+	<div class="programActions">
+		<div class="container">
+            <div class="row">
+                <div class="actions col-md-2">
+					<a href="#"><i class="fa fa-calendar fa-2x" title="Manage sessions"></i> <!-- Manage Sessions --></a>
+				</div>
+				<div class="actions col-md-2">
+					<a href="#"><i class="fa fa-copy fa-2x" title="Copy/Clone program"></i> <!-- Copy Program --></a>
+				</div>
+				<div class="actions col-md-7">
+					<a href="#"><i class="fa fa-child fa-2x text-right" title="Enroll Child"></i> Enroll a Child</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
