@@ -49,9 +49,15 @@
             </button>
             <img src="{{ STATIC_URL }}logo/img_infinitylogo.png" alt="Logo" width="61" height="50">
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
+		
+		<div class="headerActions">
+				[[ schoolName ]]
+		</div>
+        
+		<div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
+				<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}
@@ -62,14 +68,14 @@
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>
-
-
+				
                 {% else %}
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
                 <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
                 {% endif %}
             </ul>
         </div>
+		
     </div>
 </nav>
 <div id="wrapper">
@@ -88,24 +94,22 @@
                 </li>
 
                 <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                    <a href="#"><i class="fa fa-group fa-lg"></i> Programs <span class="arrow"></span></a>
+                    <a href="#"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="products">
                     <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)">{{ program.programName }}</li>
                 </ul>
 
 
-                <li data-toggle="collapse" data-target="#service" class="collapsed">
-                    <a href="#"><i class="fa fa-calendar-o fa-lg"></i> Schedule <span class="arrow"></span></a>
+                <li>
+                    <a href="#"><i class="fa fa-child fa-lg"></i> Children</a>
                 </li>
-                <ul class="sub-menu collapse" id="service">
-                    <li>Schedule 1</li>
-                    <li>Schedule 2</li>
-                </ul>
+             
 
-
-                <li data-toggle="collapse" data-target="#new" class="collapsed">
-                    <a href="#"><i class="fa fa-dollar fa-lg"></i> Payment <span class="arrow"></span></a>
+                <li>
+                    <a href="#">
+						<i class="fa fa-dollar fa-lg"></i> Payment 
+					</a>
                 </li>
 
 
@@ -115,11 +119,6 @@
                     </a>
                 </li>
 
-                <li>
-                    <a href="#">
-                        <i class="fa fa-cog fa-lg"></i> Settings
-                    </a>
-                </li>
             </ul>
         </div>
     </div>

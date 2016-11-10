@@ -83,7 +83,7 @@
     color: #fff !important;
 }
 
-.navbar-nav li a:hover,.navbar-nav .dropdown-menu a, .navbar-nav li.active a {
+.navbar-nav li a:hover,.navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
     color: #fa5d26 !important;
     background-color: #fff !important;
 }
@@ -93,7 +93,17 @@
     color: #fff !important;
 }
 
+.headerActions {
+	color:white;
+    height: 48px;
+    float: left;
+    margin: 0 0 0px 24px;
+    line-height: 4;
+}
 
+.dropdown-toggle {
+	height: 55px;
+}
 
 footer .glyphicon {
     font-size: 20px;
