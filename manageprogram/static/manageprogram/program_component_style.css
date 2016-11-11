@@ -58,7 +58,7 @@ i.fa.fa-pencil.fa-fw {display:none;}
 .container {
     width: inherit;
     height: auto;
-    padding: 10px 20px;
+    padding: 0 20px 10px 20px;
 }
 
 .programText {
@@ -77,6 +77,7 @@ i.fa.fa-pencil.fa-fw {display:none;}
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 179px;
+	font-size:16px;
 }
 
 .rate {
@@ -95,4 +96,10 @@ sub, sup {
 a {
 	cursor:pointer;
 	color: #1E988A;
+}
+
+.row.editProgram {
+	position:relative;
+	top:23px;
+	left:-18px;
 }

@@ -17,6 +17,13 @@
     font-size: 200px;
 }
 
+a.logoLink {
+}
+
+a.logoLink:hover {
+	opacity:.83;
+}
+
 /* Add an orange color to all icons and set the font-size */
 .logo-small {
     color: #fa5d26;
@@ -77,6 +84,7 @@
     line-height: 1.42857143 !important;
     /*letter-spacing: 2px;*/
     border-radius: 0;
+	height:48px;
 }
 
 .navbar li a, .navbar .navbar-brand {
@@ -93,16 +101,17 @@
     color: #fff !important;
 }
 
-.headerActions {
+.providerName {
 	color:white;
-    height: 48px;
+    height: 50px;
     float: left;
     margin: 0 0 0px 24px;
-    line-height: 4;
+    line-height: 2.9;
+	font-size:17px;
 }
 
-.dropdown-toggle {
-	height: 55px;
+.dropdown, .dropdown-toggle {
+	height: 50px !important;
 }
 
 footer .glyphicon {
