@@ -16,7 +16,8 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}child/style.css">
+
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -36,10 +37,10 @@
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
 
-    <!-- Enrollment Related JS -->
-    <script src="{{ STATIC_URL }}enrollment/program_app.js"></script>
-    <script src="{{ STATIC_URL }}enrollment/enrollment.component.js"></script>
-    <script src="{{ STATIC_URL }}enrollment/enrollment-editor.component.js"></script>
+    <!-- Child Related JS -->
+    <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-form.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-editor.component.js"></script>
 
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
 
@@ -113,7 +114,7 @@
                 </ul>
 
                 <li data-toggle="collapse" data-target="#children" class="collapsed active">
-                    <a ng-click="changeView('/enrollment/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
+                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
                 </li>
 
 

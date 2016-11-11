@@ -8,11 +8,12 @@ urlpatterns = [
     url(r'^home/', include('home.urls')),
     url(r'^manageprogram/', include('manageprogram.urls')),
     url(r'^funding/', include('funding.urls')),
-	url(r'^$', include('login.urls')),
-	url(r'^login/', include('login.urls')),
-	url(r'^referal/', include('referal.urls')),
+    url(r'^$', include('login.urls')),
+    url(r'^login/', include('login.urls')),
+    url(r'^referal/', include('referal.urls')),
     url(r'^users/', include('users.urls')),
-    url(r'^enrollment/', include('enrollment.urls'))
+    url(r'^enrollment/', include('enrollment.urls')),
+    url(r'^child/', include('child.urls'))
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),

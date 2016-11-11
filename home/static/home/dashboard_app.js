@@ -71,6 +71,8 @@ app = angular.module('dashboardApp', ['ngRoute'])
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
+                 .when('/child/list', {template: '<child-list></child-list>'})
+                 .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/');
           }])
     .controller('DashboardCtrl', DashboardController)
@@ -110,4 +112,15 @@ app = angular.module('dashboardApp', ['ngRoute'])
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
     });
+    .component('childList', {
+        templateUrl: '/static/child/child-list.template.html',
+        controller: ['$http', '$location', childListController]
+    })
+    .component('childEditor', {
+        templateUrl: '/static/child/child-editor.template.html',
+        controller : ['$http', '$routeParams', '$location', childEditorController]})
+    .component('childForm',{
+        templateUrl: '/static/child/child-form.template.html',
+        controller : ['$http', '$routeParams', '$location', childFormController]}
+    );
 
