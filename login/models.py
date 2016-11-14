@@ -20,3 +20,12 @@ class Provider(ndb.Model):
 
 	# Dwolla customer id
 	customerId = ndb.StringProperty()
+
+class Parent(ndb.Model):
+	firstName = ndb.StringProperty(required=True)
+	lastName = ndb.StringProperty(required=True)
+	email = ndb.StringProperty(required=True)
+	password = ndb.StringProperty(required=True)
+
+	# Dwolla customer id
+	customerId = ndb.StringProperty()

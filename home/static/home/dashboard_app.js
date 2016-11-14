@@ -5,6 +5,7 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.location_ = $location;
 	this.scope_ = $scope;
 	this.scope_.programs = [];  // Program sessions included within
+	this.scope_.fundings = [];
 
 	this.initialize();
 
@@ -27,6 +28,22 @@ DashboardController.prototype.initialize = function() {
 		// or server returns response with an error status.
 		console.log(response);
 	});
+	this.http_({
+	  method: 'GET',
+	  url: '/funding/listfunding'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.fundings = [];
+	    angular.forEach(response.data, angular.bind(this, function(funding) {
+	    	this.scope_.fundings.push(JSON.parse(funding));
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
 }
 
 DashboardController.prototype.selectProgram = function(program) {
@@ -49,6 +66,7 @@ app = angular.module('dashboardApp', ['ngRoute'])
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
+                 .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .otherwise('/programs');
           }])
     .controller('DashboardCtrl', DashboardController)
@@ -69,5 +87,23 @@ app = angular.module('dashboardApp', ['ngRoute'])
         bindings: {
           programs: '<'
         }
+    })
+    .component('fundingsComponent', {
+        templateUrl: '/static/funding/fundings_component_tmpl.html',
+        controller: FundingsComponentController,
+        bindings: {
+          fundings: '<'
+        }
+    })
+    .component('transferComponent', {
+        templateUrl: '/static/funding/transfer_component_tmpl.html',
+        controller: TransferComponentController,
+        bindings: {
+          fundings: '<'
+        }
+    })
+    .component('addFundingIavComponent', {
+        templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
+        controller: AddFundingIavComponentController,
     });
 

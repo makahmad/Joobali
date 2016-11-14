@@ -7,6 +7,7 @@ from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 from funding import models
 from login.models import Provider
+from login.models import Parent
 #from django.core.exceptions import ValidationError
 
 from dwollav2.error import ValidationError
@@ -42,16 +43,11 @@ FundingForm = model_form(models.Funding, field_args={
 # Choose the one as test customer.
 # test_customer_url = 'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
 
-def getCustomerUrl(email):
-	result = Provider.get_by_id(email)
-	if result is not None:
-		return result.customerId
-	raise Exception('user does not exist')
 
 def index(request):
 	if not request.session.get('email'):
 		return HttpResponseRedirect('/login')
-	customer_url = getCustomerUrl(request.session.get('email'))
+	customer_url = request.session.get('dwolla_customer_url')
 	form = FundingForm()
 	if request.method == 'POST':
 		form = FundingForm(request.POST)
@@ -89,7 +85,7 @@ def index(request):
 def listFunding(request):
 	if not request.session.get('email'):
 		return HttpResponseRedirect('/login')
-	customer_url = getCustomerUrl(request.session.get('email'))
+	customer_url = request.session.get('dwolla_customer_url')
 
 	#request_body = {
 	#  "routingNumber": 'test',
@@ -130,7 +126,7 @@ def listProvider(request):
 def getIAVToken(request):
 	if not request.session.get('email'):
 		return HttpResponseRedirect('/login')
-	customer_url = getCustomerUrl(request.session.get('email'))
+	customer_url = request.session.get('dwolla_customer_url')
 
 	customer = account_token.post(customer_url + '/iav-token')
 
@@ -154,7 +150,10 @@ def makeTransfer(request):
 	    'value': data['amount']
 	  }
 	};
-	transfer = account_token.post('transfers', request_body)
+	try:
+		transfer = account_token.post('transfers', request_body)
+	except ValidationError as err:
+		return HttpResponse(err.body['_embedded']['errors'][0]['message'])
 	# print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'
 
 	return HttpResponse("success")

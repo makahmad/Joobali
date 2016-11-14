@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -26,9 +27,13 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/add_program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/edit_program_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -94,7 +99,7 @@
                 </li>
 
                 <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                    <a href="#"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
+                    <a href="#!/programs"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="products">
                     <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)">{{ program.programName }}</li>
@@ -112,7 +117,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="#!/billing">
 						<i class="fa fa-money fa-lg"></i> Billing 
 					</a>
                 </li>

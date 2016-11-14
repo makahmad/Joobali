@@ -48,6 +48,27 @@ ProviderForm = model_form(models.Provider, field_args={
 	},
 })
 
+ParentForm = model_form(models.Parent, field_args={
+	'firstName': {
+		'filters': [stripFilter],
+	},
+	'lastName': {
+		'filters': [stripFilter],
+	},
+	'childFirstName': {
+		'filters': [stripFilter],
+	},
+	'childLastName': {
+		'filters': [stripFilter],
+	},
+	'email': {
+		'filters': [stripFilter],
+	},
+	'password': {
+		'filters': [stripFilter],
+	},
+})
+
 LoginForm = model_form(models.Provider, field_args={
 	'email': {
 		'filters': [stripFilter],
@@ -57,7 +78,7 @@ LoginForm = model_form(models.Provider, field_args={
 	}
 })
 
-def signup(request):
+def provider_signup(request):
 	form = ProviderForm()
 	if request.method == 'POST':
 		form = ProviderForm(request.POST)
@@ -69,7 +90,7 @@ def signup(request):
 
 			provider.password = pwd_context.encrypt(provider.password)
 
-			(provider, created) = get_or_insert(email, provider)
+			(provider, created) = get_or_insert(models.Parent, email, provider)
 			if created:
 				request.session['email'] = provider.email
 
@@ -92,19 +113,60 @@ def signup(request):
 
 
 	return render_to_response(
-		'login/userform.html',
+		'login/provider_signup.html',
+		{'form': form},
+		template.RequestContext(request)
+	)
+
+def parent_signup(request):
+	form = ParentForm()
+	if request.method == 'POST':
+		form = ParentForm(request.POST)
+		form.validate()
+		if form.validate():
+			email = request.POST.get('email')
+			parent = models.Parent(id=email)
+			form.populate_obj(parent)
+
+			parent.password = pwd_context.encrypt(parent.password)
+
+			(parent, created) = get_or_insert(models.Parent, email, parent)
+			if created:
+				request.session['email'] = parent.email
+
+				request_body = {
+				  'firstName': parent.firstName,
+				  'lastName': parent.lastName,
+				  'email': parent.email,
+				  'ipAddress': '99.99.99.99'
+				}
+				try:
+					customer = account_token.post('customers', request_body)
+					parent.customerId = customer.headers['location']
+					parent.put()
+				except ValidationError as err:  # ValidationError as err
+					# Do nothing
+					print err
+					pass
+				return HttpResponseRedirect('/home/dashboard')
+			else:
+				form.email.errors.append('error: user exists')
+
+
+	return render_to_response(
+		'login/parent_signup.html',
 		{'form': form},
 		template.RequestContext(request)
 	)
 
 @ndb.transactional
-def get_or_insert(email, provider):
-	result = models.Provider.get_by_id(email)
+def get_or_insert(model, email, user):
+	result = model.get_by_id(email)
 	if result is not None:
 		return (result, False)
-	provider.put()
-	logger.info("INFO: successfully stored Provider:" + str(provider))
-	return (provider, True)
+	user.put()
+	logger.info("INFO: successfully stored " + model._get_kind() + ":" + str(user))
+	return (user, True)
 
 def login(request):
 	form = LoginForm()
@@ -117,11 +179,16 @@ def login(request):
 			query = models.Provider.query().filter(models.Provider.email == email)
 			result = query.fetch(1)
 			if not result:
-				form.email.errors.append('error: user does not exist')
-			elif pwd_context.verify(password, result[0].password):
+				query = models.Parent.query().filter(models.Parent.email == email)
+				result = query.fetch(1)
+				if not result:
+					form.email.errors.append('error: user does not exist')
+
+			if pwd_context.verify(password, result[0].password):
 				# authentication succeeded.
 				logger.info('login successful')
 				request.session['email'] = email
+				request.session['dwolla_customer_url'] = getCustomerUrl(email)
 				return HttpResponseRedirect('/home/dashboard')
 			else:
 				form.email.errors.append('error: password wrong')
@@ -131,6 +198,15 @@ def login(request):
 		{'form': form},
 		template.RequestContext(request)
 	)
+
+def getCustomerUrl(email):
+	result = models.Provider.get_by_id(email)
+	if result is not None:
+		return result.customerId
+	result = models.Parent.get_by_id(email)
+	if result is not None:
+		return result.customerId
+	raise Exception('user does not exist')
 
 def logout(request):
 	loggedIn = False

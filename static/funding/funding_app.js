@@ -69,9 +69,7 @@ FundingController = function($scope, $http) {
 	  console.log(this.scope_);
 	  var iavToken = this.scope_.iavToken;
 	  this.scope_.dwolla.configure('uat');
-	  this.scope_.dwolla.iav.start(iavToken, {container: 'iavContainer'}, function(err, res) {
-	    console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
-	  });
+
 	});
 
 
