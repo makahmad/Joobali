@@ -111,7 +111,7 @@ app = angular.module('dashboardApp', ['ngRoute'])
     .component('addFundingIavComponent', {
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
-    });
+    })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
         controller: ['$http', '$location', childListController]
