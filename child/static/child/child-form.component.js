@@ -1,4 +1,5 @@
 childFormController = function ChildFormController($http, $routeParams, $location) {
+
     this.handleDone = function() {
         this.enrollmentInfo = {};
         $("#addChildModal").modal('hide');
@@ -12,9 +13,11 @@ childFormController = function ChildFormController($http, $routeParams, $locatio
         var navStep1 = $("#navStep1");
         navStep1.addClass("active");
         formStep1.addClass("active").show();
+        /*
         this.resetButton();
         this.resetSaveResult();
         this.refreshEnrollment();
+        */
     };
 
     this.handleSave = function() {

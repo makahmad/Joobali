@@ -1,9 +1,10 @@
 <div>
-    <div class="enrollmentTable">
-        <div class="enrollmentList">
+    <div>
+        <div class="child-card-group">
+            <child-card data-ng-repeat="child in $ctrl.children" child="child"></child-card>
         </div>
-        <div class="enrollmentTableButtonDiv">
-            <button class="enrollmentTableButton btn btn-primary btn-lg" data-toggle="modal"
+        <div class="addChildButtonDiv">
+            <button class="addChildButtonDiv btn btn-primary btn-lg" data-toggle="modal"
                     data-target="#addChildModal">
                 Add Child
             </button>

@@ -6,3 +6,9 @@ class Child(ndb.Model):
     first_name = ndb.StringProperty()
     last_name = ndb.StringProperty()
     date_of_birth = ndb.DateProperty()
+
+
+class ProviderChildView(ndb.Model):
+    """Model definition of a provider-child view relationship"""
+    provider_key = ndb.KeyProperty()
+    child_key = ndb.KeyProperty()

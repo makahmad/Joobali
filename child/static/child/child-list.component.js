@@ -7,11 +7,11 @@ childListController = function ChildListController($http, $routeParams, $locatio
             // this callback will be called asynchronously
             // when the response is available
             console.log(response);
-            this.childs = [];
+            this.children = [];
             angular.forEach(response.data, angular.bind(this, function(child) {
-                this.childs.push(JSON.parse(child));
+                this.children.push(JSON.parse(child));
             }));
-            console.log(this.childs);
+            console.log(this.children);
         }), function errorCallback(response) {
             // TODO(zilong): deal with error here
             console.log(response);
