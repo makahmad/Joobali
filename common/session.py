@@ -7,3 +7,7 @@ def check_session(request):
         return False
     else:
         return True
+
+
+def get_provider_email(request):
+    return request.session.get("email")

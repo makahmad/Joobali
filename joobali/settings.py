@@ -135,6 +135,8 @@ INSTALLED_APPS = (
     'funding',
     'users',
     'enrollment',
+    'child',
+    'parent',
 )
 
 # A sample logging configuration. The only tangible logging

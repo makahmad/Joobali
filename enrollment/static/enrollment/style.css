@@ -31,11 +31,11 @@
 	margin: 0 auto;
 }
 
-.form-content {
+.enrollment-form-content {
 	visibility: hidden;
 }
 
-.form-content.active {
+.enrollment-form-content.active {
 	visibility: visible;
 }
 

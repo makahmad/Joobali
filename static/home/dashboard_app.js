@@ -9,6 +9,10 @@ DashboardController = function($scope, $http, $window, $location) {
 
 	this.initialize();
 
+    $scope.changeView = function(view) {
+        console.log("changeView(" + view + ")");
+        $location.path(view);
+    }
 };
 
 DashboardController.prototype.initialize = function() {
@@ -67,7 +71,9 @@ app = angular.module('dashboardApp', ['ngRoute'])
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
-                 .otherwise('/programs');
+                 .when('/child/list', {template: '<child-list></child-list>'})
+                 .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
+                 .otherwise('/');
           }])
     .controller('DashboardCtrl', DashboardController)
     .component('programComponent', {
@@ -105,5 +111,20 @@ app = angular.module('dashboardApp', ['ngRoute'])
     .component('addFundingIavComponent', {
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
-    });
+    })
+    .component('childList', {
+        templateUrl: '/static/child/child-list.template.html',
+        controller: ['$http', '$location', childListController]
+    })
+    .component('childCard', {
+        templateUrl: '/static/child/child-card.template.html',
+        controller : ['$http', '$routeParams', '$location', ChildCardController],
+        bindings: {
+          child: '<'
+        }
+    })
+    .component('childForm',{
+        templateUrl: '/static/child/child-form.template.html',
+        controller : ['$http', '$routeParams', '$location', childFormController]}
+    );
 
