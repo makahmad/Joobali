@@ -159,7 +159,7 @@ def parent_signup(request):
 		template.RequestContext(request)
 	)
 
-@ndb.transactional
+@ndb.transactional(xg=True)
 def get_or_insert(model, email, user):
 	result = model.get_by_id(email)
 	if result is not None:
@@ -184,7 +184,8 @@ def login(request):
 				if not result:
 					form.email.errors.append('error: user does not exist')
 
-			if pwd_context.verify(password, result[0].password):
+
+			if result and pwd_context.verify(password, result[0].password):
 				# authentication succeeded.
 				logger.info('login successful')
 				request.session['email'] = email
