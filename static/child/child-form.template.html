@@ -21,7 +21,7 @@
             <div class="modal-body">
                 <div class="col-centered childOverviewForm">
                     <form name="addChildForm" role="form" class="well">
-                        <div id="step1" class="child-form-content active">
+                        <div id="addChildStep1" class="child-form-content active">
                             <div class="form-group">
                                 <label class="control-label" for="childFirstName">Child First Name</label>
                                 <input type="text" class="form-control" id="childFirstName" required="true"
@@ -49,19 +49,17 @@
                                        ng-model="$ctrl.childInfo.email">
                             </div>
                         </div>
-                        <div id="step2" class="child-form-content hide">
+                        <div id="addChildStep2" class="child-form-content">
                             <div class="form-group">
                                 <label class="control-label">Child First Name</label>
-                                <div>{{$ctrl.childInfo.first_name}}</div>
+                                <div>{{$ctrl.childOverview.first_name}}</div>
                                 <label class="control-label">Child Last Name</label>
-                                <div>{{$ctrl.childInfo.last_name}}</div>
+                                <div>{{$ctrl.childOverview.last_name}}</div>
                                 <label class="control-label">Parent's Email</label>
-                                <div>{{$ctrl.childInfo.email}}</div>
+                                <div>{{$ctrl.childOverview.email}}</div>
                                 <label class="control-label">Parent's Email</label>
-                                <div>{{$ctrl.childInfo.date_of_birth}}</div>
+                                <div>{{$ctrl.childOverview.date_of_birth}}</div>
                             </div>
-                            <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
-                            <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
                         </div>
                     </form>
 
@@ -69,11 +67,11 @@
 
             </div>
             <div class="modal-footer">
-                <button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next
+                <button id="addChildNextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next
                 </button>
-                <button id="saveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save
+                <button id="addChildSaveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save
                 </button>
-                <button id="doneButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleDone()">Done
+                <button id="addChildDoneButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleDone()">Done
                 </button>
             </div>
         </div>

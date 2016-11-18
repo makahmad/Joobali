@@ -125,13 +125,14 @@ app = angular.module('dashboardApp', ['ngRoute'])
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
-        controller : ['$http', '$routeParams', '$location', ChildCardController],
+        controller : ['$scope', '$http', '$routeParams', '$location', ChildCardController],
         bindings: {
-          child: '<'
+          child: '<',
+          index: '<'
         }
     })
     .component('childForm',{
         templateUrl: '/static/child/child-form.template.html',
-        controller : ['$http', '$routeParams', '$location', childFormController]}
+        controller : ['$http', '$routeParams', '$location', ChildFormController]}
     );
 

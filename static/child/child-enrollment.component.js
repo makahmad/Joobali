@@ -1,4 +1,4 @@
-ChildCardController = function ChildCardController($scope, $http, $routeParams, $location) {
+ChildEnrollmentController = function ChildEnrollmentController($http, $routeParams, $location) {
 
     this.getProgramData = function() {
         $http({
@@ -7,10 +7,12 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
         }).then(angular.bind(this, function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
+            console.log(response);
             this.programs = [];
             angular.forEach(response.data, angular.bind(this, function(program) {
                 this.programs.push(JSON.parse(program));
             }));
+            console.log(this.programs)
         }), function errorCallback(response) {
             // TODO(zilong): deal with error here
         });
@@ -41,9 +43,9 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
             curContent.next().addClass("active").show();
 
             if (curNav.next().attr('id') === "navStep2") {
-                this.showStep2 = true;
-                this.showNextButton = false;
-                this.showSaveButton = true;
+                $("#step2").removeClass("hide");
+                $("#nextButton").hide();
+                $("#saveButton").show();
             } else {
                 console.log(this.resetButton);
                 this.resetButton();
@@ -52,20 +54,15 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
     };
 
     this.resetButton = function() {
-        this.showNextButton = true;
-        this.showSaveButton = false;
-        this.showDoneButton = false;
+        console
+        $("#addEnrollmentNextButton-" + this.cardIndex).show();
+        $("#addEnrollmentSaveButton-" + this.cardIndex).hide();
+        $("#addEnrollmentDoneButton-" + this.cardIndex).hide();
     };
 
-    this.resetModal = function() {
-        this.showStep2 = false;
-        this.resetButton();
-    }
-
     this.$onInit = function() {
-        console.log("child is " + this.child);
-        console.log("index is " + this.cardIndex);
+        console.log("cardIndex is " + this.cardIndex);
         this.getProgramData();
-        this.resetModal()
+        this.resetButton()
     };
 }

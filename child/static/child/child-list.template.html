@@ -1,7 +1,8 @@
 <div>
     <div>
         <div class="child-card-group">
-            <child-card data-ng-repeat="child in $ctrl.children" child="child"></child-card>
+            <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
+                        index="$index"></child-card>
         </div>
         <div class="addChildButtonDiv">
             <button class="addChildButtonDiv btn btn-primary btn-lg" data-toggle="modal"

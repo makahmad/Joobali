@@ -1,5 +1,6 @@
-childFormController = function ChildFormController($http, $routeParams, $location) {
+ChildFormController = function ChildFormController($http, $routeParams, $location) {
 
+    this.childInfo = {};
     this.handleDone = function() {
         this.enrollmentInfo = {};
         $("#addChildModal").modal('hide');
@@ -13,12 +14,22 @@ childFormController = function ChildFormController($http, $routeParams, $locatio
         var navStep1 = $("#navStep1");
         navStep1.addClass("active");
         formStep1.addClass("active").show();
-        /*
+
         this.resetButton();
         this.resetSaveResult();
-        this.refreshEnrollment();
-        */
+        // this.refreshEnrollment();
     };
+
+    this.resetButton = function() {
+        $("#nextButton").show();
+        $("#saveButton").hide();
+        $("#doneButton").hide();
+    };
+
+    this.resetSaveResult = function() {
+        $("#saveSuccessLabel").addClass('hide');
+        $("#saveFailureLabel").addClass('hide');
+    }
 
     this.handleSave = function() {
         console.log("save");
@@ -34,8 +45,8 @@ childFormController = function ChildFormController($http, $routeParams, $locatio
             if (isSaveSuccess) {
                 $("#saveSuccessLabel").removeClass('hide');
                 $("#saveFailureLabel").addClass('hide');
-                $("#saveButton").hide();
-                $("#doneButton").show();
+                $("#addChildSaveButton").hide();
+                $("#addChildDoneButton").show();
             } else {
                 $("#saveSuccessLabel").addClass('hide');
                 $("#saveFailureLabel").removeClass('hide');
@@ -47,7 +58,6 @@ childFormController = function ChildFormController($http, $routeParams, $locatio
     };
 
     this.handleNext = function() {
-        console.log($(".child-form-content.active"));
         var curContent = $(".child-form-content.active");
         var curNav = $(".form-nav.active");
 
@@ -55,24 +65,30 @@ childFormController = function ChildFormController($http, $routeParams, $locatio
         isValid = true;
         $(".form-group").removeClass("has-error");
         for (var i = 0; i < curInputs.length; i++) {
-            console.log(curInputs[i].validity.valid);
             if (!curInputs[i].validity.valid) {
                 isValid = false;
                 $(curInputs[i]).closest(".form-group").addClass("has-error");
             }
         }
-        console.log(isValid);
+        console.log("Input validity is " + isValid);
 
         if (isValid) {
             curNav.removeClass("active");
             curNav.next().addClass("active");
+            console.log("curContent " + curContent.attr('class').split(/\s+/));
             curContent.removeClass("active").hide();
+            console.log("curContent.next() " + curContent.next().attr('class').split(/\s+/));
+            // curContent.next().removeClass("hide");
             curContent.next().addClass("active").show();
+            console.log("curContent.next() " + curContent.next().attr('class').split(/\s+/));
+
 
             if (curNav.next().attr('id') === "navStep2") {
-                $("#step2").removeClass("hide");
-                $("#nextButton").hide();
-                $("#saveButton").show();
+                this.childOverview = angular.copy(this.childInfo);
+                console.log("Reach the final step");
+                $("#addChildstep2").removeClass("hide");
+                $("#addChildNextButton").hide();
+                $("#addChildSaveButton").show();
             } else {
                 console.log(this.resetButton);
                 this.resetButton();
