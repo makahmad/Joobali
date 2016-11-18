@@ -1,5 +1,4 @@
 <div>
-{% verbatim %}
 <!-- Modal -->
 <div id="addProgramModal" class="modal fade" role="dialog">
   <div class="modal-dialog modal-lg">
@@ -19,77 +18,13 @@
       </div>
       <div class="modal-body">
           <div class="col-centered programOverviewForm">
-            <form id="programForm" role="form" class="well" action="/manageprogram/" method="POST">
+            <form id="programForm" role="form" class="well">
               <div id="step1" class="navStep1 form-content current">
-                <div class="form-group">
-                  <label class="control-label" for="programName">Program Name:</label>
-                  <input type="text" class="form-control" id="programName" name="programName" required="true" ng-model="newProgram.programName">
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="startDate">Start Date:</label>
-                    <div class="input-group date">
-                        <input type="text" id="startDate" required="true" class="form-control" name="startDate" ng-model="newProgram.startDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="endDate">End Date:</label>
-                    <div class="input-group date">
-                        <input type="text" id="endDate" required="true"  class="form-control" name="endDate" ng-model="newProgram.endDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="maxCapacity" data-toggle="tooltip" title="The maximum capacity of students for the program.">Maximum Capacity:</label>
-                  <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" ng-model="newProgram.maxCapacity">
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="registrationFee">Registration Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee" name="registrationFee" required="true" ng-model="newProgram.registrationFee">
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="fee">Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" ng-model="newProgram.fee">
-                    <span class="input-group-addon">
-                      <label class="radio-inline"><input type="radio" name="feeType" ng-model="newProgram.feeType" value="Hourly" checked="checked" >Hourly</label>
-                      <label class="radio-inline"><input type="radio" name="feeType" ng-model="newProgram.feeType" value="Tuition">Tuition</label>
-                    </span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="lateFee">Late Fee:</label>
-                  <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" required="true" ng-model="newProgram.lateFee">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="dueDate">Due Date:</label>
-                    <div class="input-group date">
-                        <input type="text" id="dueDate" required="true"  class="form-control" name="dueDate" ng-model="newProgram.dueDate">
-                        <span class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <label class="control-label" for="registrationFee">Billing Frequency:</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly" ng-model="newProgram.billingFrequency">Weekly</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" ng-model="newProgram.billingFrequency" checked>Monthly</label>
-                </div>
+                <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
               </div>
               <div id="step2" class="navStep2 form-content">
-                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ newProgram.programName }}</span>.</div>
-                <div ng-show="sessions.length" class="control-label text-center">Sessions for Program - <span>{{ newProgram.programName }}</span>:</div>
+                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ $ctrl.newProgram.programName }}</span>.</div>
+                <div ng-show="sessions.length" class="control-label text-center">Sessions for Program - <span>{{ $ctrl.newProgram.programName }}</span>:</div>
                 <table ng-show="sessions.length" class="table table-striped">
                   <thead>
                     <th>Name</th>
@@ -164,45 +99,45 @@
                   <div class="text-center">Program Information</div>
                   <div>
                       <div class="programField">Program Name:</div>
-                      <span class="programValue">{{ newProgram.programName }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.programName }}</span>
                   </div>
                   <div>
                       <div class="programField">Start Date:</div>
-                      <span class="programValue">{{ newProgram.startDate }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.startDate }}</span>
                   </div>
                   <div>
                       <div class="programField">End Date:</div>
-                      <span class="programValue">{{ newProgram.endDate }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.endDate }}</span>
                   </div>
                   <div>
                       <div class="programField">Maximum Capacity:</div>
-                      <span class="programValue">{{ newProgram.maxCapacity }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.maxCapacity }}</span>
                   </div>
                   <div>
                       <div class="programField">Registration Fee:</div>
-                      <span class="programValue">{{ newProgram.registrationFee }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.registrationFee }}</span>
                   </div>
                   <div>
                       <div class="programField">Fee:</div>
-                      <span class="programValue">{{ newProgram.fee }} ({{ newProgram.feeType }})</span>
+                      <span class="programValue">{{ $ctrl.newProgram.fee }} ({{ $ctrl.newProgram.feeType }})</span>
                   </div>
                   <div>
                       <div class="programField">Late Fee:</div>
-                      <span class="programValue">{{ newProgram.lateFee }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.lateFee }}</span>
                   </div>
                   <div>
                       <div class="programField">Due Date:</div>
-                      <span class="programValue">{{ newProgram.dueDate }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.dueDate }}</span>
                   </div>
                   <div>
                       <div class="programField">Billing Frequency:</div>
-                      <span class="programValue">{{ newProgram.billingFrequency }}</span>
+                      <span class="programValue">{{ $ctrl.newProgram.billingFrequency }}</span>
                   </div>
 
 
                   <hr class="divider">
                   <div ng-show="sessions.length"  class="text-center">Program Sessions</div>
-                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ newProgram.programName }}</span>.</div>
+                <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ $ctrl.newProgram.programName }}</span>.</div>
                 <table ng-show="sessions.length" class="table table-striped">
                   <thead>
                     <th>Name</th>
@@ -228,7 +163,6 @@
         <button id="saveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save</button>
       </div>
     </div>
-    {% endverbatim %}
   </div>
 </div>
 </div>

@@ -8,7 +8,7 @@ AddProgramComponentController = function($scope, $http, $window) {
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
-	this.scope_.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
+	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 
     this.scope_.showConflictLabel = false;
 
@@ -16,30 +16,6 @@ AddProgramComponentController = function($scope, $http, $window) {
 };
 
 AddProgramComponentController.prototype.initializeTimePickers = function() {
-    $('#startDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: new Date(),
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        $('#endDate').data('DateTimePicker').minDate(e.date);
-        this.scope_.newProgram.startDate = $('#startDate').val();
-    }));
-
-    $('#endDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: new Date(),
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        this.scope_.newProgram.endDate = $('#endDate').val();
-    }));
-    $('#dueDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: new Date(),
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        this.scope_.newProgram.dueDate = $('#dueDate').val();
-    }));
-
     $('#startTime').datetimepicker({
         format: 'hh:mm A',
     })
@@ -80,24 +56,6 @@ AddProgramComponentController.prototype.rollUpEndTime = function() {
 
 AddProgramComponentController.prototype.onSessionChange = function() {
 	this.scope_.showConflictLabel = false;
-};
-
-
-AddProgramComponentController.prototype.setNewProgram = function() {
-	var newProgram = {};
-	newProgram.programName = this.scope_.newProgram.programName;
-	newProgram.maxCapacity = this.scope_.newProgram.maxCapacity;
-	newProgram.registrationFee = this.scope_.newProgram.registrationFee;
-	newProgram.fee = this.scope_.newProgram.fee;
-	newProgram.feeType = this.scope_.newProgram.feeType;
-	newProgram.lateFee = this.scope_.newProgram.lateFee;
-	newProgram.billingFrequency = this.scope_.newProgram.billingFrequency;
-	// Temp Hack: datetimepicker doesn't work with Angular ng-model, so here we manually copy the value over.
-	newProgram.startDate = $('#startDate').val();
-	newProgram.endDate = $('#endDate').val();
-	newProgram.dueDate = $('#dueDate').val();
-
-	this.scope_.newProgram = newProgram;
 };
 
 
@@ -214,16 +172,13 @@ AddProgramComponentController.prototype.handleNext = function() {
 		  $("#nextButton").show();
 		  $("#saveButton").hide();
 	  }
-	  if (curNav.attr('id') === 'navStep1') {
-		  this.setNewProgram();
-	  }
   }
 };
 
 
 AddProgramComponentController.prototype.handleSave = function() {
 	var data = {
-		'program': this.scope_.newProgram,
+		'program': this.newProgram,
 		'sessions': this.scope_.sessions
 	};
 	this.http_({
