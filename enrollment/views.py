@@ -68,6 +68,10 @@ def add_enrollment(request):
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 
+def add_enrollment_from_child_view(request):
+    status = "failure";
+
+
 def list_enrollment(request):
     """Handles user's request to list all enrollment"""
     enrollments = []

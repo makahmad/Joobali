@@ -16,10 +16,11 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
         });
     };
 
-    this.handleSave = function() {
-        //
+    this.addEnrollmentHandleSave = function() {
+        console.log("Save Enrollment");
     }
-    this.handleNext = function() {
+
+    this.addEnrollmentHandleNext = function() {
         console.log($(".enrollment-form-content.active"));
         var curContent = $(".enrollment-form-content.active");
         var curNav = $(".form-nav.active");
@@ -66,8 +67,18 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
 
     this.$onInit = function() {
         console.log("child is " + this.child);
-        console.log("index is " + this.cardIndex);
+        console.log("index is " + this.index);
+        this.initializeTimePickers();
         this.getProgramData();
-        this.resetModal()
+        this.resetModal();
     };
+}
+
+
+ChildCardController.prototype.initializeTimePickers = function() {
+    $('#startDate').datetimepicker({
+        format: 'MM/DD/YYYY',
+        // Assuming all enrollment has start date later or equal than today
+        minDate: new Date(),
+    });
 }

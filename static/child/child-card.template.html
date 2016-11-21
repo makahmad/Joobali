@@ -40,16 +40,24 @@
                                 <div class="form-group">
                                     <label class="control-label">Child First Name</label>
                                     <p>{{$ctrl.child.first_name}}</p>
-                                    </label>
-                                    <div class="form-group">
-                                        <label class="control-label">Child Last Name</label>
-                                        <p>{{$ctrl.child.last_name}}</p>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label" for="program">Program</label>
-                                        <select class="form-control" id="program" required="true"
-                                                ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
-                                                ng-model="$ctrl.enrollmentInfo.program"></select>
+                                </div>
+                                </label>
+                                <div class="form-group">
+                                    <label class="control-label">Child Last Name</label>
+                                    <p>{{$ctrl.child.last_name}}</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="program">Program</label>
+                                    <select class="form-control" id="program" required="true"
+                                            ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                                            ng-model="$ctrl.newEnrollment.program"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label" for="startDate">Enrollment Start Date:</label>
+                                    <div class="input-group date">
+                                        <input type="text" id="startDate" required="true" class="form-control"
+                                               name="startDate" ng-model="$ctrl.newEnrollment.startDate">
+                                        <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
                                     </div>
                                 </div>
                             </div>
@@ -61,8 +69,10 @@
                                     <div>{{$ctrl.child.last_name}}</div>
                                     <label class="control-label">Program</label>
                                     <div>
-                                        {{$ctrl.enrollmentInfo.program.id}}-{{$ctrl.enrollmentInfo.program.programName}}
+                                        {{$ctrl.newEnrollment.program.id}}-{{$ctrl.newEnrollment.program.programName}}
                                     </div>
+                                    <label class="control-label">Start Date</label>
+                                    <div>{{$ctrl.newEnrollment.startDate}}</div>
                                 </div>
                                 <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
                                 <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
@@ -74,13 +84,13 @@
                 </div>
                 <div class="modal-footer">
                     <button id="addEnrollmentNextButton-{{$ctrl.index}}" type="button" class="btn btn-default"
-                            ng-click="$ctrl.handleNext()" ng-show="$ctrl.showNextButton">Next
+                            ng-click="$ctrl.addEnrollmentHandleNext()" ng-show="$ctrl.showNextButton">Next
                     </button>
                     <button id="addEnrollmentSaveButton-{{$ctrl.index}}" type="button" class="btn btn-primary"
-                            ng-click="$ctrl.handleSave()" ng-show="$ctrl.showSaveButton">Save
+                            ng-click="$ctrl.addEnrollmentHandleSave()" ng-show="$ctrl.showSaveButton">Save
                     </button>
                     <button id="addEnrollmentDoneButton-{{$ctrl.index}}" type="button" class="btn btn-primary"
-                            ng-click="$ctrl.handleDone()" ng-show="$ctrl.showDoneButton">Done
+                            ng-click="$ctrl.addEnrollmentHandleDone()" ng-show="$ctrl.showDoneButton">Done
                     </button>
                 </div>
             </div>

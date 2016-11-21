@@ -95,4 +95,16 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
             }
         }
     };
+
+    this.$onInit = function() {
+        this.initializeTimePickers();
+    }
+}
+
+ChildFormController.prototype.initializeTimePickers = function() {
+    $('#dateOfBirth').datetimepicker({
+        format: 'MM/DD/YYYY',
+        minDate: new Date("01/01/1970"),
+        maxDate: new Date()
+    });
 }
