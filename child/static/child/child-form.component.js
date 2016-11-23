@@ -1,5 +1,7 @@
 ChildFormController = function ChildFormController($http, $routeParams, $location) {
 
+    this.dateOfBirthFormat = 'MM/dd/yyyy';
+    this.dateOfBirthPickerOpened = false;
     this.childInfo = {};
     this.handleDone = function() {
         this.enrollmentInfo = {};
@@ -34,7 +36,7 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
     this.handleSave = function() {
         console.log("save");
         console.log(this.childInfo);
-        var submittingForm = angular.copy(this.childInfo);
+        var submittingForm = angular.copy(this.childOverview);
         console.log("submitting " + submittingForm);
         $http.post('/child/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
@@ -77,14 +79,12 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
             curNav.next().addClass("active");
             console.log("curContent " + curContent.attr('class').split(/\s+/));
             curContent.removeClass("active").hide();
-            console.log("curContent.next() " + curContent.next().attr('class').split(/\s+/));
             // curContent.next().removeClass("hide");
             curContent.next().addClass("active").show();
-            console.log("curContent.next() " + curContent.next().attr('class').split(/\s+/));
 
-
-            if (curNav.next().attr('id') === "navStep2") {
+            if (curNav.next().attr('id') == "navStep2") {
                 this.childOverview = angular.copy(this.childInfo);
+                this.childOverview.date_of_birth = moment(this.childOverview.date_of_birth).format('MM/DD/YYYY');
                 console.log("Reach the final step");
                 $("#addChildstep2").removeClass("hide");
                 $("#addChildNextButton").hide();
@@ -96,15 +96,23 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
         }
     };
 
+    this.openDateOfBirthPicker = function() {
+        console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
+        this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
+    }
+
     this.$onInit = function() {
+        this.dateOfBirthPickerOpened = false;
         this.initializeTimePickers();
     }
 }
 
 ChildFormController.prototype.initializeTimePickers = function() {
+    /*
     $('#dateOfBirth').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date("01/01/1970"),
         maxDate: new Date()
     });
+    */
 }

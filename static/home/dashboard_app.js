@@ -58,7 +58,7 @@ DashboardController.prototype.selectProgram = function(program) {
     this.location_.path('/program/' + program.id);
 }
 
-app = angular.module('dashboardApp', ['ngRoute'])
+app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute'])
     .config(['$httpProvider',
         function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -129,6 +129,14 @@ app = angular.module('dashboardApp', ['ngRoute'])
         bindings: {
           child: '<',
           index: '<'
+        }
+    })
+    .component('childEnrollment', {
+        templateUrl: '/static/child/child-enrollment.template.html',
+        controller : ['$scope','$http', '$routeParams', '$location', ChildEnrollmentController],
+        bindings: {
+            child: '<',
+            programs: '<'
         }
     })
     .component('childForm',{

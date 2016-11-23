@@ -72,3 +72,14 @@
 
 /* Override Datepicker z-index in order to pop out before modal window. */
 .datepicker{z-index:1151 !important;}
+
+.full button span {
+    background-color: limegreen;
+    border-radius: 32px;
+    color: black;
+}
+.partially button span {
+    background-color: orange;
+    border-radius: 32px;
+    color: black;
+}
