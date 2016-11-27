@@ -1,6 +1,6 @@
 var TIME_FORMAT =  'hh:mm A';
 
-AddProgramFormComponentController = function($scope, $http, $window) {
+AddProgramFormComponentController = function() {
     console.log('AddProgramFormComponentController running');
 
 	this.initializeTimePickers();

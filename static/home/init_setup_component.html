@@ -1,0 +1,36 @@
+<div id="addProgramModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Let's begin:</h4>
+        <div class="stepsDiv">
+          <ul class="nav nav-pills nav-wizard">
+              <li id="navStep1" class="form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Link Bank Account</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Add a Program</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Invite a Child</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-body">
+          <div class="col-centered programOverviewForm">
+            <form id="programForm" role="form" class="well">
+              <div id="step1" class="navStep1 form-content current">
+              </div>
+              <div id="step2" class="navStep2 form-content">
+                <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
+              </div>
+              <div id="step3" class="navStep3 form-content">
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>
+        <button id="saveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

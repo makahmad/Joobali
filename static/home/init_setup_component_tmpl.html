@@ -1,0 +1,37 @@
+<div id="initSetupModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Let's begin:</h4>
+        <div class="stepsDiv">
+          <ul class="nav nav-pills nav-wizard">
+              <li id="navStep1" class="init-setup form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Link Bank Account</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Add a Program</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Invite a Child</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-body">
+          <div class="col-centered">
+            <form id="programForm" role="form" class="well">
+              <div id="step1" class="init-setup form-content current">
+                <div id="initSetupIavContainer"></div>
+              </div>
+              <div id="step2" class="init-setup form-content">
+                <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
+              </div>
+              <div id="step3" class="init-setup form-content">
+              </div>
+            </form>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button id="initSetupNextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>
+        <button id="initSetupDoneButton" type="button" class="btn btn-default" ng-click="$ctrl.handleDone()">Done</button>
+      </div>
+    </div>
+  </div>
+</div>

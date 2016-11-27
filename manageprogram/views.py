@@ -185,7 +185,6 @@ def addProgram(request):
 	data = json.loads(request.body)
 
 	newProgram = data['program']
-	sessions = data['sessions']
 
 	provider = Provider.get_by_id(email)
 	program = models.Program(parent=provider.key)
@@ -204,13 +203,14 @@ def addProgram(request):
 
 	program.put()
 
-	for newSession in sessions:
-		session = models.Session(parent=program.key)
-		session.sessionName = newSession['sessionName']
-		session.repeatOn = newSession['repeatOn']
-		session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
-		session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
-		session.put()
+	if 'sessions' in data:
+		for newSession in data['sessions']:
+			session = models.Session(parent=program.key)
+			session.sessionName = newSession['sessionName']
+			session.repeatOn = newSession['repeatOn']
+			session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
+			session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
+			session.put()
 	return HttpResponse("success")
 
 def addSession(request):

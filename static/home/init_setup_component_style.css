@@ -1,0 +1,14 @@
+.form-content.current {
+	display: block;
+}
+
+.form-content {
+	display: none;
+}
+
+#initSetupNextButton {
+	display: none;
+}
+#initSetupDoneButton {
+	display: none;
+}

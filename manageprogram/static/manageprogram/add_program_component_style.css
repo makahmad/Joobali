@@ -1,3 +1,6 @@
+.nav {
+  width: 650px;
+}
 .nav-pills.nav-wizard > li {
   position: relative;
   overflow: visible;

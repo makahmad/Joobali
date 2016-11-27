@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/init_setup_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
@@ -30,10 +31,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
     <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
+
+
+
+    <!-- Program Related JS -->
     <script src="{{ STATIC_URL }}manageprogram/program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/add_program_form_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/add_program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/edit_program_component_ctrl.js"></script>
+
+    <!-- Funding Related JS -->
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
@@ -44,6 +51,8 @@
     <script src="{{ STATIC_URL }}child/child-card.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-enrollment.component.js"></script>
 
+    <!-- Dashboard Related JS -->
+    <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -152,8 +161,7 @@
         </div>
     </div>
     <!-- /#page-content-wrapper -->
-
-    <add-program-component></add-program-component>
+    <init-setup-component></init-setup-component>
     {% endverbatim %}
 </div>
 <!-- /#wrapper -->

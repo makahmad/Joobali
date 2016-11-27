@@ -73,9 +73,13 @@ app = angular.module('dashboardApp', ['ngRoute'])
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
-                 .otherwise('/programs');
+                 .otherwise('/dashboard');
           }])
     .controller('DashboardCtrl', DashboardController)
+    .component('initSetupComponent', {
+        templateUrl: '/static/home/init_setup_component_tmpl.html',
+        controller: InitSetupComponentController
+    })
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',
         controller: ProgramComponentController,
