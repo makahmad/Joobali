@@ -19,8 +19,14 @@
 	}
 }
 
-#programs {
+.programs {
 	font-family:"Roboto", sans-serif;
+	display:inline-block;
+}
+
+[flex].programCard {
+  -webkit-flex-basis: 300px;
+  flex-basis: 300px;
 }
 
 .programCard {
@@ -51,7 +57,7 @@
 i.fa.fa-pencil.fa-fw {display:none;}
 
 .programCard:hover i.fa.fa-pencil.fa-fw {
-    display:flex;
+    display:block;
 }
 
 

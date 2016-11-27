@@ -100,6 +100,7 @@ html,body { height:100%;
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 180px;
+  padding-right:10px;
 }
 .nav-side-menu ul .sub-menu li:hover,
 .nav-side-menu li .sub-menu li:hover {
