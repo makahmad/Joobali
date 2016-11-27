@@ -4,6 +4,11 @@ InitSetupComponentController = function($http) {
 	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 	$('#initSetupModal').modal('show');
 
+    $('#initSetupModal').on('hidden.bs.modal', function (e) {
+        $('#initSetupModal').modal('hide');
+        $('#initSetupModal').remove();
+        console.log('closed');
+    })
     $http({
 	  method: 'GET',
 	  url: '/funding/getiavtoken'
@@ -63,6 +68,7 @@ InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
     // TODO: save the last task (i.e. add child)
 	$('#initSetupModal').modal('hide');
+	$('#initSetupModal').remove();
 };
 
 
