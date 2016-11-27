@@ -2,34 +2,49 @@ InitSetupComponentController = function($http) {
     console.log('InitSetupComponentController running');
     this.http_ = $http;
 	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
-	$('#initSetupModal').modal('show');
-
-    $('#initSetupModal').on('hidden.bs.modal', function (e) {
-        $('#initSetupModal').modal('hide');
-        $('#initSetupModal').remove();
-        console.log('closed');
-    })
-    $http({
+	$http({
 	  method: 'GET',
-	  url: '/funding/getiavtoken'
+	  url: '/login/isinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-	    this.iavToken = response.data;
-	    console.log('IAV token fetched: ' + this.iavToken);
-	    dwolla.configure('uat');
-	    dwolla.iav.start(this.iavToken, {container: 'initSetupIavContainer'}, angular.bind(this, function(err, res) {
-	        console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
-	        if (!err) {
-	            // Funding IAV successful
-	            $('#initSetupNextButton').show();
-	        }
-	    }));
+	    console.log(response.data);
+	    if (response.data == 'false') {
+	        $('#initSetupModal').modal('show');
+            $('#initSetupModal').on('hidden.bs.modal', function (e) {
+                $('#initSetupModal').modal('hide');
+                console.log('closed');
+            })
+
+            $http({
+              method: 'GET',
+              url: '/funding/getiavtoken'
+            }).then(angular.bind(this, function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                this.iavToken = response.data;
+                console.log('IAV token fetched: ' + this.iavToken);
+                dwolla.configure('uat');
+                dwolla.iav.start(this.iavToken, {container: 'initSetupIavContainer'}, angular.bind(this, function(err, res) {
+                    console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
+                    if (!err) {
+                        // Funding IAV successful
+                        $('#initSetupNextButton').show();
+                    }
+                }));
+            }), function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log(response);
+            });
+	    } else {
+            $('#initSetupModal').remove();
+	    }
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.
 	    console.log(response);
 	});
+
+
 };
 
 
@@ -67,8 +82,17 @@ InitSetupComponentController.prototype.handleNext = function() {
 InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
     // TODO: save the last task (i.e. add child)
-	$('#initSetupModal').modal('hide');
-	$('#initSetupModal').remove();
+    this.http_({
+	  method: 'POST',
+	  url: '/login/setinitsetupfinished'
+	}).then(angular.bind(this, function successCallback(response) {
+        $('#initSetupModal').modal('hide');
+        //$('#initSetupModal').remove();
+	}), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	});
 };
 
 

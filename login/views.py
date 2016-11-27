@@ -7,6 +7,7 @@ from wtforms_appengine.ndb import model_form
 from django.http import HttpResponse
 
 from login import models
+from home.models import InitSetupStatus
 from gaesessions import get_current_session
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
@@ -93,6 +94,8 @@ def provider_signup(request):
 			(provider, created) = get_or_insert(models.Parent, email, provider)
 			if created:
 				request.session['email'] = provider.email
+				create_new_init_setup_status(provider.email);
+
 
 				request_body = {
 				  'firstName': provider.firstName,
@@ -104,6 +107,7 @@ def provider_signup(request):
 					customer = account_token.post('customers', request_body)
 					provider.customerId = customer.headers['location']
 					provider.put()
+					request.session['dwolla_customer_url'] = customer.headers['location']
 				except ValidationError as err:  # ValidationError as err
 					# Do nothing
 					pass
@@ -133,6 +137,7 @@ def parent_signup(request):
 			(parent, created) = get_or_insert(models.Parent, email, parent)
 			if created:
 				request.session['email'] = parent.email
+				create_new_init_setup_status(parent.email);
 
 				request_body = {
 				  'firstName': parent.firstName,
@@ -144,6 +149,7 @@ def parent_signup(request):
 					customer = account_token.post('customers', request_body)
 					parent.customerId = customer.headers['location']
 					parent.put()
+					request.session['dwolla_customer_url'] = customer.headers['location']
 				except ValidationError as err:  # ValidationError as err
 					# Do nothing
 					print err
@@ -158,6 +164,34 @@ def parent_signup(request):
 		{'form': form},
 		template.RequestContext(request)
 	)
+
+def create_new_init_setup_status(email):
+	''' Create a new InitSetupStatus object with unfinished status '''
+	initSetupStatus = InitSetupStatus(id=email)
+	initSetupStatus.email = email
+	initSetupStatus.setupFinished = False
+	initSetupStatus.put()
+
+def is_init_setup_finished(request):
+	''' If the user is just signed up. For deciding the display of init setup flow'''
+	result = InitSetupStatus.get_by_id(request.session['email'])
+	if (result is not None) and result.setupFinished == True:
+		return HttpResponse('true');
+	return HttpResponse('false');
+
+def set_init_setup_finished(request):
+	''' Set true that the init setup status is finished '''
+	email = request.session['email']
+	result = InitSetupStatus.get_by_id(email)
+	if result is None:
+		initSetupStatus = InitSetupStatus(id=email)
+		initSetupStatus.email = email
+		initSetupStatus.setupFinished = True
+		initSetupStatus.put()
+	else:
+		result.setupFinished = True
+		result.put();
+	return HttpResponse('success');
 
 @ndb.transactional(xg=True)
 def get_or_insert(model, email, user):
@@ -208,6 +242,8 @@ def getCustomerUrl(email):
 	if result is not None:
 		return result.customerId
 	raise Exception('user does not exist')
+
+
 
 def logout(request):
 	loggedIn = False
