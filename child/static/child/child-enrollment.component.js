@@ -46,6 +46,10 @@ ChildEnrollmentController = function ChildEnrollmentController() {
         }
     };
 
+    this.openStartDatePicker = function() {
+        this.startDatePickerOpened = true;
+    }
+
     this.resetButton = function() {
         this.showNextButton = true;
         this.showSaveButton = false;
@@ -58,15 +62,6 @@ ChildEnrollmentController = function ChildEnrollmentController() {
     }
 
     this.$onInit = function() {
-        this.initializeTimePickers();
         this.resetModal();
     };
-}
-
-ChildEnrollmentController.prototype.initializeTimePickers = function() {
-    $('#startDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        // Assuming all enrollment has start date later or equal than today
-        minDate: new Date(),
-    });
 }

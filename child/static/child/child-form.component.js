@@ -1,42 +1,26 @@
 ChildFormController = function ChildFormController($http, $routeParams, $location) {
+    var self = this;
 
-    this.dateOfBirthFormat = 'MM/dd/yyyy';
-    this.dateOfBirthPickerOpened = false;
-    this.childInfo = {};
-    this.handleDone = function() {
-        this.enrollmentInfo = {};
-        $("#addChildModal").modal('hide');
-        console.log($(".form-content.active"));
-        var curContent = $(".form-content.active");
-        var curNav = $(".form-nav.active");
-        curNav.removeClass("active");
-        curContent.removeClass("active").hide();
+    self.dateOfBirthFormat = 'MM/dd/yyyy';
+    self.dateOfBirthPickerOpened = false;
+    self.childInfo = {};
+    self.currentStep = 0;
 
-        var formStep1 = $("#step1");
-        var navStep1 = $("#navStep1");
-        navStep1.addClass("active");
-        formStep1.addClass("active").show();
+    self.nextButton = {};
+    self.saveButton = {};
+    self.doneButton = {};
+    self.saveSuccessLabel = {};
+    self.saveFailLabel = {};
 
-        this.resetButton();
-        this.resetSaveResult();
-        // this.refreshEnrollment();
+    self.doneButton.click = function() {
+        console.log("resetting Modal");
+        self.resetModal();
     };
 
-    this.resetButton = function() {
-        $("#nextButton").show();
-        $("#saveButton").hide();
-        $("#doneButton").hide();
-    };
-
-    this.resetSaveResult = function() {
-        $("#saveSuccessLabel").addClass('hide');
-        $("#saveFailureLabel").addClass('hide');
-    }
-
-    this.handleSave = function() {
+    self.saveButton.click = function() {
         console.log("save");
-        console.log(this.childInfo);
-        var submittingForm = angular.copy(this.childOverview);
+        console.log(self.childInfo);
+        var submittingForm = angular.copy(self.childOverview);
         console.log("submitting " + submittingForm);
         $http.post('/child/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
@@ -45,74 +29,68 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
                 isSaveSuccess = true;
             }
             if (isSaveSuccess) {
-                $("#saveSuccessLabel").removeClass('hide');
-                $("#saveFailureLabel").addClass('hide');
-                $("#addChildSaveButton").hide();
-                $("#addChildDoneButton").show();
+                self.saveSuccessLabel.show = true;
+                self.saveFailLabel.show = false;
+                self.saveButton.show = false;
+                self.doneButton.show = true;
             } else {
-                $("#saveSuccessLabel").addClass('hide');
-                $("#saveFailureLabel").removeClass('hide');
+                self.saveSuccessLabel.show = false;
+                self.saveFailLabel.show = true;
             }
         }, function errorCallback(response) {
-            $("#saveSuccessLabel").addClass('hide');
-            $("#saveFailureLabel").removeClass('hide');
+            self.saveSuccessLabel.show = false;
+            self.saveFailLabel.show = true;
         });
     };
 
-    this.handleNext = function() {
-        var curContent = $(".child-form-content.active");
-        var curNav = $(".form-nav.active");
-
-        var curInputs = curContent.find("input");
-        isValid = true;
-        $(".form-group").removeClass("has-error");
-        for (var i = 0; i < curInputs.length; i++) {
-            if (!curInputs[i].validity.valid) {
+    self.nextButton.click = function() {
+        var isValid = true;
+        angular.forEach(addChildForm, function(value, key) {
+            if(value.validity.valid != true) {
                 isValid = false;
-                $(curInputs[i]).closest(".form-group").addClass("has-error");
             }
-        }
-        console.log("Input validity is " + isValid);
+        })
+        console.log("addChildForm.email: " + addChildForm.email);
+        console.log("addChildForm.email.$invalid: " + addChildForm.email.$invalid);
+        self.currentStep += 1;
 
         if (isValid) {
-            curNav.removeClass("active");
-            curNav.next().addClass("active");
-            console.log("curContent " + curContent.attr('class').split(/\s+/));
-            curContent.removeClass("active").hide();
-            // curContent.next().removeClass("hide");
-            curContent.next().addClass("active").show();
-
-            if (curNav.next().attr('id') == "navStep2") {
-                this.childOverview = angular.copy(this.childInfo);
-                this.childOverview.date_of_birth = moment(this.childOverview.date_of_birth).format('MM/DD/YYYY');
+            if (self.currentStep == 1) {
+                console.log("childInfo: " + self.childInfo);
+                self.childOverview = angular.copy(self.childInfo);
+                self.childOverview.date_of_birth = moment(self.childOverview.date_of_birth).format('MM/DD/YYYY');
                 console.log("Reach the final step");
-                $("#addChildstep2").removeClass("hide");
-                $("#addChildNextButton").hide();
-                $("#addChildSaveButton").show();
+                self.nextButton.show = false;
+                self.saveButton.show = true;
             } else {
-                console.log(this.resetButton);
-                this.resetButton();
+                self.resetButton();
             }
         }
     };
 
-    this.openDateOfBirthPicker = function() {
-        console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
-        this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
+    self.resetButton = function() {
+        self.nextButton.show = true;
+        self.saveButton.show = false;
+        self.doneButton.show = false;
+    };
+
+    self.resetModal = function() {
+        self.childInfo = {};
+        self.childOverview = {};
+        self.currentStep = 0;
+        self.saveSuccessLabel.show = false;
+        self.saveFailLabel.show = false;
+        self.resetButton();
     }
 
-    this.$onInit = function() {
-        this.dateOfBirthPickerOpened = false;
-        this.initializeTimePickers();
+    self.openDateOfBirthPicker = function() {
+        console.log("Toggle Date picker: " + self.dateOfBirthPickerOpened);
+        self.dateOfBirthPickerOpened = ! self.dateOfBirthPickerOpened;
     }
-}
 
-ChildFormController.prototype.initializeTimePickers = function() {
-    /*
-    $('#dateOfBirth').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: new Date("01/01/1970"),
-        maxDate: new Date()
-    });
-    */
+    self.$onInit = function() {
+        self.dateOfBirthPickerOpened = false;
+        self.resetButton();
+        self.currentStep = 0;
+    }
 }

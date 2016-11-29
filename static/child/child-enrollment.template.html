@@ -38,13 +38,19 @@
                                     ng-model="$ctrl.newEnrollment.program"></select>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" for="startDate">Enrollment Start Date:</label>
-                            <div class="input-group date">
-                                <input type="text" id="startDate" required="true" class="form-control"
-                                       ng-model="$ctrl.newEnrollment.startDate">
-                                <span class="input-group-addon"><span
-                                        class="glyphicon glyphicon-calendar"></span></span>
-                            </div>
+                            <label class="control-label">Enrollment Start Date:</label>
+                                <p class="input-group">
+                                <input type="text" class="form-control"
+                                       uib-datepicker-popup="MM/dd/yyyy"
+                                       ng-model="$ctrl.newEnrollment.start_date"
+                                       is-open="$ctrl.startDatePickerOpened"
+                                       ng-required="true"
+                                       close-text="Close"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openStartDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                                </p>
                         </div>
                     </div>
                     <div class="enrollment-form-content" ng-show="$ctrl.showStep2">
@@ -60,22 +66,21 @@
                             <label class="control-label">Start Date</label>
                             <div>{{$ctrl.startDate}}</div>
                         </div>
-                        <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
-                        <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
+                        <div class="control-label hide">Save Success!</div>
+                        <div class="control-label hide">Save Fail!</div>
                     </div>
                 </form>
-
             </div>
 
         </div>
         <div class="modal-footer">
-            <button id="addEnrollmentNextButton-{{$ctrl.index}}" type="button" class="btn btn-default"
+            <button type="button" class="btn btn-default"
                     ng-click="$ctrl.addEnrollmentHandleNext()" ng-show="$ctrl.showNextButton">Next
             </button>
-            <button id="addEnrollmentSaveButton-{{$ctrl.index}}" type="button" class="btn btn-primary"
+            <button type="button" class="btn btn-primary"
                     ng-click="$ctrl.addEnrollmentHandleSave()" ng-show="$ctrl.showSaveButton">Save
             </button>
-            <button id="addEnrollmentDoneButton-{{$ctrl.index}}" type="button" class="btn btn-primary"
+            <button type="button" class="btn btn-primary"
                     ng-click="$ctrl.addEnrollmentHandleDone()" ng-show="$ctrl.showDoneButton">Done
             </button>
         </div>
