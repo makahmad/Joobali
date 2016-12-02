@@ -1,13 +1,20 @@
 from google.appengine.ext import ndb
 from models import Enrollment
 from common import key_util
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
 
 
-def upsert_enrollment(enrollment):
+def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
+    enrollment = Enrollment()
+    enrollment.child_key = enrollment_input['child_key']
+    enrollment.program_key = enrollment_input['program_key']
+    enrollment.status = enrollment_input['status']
+    enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
+    enrollment.put()
     pass
 
 

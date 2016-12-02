@@ -1,67 +1,98 @@
-ChildEnrollmentController = function ChildEnrollmentController() {
+ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $routeParams, $location) {
     /*
      * @input: child
      * @input: programs
-     *
      */
+    var self = this;
+    console.log("self.child: " + self.child);
+    console.log("self.index: " + self.index);
+    self.currentStep = 0;
+    self.newEnrollment = {};
+    self.nextButton = {};
+    self.saveButton = {};
+    self.doneButton = {};
+    self.saveSuccessLabel = {};
+    self.saveFailLabel = {};
 
-    this.newEnrollment = {};
-    this.addEnrollmentHandleSave = function() {
-        console.log("Save Enrollment");
-        console.log("enrollment info " + JSON.stringify(this.newEnrollment));
-        console.log("$ctrl.startDate:" + this.startDate);
+    self.saveButton.click = function() {
+        console.log("saveButton is clicked");
+        var submittingForm = {
+            'child_id': self.child.id,
+            'parent_email': self.child.parent_email,
+            'program_id': self.newEnrollment.program.id,
+            'start_date': self.newEnrollment.start_date
+        };
+        console.log(submittingForm);
+        $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
+            var isSaveSuccess = false;
+            console.log(response);
+            if (response.data.status == 'success') {
+                isSaveSuccess = true;
+            }
+            if (isSaveSuccess) {
+                self.saveSuccessLabel.show = true;
+                self.saveFailLabel.show = false;
+                self.saveButton.show = false;
+                self.doneButton.show = true;
+            } else {
+                self.saveSuccessLabel.show = false;
+                self.saveFailLabel.show = true;
+            }
+        }, function errorCallback(response) {
+            self.saveSuccessLabel.show = false;
+            self.saveFailLabel.show = true;
+        });
     }
 
-    this.addEnrollmentHandleNext = function() {
-        console.log($(".enrollment-form-content.active"));
-        var curContent = $(".enrollment-form-content.active");
-        var curNav = $(".form-nav.active");
+    self.doneButton.click = function() {
+        console.log("doneButton is clicked");
+        self.resetModal();
+    }
 
-        var curInputs = curContent.find("input");
-        isValid = true;
-        $(".form-group").removeClass("has-error");
-        for (var i = 0; i < curInputs.length; i++) {
-            console.log(curInputs[i].validity.valid);
-            if (!curInputs[i].validity.valid) {
+    self.nextButton.click = function() {
+        var isValid = true;
+        // TODO(zilong): Think of a way to avoid using index here
+        angular.forEach(addEnrollmentForm[self.index], function(value, key) {
+            console.log("value: " + value + ",key: " + key)
+            if(value.validity.valid != true) {
                 isValid = false;
-                $(curInputs[i]).closest(".form-group").addClass("has-error");
             }
-        }
+        })
+
         console.log(isValid);
-
+        self.currentStep += 1;
         if (isValid) {
-            curNav.removeClass("active");
-            curNav.next().addClass("active");
-            curContent.removeClass("active").hide();
-            curContent.next().addClass("active").show();
-
-            if (curNav.next().attr('id') === "navStep2") {
-                this.showStep2 = true;
-                this.showNextButton = false;
-                this.showSaveButton = true;
+            if (self.currentStep == 1) {
+                self.newEnrollment.child_id = self.child.id;
+                self.newEnrollment.start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
+                console.log("self.newEnrollment.start_date: " + self.newEnrollment.start_date);
+                self.nextButton.show = false;
+                self.saveButton.show = true;
             } else {
                 console.log(this.resetButton);
-                this.resetButton();
+                self.resetButton();
             }
         }
     };
 
-    this.openStartDatePicker = function() {
-        this.startDatePickerOpened = true;
+    self.openStartDatePicker = function() {
+        self.startDatePickerOpened = true;
     }
 
-    this.resetButton = function() {
-        this.showNextButton = true;
-        this.showSaveButton = false;
-        this.showDoneButton = false;
+    self.resetButton = function() {
+        self.nextButton.show = true;
+        self.saveButton.show = false;
+        self.doneButton.show = false;
     };
 
-    this.resetModal = function() {
-        this.showStep2 = false;
-        this.resetButton();
+    self.resetModal = function() {
+        self.resetButton();
+        self.currentStep = 0;
+        self.saveSuccessLabel.show = false;
+        self.saveFailLabel.show = false;
     }
 
-    this.$onInit = function() {
-        this.resetModal();
+    self.$onInit = function() {
+        self.resetModal();
     };
 }

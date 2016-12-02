@@ -50,10 +50,8 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
                 isValid = false;
             }
         })
-        console.log("addChildForm.email: " + addChildForm.email);
-        console.log("addChildForm.email.$invalid: " + addChildForm.email.$invalid);
-        self.currentStep += 1;
 
+        self.currentStep += 1;
         if (isValid) {
             if (self.currentStep == 1) {
                 console.log("childInfo: " + self.childInfo);

@@ -140,7 +140,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller : ['$scope','$http', '$routeParams', '$location', ChildEnrollmentController],
         bindings: {
             child: '<',
-            programs: '<'
+            programs: '<',
+            index: '<'
         }
     })
     .component('childForm',{

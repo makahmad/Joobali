@@ -5,9 +5,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django import template
 from wtforms_appengine.ndb import model_form
-from google.appengine.ext import ndb
 from models import Enrollment
-from manageprogram.models import Program
+from child import child_util
+from google.appengine.ext import ndb
 import enrollment_util
 import json
 import logging
@@ -46,30 +46,29 @@ def add_enrollment(request):
     logger.info("request.body %s", request.body)
     provider_id = request.session.get("email")
     request_body_dict = json.loads(request.body)
-    enrollment_form = EnrollmentForm(data=request_body_dict)
-    if enrollment_form.validate():
-        program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
-        logger.info("program_key %s" % program_key)
-        if program_key.get() is None:
-            programs = Program.query()
-            for program in programs:
-                logger.info("program %s" % program)
-            status = "failure"
-        else:
-            # TODO(zilong): check whether program belongs to the current provider
-            enrollment = Enrollment(parent=program_key)
-            enrollment_form.populate_obj(enrollment)
-            enrollment.status = "initiated"
-            enrollment.put()
-            status = "success"
+    logger.info(request_body_dict)
+    child_key = child_util.get_child_key(request_body_dict['child_id'], request_body_dict['parent_email'])
+    program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
+    child = child_key.get()
+    program = program_key.get()
+    if child is None:
+        logger.info("child does not exist")
+    elif program is None:
+        logger.info('program does not exist')
     else:
-        logger.info("enrollment_form errors: [%s]" % enrollment_form.errors)
-        logger.info("enrollment_form not valid")
+        request_body_dict['start_date']
+        enrollment = {
+            'child_key' : child_key,
+            'program_key' : program_key,
+            'status': 'initiated',
+            'start_date':request_body_dict['start_date']
+        }
+        enrollment_util.upsert_enrollment(enrollment)
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 
 def add_enrollment_from_child_view(request):
-    status = "failure";
+    status = "failure"
 
 
 def list_enrollment(request):

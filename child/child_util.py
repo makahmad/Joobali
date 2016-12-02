@@ -1,9 +1,11 @@
 # External Libraries
 from datetime import datetime
+from google.appengine.ext import ndb
 import logging
 # Internal Libraries
 from models import Child
 from models import ProviderChildView
+from parent import parent_util
 
 logger = logging.getLogger(__name__)
 
@@ -14,6 +16,7 @@ def add_child(child_input, parent_key):
     child.first_name = child_input['first_name']
     child.last_name = child_input['last_name']
     child.date_of_birth = datetime.strptime(child_input['date_of_birth'], "%m/%d/%Y").date()
+    child.parent_email = child_input['parent_email']
     child.put()
     return child
 
@@ -42,6 +45,12 @@ def get_provider_child_view(child_key=None, provider_key=None):
         for provider_child_view in query.fetch():
             results.append(provider_child_view)
     return results
+
+
+def get_child_key(child_id, parent_email):
+    parent = parent_util.get_parents_by_email(parent_email)
+    logger.info('child_id: %s, Parent: %s' % (child_id, parent.key.id()))
+    return ndb.Key('Parent', parent.key.id(), 'Child', child_id)
 
 
 # TODO(zilong): Implement this

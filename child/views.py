@@ -41,8 +41,11 @@ def add_child(request):
         provider_key = ndb.Key('Provider', get_provider_email(request))
         parent_input = {'email': request_content['email']}
         parent_entity = parent_util.add_parent(parent_input)
-        child_input = {'first_name': request_content['first_name'], 'last_name': request_content['last_name'],
-                       'date_of_birth': request_content['date_of_birth']}
+        child_input = {
+            'first_name': request_content['first_name'],
+            'last_name': request_content['last_name'],
+            'date_of_birth': request_content['date_of_birth'],
+            'parent_email': request_content['email']}
         existing_child = child_util.get_existing_child(child_input, parent_entity.key)
         if existing_child is None:
             existing_child = child_util.add_child(child_input, parent_entity.key)
