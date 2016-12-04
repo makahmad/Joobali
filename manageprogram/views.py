@@ -10,6 +10,7 @@ from time import strftime, strptime
 from datetime import datetime, date, time
 from login.models import Provider
 from manageprogram import models
+from manageprogram import program_util
 
 import json
 import logging
@@ -50,8 +51,7 @@ def listPrograms(request):
 	email = request.session.get('email')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
-	provider = Provider.get_by_id(email)
-	programs = models.Program.query(ancestor=provider.key)
+	programs = program_util.list_program_by_provider_email(email)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
 
 def listSessions(request):

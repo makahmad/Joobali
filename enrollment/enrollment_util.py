@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
-    enrollment = Enrollment()
+    enrollment = Enrollment(parent=enrollment_input['provider_key'])
     enrollment.child_key = enrollment_input['child_key']
     enrollment.program_key = enrollment_input['program_key']
     enrollment.status = enrollment_input['status']

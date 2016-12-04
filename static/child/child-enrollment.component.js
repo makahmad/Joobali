@@ -52,12 +52,12 @@ ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $r
     self.nextButton.click = function() {
         var isValid = true;
         // TODO(zilong): Think of a way to avoid using index here
-        angular.forEach(addEnrollmentForm[self.index], function(value, key) {
-            console.log("value: " + value + ",key: " + key)
-            if(value.validity.valid != true) {
-                isValid = false;
-            }
-        })
+//        angular.forEach(addEnrollmentForm[self.index], function(value, key) {
+//            console.log("value: " + value + ",key: " + key)
+//            if(value.validity.valid != true) {
+//                isValid = false;
+//            }
+//        })
 
         console.log(isValid);
         self.currentStep += 1;

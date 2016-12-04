@@ -87,7 +87,7 @@ InitSetupComponentController.prototype.handleDone = function() {
 	  url: '/login/setinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
         $('#initSetupModal').modal('hide');
-        //$('#initSetupModal').remove();
+		location.reload();
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.

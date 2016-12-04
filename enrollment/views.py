@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django import template
 from wtforms_appengine.ndb import model_form
 from models import Enrollment
+from login.models import Provider
 from child import child_util
 from google.appengine.ext import ndb
 import enrollment_util
@@ -58,12 +59,14 @@ def add_enrollment(request):
     else:
         request_body_dict['start_date']
         enrollment = {
+            'provider_key': ndb.Key('Provider', provider_id),
             'child_key' : child_key,
             'program_key' : program_key,
             'status': 'initiated',
             'start_date':request_body_dict['start_date']
         }
         enrollment_util.upsert_enrollment(enrollment)
+        status = "success"
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 

@@ -4,8 +4,9 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.window_ = $window;
 	this.location_ = $location;
 	this.scope_ = $scope;
-	this.scope_.programs = [];  // Program sessions included within
+	this.scope_.programs = [];
 	this.scope_.fundings = [];
+	this.scope_.invoices = [];
 
 	this.initialize();
 
@@ -32,6 +33,23 @@ DashboardController.prototype.initialize = function() {
 		// or server returns response with an error status.
 		console.log(response);
 	});
+	this.http_({
+	  method: 'GET',
+	  url: '/invoice/listinvoices'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.invoices = [];
+	    console.log(response.data);
+	    angular.forEach(response.data, angular.bind(this, function(invoice) {
+	    	this.scope_.invoices.push(invoice);
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
 	this.http_({
 	  method: 'GET',
 	  url: '/funding/listfunding'
@@ -70,6 +88,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
+                 .when('/invoice', {templateUrl: '/static/home/invoice_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
@@ -103,6 +122,13 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller: EditProgramComponentController,
         bindings: {
           programs: '<'
+        }
+    })
+    .component('invoicesComponent', {
+        templateUrl: '/static/invoice/invoices_component_tmpl.html',
+        controller: InvoicesComponentController,
+        bindings: {
+          invoices: '<'
         }
     })
     .component('fundingsComponent', {

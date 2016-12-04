@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'referal',
     'home',
     'manageprogram',
+    'invoice',
     'funding',
     'users',
     'enrollment',
