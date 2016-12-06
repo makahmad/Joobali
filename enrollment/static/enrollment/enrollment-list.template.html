@@ -1,0 +1,20 @@
+<!--Showing List of Enrollments that can be edited -->
+<div>
+    <table class="table">
+        <thead>
+        <th ng-repeat="header in $ctrl.headers">{{ header }}</th>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="enrollment in $ctrl.enrollments">
+            <td>{{ enrollment.program_id }}</td>
+            <td>{{ enrollment.status }}</td>
+            <td>{{ enrollment.start_date}}</td>
+            <td>
+                <button type="button" class="btn btn-info"
+                        ng-click="$ctrl.editView(enrollment.program_id, enrollment.enrollment_id)">Edit
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

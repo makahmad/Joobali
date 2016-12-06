@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 from models import Enrollment
-from common import key_util
 from datetime import datetime
+from common import key_util
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,7 +15,7 @@ def upsert_enrollment(enrollment_input):
     enrollment.status = enrollment_input['status']
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.put()
-    pass
+    return enrollment
 
 
 def delete_enrollment(enrollment):
@@ -39,17 +39,18 @@ def get_enrollment(provider_id, program_id, enrollment_id):
     return enrollment
 
 
-def list_enrollment_by_provider(provider_id):
-    """List all enrollment given a provider id"""
+def list_enrollment_by_provider_and_child(provider_id, child_key):
     provider_key = ndb.Key('Provider', provider_id)
-    enrollment_query = Enrollment.query(ancestor=provider_key)
-    enrollments = []
+    enrollment_query = Enrollment.query(Enrollment.child_key==child_key, ancestor=provider_key)
+    if enrollment_query is None:
+        logger.info("enrollment_query is none")
+    enrollments = list()
     for enrollment in enrollment_query:
-        program_id = key_util.get_id_by_kind(enrollment.key, 'Program')
-        enrollment_id = key_util.get_id_by_kind(enrollment.key, 'Enrollment')
-        enrollment_dict = enrollment.to_dict();
-        enrollment_dict["program_id"] = program_id
-        enrollment_dict["enrollment_id"] = enrollment_id
+        logger.info("enrollment: %s" % enrollment)
+        enrollment_dict = dict()
+        enrollment_dict['program_id'] = key_util.get_id_by_kind(enrollment.program_key, 'Program')
+        enrollment_dict['status'] = enrollment.status
+        enrollment_dict['start_date'] = enrollment.start_date
         enrollments.append(enrollment_dict)
     return enrollments
 

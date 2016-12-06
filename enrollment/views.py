@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 from django import template
 from wtforms_appengine.ndb import model_form
 from models import Enrollment
-from login.models import Provider
 from child import child_util
 from google.appengine.ext import ndb
 import enrollment_util
@@ -85,6 +84,21 @@ def list_enrollment(request):
     logger.info("response is %s" % response)
     return response
 
+
+def list_enrollment_by_child(request):
+    status = "failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    provider_id = request.session.get('email')
+    request_body_dict = json.loads(request.body)
+    logger.info('provider_id %s, child_id %s, parent_email %s' % (
+        provider_id, request_body_dict['child_id'], request_body_dict['parent_email']))
+    child_key = child_util.get_child_key(child_id=request_body_dict['child_id'],
+                                         parent_email=request_body_dict['parent_email'])
+    enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_id=provider_id, child_key=child_key)
+    response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
+    logger.info("response is %s" % response)
+    return response
 
 # TODO(zilong): finish this two methods
 def update_enrollment(request):

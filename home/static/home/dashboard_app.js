@@ -173,5 +173,11 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('childForm',{
         templateUrl: '/static/child/child-form.template.html',
         controller : ['$http', '$routeParams', '$location', ChildFormController]}
-    );
+    ).component('enrollmentList',{
+        templateUrl: '/static/enrollment/enrollment-list.template.html',
+        controller : ['$http', '$routeParams', '$location', EnrollmentListController],
+        bindings: {
+            enrollments: '<'
+        }
+    });
 

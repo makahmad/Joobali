@@ -5,7 +5,7 @@
         <p>Date of Birth: {{$ctrl.child.date_of_birth}}</p>
         <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment">
             <label>Enrollments Information:</label><br>
-            <div class="child-enrollment" data-ng-repeat="enrollment in $ctrl.enrollments"></div>
+            <enrollment-list enrollments="$ctrl.enrollments"></enrollment-list>
             <button type="button" class="btn btn-info" data-toggle="modal"
                     data-target="#child-enrollment-model-{{$ctrl.index}}">Add
                 Enrollment
