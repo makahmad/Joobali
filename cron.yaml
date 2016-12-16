@@ -1,0 +1,4 @@
+cron:
+- description: invoice calculation
+  url: /tasks/invoicecalc
+  schedule: every 24 hours

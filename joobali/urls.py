@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^referal/', include('referal.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^enrollment/', include('enrollment.urls')),
-    url(r'^child/', include('child.urls'))
+    url(r'^child/', include('child.urls')),
+    url(r'^tasks/', include('tasks.urls'))
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),

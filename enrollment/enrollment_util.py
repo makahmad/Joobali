@@ -55,6 +55,20 @@ def list_enrollment_by_provider_and_child(provider_id, child_key):
     return enrollments
 
 
+def list_enrollment_by_provider(provider_id):
+    """List all enrollment given a provider id"""
+    provider_key = ndb.Key('Provider', provider_id)
+    enrollment_query = Enrollment.query(ancestor=provider_key)
+    enrollments = []
+    for enrollment in enrollment_query:
+        program_id = key_util.get_id_by_kind(enrollment.key, 'Program')
+        enrollment_id = key_util.get_id_by_kind(enrollment.key, 'Enrollment')
+        enrollment_dict = enrollment.to_dict();
+        enrollment_dict["program_id"] = program_id
+        enrollment_dict["enrollment_id"] = enrollment_id
+        enrollments.append(enrollment_dict)
+    return enrollments
+
 def convert_enrollment_to_dict(enrollment):
     enrollment_dict = dict()
     enrollment_dict['program_id'] = enrollment.key['Program']
