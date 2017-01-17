@@ -1,5 +1,5 @@
 .nav {
-  width: 650px;
+  /*width: 650px;*/
 }
 .nav-pills.nav-wizard > li {
   position: relative;
@@ -96,7 +96,7 @@
 }
 
 .stepsDiv {
-	width: 380px;
+	width: 440px;
 	margin: 0 auto;
 }
 
