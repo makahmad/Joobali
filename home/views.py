@@ -29,11 +29,15 @@ def index(request):
 def dashboard(request):
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
+
+	provider = Provider.get_by_id(request.session.get('email'))
+
 	return render_to_response(
 		'home/dashboard.html',
 		{
 			'loggedIn': True,
-			'email': request.session.get('email')
+			'email': request.session.get('email'),
+			'schoolName': provider.schoolName
 		 },
 		template.RequestContext(request)
 	)
