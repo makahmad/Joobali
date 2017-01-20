@@ -4,12 +4,12 @@ class Program(ndb.Model):
 	programName = ndb.StringProperty(required=True)
 	startDate = ndb.DateProperty(required=True)
 	endDate = ndb.DateProperty()
-	maxCapacity = ndb.IntegerProperty()
+	#maxCapacity = ndb.IntegerProperty()
 	registrationFee = ndb.FloatProperty()
 	fee = ndb.FloatProperty(required=True)
-	feeType = ndb.StringProperty(required=True) #enum: hourly, tuition
-	lateFee = ndb.FloatProperty()  # default to general setting if blank.
-	dueDate = ndb.DateProperty(required=True) # initial payment due date.
+	#feeType = ndb.StringProperty(required=True) #enum: hourly, tuition
+	#lateFee = ndb.FloatProperty()  # default to general setting if blank.
+	#dueDate = ndb.DateProperty(required=True) # initial payment due date.
 	billingFrequency = ndb.StringProperty(required=True) #enum: weekly, monthly(defualt)
 
 	# Example model static method:

@@ -23,11 +23,11 @@ AddProgramFormComponentController.prototype.initializeTimePickers = function() {
     .on('dp.change', angular.bind(this, function(e) {
         this.newProgram.endDate = $('#endDate').val();
     }));
-    $('#dueDate').datetimepicker({
+   /* $('#dueDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(),
     })
     .on('dp.change', angular.bind(this, function(e) {
         this.newProgram.dueDate = $('#dueDate').val();
-    }));
+    }));*/
 };

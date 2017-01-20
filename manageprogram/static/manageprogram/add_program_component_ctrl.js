@@ -8,7 +8,7 @@ AddProgramComponentController = function($scope, $http, $window) {
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
-	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
+	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly"};
 
     this.scope_.showConflictLabel = false;
 
@@ -165,13 +165,13 @@ AddProgramComponentController.prototype.handleNext = function() {
 	  curContent.removeClass("current");
 	  curContent.next().addClass("current");
 
-	  if (curNav.next().attr('id') === "navStep3") {
+	 // if (curNav.next().attr('id') === "navStep3") {
 		  $("#nextButton").hide();
 		  $("#saveButton").show();
-	  } else {
+	 /* } else {
 		  $("#nextButton").show();
 		  $("#saveButton").hide();
-	  }
+	  }*/
   }
 };
 

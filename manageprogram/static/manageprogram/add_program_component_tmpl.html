@@ -11,7 +11,7 @@
         <div class="stepsDiv">
           <ul class="nav nav-pills nav-wizard">
               <li id="navStep1" class="form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Program</a><div class="nav-arrow"></div></li>
-              <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>
+            <!--  <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>-->
               <li id="navStep3" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Confirm</a></li>
           </ul>
         </div>
@@ -22,7 +22,7 @@
               <div id="step1" class="navStep1 form-content current">
                 <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
               </div>
-              <div id="step2" class="navStep2 form-content">
+              <!--<div id="step2" class="navStep2 form-content">
                 <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ $ctrl.newProgram.programName }}</span>.</div>
                 <div ng-show="sessions.length" class="control-label text-center">Sessions for Program - <span>{{ $ctrl.newProgram.programName }}</span>:</div>
                 <table ng-show="sessions.length" class="table table-striped">
@@ -83,7 +83,7 @@
                         <label class="radio-inline"><input type="radio" name="feeType" checked>Hourly</label>
                         <label class="radio-inline"><input type="radio" name="feeType">Tuition</label>
                       </span>
-                      -->
+
                     </div>
                   </div>
                     <div ng-show="showConflictLabel" class="form-group">
@@ -94,7 +94,7 @@
 
 
 
-              </div>
+              </div>-->
               <div id="step3" class="navStep3 form-content">
                   <div class="text-center">Program Information</div>
                   <div>
@@ -109,19 +109,19 @@
                       <div class="programField">End Date:</div>
                       <span class="programValue">{{ $ctrl.newProgram.endDate }}</span>
                   </div>
-                  <div>
+             <!--     <div>
                       <div class="programField">Maximum Capacity:</div>
                       <span class="programValue">{{ $ctrl.newProgram.maxCapacity }}</span>
-                  </div>
+                  </div>-->
                   <div>
                       <div class="programField">Registration Fee:</div>
                       <span class="programValue">{{ $ctrl.newProgram.registrationFee }}</span>
                   </div>
                   <div>
-                      <div class="programField">Fee:</div>
-                      <span class="programValue">{{ $ctrl.newProgram.fee }} ({{ $ctrl.newProgram.feeType }})</span>
+                      <div class="programField">Billing Rate:</div>
+                      <span class="programValue">{{ $ctrl.newProgram.fee }} ({{ $ctrl.newProgram.billingFrequency }})</span>
                   </div>
-                  <div>
+                 <!-- <div>
                       <div class="programField">Late Fee:</div>
                       <span class="programValue">{{ $ctrl.newProgram.lateFee }}</span>
                   </div>
@@ -132,10 +132,10 @@
                   <div>
                       <div class="programField">Billing Frequency:</div>
                       <span class="programValue">{{ $ctrl.newProgram.billingFrequency }}</span>
-                  </div>
+                  </div>-->
 
 
-                  <hr class="divider">
+                <!--  <hr class="divider">
                   <div ng-show="sessions.length"  class="text-center">Program Sessions</div>
                 <div ng-show="!sessions.length" class="control-label text-center">No Session is Registered for Program - <span>{{ $ctrl.newProgram.programName }}</span>.</div>
                 <table ng-show="sessions.length" class="table table-striped">
@@ -153,7 +153,7 @@
                       <td>{{ session.repeatOn }}</td>
                     </tr>
                   </tbody>
-                </table>
+                </table>-->
               </div>
             </form>
           </div>

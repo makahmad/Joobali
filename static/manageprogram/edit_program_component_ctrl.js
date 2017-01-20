@@ -80,14 +80,14 @@ EditProgramComponentController.prototype.initializeTimePickers = function() {
     .on('dp.change', angular.bind(this, function(e) {
         this.program.endDate = $('#endDate').val();
     }));
-    $('#dueDate').datetimepicker({
+   /* $('#dueDate').datetimepicker({
         format: 'MM/DD/YYYY',
         minDate: new Date(),
     })
     .on('dp.change', angular.bind(this, function(e) {
         this.program.dueDate = $('#dueDate').val();
     }));
-
+**/
 
     $('#startTime').datetimepicker({
         format: 'hh:mm A',

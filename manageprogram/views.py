@@ -100,16 +100,16 @@ def updateProgram(request):
 
 	program.programName = newProgram['programName']
 
-	program.maxCapacity = newProgram['maxCapacity']
+	# program.maxCapacity = newProgram['maxCapacity']
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	program.feeType = newProgram['feeType']
-	program.lateFee = newProgram['lateFee']
+	# program.feeType = newProgram['feeType']
+	# program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
+	# program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 	program.put()
 
 	return HttpResponse('success')
@@ -190,27 +190,27 @@ def addProgram(request):
 	program = models.Program(parent=provider.key)
 	program.programName = newProgram['programName']
 
-	program.maxCapacity = newProgram['maxCapacity']
+	# program.maxCapacity = newProgram['maxCapacity']
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	program.feeType = newProgram['feeType']
-	program.lateFee = newProgram['lateFee']
+	# program.feeType = newProgram['feeType']
+	# program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
+	# program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 
 	program.put()
 
-	if 'sessions' in data:
-		for newSession in data['sessions']:
-			session = models.Session(parent=program.key)
-			session.sessionName = newSession['sessionName']
-			session.repeatOn = newSession['repeatOn']
-			session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
-			session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
-			session.put()
+	# if 'sessions' in data:
+	# 	for newSession in data['sessions']:
+	# 		session = models.Session(parent=program.key)
+	# 		session.sessionName = newSession['sessionName']
+	# 		session.repeatOn = newSession['repeatOn']
+	# 		session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
+	# 		session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
+	# 		session.put()
 	return HttpResponse("success")
 
 def addSession(request):

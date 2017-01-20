@@ -1,3 +1,20 @@
+.btn-modal {
+    background: #339999;
+    color: #ffffff;
+    width: 500px;
+}
+.btn-modal:hover{
+    background: #2e8f8f;
+    color: #ffffff;
+}
+.btn-modal:active {
+    background: #2e8f8f;
+    color: #ffffff;
+}
+.btn-modal:visited {
+    background: #2e8f8f;
+    color: #ffffff;
+}
 .nav {
   /*width: 650px;*/
 }
