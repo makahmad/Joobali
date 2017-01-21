@@ -201,6 +201,7 @@ AddProgramComponentController.prototype.handleSave = function() {
 AddProgramComponentController.prototype.setCurrent = function(event) {
 	// User can only move to the visited tabs.
 	if ($(event.target).parent().hasClass('active')) {
+
 		$('.nav-pills.nav-wizard > li').removeClass('current');
 		$(event.target).parent().addClass('current');
 		var contentId = $(event.target).parent().attr('id');
