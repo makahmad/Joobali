@@ -169,6 +169,10 @@ a.logoLink:hover {
 		height:48px;
 }
 
+.ng-scope .navbar {
+	background: rgba(255, 91, 53, 1) !important;
+}
+
 #myNavbar {
 	display:none;
 }
