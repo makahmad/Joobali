@@ -169,6 +169,10 @@ a.logoLink:hover {
 		height:48px;
 }
 
+.ng-scope .navbar {
+	background: rgba(255, 91, 53, 1) !important;
+}
+
 #myNavbar {
 	display:none;
 }
@@ -229,7 +233,7 @@ footer a:hover {
 footer .glyphicon {
     font-size: 20px;
     margin-bottom: 20px;
-    color: #fa5d26;
+    color: white;
 }
 
 
