@@ -1,14 +1,16 @@
 var TIME_FORMAT =  'hh:mm A';
 
-AddProgramComponentController = function($scope, $http, $window) {
+AddProgramComponentController = function($scope, $http, $window, $filter) {
     console.log('AddProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.scope_ = $scope;
+	this.filter_ = $filter
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
 	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly"};
+	this.newProgram.startDate = this.filter_('date')(new Date(), 'MM/dd/yyyy')
 
     this.scope_.showConflictLabel = false;
 
@@ -142,7 +144,7 @@ AddProgramComponentController.prototype.validateCurrentForm = function() {
 			$(curInputs[i]).closest(".form-group").addClass("has-error");
 		}
 	}
-	console.log(curContent.find('div.checkbox-group.required :checkbox'));
+//	console.log(curContent.find('div.checkbox-group.required :checkbox'));
 	if (curContent.find('div.checkbox-group.required :checkbox').length > 0 && curContent.find('div.checkbox-group.required :checkbox:checked').length == 0) {
 		isValid = false;
 		requiredBoxes = curContent.find('div.checkbox-group.required :checkbox');
