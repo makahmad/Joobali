@@ -6,15 +6,16 @@ $(document).ready(function(){
 	// Show/Hide logo based on scroll position
 	
 	var $document = $(document);
+	$('.navbarHeaderLogo').hide();
 	
   $document.scroll(function() {
 	  if ($document.scrollTop() >= 200) {
 	    // user scrolled 50 pixels or more;
 	    // do stuff
-			console.log('MORE');
+			// console.log('MORE');
 			$('.navbarHeaderLogo').fadeIn('fast');
 	  } else {
-	    console.log('LESS');
+	    // console.log('LESS');
 			$('.navbarHeaderLogo').fadeOut('fast');
 	  }
 	});
