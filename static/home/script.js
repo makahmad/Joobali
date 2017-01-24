@@ -2,6 +2,25 @@
 $(document).ready(function(){
   console.log('hello world');
   // Add smooth scrolling to all links in navbar + footer link
+
+	// Show/Hide logo based on scroll position
+	
+	var $document = $(document);
+	
+  $document.scroll(function() {
+	  if ($document.scrollTop() >= 200) {
+	    // user scrolled 50 pixels or more;
+	    // do stuff
+			console.log('MORE');
+			$('.navbarHeaderLogo').fadeIn('fast');
+	  } else {
+	    console.log('LESS');
+			$('.navbarHeaderLogo').fadeOut('fast');
+	  }
+	});
+	
+
+	//
   $(".navbar a, footer a[href='#myPage']").on('click', function(event) {
 
    // Make sure this.hash has a value before overriding default behavior
