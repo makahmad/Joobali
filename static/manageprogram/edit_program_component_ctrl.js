@@ -1,6 +1,7 @@
 var TIME_FORMAT =  'hh:mm A';
 
 EditProgramComponentController = function($http, $window, $location, $routeParams) {
+    console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.program = {};
