@@ -17,9 +17,11 @@
     width: 80%;
     }
 
-.nav {
+
+.nav-pills.nav-wizard  {
   width: 650px;
 }
+
 .nav-pills.nav-wizard > li {
   position: relative;
   overflow: visible;
