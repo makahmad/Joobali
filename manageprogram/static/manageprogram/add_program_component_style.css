@@ -17,8 +17,11 @@
     width: 80%;
     }
 
-.nav {
-  width: 650px;
+@media screen and (max-width: 768px) {
+	.nav {
+	  width: 480px;
+		margin:0 auto;
+	}
 }
 .nav-pills.nav-wizard > li {
   position: relative;
