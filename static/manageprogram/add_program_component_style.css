@@ -2,7 +2,6 @@
   background: #339999;
     color: #ffffff;
     width: 80%;
-
 }
 
 .btn-default:hover , .btn-default.hover {
@@ -17,11 +16,12 @@
     width: 80%;
     }
 
-
-.nav-pills.nav-wizard  {
-  width: 650px;
+@media screen and (max-width: 768px) {
+	.nav {
+	  width: 480px;
+		margin:0 auto;
+	}
 }
-
 .nav-pills.nav-wizard > li {
   position: relative;
   overflow: visible;
