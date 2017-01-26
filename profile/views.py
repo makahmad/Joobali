@@ -48,7 +48,7 @@ def updateProfile(request):
 	provider.license = profile['license']
 
 	# return render_to_response(
-	# 	'profile_component_tmpl.html',
+	# 	'profile/profile_component_tmpl.html',
 	# 	{'form': profile},
 	# 	template.RequestContext(request)
 	# )
