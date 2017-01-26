@@ -23,15 +23,24 @@ def listInvoices(request):
 	email = request.session.get('email')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
+	invoices = None
 	provider = Provider.get_by_id(email)
+	if not provider:
+		invoices = Invoice.query(Invoice.parent_email == email)
+	else:
+		invoices = Invoice.query(Invoice.provider_key == provider.key)
+
     # TODO: handle parent invoice listing.
 
-	invoices = Invoice.query(Invoice.provider_key == provider.key)
 	results = []
 	for invoice in invoices:
 		results.append({
+			'invoice_id': invoice.key.id(),
             'provider': invoice.provider_key.get().schoolName,
-            'parent': invoice.parent_key.get().email,
-            'amount' : invoice.amount
+            'provider_customer_id': invoice.provider_key.get().customerId,
+            'child': invoice.child_key.get().first_name,
+            'amount' : invoice.amount,
+            'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
+            'paid' : invoice.paid
         })
 	return HttpResponse(json.dumps(results))

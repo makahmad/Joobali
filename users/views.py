@@ -6,6 +6,7 @@ from wtforms_appengine.ndb import model_form
 from django.http import HttpResponse
 from django import template
 
+from dwollav2.error import ValidationError
 from login import models
 
 import dwollav2
@@ -117,8 +118,10 @@ def form(request):
 		}
 		# TODO: store customer key in DB and use the real customer key in the url.
 		customer_url = getCustomerUrl(email)
-		customer = account_token.post(customer_url, request_body)
-
+		try:
+			customer = account_token.post(customer_url, request_body)
+		except ValidationError as err: # ValidationError as err
+			logger.info("Failed Dwolla User Validation:" + str(err))
 
 	return render_to_response(
 		'users/index.html',

@@ -114,5 +114,5 @@
 }
 
 #saveButton {
-	display: none;
+	visibility: visible;
 }

@@ -8,7 +8,7 @@ from django.http import HttpResponse
 
 from login import models
 from home.models import InitSetupStatus
-from gaesessions import get_current_session
+from parent.models import Parent
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 
@@ -49,17 +49,11 @@ ProviderForm = model_form(models.Provider, field_args={
 	},
 })
 
-ParentForm = model_form(models.Parent, field_args={
-	'firstName': {
+ParentForm = model_form(Parent, field_args={
+	'first_name': {
 		'filters': [stripFilter],
 	},
-	'lastName': {
-		'filters': [stripFilter],
-	},
-	'childFirstName': {
-		'filters': [stripFilter],
-	},
-	'childLastName': {
+	'last_name': {
 		'filters': [stripFilter],
 	},
 	'email': {
@@ -80,18 +74,19 @@ LoginForm = model_form(models.Provider, field_args={
 })
 
 def provider_signup(request):
+	print request.POST
 	form = ProviderForm()
 	if request.method == 'POST':
 		form = ProviderForm(request.POST)
-		form.validate()
+		print form.validate()
 		if form.validate():
 			email = request.POST.get('email')
-			provider = models.Provider(id=email)
+			provider = models.Provider()
 			form.populate_obj(provider)
 
 			provider.password = pwd_context.encrypt(provider.password)
 
-			(provider, created) = get_or_insert(models.Parent, email, provider)
+			(provider, created) = get_or_insert(models.Provider, email, provider)
 			if created:
 				request.session['email'] = provider.email
 				create_new_init_setup_status(provider.email);
@@ -129,19 +124,22 @@ def parent_signup(request):
 		form.validate()
 		if form.validate():
 			email = request.POST.get('email')
-			parent = models.Parent(id=email)
+			parent = Parent(id=email)
 			form.populate_obj(parent)
 
+			print "HEHEHE"
+			print request.POST
+			print parent
 			parent.password = pwd_context.encrypt(parent.password)
 
-			(parent, created) = get_or_insert(models.Parent, email, parent)
+			(parent, created) = get_or_insert(Parent, email, parent)
 			if created:
 				request.session['email'] = parent.email
 				create_new_init_setup_status(parent.email);
 
 				request_body = {
-				  'firstName': parent.firstName,
-				  'lastName': parent.lastName,
+				  'firstName': parent.first_name,
+				  'lastName': parent.last_name,
 				  'email': parent.email,
 				  'ipAddress': '99.99.99.99'
 				}
@@ -213,7 +211,7 @@ def login(request):
 			query = models.Provider.query().filter(models.Provider.email == email)
 			result = query.fetch(1)
 			if not result:
-				query = models.Parent.query().filter(models.Parent.email == email)
+				query = Parent.query().filter(Parent.email == email)
 				result = query.fetch(1)
 				if not result:
 					form.email.errors.append('error: user does not exist')
@@ -238,7 +236,7 @@ def getCustomerUrl(email):
 	result = models.Provider.get_by_id(email)
 	if result is not None:
 		return result.customerId
-	result = models.Parent.get_by_id(email)
+	result = Parent.get_by_id(email)
 	if result is not None:
 		return result.customerId
 	raise Exception('user does not exist')

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Joobali Parent Portal</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/init_setup_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}child/style.css">
+
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-route.js"></script>
+
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
+
+
+    <!-- Invoice Related JS -->
+    <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}invoice/payments_due_component_ctrl.js"></script>
+
+    <!-- Funding Related JS -->
+    <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}funding/make_payment_component_ctrl.js"></script>
+
+    <!-- Child Related JS -->
+    <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-form.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-card.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-enrollment.component.js"></script>
+
+    <!-- Enrollment Related JS-->
+    <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
+    <!-- Dashboard Related JS -->
+    <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}parent/parent_app.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="parentApp" ng-controller="ParentCtrl as parentCtrl">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar-container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a>
+        </div>
+		
+		<div class="providerName">
+				[[ schoolName ]]
+		</div>
+        
+		<div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                {% if loggedIn %}
+				<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{ email }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                    </ul>
+                </li>
+				
+                {% else %}
+                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+                <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+		
+    </div>
+</nav>
+<div id="wrapper">
+
+    {% verbatim %}
+    <div class="nav-side-menu">
+        <div class="brand">Joobali</div>
+
+        <div class="menu-list">
+
+            <ul id="menu-content" class="menu-content collapse out">
+                <li>
+                    <a href="#">
+                        <i class="fa fa-home fa-lg"></i> Joobali
+                    </a>
+                </li>
+
+                <li data-toggle="collapse" data-target="#children" class="collapsed active">
+                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
+                </li>
+
+                <li>
+                    <a href="#!/due">
+						<i class="fa fa-list-alt fa-lg"></i> Payment Due
+					</a>
+                </li>
+
+                <li>
+                    <a href="#!/funding">
+						<i class="fa fa-money fa-lg"></i> Funding
+					</a>
+                </li>
+
+
+                <li>
+                    <a href="#">
+                        <i class="fa fa-user fa-lg"></i> Profile
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div class="page-content-wrapper">
+        <div class="page-content-container">
+            <div ng-view></div>
+
+            <!--<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>-->
+        </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+    <init-setup-component></init-setup-component>
+    {% endverbatim %}
+</div>
+<!-- /#wrapper -->
+
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+</script>
+
+</body>
+</html>

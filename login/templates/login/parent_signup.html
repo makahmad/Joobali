@@ -19,13 +19,14 @@
 	  <form role="form" class="well" action="/login/parentsignup/" method="POST">
 	  	{% csrf_token %}
 		  <div class="form-group">
-		    <label class="control-label" for="firstName">First Name:</label>
-		    <input type="text" class="form-control" id="firstName" name="firstName" required="true" value="{{ form.firstName.data|safe }}">
+		    <label class="control-label" for="first_name">First Name:</label>
+		    <input type="text" class="form-control" id="first_name" name="first_name" required="true" value="{{ form.first_name.data|safe }}">
 		  </div>
 		  <div class="form-group">
-		    <label class="control-label" for="lastName">Last Name:</label>
-		    <input type="text" class="form-control" id="lastName" name="lastName" required="true" value="{{ form.lastName.data|safe }}">
+		    <label class="control-label" for="last_name">Last Name:</label>
+		    <input type="text" class="form-control" id="last_name" name="last_name" required="true" value="{{ form.last_name.data|safe }}">
 		  </div>
+		  <!--
 		  <div class="form-group">
 		    <label class="control-label" for="childFirstName">Child first Name:</label>
 		    <input type="text" class="form-control" id="childFirstName" name="childFirstName" required="true" value="{{ form.childFirstName.data|safe }}">
@@ -34,6 +35,7 @@
 		    <label class="control-label" for="childLastName">Child last Name:</label>
 		    <input type="text" class="form-control" id="childLastName" name="childLastName" required="true" value="{{ form.childLastName.data|safe }}">
 		  </div>
+	  	  -->
 	  	  <div class="form-group">
 		    <label class="control-label" for="email">Email:</label>
 		    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.data|safe }}">

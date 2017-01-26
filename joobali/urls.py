@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^referal/', include('referal.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^enrollment/', include('enrollment.urls')),
+    url(r'^parent/', include('parent.urls')),
     url(r'^child/', include('child.urls')),
     url(r'^tasks/', include('tasks.urls'))
     # Examples:

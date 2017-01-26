@@ -1,0 +1,9 @@
+<span class="fundingHeader"><b>Payments Due:</b></span>
+<invoices-component invoices="invoices"></invoices-component>
+<fundings-component fundings="fundings"></fundings-component>
+<div class="fundingTableButtonDiv">
+    <button class="makeTransferButton btn btn-primary btn-lg" data-toggle="modal" data-target="#makeTransferModal">Make Transfer</button>
+    <button class="fundingTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#iavModal">Add Funding (IAV)</button>
+</div>
+<transfer-component fundings="fundings"></transfer-component>
+<add-funding-iav-component></add-funding-iav-component>

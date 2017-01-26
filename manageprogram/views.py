@@ -5,7 +5,6 @@ from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
-from wtforms_appengine.ndb import model_form
 from time import strftime, strptime
 from datetime import datetime, date, time
 from login.models import Provider
@@ -16,9 +15,6 @@ import json
 import logging
 
 logger = logging.getLogger(__name__)
-
-ProgramForm = model_form(models.Program)
-SessionForm = model_form(models.Session)
 
 DATE_FORMAT = '%m/%d/%Y'
 
@@ -54,20 +50,6 @@ def listPrograms(request):
 	programs = program_util.list_program_by_provider_email(email)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
 
-def listSessions(request):
-	"""Handles session listing request. Returns sessions associated with provided program ID"""
-	email = request.session.get('email')
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
-	if not request.GET.get('id'):
-		raise Exception('no program id is provided')
-
-	provider = Provider.get_by_id(email)
-	# Must specify parent since id is not unique in DataStore
-	program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
-	sessions = models.Session.query(ancestor=program.key)
-
-	return HttpResponse(json.dumps([JEncoder().encode(session) for session in sessions]))
 
 def getProgram(request):
 	"""Handles get program request. Returns the program with provided program ID"""
@@ -114,50 +96,6 @@ def updateProgram(request):
 
 	return HttpResponse('success')
 
-def updateSession(request):
-	"""Updates the session with provided session ID and program ID"""
-	email = request.session.get('email')
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
-
-	data = json.loads(request.body)
-
-	programId = data['programId']
-	sessionId = data['id']
-
-	if not programId or not sessionId:
-		raise Exception('no program id or session id is provided')
-	provider = Provider.get_by_id(email)
-	program = models.Program.get_by_id(int(programId), parent = provider.key)
-
-	session = models.Session.get_by_id(int(sessionId), parent = program.key)
-	session.sessionName = data['sessionName']
-	session.repeatOn = data['repeatOn']
-	session.startTime = datetime.strptime(data['startTime'], '%I:%M %p').time()
-	session.endTime = datetime.strptime(data['endTime'], '%I:%M %p').time()
-	session.put()
-	return HttpResponse("success")
-
-def deleteSession(request):
-	"""Deletes the session with provided session ID and program ID"""
-	email = request.session.get('email')
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
-
-	data = json.loads(request.body)
-
-	programId = data['programId']
-	sessionId = data['id']
-	if not programId or not sessionId:
-		raise Exception('no program id or session id is provided')
-
-	provider = Provider.get_by_id(email)
-	program = models.Program.get_by_id(int(programId), parent = provider.key)
-
-	session = models.Session.get_by_id(int(sessionId), parent = program.key)
-	session.key.delete()
-	return HttpResponse("success")
-
 def deleteProgram(request):
 	"""Deletes the program with provided program ID"""
 	email = request.session.get('email')
@@ -190,10 +128,8 @@ def addProgram(request):
 	program = models.Program(parent=provider.key)
 	program.programName = newProgram['programName']
 
-	program.maxCapacity = newProgram['maxCapacity']
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	program.feeType = newProgram['feeType']
 	program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
@@ -203,35 +139,99 @@ def addProgram(request):
 
 	program.put()
 
-	if 'sessions' in data:
-		for newSession in data['sessions']:
-			session = models.Session(parent=program.key)
-			session.sessionName = newSession['sessionName']
-			session.repeatOn = newSession['repeatOn']
-			session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
-			session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
-			session.put()
+	# Deprecated
+	# if 'sessions' in data:
+	# 	for newSession in data['sessions']:
+	# 		session = models.Session(parent=program.key)
+	# 		session.sessionName = newSession['sessionName']
+	# 		session.repeatOn = newSession['repeatOn']
+	# 		session.startTime = datetime.strptime(newSession['startTime'], '%I:%M %p').time()
+	# 		session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
+	# 		session.put()
 	return HttpResponse("success")
 
-def addSession(request):
-	"""Adds a new session under the provided program ID for the logged in user"""
-	email = request.session.get('email')
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
+# Deprecated
+# def addSession(request):
+# 	"""Adds a new session under the provided program ID for the logged in user"""
+# 	email = request.session.get('email')
+# 	if not check_session(request):
+# 		return HttpResponseRedirect('/login')
+#
+# 	data = json.loads(request.body)
+#
+# 	programId = data['programId']
+# 	if not programId:
+# 		raise Exception('no program id is provided')
+#
+# 	provider = Provider.get_by_id(email)
+# 	program = models.Program.get_by_id(int(programId), parent = provider.key)
+#
+# 	session = models.Session(parent=program.key)
+# 	session.sessionName = data['sessionName']
+# 	session.repeatOn = data['repeatOn']
+# 	session.startTime = datetime.strptime(data['startTime'], '%I:%M %p').time()
+# 	session.endTime = datetime.strptime(data['endTime'], '%I:%M %p').time()
+# 	session.put()
+# 	return HttpResponse("success")
 
-	data = json.loads(request.body)
+# Deprecated
+# def deleteSession(request):
+# 	"""Deletes the session with provided session ID and program ID"""
+# 	email = request.session.get('email')
+# 	if not check_session(request):
+# 		return HttpResponseRedirect('/login')
+#
+# 	data = json.loads(request.body)
+#
+# 	programId = data['programId']
+# 	sessionId = data['id']
+# 	if not programId or not sessionId:
+# 		raise Exception('no program id or session id is provided')
+#
+# 	provider = Provider.get_by_id(email)
+# 	program = models.Program.get_by_id(int(programId), parent = provider.key)
+#
+# 	session = models.Session.get_by_id(int(sessionId), parent = program.key)
+# 	session.key.delete()
+# 	return HttpResponse("success")
 
-	programId = data['programId']
-	if not programId:
-		raise Exception('no program id is provided')
+# Deprecated
+# def listSessions(request):
+# 	"""Handles session listing request. Returns sessions associated with provided program ID"""
+# 	email = request.session.get('email')
+# 	if not check_session(request):
+# 		return HttpResponseRedirect('/login')
+# 	if not request.GET.get('id'):
+# 		raise Exception('no program id is provided')
+#
+# 	provider = Provider.get_by_id(email)
+# 	# Must specify parent since id is not unique in DataStore
+# 	program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
+# 	sessions = models.Session.query(ancestor=program.key)
+#
+# 	return HttpResponse(json.dumps([JEncoder().encode(session) for session in sessions]))
 
-	provider = Provider.get_by_id(email)
-	program = models.Program.get_by_id(int(programId), parent = provider.key)
-
-	session = models.Session(parent=program.key)
-	session.sessionName = data['sessionName']
-	session.repeatOn = data['repeatOn']
-	session.startTime = datetime.strptime(data['startTime'], '%I:%M %p').time()
-	session.endTime = datetime.strptime(data['endTime'], '%I:%M %p').time()
-	session.put()
-	return HttpResponse("success")
+# Deprecated
+# def updateSession(request):
+# 	"""Updates the session with provided session ID and program ID"""
+# 	email = request.session.get('email')
+# 	if not check_session(request):
+# 		return HttpResponseRedirect('/login')
+#
+# 	data = json.loads(request.body)
+#
+# 	programId = data['programId']
+# 	sessionId = data['id']
+#
+# 	if not programId or not sessionId:
+# 		raise Exception('no program id or session id is provided')
+# 	provider = Provider.get_by_id(email)
+# 	program = models.Program.get_by_id(int(programId), parent = provider.key)
+#
+# 	session = models.Session.get_by_id(int(sessionId), parent = program.key)
+# 	session.sessionName = data['sessionName']
+# 	session.repeatOn = data['repeatOn']
+# 	session.startTime = datetime.strptime(data['startTime'], '%I:%M %p').time()
+# 	session.endTime = datetime.strptime(data['endTime'], '%I:%M %p').time()
+# 	session.put()
+# 	return HttpResponse("success")

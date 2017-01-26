@@ -6,7 +6,6 @@ from django import template
 from django.http import HttpResponse
 from login.models import Provider
 from manageprogram.models import Program
-from manageprogram.models import Session
 
 import json
 import logging
@@ -49,15 +48,14 @@ def listPrograms(request):
 
 	dictPrograms = []
 	for program in programs:
-		sessions = Session.query(ancestor=program.key)
 		dictProgram = program.to_dict()
 		dictProgram['id'] = program.key.id()
-		dictProgram['sessions'] = [session.to_dict() for session in sessions]
 		dictPrograms.append(dictProgram)
 	return HttpResponse(json.dumps([JEncoder().encode(dictProgram) for dictProgram in dictPrograms]))
 
-def listSessions(program):
-	"""Returns a list of sessions associated with provided program"""
-	sessions = Session.query(ancestor=program.key)
-
-	return HttpResponse(json.dumps([JEncoder().encode(session) for session in sessions]))
+# Deprecated
+# def listSessions(program):
+# 	"""Returns a list of sessions associated with provided program"""
+# 	sessions = Session.query(ancestor=program.key)
+#
+# 	return HttpResponse(json.dumps([JEncoder().encode(session) for session in sessions]))

@@ -5,9 +5,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
+from invoice.models import Invoice
 from funding import models
-from login.models import Provider
-from login.models import Parent
+from funding import funding_util
 #from django.core.exceptions import ValidationError
 
 from dwollav2.error import ValidationError
@@ -135,27 +135,20 @@ def getIAVToken(request):
 def makeTransfer(request):
 	
 	data = json.loads(request.body)
-	print data
-	request_body = {
-	  '_links': {
-	    'destination': {
-	      'href': 'https://api.dwolla.com/customers/' + data['destination']
-	    },
-	    'source': {
-	      'href': 'https://api.dwolla.com/funding-sources/' + data['source']
-	    }
-	  },
-	  'amount': {
-	    'currency': 'USD',
-	    'value': data['amount']
-	  }
-	};
+	invoice_id = data['invoice_id']
+	invoice = None
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		if invoice.amount != data['amount']:
+			return HttpResponse("failure: payment amount must be equal to invoice amount")
 	try:
-		transfer = account_token.post('transfers', request_body)
+		funding_util.make_transfer(data['destination'], data['source'], data['amount'])
 	except ValidationError as err:
 		return HttpResponse(err.body['_embedded']['errors'][0]['message'])
 	# print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'
 
+	invoice.paid = True
+	invoice.put()
 	return HttpResponse("success")
 
 def funding(request):

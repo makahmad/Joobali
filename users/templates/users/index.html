@@ -107,6 +107,14 @@
                 <label class="control-label" for="ssn">SSN:</label>
                 <input type="text" class="form-control" id="ssn" name="ssn" value="{{ form.ssn.data|safe }}">
               </div>
+              <div class="form-group">
+                <label class="control-label" for="graceDays">Grace Period (days):</label>
+                <input type="text" class="form-control" id="graceDays" name="graceDays" value="{{ form.graceDays.data|safe }}">
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="lateFee">Late Fee:</label>
+                <input type="text" class="form-control" id="lateFee" name="lateFee" value="{{ form.lateFee.data|safe }}">
+              </div>
             </form>
           </div>
       </div>
@@ -144,6 +152,10 @@
 
 $(document).ready(function(){
     var initDate = $('#dateOfBirth').attr('value');
+    console.log(initDate);
+    if (!initDate || initDate == 'None') {
+      initDate = new Date();
+    }
     $('#dateOfBirth').datetimepicker({
         defaultDate: initDate,
         format: 'YYYY-MM-DD',

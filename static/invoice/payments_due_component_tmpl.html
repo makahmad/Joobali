@@ -1,0 +1,19 @@
+<div class="invoiceTable">
+  <div class="invoiceList">
+    <table class="table">
+      <thead>
+        <th>Provider</th>
+        <th>Child</th>
+        <th>Amount</th>
+      </thead>
+      <tbody>
+        <tr data-ng-repeat="invoice in $ctrl.invoices track by $index">
+          <td>{{ invoice.provider }}</td>
+          <td>{{ invoice.child }}</td>
+          <td>{{ invoice.due_date }}</td>
+          <td>{{ invoice.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -3,14 +3,19 @@
     <table class="table">
       <thead>
         <th>Provider</th>
-        <th>Parent</th>
+        <th>Child</th>
+        <th>Due Date</th>
         <th>Amount</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="invoice in $ctrl.invoices track by $index">
+        <tr data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false" ng-hide="invoice.paid">
           <td>{{ invoice.provider }}</td>
-          <td>{{ invoice.parent }}</td>
+          <td>{{ invoice.child }}</td>
+          <td>{{ invoice.due_date }}</td>
           <td>{{ invoice.amount }}</td>
+          <td>
+            <button class="PayBillButton btn btn-primary btn-sm" ng-click="$ctrl.showModal(invoice)" ng-show="invoice.hover">Pay Bill</button>
+          </td>
         </tr>
       </tbody>
     </table>
