@@ -82,16 +82,16 @@ def updateProgram(request):
 
 	program.programName = newProgram['programName']
 
-	program.maxCapacity = newProgram['maxCapacity']
+	# program.maxCapacity = newProgram['maxCapacity']
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	program.feeType = newProgram['feeType']
-	program.lateFee = newProgram['lateFee']
+	# program.feeType = newProgram['feeType']
+	# program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
+	# program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 	program.put()
 
 	return HttpResponse('success')
@@ -135,7 +135,7 @@ def addProgram(request):
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 	program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-	program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
+	# program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 
 	program.put()
 

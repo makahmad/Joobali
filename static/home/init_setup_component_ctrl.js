@@ -1,5 +1,12 @@
 InitSetupComponentController = function($http) {
     console.log('InitSetupComponentController running');
+    this.dateOfBirthPickerOpened = false;
+
+    this.openDateOfBirthPicker = function() {
+        console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
+        this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
+    };
+
     this.http_ = $http;
 	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 	$http({
@@ -44,7 +51,9 @@ InitSetupComponentController = function($http) {
 	    console.log(response);
 	});
 
-
+    this.$onInit = function() {
+        this.dateOfBirthPickerOpened = false;
+    };
 };
 
 
@@ -82,6 +91,24 @@ InitSetupComponentController.prototype.handleNext = function() {
 InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
     // TODO: save the last task (i.e. add child)
+    console.log('$ctrl.childInfo: ');
+    console.log(this.childInfo);
+    this.childOverview = angular.copy(this.childInfo);
+    this.childOverview.date_of_birth = moment(this.childOverview.date_of_birth).format('MM/DD/YYYY');
+    console.log(this.childOverview);
+    this.http_.post('/child/add', this.childOverview).then(function successCallback(response) {
+        var isSaveSuccess = false;
+        console.log(response);
+        if (response.data.status == 'success') {
+            isSaveSuccess = true;
+        }
+        if (!isSaveSuccess) {
+            alert("Something is wrong with the saving child info. Please try again later");
+        }
+    }, function errorCallback(response) {
+        alert("Something is wrong with the saving child info. Please try again later");
+    });
+
     this.http_({
 	  method: 'POST',
 	  url: '/login/setinitsetupfinished'

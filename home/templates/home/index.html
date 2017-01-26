@@ -15,18 +15,18 @@
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+      <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar"></span> 
-      </button>
-      <img src="{{ STATIC_URL }}logo/img_joobalilogo.png" alt="Logo" width="100" height="50">
-    </div>
+        <span class="icon-bar"></span>
+      </button> -->
+					 <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>					 
+&nbsp;    </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#about">ABOUT</a></li>
-        <li><a href="/manageprogram">PROGRAMS</a></li>
-        <li><a href="#contact">CONTACT</a></li>
+        <!-- <li><a href="#about">ABOUT</a></li> -->
+        <!-- <li><a href="/manageprogram">PROGRAMS</a></li>
+        <li><a href="#contact">CONTACT</a></li> -->
           {% if loggedIn %}
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown">
@@ -35,6 +35,7 @@
                 </a>
                 <ul class="dropdown-menu">
                   <li><a href="#">Profile</a></li>
+									<li><a href="/home/dashboard">Dashboard</a></li>									
                   <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                 </ul>
             </li>
@@ -50,144 +51,130 @@
 </nav>
 
 <div class="jumbotron text-center">
-  <h1>Joobali</h1> 
-  <p>Child Care Business Made Easy</p> 
-  <form class="form-inline">
+        <div class="row">
+					<div class="col-sm-1 text-center">&nbsp;</div>
+					<div class="col-sm-10 text-center">
+						<img src="{{ STATIC_URL }}logo/img_joobalilogo.png" alt="Logo" width="509" height="166">
+					</div>
+					<div class="col-sm-1 text-center">&nbsp;</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-sm-1 text-center">&nbsp;</div>
+					<div class="col-sm-10 text-center">
+						<a class="btn">Pricing &amp; Sign Up </a>
+					</div>
+					<div class="col-sm-1 text-center">&nbsp;</div>
+  <!-- <form class="form-inline">
     <input type="text" class="form-control" size="50" placeholder="Search for ...">
     <button type="button" class="btn btn-danger">Search</button>
-  </form>
+  </form> -->
+				</div>
 </div>
 
-<div class="container-fluid">
+<div class="container-fluid elevPitch">
   <div class="row">
-    <div class="col-sm-6 text-center">
-      <img class="logo" src="{{ STATIC_URL }}logo/logo-2.jpg" alt="Logo">
+    <div class="col-sm-2 text-center">&nbsp;</div>
+		<div class="col-sm-8 text-center">
+      <h1>Child care management technology - thoughtfully designed and streamlined for you.</h1>
     </div>
-    <div class="col-sm-6">
-      <h2>About Joobali</h2>
-      <h4>We provides services for both parents and childcare providers.</h4> 
-      <button class="btn btn-default btn-lg">Get in Touch</button>
-    </div>
+		<div class="col-sm-2 text-center">&nbsp;</div>
   </div>
 </div>
 
+<br />
 
-<div class="container-fluid text-center">
-  <h2>SERVICES</h2>
-  <h4>What we offer</h4>
+<div class="container-fluid text-center whyJoobali">
+  <h4>Why Joobali?</h4>
   <br>
   <div class="row">
-    <div class="col-sm-4">
-      <span class="glyphicon glyphicon-heart logo-small"></span>
-      <h4>LOVE</h4>
-      <p>..</p>
+    <div class="col-sm-4 text-center">
+      <div class="homeIcons lock"></div>
+      <div class="featureDescription">
+				<h4>Safe and Secure</h4>
+				<p>Your personal information is stored securely and banking information is fully encrypted [whatever technical info].</p>
+		</div>
     </div>
     <div class="col-sm-4">
-      <span class="glyphicon glyphicon-lock logo-small"></span>
-      <h4>JOB DONE</h4>
-      <p>..</p>
+      <div class="homeIcons clock"></div>
+      <div class="featureDescription">
+				<h4>Save Time</h4>
+      	<p>Streamline administrative work with automated billing and payments directly to/from your bank account.</p>
+			</div>
     </div>
     <div class="col-sm-4">
-      <span class="glyphicon glyphicon-certificate logo-small"></span>
-      <h4>CERTIFIED</h4>
-      <p>..</p>
+      <!-- <span class="glyphicon glyphicon-certificate logo-small"></span> -->
+      <div class="homeIcons money"></div>
+			<div class="featureDescription">
+				<h4>Payments Made On Time, Every Time</h4>
+      	<p>Parents can set up automatic payments. Providers can make custom billing adjustments as needed.</p>
+		</div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid text-center bg-grey">
-  <h2>Programs</h2>
-  <h4>What we provides</h4>
+<div class="container-fluid text-center homePitch2">
   <div class="row text-center">
-    <div class="col-sm-4">
-      <div class="thumbnail">
-        <img class="thumb-img" src="{{ STATIC_URL }}pics/classroom.jpg" alt="classroom" width="304" height="236">
-        <p><strong>Classroom</strong></p>
-        <p>...</p>
-      </div>
+		<div class="col-sm-2">&nbsp;</div>
+    <div class="col-sm-8">
+			<h2>Spend less time on administrative tasks and more time on what you do best - caring for your children.</h2>
     </div>
-    <div class="col-sm-4">
-      <div class="thumbnail">
-        <img class="thumb-img" src="{{ STATIC_URL }}pics/play.jpg" alt="play" width="304" height="236">
-        <p><strong>Play</strong></p>
-        <p>...</p>
-      </div>
-    </div>
-    <div class="col-sm-4">
-      <div class="thumbnail">
-        <img class="thumb-img" src="{{ STATIC_URL }}pics/learn.jpg" alt="learn" width="304" height="236">
-        <p><strong>Learn</strong></p>
-        <p>...</p>
-      </div>
-    </div>
+		<div class="col-sm-2">&nbsp;</div>
+	</div>
+	<div class="row text-center">
+		<div class="col-sm-1 text-center">&nbsp;</div>
+		<div class="col-sm-10 text-center">
+			<a class="btn">Pricing &amp; Sign Up </a>
+		</div>
+		<div class="col-sm-1 text-center">&nbsp;</div>
+	</div>
 </div>
 
-<h2>What our customers say</h2>
-<div id="myCarousel" class="carousel slide text-center" data-ride="carousel">
-  <!-- Indicators -->
-  <ol class="carousel-indicators">
-    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    <li data-target="#myCarousel" data-slide-to="1"></li>
-    <li data-target="#myCarousel" data-slide-to="2"></li>
-  </ol>
-
-  <!-- Wrapper for slides -->
-  <div class="carousel-inner" role="listbox">
-    <div class="item active">
-    <h4>"Great!"<br><span style="font-style:normal;">Rongjian Lan, Chief Architect, Joobali</span></h4>
-    </div>
-    <div class="item">
-      <h4>"Awesome!!"<br><span style="font-style:normal;">Seyed Ahmad, CTO, Joobali</span></h4>
-    </div>
-    <div class="item">
-      <h4>"Fantastic!"<br><span style="font-style:normal;">Stephanie Ahmad, CEO, Joobali</span></h4>
-    </div>
-  </div>
-
-  <!-- Left and right controls -->
-  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div>
-
-<div class="container-fluid bg-grey">
-  <h2 class="text-center">CONTACT</h2>
-  <div class="row">
-    <div class="col-sm-5">
-      <p>Contact us.</p>
-      <p><span class="glyphicon glyphicon-map-marker"></span> Mountain View, US</p>
-      <p><span class="glyphicon glyphicon-phone"></span> +00 xxxxxxxxx</p>
-      <p><span class="glyphicon glyphicon-envelope"></span> rongjian@joobali.com</p> 
-    </div>
-    <div class="col-sm-7">
-      <div class="row">
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="name" name="name" placeholder="Name" type="text" required>
-        </div>
-        <div class="col-sm-6 form-group">
-          <input class="form-control" id="email" name="email" placeholder="Email" type="email" required>
-        </div>
-      </div>
-      <textarea class="form-control" id="comments" name="comments" placeholder="Comment" rows="5"></textarea><br>
-      <div class="row">
-        <div class="col-sm-12 form-group">
-          <button class="btn btn-default pull-right" type="submit">Send</button>
-        </div>
-      </div> 
-    </div>
-  </div>
-</div>
 
 <footer class="container-fluid text-center">
-  <a href="#myPage" title="To Top">
-    <span class="glyphicon glyphicon-chevron-up"></span>
-  </a>
-  <p>Joobali Inc. 2016 <a href="http://joobali-1310.appspot.com" title="Joobali">www.joobali.com</a></p> 
+		<br />
+	<div class"row text-center">
+		<div class="col-sm-12 text-center">
+	  	<a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
+		</div>
+	</div>
+	<div class"row text-center">
+		<div class="col-sm-3 text-center">
+			<h4>TEST</h4>
+			<ul>
+				<li><a href="#">ONE</a></li>
+				<li><a href="#">TWO</a></li>
+				<li><a href="#">THREE</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-3 text-center">
+			<h4>Contact</h4>
+			<ul>
+				<li><a href="#">ONE</a></li>
+				<li><a href="#">TWO</a></li>
+				<li><a href="#">THREE</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-3 text-center">
+			<h4>Legal</h4>
+			<ul>
+				<li><a href="#">ONE</a></li>
+				<li><a href="#">TWO</a></li>
+				<li><a href="#">THREE</a></li>
+			</ul>
+		</div>
+		<div class="col-sm-3 text-center">
+			<h4>Help</h4>
+			<ul>
+				<li><a href="#">ONE</a></li>
+				<li><a href="#">TWO</a></li>
+				<li><a href="#">THREE</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class"row text-center">	
+		<p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p> 
+	</div>
 </footer>
 
 </body>

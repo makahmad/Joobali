@@ -1,12 +1,69 @@
 var TIME_FORMAT =  'hh:mm A';
 
-AddProgramComponentController = function($scope, $http, $window) {
+
+AddProgramComponentController = function($scope, $http, $window, $filter) {
     console.log('AddProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.scope_ = $scope;
+<<<<<<< HEAD
     this.scope_.programs = [];
 	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
+=======
+	this.filter_ = $filter
+  this.scope_.programs = [];
+	this.scope_.sessions = [];
+	this.scope_.newSession = {};
+	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly"};
+	this.newProgram.startDate = this.filter_('date')(new Date(), 'MM/dd/yyyy')
+
+  this.scope_.showConflictLabel = false;
+
+	this.initializeTimePickers();
+};
+
+AddProgramComponentController.prototype.initializeTimePickers = function() {
+    $('#startTime').datetimepicker({
+        format: 'hh:mm A',
+    })
+    .on('dp.hide', angular.bind(this, function(e) {
+		this.scope_.newSession.startTime = $('#startTime').val();
+
+		this.rollUpEndTime();
+
+		this.scope_.showConflictLabel = false;
+		this.scope_.$apply();
+    }));
+    $('#endTime').datetimepicker({
+        format: 'hh:mm A',
+    })
+    .on('dp.hide', angular.bind(this, function(e) {
+		this.scope_.newSession.endTime = $('#endTime').val();
+
+		this.rollUpEndTime();
+
+		this.scope_.showConflictLabel = false;
+		this.scope_.$apply();
+    }));
+    $('[data-toggle="tooltip"]').tooltip();
+};
+
+
+AddProgramComponentController.prototype.rollUpEndTime = function() {
+	var startTime = moment(this.scope_.newSession.startTime, TIME_FORMAT);
+	var endTime = moment(this.scope_.newSession.endTime, TIME_FORMAT);
+
+	if (startTime.isAfter(endTime)) {
+		// Roll up end time to equal start time.
+		$('#endTime').val($('#startTime').val());
+		this.scope_.newSession.endTime = $('#endTime').val();
+	}
+};
+
+
+AddProgramComponentController.prototype.onSessionChange = function() {
+	this.scope_.showConflictLabel = false;
+>>>>>>> bec206e8da5f61f6017029d5afb46dce8811c663
 };
 
 
@@ -24,6 +81,10 @@ AddProgramComponentController.prototype.validateCurrentForm = function() {
 			$(curInputs[i]).closest(".form-group").addClass("has-error");
 		}
 	}
+<<<<<<< HEAD
+=======
+//	console.log(curContent.find('div.checkbox-group.required :checkbox'));
+>>>>>>> bec206e8da5f61f6017029d5afb46dce8811c663
 	if (curContent.find('div.checkbox-group.required :checkbox').length > 0 && curContent.find('div.checkbox-group.required :checkbox:checked').length == 0) {
 		isValid = false;
 		requiredBoxes = curContent.find('div.checkbox-group.required :checkbox');
@@ -46,13 +107,13 @@ AddProgramComponentController.prototype.handleNext = function() {
 	  curContent.removeClass("current");
 	  curContent.next().addClass("current");
 
-	  if (curNav.next().attr('id') === "navStep3") {
+	 // if (curNav.next().attr('id') === "navStep3") {
 		  $("#nextButton").hide();
 		  $("#saveButton").show();
-	  } else {
+	 /* } else {
 		  $("#nextButton").show();
 		  $("#saveButton").hide();
-	  }
+	  }*/
   }
 };
 
@@ -83,6 +144,7 @@ AddProgramComponentController.prototype.handleSave = function() {
 AddProgramComponentController.prototype.setCurrent = function(event) {
 	// User can only move to the visited tabs.
 	if ($(event.target).parent().hasClass('active')) {
+
 		$('.nav-pills.nav-wizard > li').removeClass('current');
 		$(event.target).parent().addClass('current');
 		var contentId = $(event.target).parent().attr('id');

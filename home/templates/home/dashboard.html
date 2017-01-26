@@ -44,6 +44,9 @@
     <script src="{{ STATIC_URL }}manageprogram/add_program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/edit_program_component_ctrl.js"></script>
 
+    <!-- Profile Related JS -->
+    <script src="{{ STATIC_URL }}profile/profile_component_ctrl.js"></script>
+
     <!-- Invoice Related JS -->
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
 
@@ -57,6 +60,7 @@
     <script src="{{ STATIC_URL }}child/child-form.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-card.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-enrollment.component.js"></script>
+    <script src="{{ STATIC_URL }}child/add-child-form-component.component.js"></script>
 
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
@@ -80,11 +84,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a>
+            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
+						<!-- <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a> -->
         </div>
 		
 		<div class="providerName">
-				[[ schoolName ]]
+				{{ schoolName }}
 		</div>
         
 		<div class="collapse navbar-collapse" id="myNavbar">
@@ -113,7 +118,7 @@
 </nav>
 <div id="wrapper">
 
-    {% verbatim %}
+ {% verbatim %}
     <div class="nav-side-menu">
         <div class="brand">Joobali</div>
 
@@ -151,7 +156,7 @@
 
 
                 <li>
-                    <a href="#">
+                    <a href="#!/profile">
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>
                 </li>
@@ -171,7 +176,7 @@
     </div>
     <!-- /#page-content-wrapper -->
     <init-setup-component></init-setup-component>
-    {% endverbatim %}
+{% endverbatim %}
 </div>
 <!-- /#wrapper -->
 

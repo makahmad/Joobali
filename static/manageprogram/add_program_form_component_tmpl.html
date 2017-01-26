@@ -21,6 +21,13 @@
             </span>
         </div>
     </div>
+<<<<<<< HEAD
+=======
+   <!-- <div class="form-group">
+      <label class="control-label" for="maxCapacity" data-toggle="tooltip" title="The maximum capacity of students for the program.">Maximum Capacity:</label>
+      <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity" required="true" ng-model="$ctrl.newProgram.maxCapacity">
+    </div>-->
+>>>>>>> bec206e8da5f61f6017029d5afb46dce8811c663
     <div class="form-group">
       <label class="control-label" for="registrationFee">Registration Fee:</label>
       <div class="input-group">
@@ -29,20 +36,28 @@
         </div>
     </div>
     <div class="form-group">
-      <label class="control-label" for="fee">Fee:</label>
+      <label class="control-label" for="fee">Billing Rate:</label>
       <div class="input-group">
         <span class="input-group-addon">$</span>
+<<<<<<< HEAD
         <input type="number" min="0" step="1" class="form-control" id="fee" name="fee" required="true" ng-model="$ctrl.newProgram.fee">
+=======
+        <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee" required="true" ng-model="$ctrl.newProgram.fee">
+        <span class="input-group-addon">
+          <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency" value="Weekly" checked="checked" >Weekly</label>
+          <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency" value="Monthly">Monthly</label>
+        </span>
+>>>>>>> bec206e8da5f61f6017029d5afb46dce8811c663
       </div>
     </div>
-    <div class="form-group">
+     <!--  <div class="form-group">
       <label class="control-label" for="lateFee">Late Fee:</label>
       <div class="input-group">
         <span class="input-group-addon">$</span>
         <input type="number" min="0" step="1" class="form-control" id="lateFee" name="lateFee" required="false" ng-model="$ctrl.newProgram.lateFee">
       </div>
     </div>
-    <div class="form-group">
+ <div class="form-group">
       <label class="control-label" for="dueDate">Due Date:</label>
         <div class="input-group date">
             <input type="text" id="dueDate" required="true"  class="form-control" name="dueDate" ng-model="$ctrl.newProgram.dueDate">
@@ -55,5 +70,5 @@
       <label class="control-label" for="registrationFee">Billing Frequency:</label>
       <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly" ng-model="$ctrl.newProgram.billingFrequency">Weekly</label>
       <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly" ng-model="$ctrl.newProgram.billingFrequency" checked>Monthly</label>
-    </div>
+    </div>-->
 </div>

@@ -1,4 +1,4 @@
-enrollmentListController = function EnrollmentFormController($http, $location) {
+enrollmentFormController = function EnrollmentFormController($http, $location) {
     console.log('EnrollmentFormController running');
     this.enrollmentInfo = {};
 
