@@ -89,6 +89,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/invoice', {templateUrl: '/static/home/invoice_component_tmpl.html'})
+                 .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
@@ -129,6 +130,13 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller: InvoicesComponentController,
         bindings: {
           invoices: '<'
+        }
+    })
+    .component('profileComponent', {
+        templateUrl: '/static/profile/profile_component_tmpl.html',
+        controller: ProfileComponentController,
+        bindings: {
+          profile: '<'
         }
     })
     .component('fundingsComponent', {

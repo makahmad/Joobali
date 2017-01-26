@@ -9,7 +9,6 @@ InitSetupComponentController = function($http) {
 
     this.http_ = $http;
 	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
-    this.childInfo = {"first_name" : "Enter a child's first name", "last_name" : "Enter a child's last name"};
 	$http({
 	  method: 'GET',
 	  url: '/login/isinitsetupfinished'

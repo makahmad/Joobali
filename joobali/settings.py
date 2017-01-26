@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'home',
     'manageprogram',
     'invoice',
+    'profile',
     'funding',
     'users',
     'enrollment',

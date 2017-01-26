@@ -157,16 +157,32 @@ a.logoLink:hover {
     font-style: normal;
 }
 
+/*#myPage .nav>li {
+	overflow: inherit;
+}
+
+.nav>li {
+	overflow:hidden;
+}
+*/
+
+.nav>li .fa {
+	overflow: hidden;
+}
+
 .navbar {
     margin-bottom: 0;
 		background: rgba(255, 91, 53, 0.95);
-    z-index: 1000;
     border: 0;
     font-size: 12px !important;
     line-height: 1.42857143 !important;
     /*letter-spacing: 2px;*/
     border-radius: 0;
 		height:48px;
+}
+
+.ng-scope .navbar {
+	background: rgba(255, 91, 53, 1) !important;
 }
 
 #myNavbar {
@@ -184,6 +200,7 @@ a.logoLink:hover {
 .navbar-nav li a:hover,.navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
     color: #fa5d26 !important;
     background-color: #fff !important;
+		height:100%;
 }
 
 .navbar-default .navbar-toggle {
