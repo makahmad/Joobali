@@ -3,10 +3,13 @@ import logging
 
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django import template
 
 from common.json_encoder import JEncoder
 from common.session import check_session
 from login.models import Provider
+from passlib.apps import custom_app_context as pwd_context
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +38,21 @@ def updateProfile(request):
 
 	provider = Provider.get_by_id(email)
 	provider.schoolName = profile['schoolName']
+	provider.firstName = profile['firstName']
+	provider.lastName = profile['lastName']
+	#todo check for existing email address validation
+	provider.email = profile['email']
+	provider.password = pwd_context.encrypt(profile['password'])
+	provider.phone = profile['phone']
+	provider.website = profile['website']
+	provider.license = profile['license']
 
+	# return render_to_response(
+	# 	'profile_component_tmpl.html',
+	# 	{'form': profile},
+	# 	template.RequestContext(request)
+	# )
+    #
 	provider.put()
 
 	return HttpResponse('success')
