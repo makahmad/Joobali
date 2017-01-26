@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 from child.models import Child
 from manageprogram.models import Program
 
+
 class Enrollment(ndb.Model):
     """
         Enrollment is a child category of Provider, and contains information about the child_key and program_key
@@ -14,3 +15,4 @@ class Enrollment(ndb.Model):
     status = ndb.StringProperty()
     # Effective Start Date for the enrollment, might be helpful for computing invoice ?
     start_date = ndb.DateProperty()
+

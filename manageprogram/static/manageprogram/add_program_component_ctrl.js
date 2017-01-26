@@ -1,16 +1,16 @@
 var TIME_FORMAT =  'hh:mm A';
 
 AddProgramComponentController = function($scope, $http, $window) {
-    console.log('AddProgramComponentController running');
+  console.log('AddProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.scope_ = $scope;
-    this.scope_.programs = [];
+  this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
 	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly"};
 
-    this.scope_.showConflictLabel = false;
+  this.scope_.showConflictLabel = false;
 
 	this.initializeTimePickers();
 };
