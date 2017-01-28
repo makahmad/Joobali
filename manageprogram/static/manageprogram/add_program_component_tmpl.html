@@ -12,7 +12,7 @@
         <div class="stepsDiv">
           <ul class="nav nav-pills nav-wizard">
               <li id="navStep1" class="form-nav current active" ng-click='$ctrl.setCurrent($event)'><a  >Program</a><div class="nav-arrow"></div></li>
-            <!--  <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>-->
+              <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>
               <li id="navStep3" class="form-nav" ><div class="nav-wedge"></div><a >Confirm</a></li>
           </ul>
         </div>
@@ -107,14 +107,14 @@
                       <div class="programField">Maximum Capacity:</div>
                       <span class="programValue">{{ $ctrl.newProgram.maxCapacity }}</span>
                   </div>-->
-                  <div>
-                      <div class="programField">Registration Fee:</div>
-                      <span class="programValue">{{ $ctrl.newProgram.registrationFee }}</span>
-                  </div>
-                  <div>
-                      <div class="programField">Billing Rate:</div>
-                      <span class="programValue">{{ $ctrl.newProgram.fee }} ({{ $ctrl.newProgram.billingFrequency }})</span>
-                  </div>
+                  <!--<div>-->
+                      <!--<div class="programField">Registration Fee:</div>-->
+                      <!--<span class="programValue">{{ $ctrl.newProgram.registrationFee }}</span>-->
+                  <!--</div>-->
+                  <!--<div>-->
+                      <!--<div class="programField">Billing Rate:</div>-->
+                      <!--<span class="programValue">{{ $ctrl.newProgram.fee }} ({{ $ctrl.newProgram.billingFrequency }})</span>-->
+                  <!--</div>-->
                  <!-- <div>
                       <div class="programField">Late Fee:</div>
                       <span class="programValue">{{ $ctrl.newProgram.lateFee }}</span>
@@ -149,15 +149,16 @@
                   </tbody>
                 </table>-->
               </div>
-                 END Deprecated -->
+                 <!--END Deprecated &ndash;&gt;-->
             </form>
           </div>
-      </div>
       <div class="modal-footer">
         <!--<button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>-->
-        <button id="saveButton" type="button" class="btn btn-primary" ng-click="$ctrl.handleSave()">Save</button>
+        <center><button id="saveButton" type="button" class="btn btn-default" ng-click="$ctrl.handleSave()">Save</button></center>
 
       </div>
+      </div>
+
     </div>
   </div>
 </div>
