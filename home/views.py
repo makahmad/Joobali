@@ -29,14 +29,18 @@ def dashboard(request):
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
-	provider = Provider.get_by_id(request.session.get('email'))
+	#get school name for provider only
+	schoolName = None
+	result = Provider.query().filter(Provider.email == request.session.get('email'))
+	if result is not None:
+		schoolName = result.fetch(1)[0].schoolName
 
 	return render_to_response(
 		'home/dashboard.html',
 		{
 			'loggedIn': True,
 			'email': request.session.get('email'),
-			'schoolName': provider.schoolName
+			'schoolName': schoolName
 		 },
 		template.RequestContext(request)
 	)

@@ -233,9 +233,9 @@ def login(request):
 	)
 
 def getCustomerUrl(email):
-	result = models.Provider.get_by_id(email)
+	result = models.Provider.query().filter(models.Provider.email == email)
 	if result is not None:
-		return result.customerId
+		return result.fetch(1)[0].customerId
 	result = Parent.get_by_id(email)
 	if result is not None:
 		return result.customerId

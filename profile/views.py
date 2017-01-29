@@ -20,9 +20,13 @@ def getProfile(request):
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
-	provider = Provider.get_by_id(email)
-	# Must specify parent since id is not unique in DataStore
-	return HttpResponse(json.dumps([JEncoder().encode(provider)]))
+	result = Provider.query().filter(Provider.email == request.session.get('email'))
+	if result is not None:
+		provider = result.fetch(1)[0]
+		return HttpResponse(json.dumps([JEncoder().encode(provider)]))
+
+	# todo Must specify parent since id is not unique in DataStore
+	return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
 
 def updateProfile(request):
@@ -36,23 +40,25 @@ def updateProfile(request):
 	if not profile['id']:
 		raise Exception('no profile id is provided')
 
-	provider = Provider.get_by_id(email)
-	provider.schoolName = profile['schoolName']
-	provider.firstName = profile['firstName']
-	provider.lastName = profile['lastName']
-	#todo check for existing email address validation
-	provider.email = profile['email']
-	provider.password = pwd_context.encrypt(profile['password'])
-	provider.phone = profile['phone']
-	provider.website = profile['website']
-	provider.license = profile['license']
+	#provider profile update
+	result = Provider.query().filter(Provider.email == request.session.get('email'))
+	if result is not None:
+		provider = result.fetch(1)[0]
+		provider.schoolName = profile['schoolName']
+		provider.firstName = profile['firstName']
+		provider.lastName = profile['lastName']
+		#todo check for existing email address validation
+		provider.email = profile['email']
+		provider.password = pwd_context.encrypt(profile['password'])
+		provider.phone = profile['phone']
+		provider.website = profile['website']
+		provider.license = profile['license']
+		provider.put()
 
 	# return render_to_response(
 	# 	'profile/profile_component_tmpl.html',
 	# 	{'form': profile},
 	# 	template.RequestContext(request)
 	# )
-    #
-	provider.put()
 
 	return HttpResponse('success')
