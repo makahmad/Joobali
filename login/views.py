@@ -221,6 +221,7 @@ def login(request):
 				# authentication succeeded.
 				logger.info('login successful')
 				request.session['email'] = email
+				request.session['user_id'] = result[0].key.id()
 				request.session['dwolla_customer_url'] = getCustomerUrl(email)
 				return HttpResponseRedirect('/home/dashboard')
 			else:

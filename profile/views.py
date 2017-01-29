@@ -16,22 +16,19 @@ logger = logging.getLogger(__name__)
 
 def getProfile(request):
 	"""Handles get profile request. Returns the profile with provided email"""
-	email = request.session.get('email')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
-	result = Provider.query().filter(Provider.email == request.session.get('email'))
-	if result is not None:
-		provider = result.fetch(1)[0]
+	provider = Provider.get_by_id(request.session['user_id'])
+	if provider is not None:
 		return HttpResponse(json.dumps([JEncoder().encode(provider)]))
 
-	# todo Must specify parent since id is not unique in DataStore
+	#todo Must specify parent since id is not unique in DataStore
 	return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
 
 def updateProfile(request):
 	"""Updates the program with provided program ID"""
-	email = request.session.get('email')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
@@ -41,9 +38,8 @@ def updateProfile(request):
 		raise Exception('no profile id is provided')
 
 	#provider profile update
-	result = Provider.query().filter(Provider.email == request.session.get('email'))
-	if result is not None:
-		provider = result.fetch(1)[0]
+	provider = Provider.get_by_id(request.session['user_id'])
+	if provider is not None:
 		provider.schoolName = profile['schoolName']
 		provider.firstName = profile['firstName']
 		provider.lastName = profile['lastName']

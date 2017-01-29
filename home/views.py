@@ -31,9 +31,9 @@ def dashboard(request):
 
 	#get school name for provider only
 	schoolName = None
-	result = Provider.query().filter(Provider.email == request.session.get('email'))
-	if result is not None:
-		schoolName = result.fetch(1)[0].schoolName
+	provider = Provider.get_by_id(request.session['user_id'])
+	if provider is not None:
+		schoolName = provider.schoolName
 
 	return render_to_response(
 		'home/dashboard.html',
