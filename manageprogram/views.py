@@ -44,29 +44,29 @@ def edit(request):
 
 def listPrograms(request):
 	"""Handles program listing request. Returns programs associated with the logged in user"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
-	programs = program_util.list_program_by_provider_email(email)
+	programs = program_util.list_program_by_provider_user_id(user_id)
 	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
 
 
 def getProgram(request):
 	"""Handles get program request. Returns the program with provided program ID"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 	if not request.GET.get('id'):
 		raise Exception('no program id is provided')
 
-	provider = Provider.get_by_id(email)
+	provider = Provider.get_by_id(user_id)
 	# Must specify parent since id is not unique in DataStore
 	program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
 	return HttpResponse(json.dumps([JEncoder().encode(program)]))
 
 def updateProgram(request):
 	"""Updates the program with provided program ID"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
@@ -75,7 +75,7 @@ def updateProgram(request):
 	if not newProgram['id']:
 		raise Exception('no program id is provided')
 
-	provider = Provider.get_by_id(email)
+	provider = Provider.get_by_id(user_id)
 	# Must specify parent since id is not unique in DataStore
 	program = models.Program.get_by_id(int(newProgram['id']), parent = provider.key)
 
@@ -98,7 +98,7 @@ def updateProgram(request):
 
 def deleteProgram(request):
 	"""Deletes the program with provided program ID"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
@@ -108,7 +108,7 @@ def deleteProgram(request):
 	if not programId:
 		raise Exception('no program id is provided')
 
-	provider = Provider.get_by_id(email)
+	provider = Provider.get_by_id(user_id)
 	program = models.Program.get_by_id(int(programId), parent = provider.key)
 
 	program.key.delete()
@@ -116,7 +116,7 @@ def deleteProgram(request):
 
 def addProgram(request):
 	"""Adds a new program along with associated sessions to the logged in user"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 
@@ -124,13 +124,13 @@ def addProgram(request):
 
 	newProgram = data['program']
 
-	provider = Provider.get_by_id(email)
+	provider = Provider.get_by_id(user_id)
 	program = models.Program(parent=provider.key)
 	program.programName = newProgram['programName']
 
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	program.lateFee = newProgram['lateFee']
+	# program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
