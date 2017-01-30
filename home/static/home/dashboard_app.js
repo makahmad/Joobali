@@ -189,4 +189,3 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
             enrollments: '<'
         }
     });
-

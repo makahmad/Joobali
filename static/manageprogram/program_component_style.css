@@ -3,9 +3,9 @@
 		display:inline !important;
 		float:left;
 	}
-	.main{
+	/*.main{
 		max-width:178px;
-	}
+	}*/
 	.col-md-3 {
 	    width: 20%;
 	}
@@ -14,14 +14,14 @@
 	div.actions {
 		display:inherit;
 	}
-	.main{
+	/*.main{
 		max-width:200px !important;
-	}
+	}*/
 }
 
 .programs {
 	font-family:"Roboto", sans-serif;
-	display:inline-block;
+	/*display:inline-block;*/
 }
 
 [flex].programCard {
@@ -33,9 +33,9 @@
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
     transition: 0.1s;
     width: 300px;
-    height: 212px;
+    /*height: 212px;*/
     margin: 12px;
-	border-left:5px solid #ffffff;
+		border-left:5px solid none;
 }
 
 .programActions {
@@ -50,13 +50,14 @@
 .programCard:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     cursor: pointer;
-	/*border-left: 5px solid #1E988A;*/
+		border-left: 5px solid #1E988A;
+		outline:1px solid #1E988A;
 }
 
 
-i.fa.fa-pencil.fa-fw {display:none;}
+.programCard i.fa.fa-pencil {display:none;}
 
-.programCard:hover i.fa.fa-pencil.fa-fw {
+.programCard:hover i.fa.fa-pencil {
     display:block;
 }
 
@@ -68,9 +69,16 @@ i.fa.fa-pencil.fa-fw {display:none;}
 }
 
 .programText {
-    font-size: 14px;
+  font-size: 14px;
 	font-family:'Roboto', sans-serif;
-	color:#c1c1c1;
+	color:#363B3F;
+	display: inline-block;
+	width: 49%;
+}
+
+.programText.title {
+	text-transform:uppercase;
+	color:#ADAFB0;
 }
 
 .programText span {
@@ -79,11 +87,12 @@ i.fa.fa-pencil.fa-fw {display:none;}
 
 .main {
 	color:black;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 179px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 85%;
 	font-size:16px;
+  margin: 18px 0px -8px 5px;
 }
 
 .rate {
@@ -105,7 +114,9 @@ a {
 }
 
 .row.editProgram {
-	position:relative;
-	top:23px;
-	left:-18px;
+  position: relative;
+  top: 23px;
+  float: right;
+  right: 10px;
+  color: #1E988A;
 }
