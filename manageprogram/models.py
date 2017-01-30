@@ -7,7 +7,7 @@ class Program(ndb.Model):
 	registrationFee = ndb.FloatProperty()
 	fee = ndb.FloatProperty(required=True)
 	lateFee = ndb.FloatProperty()  # default to general setting if blank.
-	dueDate = ndb.DateProperty(required=True) # initial payment due date.
+	# dueDate = ndb.DateProperty(required=True) # initial payment due date.
 	billingFrequency = ndb.StringProperty(required=True) #enum: Weekly, Monthly (defualt)
 
 	# Example model static method:

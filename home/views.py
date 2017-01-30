@@ -48,10 +48,10 @@ def dashboard(request):
 
 def listPrograms(request):
 	"""Handles program listing request. Returns programs and corresponding sessions associated with the logged in user"""
-	email = request.session.get('email')
+	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
-	provider = Provider.get_by_id(email)
+	provider = Provider.get_by_id(user_id)
 	programs = Program.query(ancestor=provider.key)
 
 	dictPrograms = []
