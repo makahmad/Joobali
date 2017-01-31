@@ -1,16 +1,16 @@
-.btn-default {
+.btn-default.joobali {
   background: #339999;
 	color: #ffffff;
   width: auto;
 }
 
-.btn-default:hover , .btn-default.hover {
+.btn-default.joobali:hover , .btn-default.joobali.hover {
   background: #2e8f8f;
     color: #ffffff;
     width: auto;
 }
 
-.btn-default:focus, .btn-default.focus, .btn-default:active, .btn-default.active, .btn-default:active:focus, .btn-default.active:focus {
+.btn-default.joobali:focus, .btn-default.joobali.focus, .btn-default.joobali:active, .btn-default.joobali.active, .btn-default.joobali:active:focus, .btn-default.joobali.active:focus {
    background: #2e8f8f;
     color: #ffffff;
     width: auto;
