@@ -4,7 +4,7 @@ body {
 }
 
 .jumbotron {
-    background: #fa5d26 url("../pics/img_homegbg.png") no-repeat top center;
+    background: #fa5d26 url("./pics/img_homegbg.png") no-repeat top center;
 		background-size:100%;
     color: #ffffff;
     padding: 100px 25px;
@@ -55,13 +55,13 @@ body {
 }
 
 .homeIcons.lock {
-	background: url("../pics/img_lock.png") no-repeat top;
+	background: url("./pics/img_lock.png") no-repeat top;
 }
 .homeIcons.clock {
-	background: url("../pics/img_savetime.png") no-repeat top;
+	background: url("./pics/img_savetime.png") no-repeat top;
 }
 .homeIcons.money {
-	background: url("../pics/img_getpaid.png") no-repeat top;
+	background: url("./pics/img_getpaid.png") no-repeat top;
 }
 
 .featureDescription {
@@ -75,7 +75,7 @@ body {
 }
 
 .homePitch2 {
-	background: #a2a2a2 url("../pics/img_home2bg.png") no-repeat top center;
+	background: #a2a2a2 url("./pics/img_home2bg.png") no-repeat top center;
 	background-size: 100%;
 	padding:0 0 120px 0;
 }
