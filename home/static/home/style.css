@@ -316,6 +316,10 @@ footer .glyphicon {
   float: left;
 }
 
+/*.    ---------- Programs List View Specific Styles   ------------- */
+.programsDiv ol {
+	    -webkit-padding-start: 0px;
+}
 .item.list-group-item
 {
     float: none;
@@ -338,20 +342,40 @@ footer .glyphicon {
 }
 
 .item.list-group-item .row.editProgram {
-position: relative;
-top: 23px;
-float: right;
-right: 10px;
-color: #1E988A;
-width: auto;
+  position: relative;
+  top: 10px;
+  float: right;
+  left: 5px;
+  color: #1E988A;
+  width: auto;
 }
 
-.item.list-group-item:nth-of-type(odd) {
-	
+.listDisplay hr {
+	display:none;
 }
-.item.list-group-item:nth-of-type(odd):hover,.item.list-group-item:hover
-{
-	z-index: 1000;
+
+.listDisplay .main.new-main {
+	width:16.2% !important;
+	display:inline-block;
+}
+
+.listDisplay:nth-of-type(odd) {
+	background:lightgray !important;
+}
+.listDisplay:nth-of-type(even) {
+	background:white !important;
+}
+
+program-component {
+	display:inline-block;
+}
+
+.listDisplay {
+	display:block;
+}
+
+.listDisplay .container {
+	padding-left:0px !important;
 }
 
 .item.list-group-item .list-group-image
@@ -365,15 +389,6 @@ width: auto;
 .item.list-group-item .caption
 {
     padding: 9px 9px 0px 9px;
-}
-.item.list-group-item:nth-of-type(odd)
-{
-    background: #eeeeee;
-}
-
-.item.list-group-item:nth-of-type(even)
-{
-    background: #fff;
 }
 
 .item.list-group-item:before, .item.list-group-item:after

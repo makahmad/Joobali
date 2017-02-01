@@ -21,21 +21,22 @@
 
 .programs {
 	font-family:"Roboto", sans-serif;
-	/*display:inline-block;*/
+	display:inline-block;
 }
 
-[flex].programCard {
+[flex].programs {
   -webkit-flex-basis: 300px;
   flex-basis: 300px;
 }
 
-.programCard {
+.programs {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
     transition: 0.1s;
-    width: 300px;
+    width: 240px;
     /*height: 212px;*/
     margin: 12px;
 		border-left:5px solid none;
+    padding: 10px 20px !important;
 }
 
 .programActions {
@@ -47,17 +48,27 @@
     bottom: 6px;
 }
 
-.programCard:hover {
+.programs:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     cursor: pointer;
 		border-left: 5px solid #1E988A;
 		outline:1px solid #1E988A;
 }
+.listDisplay .programs {
+	box-shadow:none;
+  margin: 1px auto !important;
+  border: none !important;
+}
+
+.listDisplay .programs:hover {
+	box-shadow:none;
+  border-left: 5px solid #1E988A !important;;
+}
 
 
-.programCard i.fa.fa-pencil {display:none;}
+.programs i.fa.fa-pencil {display:none;}
 
-.programCard:hover i.fa.fa-pencil {
+.programs:hover i.fa.fa-pencil {
     display:block;
 }
 
@@ -65,7 +76,22 @@
 .container {
     width: inherit;
     height: auto;
-    padding: 0 20px 10px 20px;
+    /*padding: 10px 20px;*/
+		padding:0px;
+}
+
+.listHeaders {
+	display:none;
+	width:100%;
+}
+
+.listHeaders .row {
+  display: inline-block !important;
+  margin: 0 auto;
+  width: 16.2%;
+  text-align: center;
+	font-size:small;
+	white-space:nowrap;
 }
 
 .programText {
@@ -74,11 +100,17 @@
 	color:#363B3F;
 	display: inline-block;
 	width: 49%;
+	overflow:hidden;
 }
 
-.programText.title {
+.programText.title, .programText.titleHeader {
 	text-transform:uppercase;
 	color:#ADAFB0;
+	font-size:12px;
+}
+.programText.titleHeader {
+	color: black;
+	font-size: 10px;
 }
 
 .programText span {

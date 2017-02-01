@@ -1,5 +1,5 @@
-<div class="programs">
-    <div class="programCard item" ng-click="$ctrl.click()">
+<li class="programs item">
+    <div class="programCard" ng-click="$ctrl.click()">
         <div class="container">
 
 			<div class="row editProgram">
@@ -30,17 +30,11 @@
 								<div class="programText text-left">{{ $ctrl.program.endDate }}</div>
 						</div>
 						<div class="row">
-	              <div class="programText text-right title">Next Payment:</div>
-								<div class="programText text-left">{{ $ctrl.program.dueDate }}</div>
-	          </div>
-						<div class="row">
-								<div class="programText text-right title">Capacity:</div> 
-								<div class="programText text-left">{{ $ctrl.program.maxCapacity }}</div>
-						</div>
-						
-						
+	              <div class="programText text-right title">Reg Fee:</div>
+								<div class="programText text-left">{{ $$ctrl.program.registrationFee }}</div>
+	          </div>				
 	        </div>
-    </div>
+    </li>
 
 	<!-- <div class="programActions">
 		<div class="container">
@@ -55,9 +49,8 @@
 					<a href="#"><i class="fa fa-child fa-2x text-right" title="Enroll Child"></i> Enroll a Child</a>
 				</div>
 			</div>
-		</div> -->
-	</div>
-</div>
+		</div> 
+	</div>-->
 
 
 

@@ -10,14 +10,35 @@
 							</a>
 			    </div>
 		      <div class="btn-group">
-		      	<a id="list" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th-list">
-		      	</span>List</a> <a id="grid" class="btn btn-default btn-sm joobali"><span
-		      	class="glyphicon glyphicon-th"></span>Grid</a>
+						<a id="grid" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th"></span>Grid</a>
+		      	<a id="list" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th-list"></span>List</a>
 		      </div>
 		  </div>
 			
-				
-        <program-component data-ng-repeat="program in programs" program="program"></program-component>
+			<div class="listHeaders">
+				<div class="row">
+					&nbsp;
+				</div>
+				<div class="row">
+					<div class="programText text-right titleHeader">Rate:</div> 
+				</div>
+				<div class="row">
+					<div class="programText text-right titleHeader">Frequency:</div> 
+				</div>
+				<div class="row">
+					<div class="programText text-right titleHeader">Start Date:</div>
+				</div>
+				<div class="row">
+					<div class="programText text-right titleHeader">End Date:</div>
+				</div>
+				<div class="row">
+					<div class="programText text-right titleHeader">Reg Fee:</div> 
+				</div>
+			</div>
+			
+				<ol>
+        	<program-component data-ng-repeat="program in programs" program="program"></program-component>
+				</ol>
     </div>
     <div class="buttonDiv">
         <a class="pull-right programHeader" data-toggle="modal" data-target="#addProgramModal">ADD A
@@ -32,20 +53,29 @@
 // js for grid/list view
 	$('#list').click(function(event){
 		event.preventDefault();
-		$('.programs .item').addClass('list-group-item');
+		$('.programs.item').addClass('list-group-item');
+		$('.ng-scope.ng-isolate-scope').addClass('listDisplay');
+		$('.programs.item').removeClass('grid-group-item');
+		// $('.fa.fa-pencil').switchClass("fa-lg", "fa-2x", 1000, "easeInOutQuad");
 		console.log("list");
 		$('.programsDiv').css('display', 'block');
 		$('.main').addClass('new-main');
 		$('.row .title').hide();
+		$('.listHeaders').show();
+    // $('.fa-pencil').removeClass('fa-lg').addClass('fa-2x');
 	});
 
 	$('#grid').click(function(event){
 		event.preventDefault();
-		$('.programs .item').removeClass('list-group-item');
-		$('.programs .item').addClass('grid-group-item');
+		$('.programs.item').removeClass('list-group-item');
+		$('.ng-scope.ng-isolate-scope').removeClass('listDisplay');
+		$('.programs.item').addClass('grid-group-item');
+		// $('.fa.fa-pencil').switchClass("fa-2x", "fa-lg", 1000, "easeInOutQuad");
 		console.log("grid");
 		$('.programsDiv').css('display', 'flex');
 		$('.main').removeClass('new-main');
 		$('.row .title').show();
+		$('.listHeaders').hide();
+    // $('.fa-pencil').removeClass('fa-2x').addClass('fa-lg');
 	});
 </script>
