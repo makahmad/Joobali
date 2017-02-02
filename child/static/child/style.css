@@ -16,7 +16,7 @@
 
 .addChildButtonDiv {
 	overflow: hidden;
-    margin: 10px 100px;
+    margin: 10px 10px;
 }
 
 .enrollmentTableButton {
@@ -32,13 +32,16 @@
     transition: 0.3s;
 }
 
-.child-card-group {
-    display: table
-}
-
 .child-card:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
+
+.child-card-group {
+    width: 80%;
+    display: table
+}
+
+
 
 /* Add some padding inside the card container */
 .child-card-container {
