@@ -40,7 +40,7 @@ def add_child(request):
         logger.info('request content is %s', request_content)
         provider_key = ndb.Key('Provider', get_provider_email(request))
         parent_input = {'email': request_content['email']}
-        parent_entity = parent_util.add_parent(parent_input)
+        parent_entity = parent_util.add_parent_for_child(parent_input)
         child_input = {
             'first_name': request_content['first_name'],
             'last_name': request_content['last_name'],

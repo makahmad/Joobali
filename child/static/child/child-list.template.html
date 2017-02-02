@@ -1,10 +1,10 @@
 <div>
     <div>
-        <div class="child-card-group">
+        <div class="child-card-group" layout="column">
             <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
-                        index="$index"></child-card>
+                        index="$index" flex></child-card>
         </div>
-        <div class="addChildButtonDiv">
+        <div class="addChildButtonDiv pull-left">
             <button class="addChildButtonDiv btn btn-primary btn-lg" data-toggle="modal"
                     data-target="#addChildModal">
                 Add Child
