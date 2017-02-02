@@ -316,6 +316,14 @@ footer .glyphicon {
   float: left;
 }
 
+.mainName {
+	width:120%;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	white-space:nowrap;
+	text-align:left;
+}
+
 /*.    ---------- Programs List View Specific Styles   ------------- */
 .programsDiv ol {
 	    -webkit-padding-start: 0px;
@@ -342,10 +350,10 @@ footer .glyphicon {
 }
 
 .item.list-group-item .row.editProgram {
-  position: relative;
-  top: 10px;
+  position: absolute;
+  right: 10px;
   float: right;
-  left: 5px;
+  top: 25px;
   color: #1E988A;
   width: auto;
 }
@@ -354,13 +362,42 @@ footer .glyphicon {
 	display:none;
 }
 
-.listDisplay .main.new-main {
-	width:16.2% !important;
-	display:inline-block;
+.listDisplay .main .new-main {
+/*	width:14.2% !important;
+	display:inline-block !important;*/
+}
+
+.listDisplay .theData.list {
+/*	display:inline-block !important;
+	width:14.2% !important;*/
+}
+
+.description.list {
+	display:none;
+}
+
+.programTable {
+	width:100%;
+}
+
+.programTable.list {
+	display:none;
+	padding:20px 0;
+}
+
+.programTable.list td {
+	width: 14.2%;
+	text-align:center;
+	padding:20px 0;
+	display: inline-block;
+}
+
+.programTable.list td .main {
+	border:none;
 }
 
 .listDisplay:nth-of-type(odd) {
-	background:lightgray !important;
+	background:#F1F1F1 !important;
 }
 .listDisplay:nth-of-type(even) {
 	background:white !important;

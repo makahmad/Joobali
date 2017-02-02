@@ -16,24 +16,17 @@
 		  </div>
 			
 			<div class="listHeaders">
-				<div class="row">
-					&nbsp;
-				</div>
-				<div class="row">
-					<div class="programText text-right titleHeader">Rate:</div> 
-				</div>
-				<div class="row">
-					<div class="programText text-right titleHeader">Frequency:</div> 
-				</div>
-				<div class="row">
-					<div class="programText text-right titleHeader">Start Date:</div>
-				</div>
-				<div class="row">
-					<div class="programText text-right titleHeader">End Date:</div>
-				</div>
-				<div class="row">
-					<div class="programText text-right titleHeader">Reg Fee:</div> 
-				</div>
+				<table>
+				  <tr>
+						<th>&nbsp;</th>
+				    <th>Rate</th>
+				    <th>Frequency</th>
+				    <th>Start Date</th>
+				    <th>End Date</th>
+				    <th>Reg Fee</th>
+				    <th>Late Fee</th>
+				  </tr>
+				</table>				
 			</div>
 			
 				<ol>
@@ -60,7 +53,11 @@
 		console.log("list");
 		$('.programsDiv').css('display', 'block');
 		$('.main').addClass('new-main');
-		$('.row .title').hide();
+		$('.theData').addClass('list');
+		$('.programTable.list').show();
+		$('.programTable.grid').hide();
+		// $('.description').addClass('list');
+		// $('.row .title').hide();
 		$('.listHeaders').show();
     // $('.fa-pencil').removeClass('fa-lg').addClass('fa-2x');
 	});
@@ -74,7 +71,11 @@
 		console.log("grid");
 		$('.programsDiv').css('display', 'flex');
 		$('.main').removeClass('new-main');
-		$('.row .title').show();
+		$('.theData').removeClass('list');
+		$('.programTable.list').hide();
+		$('.programTable.grid').show();
+		// $('.description').removeClass('list');
+		// $('.row .title').show();
 		$('.listHeaders').hide();
     // $('.fa-pencil').removeClass('fa-2x').addClass('fa-lg');
 	});

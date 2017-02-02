@@ -3,54 +3,59 @@
         <div class="container">
 
 			<div class="row editProgram">
-					&nbsp; <i class="fa fa-pencil fa-lg" style="float:left;"></i>
+				<i class="fa fa-pencil fa-lg" style="float:left;"></i>
 			</div>
 
-            <div>
+            <!-- <div>
 
                     <div class="main"><b>{{ $ctrl.program.programName }}</b></div>
-						</div>
+						</div> -->
 
-						<hr />
+						<div>
+							<table class="programTable grid">
+								<tr>
+									<td colspan="2"><div class="main">{{ $ctrl.program.programName }}</div></td>									
+								</tr>
+								<tr class="programText">
+									<td class="description">Program Fee:</td>
+									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
+								</tr>
+								<tr class="programText">
+									<td class="description">Frequency:</td>
+									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
+								</tr>
+								<tr class="programText">
+									<td class="description"> Start Date:</td>
+									<td class="theData">{{ $ctrl.program.startDate }}</td>
+								</tr>
+								<tr class="programText">
+									<td class="description">End Date:</td>
+									<td class="theData">{{ $ctrl.program.endDate }}</td>
+								</tr>
+								<tr class="programText">
+									<td class="description">Registration Fee:</td>
+									<td class="theData"><sup>$</sup>{{ $$ctrl.program.registrationFee }}</td>
+								</tr>
+								<tr class="programText">
+									<td class="description">Late Fee:</td>
+									<td class="theData"><sup>$</sup>{{ $$ctrl.program.registrationFee }}</td>
+							  </tr>
+							</table>
+							
+							<table class="programTable list">
+								<tr>
+									<td class="theData"><div class="mainName">{{ $ctrl.program.programName }}</div></td>									
+									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
+									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
+									<td class="theData">{{ $ctrl.program.startDate }}</td>
+									<td class="theData">{{ $ctrl.program.endDate }}</td>
+									<td class="theData"><sup>$</sup>{{ $$ctrl.program.registrationFee }}</td>
+									<td class="theData"><sup>$</sup>{{ $$ctrl.program.registrationFee }}</td>
+							  </tr>
+							</table>
 						
-						<div class="row">
-								<div class="programText text-right title">Rate:</div> 
-								<div class="programText text-left"><sup>$</sup>{{ $ctrl.program.fee }}</div>
 						</div>
-						<div class="row">
-							<div class="programText text-right title">Frequency:</div> 
-							<div class="programText text-left">{{ $ctrl.program.billingFrequency }}</div>
-						</div>
-						<div class="row">
-	              <div class="programText text-right title">Start Date:</div>
-								<div class="programText text-left">{{ $ctrl.program.startDate }}</span></div>
-						</div>
-						<div class="row">
-	              <div class="programText text-right title">End Date:</div>
-								<div class="programText text-left">{{ $ctrl.program.endDate }}</div>
-						</div>
-						<div class="row">
-	              <div class="programText text-right title">Reg Fee:</div>
-								<div class="programText text-left">{{ $$ctrl.program.registrationFee }}</div>
-	          </div>				
-	        </div>
     </li>
-
-	<!-- <div class="programActions">
-		<div class="container">
-            <div class="row">
-                <div class="actions col-md-2">
-					<a href="#"><i class="fa fa-calendar fa-2x" title="Manage sessions" alt="Manage Sessions"></i> </a>
-				</div>
-				<div class="actions col-md-2">
-					<a href="#"><i class="fa fa-copy fa-2x" title="Copy/Clone program" alt="Copy Program"></i></a>
-				</div>
-				<div class="actions col-md-7">
-					<a href="#"><i class="fa fa-child fa-2x text-right" title="Enroll Child"></i> Enroll a Child</a>
-				</div>
-			</div>
-		</div> 
-	</div>-->
 
 
 
