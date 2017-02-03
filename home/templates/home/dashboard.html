@@ -134,7 +134,7 @@
                     <a href="#!/programs"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
                 </li>
                 <ul class="sub-menu collapse" id="products">
-                    <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)">{{ program.programName }}</li>
+                    <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)"  data-toggle="modal" data-target="#editProgramModal">{{ program.programName }}</li>
                 </ul>
 
                 <li data-toggle="collapse" data-target="#children" class="collapsed active">

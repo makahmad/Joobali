@@ -1,7 +1,26 @@
-<div>
+<div xmlns="http://www.w3.org/1999/html">
+<!-- Modal -->
+<div id="editProgramModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Edit Program:</h4>
+          <!-- No need for steps if program is the only form.
+        <div class="stepsDiv">
+          <ul class="nav nav-pills nav-wizard">
+              <li id="navStep1" class="form-nav current active" ng-click='$ctrl.setCurrent($event)'><a  >Program</a><div class="nav-arrow"></div></li>
+              <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>
+              <li id="navStep3" class="form-nav" ><div class="nav-wedge"></div><a >Confirm</a></li>
+          </ul>
+        </div>
+          -->
+      </div>
+      <div class="modal-body">
     <div class="col-centered programOverviewForm">
         <form id="programForm" role="form" class="well">
-            <h2>Edit Program:</h2>
             <div class="">
                 <div class="form-group">
                     <label class="control-label" for="programName">Program Name:</label>
@@ -82,18 +101,33 @@
                                                        ng-model="$ctrl.program.billingFrequency" checked>Monthly</label>
                 </div>-->
             </div>
-            <div class="buttonDiv">
-                <button type="button" class="saveProgramButton btn btn-primary btn-lg"
-                        ng-click="$ctrl.saveProgram()">Save
-                </button>
-            </div>
+
 
         </form>
 
-        <div class="buttonDiv">
-            <button type="button" class="deleteButton btn btn-danger btn-lg"
+
+    </div>
+</div>
+
+              <div class="modal-footer">
+        <!--<button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>-->
+        <center>
+                        <button type="button" class="saveProgramButton btn btn-primary btn-lg"
+                        ng-click="$ctrl.saveProgram()">Save
+                </button>
+
+                       <button type="button" class="deleteButton btn btn-danger btn-lg"
                     ng-click="$ctrl.deleteProgram()">Delete This Program
             </button>
-        </div>
+
+
+
+        </center>
+
+      </div>
+      </div>
+
     </div>
+  </div>
+</div>
 </div>

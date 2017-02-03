@@ -8,6 +8,7 @@ EditProgramComponentController = function($http, $window, $location, $routeParam
 	this.sessions = [];
 	this.newSession = {};
     this.showConflictLabel = false;
+    this.location_ = $location;
 
     this.params_ = $routeParams;
 
@@ -145,6 +146,26 @@ EditProgramComponentController.prototype.saveProgram = function() {
 	);
 };
 
+EditProgramComponentController.prototype.deleteProgram = function() {
+	this.http_({
+		method: 'POST',
+		url: '/manageprogram/deleteprogram',
+		data: JSON.stringify({id: this.programId})
+	}).then(
+		angular.bind(this, function (response) {
+			console.log('post suceeded');
+
+			//this.window_.location.href = '/home/dashboard';
+
+			this.location_.path('/programs');
+			location.reload();
+		}),
+		function (response) {
+			console.log('post failed');
+			alert("Something is wrong with the saving. Please try again later");
+		}
+	);
+};
 
 EditProgramComponentController.prototype.addSession = function(session) {
 	session['programId'] = this.programId;
@@ -218,25 +239,6 @@ EditProgramComponentController.prototype.deleteSession = function() {
 
 EditProgramComponentController.prototype.onSessionChange = function() {
 	this.showConflictLabel = false;
-};
-
-
-EditProgramComponentController.prototype.deleteProgram = function() {
-	this.http_({
-		method: 'POST',
-		url: '/manageprogram/deleteprogram',
-		data: JSON.stringify({id: this.programId})
-	}).then(
-		angular.bind(this, function (response) {
-			console.log('post suceeded');
-
-			this.window_.location.href = '/home/dashboard';
-		}),
-		function (response) {
-			console.log('post failed');
-			alert("Something is wrong with the saving. Please try again later");
-		}
-	);
 };
 
 
