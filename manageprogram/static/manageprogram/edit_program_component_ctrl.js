@@ -62,6 +62,17 @@ EditProgramComponentController = function($http, $window, $location, $routeParam
 //		console.log(response);
 //	});
 	this.initializeTimePickers();
+
+//	$('#editProgramModal').on('hidden', function () {
+//      console.log("fasfsafaf");
+//      $('body').off('click');
+//
+//    });
+
+    $('#editProgramModal').on('hidden.bs.modal', function () {
+          console.log("fasfsafaf");
+
+    });
 };
 
 
@@ -148,6 +159,12 @@ EditProgramComponentController.prototype.saveProgram = function() {
 			alert("Something is wrong with the saving. Please try again later");
 		}
 	);
+};
+
+EditProgramComponentController.prototype.closeProgram = function() {
+$('body').removeClass('modal-open');
+$('.modal-backdrop').remove();
+    this.location_.path('/programs');
 };
 
 EditProgramComponentController.prototype.deleteProgram = function() {
