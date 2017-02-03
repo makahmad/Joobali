@@ -135,10 +135,14 @@ EditProgramComponentController.prototype.saveProgram = function() {
 		url: '/manageprogram/updateprogram',
 		data: JSON.stringify(this.program)
 	}).then(
-		function (response) {
+		angular.bind(this, function (response) {
 			console.log('post suceeded');
+
+			//this.window_.location.href = '/home/dashboard';
+
+			this.location_.path('/programs');
 			location.reload();
-		},
+		}),
 		function (response) {
 			console.log('post failed');
 			alert("Something is wrong with the saving. Please try again later");
