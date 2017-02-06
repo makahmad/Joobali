@@ -21,7 +21,7 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date, end_d
     invoice_line_item.put()
     return invoice_line_item
 
-def create_invoice(provider, child, date, due_date):
+def create_invoice(provider, child, date, due_date, autopay_source_id=None):
     """Creates a new Invoice"""
     invoice = Invoice(id = "%s-%s-%s" % (provider.key.id(), child.key.id(), date))
     invoice.provider_key = provider.key
@@ -34,6 +34,7 @@ def create_invoice(provider, child, date, due_date):
     invoice.due_date = due_date
     invoice.date_created = date
     invoice.amount = 0
+    invoice.autopay_source_id = autopay_source_id
     invoice.put()
     return invoice
 
@@ -72,3 +73,11 @@ def get_invoice_period(invoice):
         end_date = lineItem.end_date
         break
     return (start_date, end_date)
+
+def get_invoice_enrollments(invoice):
+    """ Gets all the enrollments contributing to the line items of this invoice"""
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    results = []
+    for lineItem in lineItems:
+        results.append(lineItem.enrollment_key.get())
+    return results

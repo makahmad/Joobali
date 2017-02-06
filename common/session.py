@@ -3,7 +3,7 @@
 
 def check_session(request):
     """This method will check session for a HTTP Request"""
-    if not request.session.get('email'):
+    if not request.session.get('user_id'):
         return False
     else:
         return True

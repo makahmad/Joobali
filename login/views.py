@@ -130,9 +130,6 @@ def parent_signup(request):
             parent = Parent(id=email)
             form.populate_obj(parent)
 
-            print "HEHEHE"
-            print request.POST
-            print parent
             parent.password = pwd_context.encrypt(parent.password)
 
             (parent, created) = get_or_insert(Parent, email, parent)
@@ -155,11 +152,11 @@ def parent_signup(request):
                     # Do nothing
                     print err
                     pass
-                return HttpResponseRedirect('/home/dashboard')
+                return HttpResponseRedirect('/parent')
             else:
                 form.email.errors.append('error: user exists')
-
-
+    else:
+        form.email.data = request.GET.get('email', '')
     return render_to_response(
         'login/parent_signup.html',
         {'form': form},
@@ -205,15 +202,18 @@ def get_or_insert(model, email, user):
 
 def login(request):
     form = LoginForm()
+    print request.session
     if request.method == 'POST':
         form = LoginForm(request.POST)
         form.validate()
         email = request.POST.get('email')
         password = request.POST.get('password')
         if email and password:
+            is_provider = True
             query = models.Provider.query().filter(models.Provider.email == email)
             result = query.fetch(1)
             if not result:
+                is_provider = False
                 query = Parent.query().filter(Parent.email == email)
                 result = query.fetch(1)
                 if not result:
@@ -224,12 +224,15 @@ def login(request):
                 logger.info('login successful')
                 request.session['email'] = email
                 request.session['user_id'] = result[0].key.id()
+                request.session['is_provider'] = is_provider
                 request.session['dwolla_customer_url'] = getCustomerUrl(email)
-                return HttpResponseRedirect('/home/dashboard')
             else:
                 form.email.errors.append('error: password wrong')
     if check_session(request):
-        return HttpResponseRedirect("/home/dashboard")
+        if request.session.get('is_provider') == True:
+            return HttpResponseRedirect("/home/dashboard")
+        else:
+            return HttpResponseRedirect("/parent")
     return render_to_response(
         'login/login.html',
         {'form': form},
@@ -237,7 +240,7 @@ def login(request):
 
 def getCustomerUrl(email):
     result = models.Provider.query().filter(models.Provider.email == email)
-    if result is not None:
+    if result.fetch(1):
         return result.fetch(1)[0].customerId
     result = Parent.get_by_id(email)
     if result is not None:

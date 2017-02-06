@@ -8,6 +8,7 @@ from time import strftime, strptime
 from datetime import datetime, date, time
 from login.models import Provider
 from invoice.models import Invoice
+from invoice.invoice_util import get_invoice_enrollments
 from parent.models import Parent
 from child.models import Child
 
@@ -44,3 +45,18 @@ def listInvoices(request):
             'paid' : invoice.paid
         })
 	return HttpResponse(json.dumps(results))
+
+
+def setupAutopay(request):
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	source = data['source']
+	invoice = None
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		enrollments = get_invoice_enrollments(invoice)
+		for enrollment in enrollments:
+			enrollment.autopay_source_id = source
+			enrollment.put()
+
+	return HttpResponse("success")
