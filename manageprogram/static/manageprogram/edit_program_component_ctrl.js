@@ -1,6 +1,6 @@
 var TIME_FORMAT =  'hh:mm A';
 
-EditProgramComponentController = function($http, $window, $location, $routeParams) {
+EditProgramComponentController = function($http, $window, $location) {
     console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -10,36 +10,6 @@ EditProgramComponentController = function($http, $window, $location, $routeParam
     this.showConflictLabel = false;
     this.location_ = $location;
 
-    this.params_ = $routeParams;
-
-    this.programId = this.params_.programId;
-    this.program = {};
-
-    for (i in this.programs) {
-        var program = this.programs[i];
-        if (program.id == this.programId) {
-            angular.copy(program, this.program);
-            break;
-        }
-    }
-
-    if (angular.equals(this.program, {})) {
-    	$http({
-            method: 'GET',
-            url: '/manageprogram/getprogram',
-            params: {id: this.programId}
-        }).then(angular.bind(this, function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
-
-            this.program = JSON.parse(response.data[0]);
-
-        }), function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-            console.log(response);
-        });
-    }
 
 //    TODO: add session editing
 //	$http({
@@ -63,16 +33,33 @@ EditProgramComponentController = function($http, $window, $location, $routeParam
 //	});
 	this.initializeTimePickers();
 
-//	$('#editProgramModal').on('hidden', function () {
-//      console.log("fasfsafaf");
-//      $('body').off('click');
-//
-//    });
 
-    $('#editProgramModal').on('hidden.bs.modal', function () {
-          console.log("fasfsafaf");
+        var $ctrl = this;
 
-    });
+    $ctrl.$onInit = function () {
+
+          	$http({
+            method: 'GET',
+            url: '/manageprogram/getprogram',
+            params: {id: $ctrl.resolve.programId}
+        }).then(angular.bind(this, function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+
+            this.program = JSON.parse(response.data[0]);
+
+        }), function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log(response);
+        });
+
+    };
+
+        $ctrl.cancel = function () {
+          $ctrl.dismiss({$value: 'cancel'});
+        };
+
 };
 
 
@@ -149,10 +136,8 @@ EditProgramComponentController.prototype.saveProgram = function() {
 		angular.bind(this, function (response) {
 			console.log('post suceeded');
 
-			//this.window_.location.href = '/home/dashboard';
+            this.close({$value : this.program});
 
-			this.location_.path('/programs');
-			location.reload();
 		}),
 		function (response) {
 			console.log('post failed');
@@ -161,17 +146,11 @@ EditProgramComponentController.prototype.saveProgram = function() {
 	);
 };
 
-EditProgramComponentController.prototype.closeProgram = function() {
-$('body').removeClass('modal-open');
-$('.modal-backdrop').remove();
-    this.location_.path('/programs');
-};
-
 EditProgramComponentController.prototype.deleteProgram = function() {
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/deleteprogram',
-		data: JSON.stringify({id: this.programId})
+		data: JSON.stringify({id: this.program.id})
 	}).then(
 		angular.bind(this, function (response) {
 			console.log('post suceeded');
@@ -180,6 +159,7 @@ EditProgramComponentController.prototype.deleteProgram = function() {
 
 			this.location_.path('/programs');
 			location.reload();
+
 		}),
 		function (response) {
 			console.log('post failed');

@@ -119,11 +119,14 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller: AddProgramComponentController
     })
     .component('editProgramComponent', {
-        templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',
-        controller: EditProgramComponentController,
-        bindings: {
-          programs: '<'
-        }
+      templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',
+              controller: EditProgramComponentController,
+      bindings: {
+      programs: '<',
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
     })
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
