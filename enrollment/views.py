@@ -8,6 +8,8 @@ from wtforms_appengine.ndb import model_form
 from models import Enrollment
 from child import child_util
 from google.appengine.ext import ndb
+from login.models import Provider
+from common.email.invoice import send_parent_invite_email
 import enrollment_util
 import json
 import logging
@@ -47,7 +49,8 @@ def add_enrollment(request):
     provider_id = request.session.get("email")
     request_body_dict = json.loads(request.body)
     logger.info(request_body_dict)
-    child_key = child_util.get_child_key(request_body_dict['child_id'], request_body_dict['parent_email'])
+    parent_email = request_body_dict['parent_email']
+    child_key = child_util.get_child_key(request_body_dict['child_id'], parent_email)
     program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
     child = child_key.get()
     program = program_key.get()
@@ -66,6 +69,7 @@ def add_enrollment(request):
         }
         enrollment_util.upsert_enrollment(enrollment)
         status = "success"
+        send_parent_invite_email(parent_email, Provider.get_by_id(provider_id).schoolName, 'http://localhost:8080/login/parentsignup?email=%s' % parent_email)
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 

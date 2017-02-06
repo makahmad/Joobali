@@ -41,7 +41,6 @@
 
     <!-- Invoice Related JS -->
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
-    <script src="{{ STATIC_URL }}invoice/payments_due_component_ctrl.js"></script>
 
     <!-- Funding Related JS -->
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
@@ -57,7 +56,7 @@
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
     <!-- Dashboard Related JS -->
-    <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}parent/payment_setup_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}parent/parent_app.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -78,10 +77,6 @@
             </button>
             <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a>
         </div>
-		
-		<div class="providerName">
-				[[ schoolName ]]
-		</div>
         
 		<div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
@@ -159,7 +154,7 @@
         </div>
     </div>
     <!-- /#page-content-wrapper -->
-    <init-setup-component></init-setup-component>
+    <payment-setup-component></payment-setup-component>
     {% endverbatim %}
 </div>
 <!-- /#wrapper -->

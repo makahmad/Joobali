@@ -61,16 +61,16 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
          function($locationProvider, $routeProvider) {
              $locationProvider.hashPrefix('!');
              $routeProvider
-                 .when('/funding', {templateUrl: '/static/parent/invoice_component_tmpl.html'})
+                 .when('/funding', {templateUrl: '/static/parent/funding_component_tmpl.html'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
-    .component('initSetupComponent', {
-        templateUrl: '/static/parent/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController
+    .component('paymentSetupComponent', {
+        templateUrl: '/static/parent/payment_setup_component_tmpl.html',
+        controller: PaymentSetupComponentController
     })
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',

@@ -62,9 +62,9 @@ def invoice_calculation(request):
                 if provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
-                    invoice = invoice_util.create_invoice(provider, child, today, due_date)
+                    invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'])
                     invoice_dict[provider_child_pair_key] = invoice
-                invoice_util.create_invoice_line_item(ndb.Key("Enrollment", enrollment["enrollment_id"]), invoice, program, cycle_start_date, cycle_start_date + program_cycle_time)
+                invoice_util.create_invoice_line_item(ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"]), invoice, program, cycle_start_date, cycle_start_date + program_cycle_time)
 
     # Sum up total amount due
     for key in invoice_dict:
@@ -88,6 +88,7 @@ def invoice_notification(request):
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
+                'pay_invoice_url': 'http://joobali-1310.appspot.com/static/logo/img_headerbg.png',
                 'invoice_id': invoice.key.id(),
                 'start_date': start_date.strftime('%m/%d/%Y'),
                 'end_date': end_date.strftime('%m/%d/%Y'),
