@@ -86,7 +86,7 @@ def updateProgram(request):
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
 	# program.feeType = newProgram['feeType']
-	# program.lateFee = newProgram['lateFee']
+	program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
@@ -130,7 +130,7 @@ def addProgram(request):
 
 	program.registrationFee = newProgram['registrationFee']
 	program.fee = newProgram['fee']
-	# program.lateFee = newProgram['lateFee']
+	program.lateFee = newProgram['lateFee']
 	program.billingFrequency = newProgram['billingFrequency']
 
 	program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
