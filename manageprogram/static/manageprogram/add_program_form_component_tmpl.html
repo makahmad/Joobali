@@ -29,6 +29,13 @@
         </div>
     </div>
     <div class="form-group">
+      <label class="control-label" for="lateFee">Late Fee:</label>
+      <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input type="number" min="0" step="1" class="form-control" id="lateFee" name="lateFee" required="false" ng-model="$ctrl.newProgram.lateFee">
+        </div>
+    </div>
+    <div class="form-group">
       <label class="control-label" for="fee">Billing Rate:</label>
       <div class="input-group">
         <span class="input-group-addon">$</span>

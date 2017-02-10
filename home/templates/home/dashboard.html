@@ -63,6 +63,7 @@
 
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
+    <script src="{{ STATIC_URL}}enrollment/enrollment-editor.component.js"></script>
     <!-- Dashboard Related JS -->
     <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
@@ -86,11 +87,11 @@
             <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
 						<!-- <a class="logoLink" href="#"><img src="{{ STATIC_URL }}logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a> -->
         </div>
-		
+
 		<div class="providerName">
 				{{ schoolName }}
 		</div>
-        
+
 		<div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
@@ -105,14 +106,14 @@
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>
-				
+
                 {% else %}
                 <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
                 <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
                 {% endif %}
             </ul>
         </div>
-		
+
     </div>
 </nav>
 <div id="wrapper">
@@ -143,13 +144,13 @@
 
                 <li>
                     <a href="#!/invoice">
-						<i class="fa fa-list-alt fa-lg"></i> Invoices 
+						<i class="fa fa-list-alt fa-lg"></i> Invoices
 					</a>
                 </li>
 
                 <li>
                     <a href="#!/billing">
-						<i class="fa fa-money fa-lg"></i> Billing 
+						<i class="fa fa-money fa-lg"></i> Billing
 					</a>
                 </li>
 

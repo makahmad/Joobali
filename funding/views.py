@@ -127,7 +127,7 @@ def getIAVToken(request):
 	if not request.session.get('email'):
 		return HttpResponseRedirect('/login')
 	customer_url = request.session.get('dwolla_customer_url')
-	print("account_token.post(%s)" % (customer_url + '/iav-token'))
+	logger.info("account_token.post(%s)" % (customer_url + '/iav-token'))
 	customer = account_token.post(customer_url + '/iav-token')
 
 	return HttpResponse(customer.body['token'])

@@ -12,11 +12,12 @@ logger = logging.getLogger(__name__)
 
 def add_child(child_input, parent_key):
     """Input should be a dict containing all the Child Model's data"""
-    child = Child(parent=parent_key)
+    child = Child()
     child.first_name = child_input['first_name']
     child.last_name = child_input['last_name']
     child.date_of_birth = datetime.strptime(child_input['date_of_birth'], "%m/%d/%Y").date()
     child.parent_email = child_input['parent_email']
+    child.parent_key = parent_key
     child.put()
     return child
 
@@ -47,10 +48,19 @@ def get_provider_child_view(child_key=None, provider_key=None):
     return results
 
 
-def get_child_key(child_id, parent_email):
-    parent = parent_util.get_parents_by_email(parent_email)
-    logger.info('child_id: %s, Parent: %s' % (child_id, parent.key.id()))
-    return ndb.Key('Parent', parent.key.id(), 'Child', child_id)
+# Check if a child can be viewed by a provider
+def check_child_provider_view(child_key, provider_key):
+    if child_key is None or provider_key is None:
+        raise ValueError("child_key is %s and provider_key is %s" % (child_key, provider_key))
+    else:
+        query = ProviderChildView.query(ProviderChildView.child_key == child_key,
+                                        ProviderChildView.provider_key == provider_key)
+        logger.info("query.count() %s" % query.count())
+        return query.count() > 0
+
+
+def get_child_key(child_id):
+    return ndb.Key('Child', child_id)
 
 
 # TODO(zilong): Implement this

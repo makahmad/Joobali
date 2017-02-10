@@ -4,7 +4,9 @@
     padding: 100px 25px;
     margin: 0 auto;
 }
+
 .enrollmentList {
+    text-align:center;
 }
 
 .enrollmentEditor {

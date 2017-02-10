@@ -1,7 +1,26 @@
-ChildCardController = function ChildCardController($scope, $http, $routeParams, $location) {
+ChildCardController = function ChildCardController($uibModal, $scope, $http, $routeParams, $location) {
+
+    var self = this;
+    self.openEnrollmentModal = function() {
+        console.log("Opening Add Enrollment Modal");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/static/child/child-enrollment.template.html',
+            controller: 'ChildEnrollmentController',
+            controllerAs: '$ctrl',
+            resolve: {
+                child: function () {
+                    return self.child;
+                },
+                programs: function() {
+                    return self.programs;
+                }
+            }
+        })
+    }
 
     // TODO(zilong): Move this to ChildListController
-    this.getProgramData = function() {
+    self.getProgramData = function() {
         $http({
             method: 'GET',
             url: '/manageprogram/listprograms'
@@ -17,7 +36,7 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
         });
     };
 
-    this.getEnrollmentData = function() {
+    self.getEnrollmentData = function() {
         request = {
             'child_id' : this.child.id,
             'parent_email': this.child.parent_email
@@ -32,7 +51,7 @@ ChildCardController = function ChildCardController($scope, $http, $routeParams, 
         }));
     }
 
-    this.$onInit = function() {
+    self.$onInit = function() {
         console.log("child is " + JSON.stringify(this.child));
         console.log("index is " + this.index);
         this.getProgramData();

@@ -1,63 +1,35 @@
-enrollmentEditorController = function EnrollmentEditorController($http, $routeParams, $location) {
+EnrollmentEditorController = function EnrollmentEditorController($uibModalInstance, $http, enrollment) {
+    var self = this;
+    self.enrollment = enrollment;
+    self.startDatePickerOpened = false;
+    self.child = {};
+    // Functions
+    self.renderEnrollmentEditor = function(enrollment) {
+      var child_key = enrollment.child_key;
+      var child_id = child_key[0][1];
+      var get_child_request = {'child_id' : child_id};
+      $http.post('/child/get', get_child_request)
+      .then(function successCallback(response) {
+        self.child = response.data;
+        console.log(self.child)
+      }, function errorCallback(response) {
+        console.log("Error when trying to get child info: " + response);
+      });
+      var get_program_request = {'program_id': enrollment.program_key[1][1]};
+    };
 
-        // Fields
-        this.enrollmentId = $routeParams.enrollmentId;
-        this.programId = $routeParams.programId;
-        this.enrollmentInfo = {};
+    self.handleSave = function() {
+    };
 
-        // Functions
-        this.renderEnrollmentEditor = function(enrollmentId, programId) {
-            $http({
-                method: 'GET',
-                url: '/enrollment/get?enrollmentId=' + enrollmentId + '&programId=' + programId
-            }).then(angular.bind(this, function successCallback(response) {
-                // this callback will be called asynchronously
-                // when the response is available
-                this.enrollmentInfo = angular.fromJson(angular.fromJson(response.data));
-                console.log(response.data);
-                console.log(this.enrollmentInfo);
-                console.log(typeof(this.enrollmentInfo));
-                console.log(this.enrollmentInfo.parent_first_name);
-            }), function errorCallback(response) {
-                // TODO(zilong): deal with error here
-                console.log(response);
-            });
-        };
+    self.$onInit = function() {
+        self.renderEnrollmentEditor(self.enrollment);
+        self.startDatePickerOpened = false;
+    };
 
-        this.handleSave = function() {
-            console.log("save");
-            console.log(this.enrollmentInfo);
-            var submittingFormEnrolmentInfo = angular.copy(this.enrollmentInfo);
-            console.log(submittingFormEnrolmentInfo);
-            submittingFormEnrolmentInfo.program_id = this.programId;
-            delete submittingFormEnrolmentInfo['program'];
-            console.log("submitting " + submittingFormEnrolmentInfo);
-            $http.post('/enrollment/update', submittingFormEnrolmentInfo).then(function successCallback(response) {
-                var isSaveSuccess = false;
-                console.log(response);
-                if (response.data.status == 'success') {
-                    isSaveSuccess = true;
-                }
-                if (isSaveSuccess) {
-                    $("#saveSuccessLabel").removeClass('hide');
-                    $("#saveFailureLabel").addClass('hide');
-                    $("#saveButton").hide();
-                    $("#doneButton").show();
-                } else {
-                    $("#saveSuccessLabel").addClass('hide');
-                    $("#saveFailureLabel").removeClass('hide');
-                }
-            }, function errorCallback(response) {
-                $("#saveSuccessLabel").addClass('hide');
-                $("#saveFailureLabel").removeClass('hide');
-            });
-        };
-
-        this.switchToEnrollmentHome = function() {
-            $location.path("/enrollment/list");
-        }
-
-        this.$onInit = function() {
-            this.renderEnrollmentEditor(this.enrollmentId, this.programId);
-        };
+    self.openStartDatePicker = function() {
+      self.startDatePickerOpened = true;
+    };
+    self.closeModal = function() {
+      $uibModalInstance.close();
     }
+}
