@@ -6,4 +6,3 @@ def get_id_by_kind(key, kind):
         if pair[0] == kind:
             return pair[1]
     return ""
-

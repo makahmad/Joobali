@@ -1,11 +1,11 @@
-ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $routeParams, $location) {
+ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance, $http, child, programs) {
     /*
      * @input: child
      * @input: programs
      */
     var self = this;
-    console.log("self.child: " + self.child);
-    console.log("self.index: " + self.index);
+    self.child = child;
+    self.programs = programs;
     self.currentStep = 0;
     self.newEnrollment = {};
     self.nextButton = {};
@@ -46,7 +46,7 @@ ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $r
 
     self.doneButton.click = function() {
         console.log("doneButton is clicked");
-        self.resetModal();
+        self.closeModal();
     }
 
     self.nextButton.click = function() {
@@ -86,6 +86,7 @@ ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $r
     };
 
     self.resetModal = function() {
+        self.todayDate = new Date();
         self.resetButton();
         self.currentStep = 0;
         self.saveSuccessLabel.show = false;
@@ -93,6 +94,11 @@ ChildEnrollmentController = function ChildEnrollmentController($scope, $http, $r
     }
 
     self.$onInit = function() {
+        console.log("self.child: " + JSON.stringify(self.child));
         self.resetModal();
     };
+
+    self.closeModal = function() {
+        $uibModalInstance.close();
+    }
 }

@@ -1,36 +1,38 @@
-<div class="enrollmentEditor">
-    <label>You're editing {{$ctrl.enrollmentId}}</label>
-    <form name="enrollmentForm" role="form" class="well">
-        <div class="form-content active">
-            <div class="form-group">
-                <label class="control-label" for="childFirstName">Child First Name</label>
-                <input type="text" class="form-control" id="childFirstName" required="true"
-                       ng-model="$ctrl.enrollmentInfo.child_first_name">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="childLastName">Child Last Name</label>
-                <input type="text" class="form-control" id="childLastName" required="true"
-                       ng-model="$ctrl.enrollmentInfo.child_last_name">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="parentFirstName">Parent First Name</label>
-                <input type="text" class="form-control" id="parentFirstName" required="true"
-                       ng-model="$ctrl.enrollmentInfo.parent_first_name">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="parentLastName">Parent Last Name</label>
-                <input type="text" class="form-control" id="parentLastName" required="true"
-                       ng-model="$ctrl.enrollmentInfo.parent_last_name">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="email">Email</label>
-                <input name="email" type="email" class="form-control" id="email" required="true"
-                       ng-model="$ctrl.enrollmentInfo.email">
-            </div>
-        </div>
-    </form>
-    <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
-    <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
-    <button type="button" class="btn btn-primary">update</button>
-    <button type="button" class="btn btn-default" ng-click="$ctrl.switchToEnrollmentHome()">back to list</button>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.closeModal()">&times;</button>
+    <h4 class="modal-title">Edit Enrollment</h4>
 </div>
+<div class="modal-body">
+    <div class="enrollmentEditor">
+        <label>You're editing {{$ctrl.enrollmentId}}</label>
+        <form name="enrollmentEditForm" role="form" class="well">
+            <div class="active">
+                <div class="form-group">
+                    <label class="control-label" for="childFirstName">Child First Name</label>
+                    <input type="text" class="form-control" id="childFirstName" required="true" ng-model="$ctrl.child.first_name" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="childLastName">Child Last Name</label>
+                    <input type="text" class="form-control" id="childLastName" required="true" ng-model="$ctrl.child.last_name" readonly>
+                </div>
+                <div class="form-group" ng-class="{'has-error': enrollmentEditForm.startDate.$invalid && enrollmentEditForm.startDate.$touched}">
+                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
+                    <p class="input-group">
+                        <input name="startDate" type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" datepicker-options="{minDate: $ctrl.todayDate}" ng-model="$ctrl.enrollment.start_date" is-open="$ctrl.startDatePickerOpened" ng-required="true" close-text="Close"
+                        />
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openStartDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                    </p>
+                </div>
+            </div>
+        </form>
+        <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
+        <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
+        <button type="button" class="btn btn-primary">update</button>
+        <button type="button" class="btn btn-danger">delete</button>
+        <button type="button" class="btn btn-default">back to list</button>
+    </div>
+</div>
+<div class="modal-footer"></div>

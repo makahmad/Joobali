@@ -75,7 +75,7 @@ LoginForm = model_form(models.Provider, field_args={
 })
 
 def provider_signup(request):
-    print request.POST
+    logger.info("request.POST %s" % request.POST)
     form = ProviderForm()
     if request.method == 'POST':
         form = ProviderForm(request.POST)
@@ -89,23 +89,25 @@ def provider_signup(request):
 
             (provider, created) = get_or_insert(models.Provider, email, provider)
             if created:
+                logger.info("Generating customerId for this provider")
                 request.session['email'] = provider.email
                 create_new_init_setup_status(provider.email);
 
-
                 request_body = {
-                  'firstName': provider.firstName,
-                  'lastName': provider.lastName,
-                  'email': provider.email,
-                  'ipAddress': '99.99.99.99'
+                    'firstName': provider.firstName,
+                    'lastName': provider.lastName,
+                    'email': provider.email,
+                    'ipAddress': '99.99.99.99'
                 }
                 try:
                     customer = account_token.post('customers', request_body)
+                    logger.info("customer.headers['location'] %s" % customer.headers['location'])
                     provider.customerId = customer.headers['location']
                     provider.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']
                 except ValidationError as err:  # ValidationError as err
                     # Do nothing
+                    logger.warning(err)
                     pass
                 return HttpResponseRedirect('/home/dashboard')
             else:
@@ -202,7 +204,7 @@ def get_or_insert(model, email, user):
 
 def login(request):
     form = LoginForm()
-    print request.session
+
     if request.method == 'POST':
         form = LoginForm(request.POST)
         form.validate()
@@ -226,10 +228,11 @@ def login(request):
                 request.session['user_id'] = result[0].key.id()
                 request.session['is_provider'] = is_provider
                 request.session['dwolla_customer_url'] = getCustomerUrl(email)
+                logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
             else:
                 form.email.errors.append('error: password wrong')
     if check_session(request):
-        if request.session.get('is_provider') == True:
+        if request.session.get('is_provider') is True:
             return HttpResponseRedirect("/home/dashboard")
         else:
             return HttpResponseRedirect("/parent")

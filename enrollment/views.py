@@ -46,17 +46,18 @@ def add_enrollment(request):
         logger.info("get non-post http request")
         return
     logger.info("request.body %s", request.body)
-    provider_id = request.session.get("email")
+    provider_id = request.session.get("user_id")
     request_body_dict = json.loads(request.body)
     logger.info(request_body_dict)
     parent_email = request_body_dict['parent_email']
-    child_key = child_util.get_child_key(request_body_dict['child_id'], parent_email)
+    child_key = child_util.get_child_key(request_body_dict['child_id'])
     program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
     child = child_key.get()
     program = program_key.get()
     if child is None:
         logger.info("child does not exist")
     elif program is None:
+        logger.info("program_key is %s" % program_key)
         logger.info('program does not exist')
     else:
         request_body_dict['start_date']
@@ -93,12 +94,11 @@ def list_enrollment_by_child(request):
     status = "failure"
     if not check_session(request):
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
-    provider_id = request.session.get('email')
+    provider_id = request.session.get('user_id')
     request_body_dict = json.loads(request.body)
     logger.info('provider_id %s, child_id %s, parent_email %s' % (
         provider_id, request_body_dict['child_id'], request_body_dict['parent_email']))
-    child_key = child_util.get_child_key(child_id=request_body_dict['child_id'],
-                                         parent_email=request_body_dict['parent_email'])
+    child_key = child_util.get_child_key(child_id=request_body_dict['child_id'])
     enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_id=provider_id, child_key=child_key)
     response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     logger.info("response is %s" % response)

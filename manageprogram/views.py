@@ -62,7 +62,7 @@ def getProgram(request):
 	provider = Provider.get_by_id(user_id)
 	# Must specify parent since id is not unique in DataStore
 	program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
-	return HttpResponse(json.dumps([JEncoder().encode(program)]))
+	return HttpResponse(json.dumps([JEncoder().encode(program)]), content_type="application/json")
 
 def updateProgram(request):
 	"""Updates the program with provided program ID"""

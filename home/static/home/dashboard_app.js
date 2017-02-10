@@ -96,7 +96,13 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .otherwise('/dashboard');
           }])
     .controller('DashboardCtrl', DashboardController)
-    .component('initSetupComponent', {
+		// to support enrollment modal in child-card
+		// need child/child-enrollment.component.js
+    .controller('ChildEnrollmentController', ChildEnrollmentController)
+		// to support EnrollmentEditorModal
+		// need enrollment/enrollment-editor.component.js
+		.controller('EnrollmentEditorController', EnrollmentEditorController)
+		.component('initSetupComponent', {
         templateUrl: '/static/home/init_setup_component_tmpl.html',
         controller: InitSetupComponentController
     })
@@ -122,7 +128,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
       templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',
               controller: EditProgramComponentController,
       bindings: {
-      programs: '<',
+        programs: '<',
         resolve: '<',
         close: '&',
         dismiss: '&'
@@ -166,19 +172,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
-        controller : ['$scope', '$http', '$routeParams', '$location', ChildCardController],
+        controller : ['$uibModal', '$scope', '$http', '$routeParams', '$location', ChildCardController],
         bindings: {
           child: '<',
           index: '<'
-        }
-    })
-    .component('childEnrollment', {
-        templateUrl: '/static/child/child-enrollment.template.html',
-        controller : ['$scope','$http', '$routeParams', '$location', ChildEnrollmentController],
-        bindings: {
-            child: '<',
-            programs: '<',
-            index: '<'
         }
     })
     .component('childForm',{
@@ -187,7 +184,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('enrollmentList',{
         templateUrl: '/static/enrollment/enrollment-list.template.html',
-        controller : ['$http', '$routeParams', '$location', EnrollmentListController],
+        controller : ['$uibModal', EnrollmentListController],
         bindings: {
             enrollments: '<'
         }
