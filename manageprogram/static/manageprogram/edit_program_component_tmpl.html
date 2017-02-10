@@ -3,123 +3,84 @@
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&times;</button>
     <h4 class="modal-title">Edit Program:</h4>
-      <!-- No need for steps if program is the only form.
-    <div class="stepsDiv">
-      <ul class="nav nav-pills nav-wizard">
-          <li id="navStep1" class="form-nav current active" ng-click='$ctrl.setCurrent($event)'><a  >Program</a><div class="nav-arrow"></div></li>
-          <li id="navStep2" class="form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Sessions</a><div class="nav-arrow"></div></li>
-          <li id="navStep3" class="form-nav" ><div class="nav-wedge"></div><a >Confirm</a></li>
-      </ul>
-    </div>
-      -->
-  </div>
+  </div> <!-- end modal-header -->
   <div class="modal-body">
-<div class="col-centered programOverviewForm">
-    <form id="programForm" role="form" class="well">
-        <div class="">
-            <div class="form-group">
-                <label class="control-label" for="programName">Program Name:</label>
-                <input type="text" class="form-control" id="programName" name="programName" required="true"
-                       ng-model="$ctrl.program.programName">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="startDate">Start Date:</label>
-                <div class="input-group date">
-                    <input type="text" id="startDate" required="true" class="form-control" name="startDate"
-                           ng-model="$ctrl.program.startDate">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="endDate">End Date:</label>
-                <div class="input-group date">
-                    <input type="text" id="endDate" required="true" class="form-control" name="endDate"
-                           ng-model="$ctrl.program.endDate">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-         <!--   <div class="form-group">
-                <label class="control-label" for="maxCapacity" data-toggle="tooltip"
-                       title="The maximum capacity of students for the program">Maximum Capacity:</label>
-                <input type="number" min="0" class="form-control" id="maxCapacity" name="maxCapacity"
-                       required="true" ng-model="$ctrl.program.maxCapacity">
-            </div>-->
-            <div class="form-group">
-                <label class="control-label" for="registrationFee">Registration Fee:</label>
-                <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="registrationFee"
-                           name="registrationFee" required="true" ng-model="$ctrl.program.registrationFee">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="fee">Billing Rate:</label>
-                <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee"
-                           required="true" ng-model="$ctrl.program.fee">
-                    <span class="input-group-addon">
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
-                                                     value="Weekly" checked="checked">Weekly</label>
-                  <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
-                                                     value="Monthly">Monthly</label>
-                </span>
-                </div>
-            </div>
-          <div class="form-group">
-                <label class="control-label" for="lateFee">Late Fee:</label>
-                <div class="input-group">
-                    <span class="input-group-addon">$</span>
-                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee"
-                           required="true" ng-model="$ctrl.program.lateFee">
-                </div>
-            </div> <!--
-            <div class="form-group">
-                <label class="control-label" for="dueDate">Due Date:</label>
-                <div class="input-group date">
-                    <input type="text" id="dueDate" required="true" class="form-control" name="dueDate"
-                           ng-model="$ctrl.program.dueDate">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="registrationFee">Billing Frequency:</label>
-                <label class="radio-inline"><input type="radio" name="billingFrequency" value="Weekly"
-                                                   ng-model="$ctrl.program.billingFrequency">Weekly</label>
-                <label class="radio-inline"><input type="radio" name="billingFrequency" value="Monthly"
-                                                   ng-model="$ctrl.program.billingFrequency" checked>Monthly</label>
-            </div>-->
-        </div>
+		<div class="col-centered programOverviewForm">
+		    <form id="programForm" role="form" class="well">
+		            <div class="form-group">
+		                <label class="control-label" for="programName">Program Name:</label>
+		                <input type="text" class="form-control" id="programName" name="programName" required="true"
+		                       ng-model="$ctrl.program.programName">
+		            </div>
+								<div class="form-group">
+			            <div class="col-1">
+			                <label class="control-label" for="startDate">Start Date:</label>
+			                <div class="input-group date">
+			                    <input type="text" id="startDate" required="true" class="form-control" name="startDate"
+			                           ng-model="$ctrl.program.startDate">
+			                    <span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-calendar"></span>
+			                    </span>
+			                </div>
+			            </div>
+			            <div class="col-1">
+			                <label class="control-label" for="endDate">End Date:</label>
+			                <div class="input-group date">
+			                    <input type="text" id="endDate" required="true" class="form-control" name="endDate"
+			                           ng-model="$ctrl.program.endDate">
+			                    <span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-calendar"></span>
+			                    </span>
+			                </div>
+			            </div>
+							</div>
+					
+		          <div class="form-group">
+		              <label class="control-label" for="fee">Billing Rate:</label>
+		              <div class="input-group">
+		                  <span class="input-group-addon">$</span>
+		                  <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee"
+		                         required="true" ng-model="$ctrl.program.fee">
+		                  <span class="input-group-addon">
+		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
+		                                                   value="Weekly" checked="checked">Weekly</label>
+		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
+		                                                   value="Monthly">Monthly</label>
+		              </span>
+		              </div>
+		          </div>
+					
+				
+		          <div class="form-group">
+								<div class="col-1">
+		              <label class="control-label" for="registrationFee">Registration Fee:</label>
+		              <div class="input-group">
+		                  <span class="input-group-addon">$</span>
+		                  <input type="number" min="0" step="0.01" class="form-control" id="registrationFee"
+		                         name="registrationFee" required="true" ng-model="$ctrl.program.registrationFee">
+		              </div>
+								</div>
+			          <div class="col-1">
+			                <label class="control-label" for="lateFee">Late Fee:</label>
+			                <div class="input-group">
+			                    <span class="input-group-addon">$</span>
+			                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee"
+			                           required="true" ng-model="$ctrl.program.lateFee">
+			                </div>
+			            </div> 
+		          </div>
 
+		    </form>
+						<div class="formActions">
+							<center>
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProgram()">Update &raquo;</button>
+								<a class="pull-left delete" ng-click="$ctrl.deleteProgram()">&laquo; Delete</a>
+							</center>
+						</div> <!-- end formActions -->
+		</div><!-- end col-centered programOerviewForm -->		
+	</div> <!-- end modal body -->
+	
+		<div class="modal-footer">&nbsp;</div>
 
-    </form>
-
-
-</div>
-</div>
-
-          <div class="modal-footer">
-    <!--<button id="nextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>-->
-    <center>
-                    <button type="button" class="saveProgramButton btn btn-primary btn-lg"
-                    ng-click="$ctrl.saveProgram()">Save
-            </button>
-
-                   <button type="button" class="deleteButton btn btn-danger btn-lg"
-                ng-click="$ctrl.deleteProgram()">Delete This Program
-        </button>
-
-
-    </center>
-
-  </div>
-  </div>
-
-</div>
+</div> <!-- end modal-content -->
 </div>
