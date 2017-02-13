@@ -51,6 +51,8 @@ def updateProfile(request):
 		provider.license = profile['license']
 		provider.put()
 
+	request.session['email'] = profile['email']
+
 	# return render_to_response(
 	# 	'profile/profile_component_tmpl.html',
 	# 	{'form': profile},
