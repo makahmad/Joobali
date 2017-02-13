@@ -1,10 +1,8 @@
 import json
 import logging
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseServerError
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django import template
 
 from common.json_encoder import JEncoder
 from common.session import check_session
@@ -39,6 +37,15 @@ def updateProfile(request):
 
 	#provider profile update
 	provider = Provider.get_by_id(request.session['user_id'])
+
+	if request.session['email']!=profile['email']:
+		if request.session['is_provider']:
+			query = Provider.query().filter(Provider.email == profile['email'])
+			result = query.fetch(1)
+			if result:
+				return HttpResponseServerError('email already exists')
+			request.session['email'] = profile['email']
+
 	if provider is not None:
 		provider.schoolName = profile['schoolName']
 		provider.firstName = profile['firstName']
@@ -50,8 +57,6 @@ def updateProfile(request):
 		provider.website = profile['website']
 		provider.license = profile['license']
 		provider.put()
-
-	request.session['email'] = profile['email']
 
 	# return render_to_response(
 	# 	'profile/profile_component_tmpl.html',
