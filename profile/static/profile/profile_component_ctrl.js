@@ -4,6 +4,7 @@ ProfileComponentController = function($scope, $http, $window) {
 	this.window_ = $window;
 	this.profile = {};
 	this.emailError = false;
+	this.disableSave = false;
 	this.scope_ = $scope;
 
     if (angular.equals(this.profile, {})) {
@@ -36,22 +37,43 @@ ProfileComponentController.prototype.saveProfile = function() {
         console.log('post suceeded');
         location.reload();
 
-	  }), function errorCallback(response) {
+	  }), angular.bind(this, function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.
 			console.log('post failed');
 
 			if (response.data=="email already exists")
-			{
-
-                  	this.emailError = true;
-
-			    alert("email already exists");
-			    }
+                 this.emailError = true;
 			else
 			    alert("Something is wrong with the saving. Please try again later");
-	  });
-
-
-
+	  }));
 };
+
+
+ProfileComponentController.prototype.validateEmail = function() {
+    this.emailError = false;
+
+    if (this.profile.email!=null)
+    {
+        this.http_({
+            method: 'POST',
+            url: '/profile/validateemail',
+            data: JSON.stringify(this.profile.email)
+        }).then(angular.bind(this, function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            console.log('email valid ');
+            this.disableSave = false;
+            this.emailError = false;
+
+          }), angular.bind(this, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+                console.log('email invalid');
+                this.disableSave = true;
+                this.emailError = true;
+          }));
+
+	  }
+};
+
