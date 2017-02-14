@@ -5,4 +5,5 @@ from . import views
 urlpatterns = [
 	url(r'^listinvoices', views.listInvoices, name='listInvoices'),
 	url(r'^setupautopay', views.setupAutopay, name='setupAutopay'),
+	url(r'^viewinvoice', views.viewInvoice, name='viewInvoice'),
 ]
