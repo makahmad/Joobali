@@ -17,6 +17,7 @@ class Invoice(ndb.Model):
     paid = ndb.BooleanProperty(required=True, default=False)
     email_sent = ndb.BooleanProperty(required=True, default=False)
     autopay_source_id = ndb.StringProperty() # come from enrollment
+    pdf = ndb.BlobProperty()
 
 class InvoiceLineItem(ndb.Model):
     enrollment_key = ndb.KeyProperty(required=True)
