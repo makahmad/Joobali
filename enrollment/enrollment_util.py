@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 from models import Enrollment
+from login.models import Provider
 from datetime import datetime
-from common import key_util
 import logging
 
 logger = logging.getLogger(__name__)
@@ -13,27 +13,45 @@ def upsert_enrollment(enrollment_input):
     enrollment.child_key = enrollment_input['child_key']
     enrollment.program_key = enrollment_input['program_key']
     enrollment.status = enrollment_input['status']
+    if enrollment.status not in Enrollment.get_possible_status():
+        raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.put()
     return enrollment
 
 
-def delete_enrollment(enrollment):
-    """Deletes an enrollment"""
-    enrollment_id = enrollment.id
-    delete_enrollment_by_id(enrollment_id)
-    pass
+def cancel_enrollment(provider_id, enrollment_id):
+    """Cancels an enrollment"""
+    enrollment_key = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id)
+    if enrollment_key.get() is None:
+        return None
+    enrollment = enrollment_key.get()
+    if enrollment.status == 'invited' or enrollment.status == 'initialized' or enrollment.status == 'active':
+        enrollment.status = 'inactive'
+        enrollment.put()
+        return True
+    else:
+        return False
 
 
-def delete_enrollment_by_id(enrollment_id):
-    """Deletes an enrollment given the enrollment id"""
-    pass
+def reactivate_enrollment(provider_id, enrollment_id):
+    """Reactivates an enrollment"""
+    enrollment_key = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id)
+    if enrollment_key.get() is None:
+        return None
+    enrollment = enrollment_key.get()
+    if enrollment.status == 'inactive':
+        enrollment.status = 'initialized'
+        enrollment.put()
+        return True
+    else:
+        return False
 
 
-def get_enrollment(provider_id, program_id, enrollment_id):
+def get_enrollment(provider_id, enrollment_id):
     """Reads an enrollment given the enrollment id"""
     logger.info("enrollment_id is %d, provider_id %s" % (enrollment_id, provider_id))
-    enrollment_key = get_enrollment_key(provider_id, enrollment_id)
+    enrollment_key = Enrollment.generate_key(provider_id, enrollment_id)
     enrollment = enrollment_key.get()
     logger.info(enrollment)
     return enrollment
@@ -46,7 +64,7 @@ def list_enrollment_by_provider_and_child(provider_id, child_key):
         logger.info("enrollment_query is none")
     enrollments = list()
     for enrollment in enrollment_query:
-        enrollments.append(enrollment.to_dict())
+        enrollments.append(enrollment)
     return enrollments
 
 
@@ -58,6 +76,3 @@ def list_enrollment_by_provider(provider_id):
     for enrollment in enrollment_query:
         enrollments.append(enrollment.to_dict())
     return enrollments
-
-def get_enrollment_key(provider_id, enrollment_id):
-    return ndb.Key("Provider", provider_id, "Enrollment", enrollment_id)

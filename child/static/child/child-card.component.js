@@ -37,11 +37,8 @@ ChildCardController = function ChildCardController($uibModal, $scope, $http, $ro
     };
 
     self.getEnrollmentData = function() {
-        request = {
-            'child_id' : this.child.id,
-            'parent_email': this.child.parent_email
-        }
-        $http.post('/enrollment/listByChildId', request).then(angular.bind(this, function successCallback(response) {
+        $http.post('/enrollment/listByChildId', { 'child_id' : this.child.id })
+        .then(angular.bind(this, function successCallback(response) {
             this.enrollments = [];
             console.log('enrollment/listByChild: ' + response.data)
             angular.forEach(response.data, angular.bind(this, function(enrollment) {

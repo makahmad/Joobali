@@ -7,9 +7,9 @@ class JEncoder(json.JSONEncoder):
 
     def default(self, o):
         if isinstance(o, ndb.Model):
-			result = o.to_dict()
-			result['id'] = o.key.id()
-			return result
+            result = o.to_dict()
+            result['id'] = o.key.id()
+            return result
         elif isinstance(o, ndb.Key):
             return o.pairs()
         elif isinstance(o, datetime):

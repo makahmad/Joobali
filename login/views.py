@@ -74,6 +74,7 @@ LoginForm = model_form(models.Provider, field_args={
     }
 })
 
+
 def provider_signup(request):
     logger.info("request.POST %s" % request.POST)
     form = ProviderForm()
@@ -91,8 +92,9 @@ def provider_signup(request):
             if created:
                 logger.info("Generating customerId for this provider")
                 request.session['email'] = provider.email
-                create_new_init_setup_status(provider.email);
+                create_new_init_setup_status(provider.email)
 
+                # Dummy request to dwolla UAT instance to acquire a customer url.
                 request_body = {
                     'firstName': provider.firstName,
                     'lastName': provider.lastName,
@@ -105,6 +107,7 @@ def provider_signup(request):
                     provider.customerId = customer.headers['location']
                     provider.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']
+                    request.session['user_id'] = provider.key.id()
                 except ValidationError as err:  # ValidationError as err
                     # Do nothing
                     logger.warning(err)
@@ -113,12 +116,12 @@ def provider_signup(request):
             else:
                 form.email.errors.append('error: user exists')
 
-
     return render_to_response(
         'login/provider_signup.html',
         {'form': form},
         template.RequestContext(request)
     )
+
 
 # TODO(zilong): Make sure this won't conflict with the parent data storage
 # in add-child for provider
@@ -137,7 +140,7 @@ def parent_signup(request):
             (parent, created) = get_or_insert(Parent, email, parent)
             if created:
                 request.session['email'] = parent.email
-                create_new_init_setup_status(parent.email);
+                create_new_init_setup_status(parent.email)
 
                 request_body = {
                   'firstName': parent.first_name,
@@ -150,6 +153,7 @@ def parent_signup(request):
                     parent.customerId = customer.headers['location']
                     parent.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']
+                    request.session['parent_id'] = parent.key.id()
                 except ValidationError as err:  # ValidationError as err
                     # Do nothing
                     print err
@@ -165,6 +169,7 @@ def parent_signup(request):
         template.RequestContext(request)
     )
 
+
 def create_new_init_setup_status(email):
     ''' Create a new InitSetupStatus object with unfinished status '''
     initSetupStatus = InitSetupStatus(id=email)
@@ -172,12 +177,14 @@ def create_new_init_setup_status(email):
     initSetupStatus.setupFinished = False
     initSetupStatus.put()
 
+
 def is_init_setup_finished(request):
     ''' If the user is just signed up. For deciding the display of init setup flow'''
     result = InitSetupStatus.get_by_id(request.session['email'])
     if (result is not None) and result.setupFinished == True:
         return HttpResponse('true');
     return HttpResponse('false');
+
 
 def set_init_setup_finished(request):
     ''' Set true that the init setup status is finished '''
@@ -193,15 +200,18 @@ def set_init_setup_finished(request):
         result.put();
     return HttpResponse('success');
 
+
 @ndb.transactional(xg=True)
 def get_or_insert(model, email, user):
     result = model.get_by_id(email)
     if result is not None:
-        return (result, False)
+        return result, False
     user.put()
     logger.info("INFO: successfully stored " + model._get_kind() + ":" + str(user))
-    return (user, True)
+    return user, True
 
+
+# TODO(zilong): Allow parent login
 def login(request):
     form = LoginForm()
 
@@ -241,6 +251,7 @@ def login(request):
         {'form': form},
         template.RequestContext(request))
 
+
 def getCustomerUrl(email):
     result = models.Provider.query().filter(models.Provider.email == email)
     if result.fetch(1):
@@ -251,11 +262,10 @@ def getCustomerUrl(email):
     raise Exception('user does not exist')
 
 
-
 def logout(request):
     loggedIn = False
     if request.session.get('email'):
         loggedIn = True
     if loggedIn:
         request.session.terminate()
-    return HttpResponseRedirect('/home')
+    return HttpResponseRedirect('/login')

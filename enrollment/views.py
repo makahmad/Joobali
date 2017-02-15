@@ -65,17 +65,13 @@ def add_enrollment(request):
             'provider_key': ndb.Key('Provider', provider_id),
             'child_key' : child_key,
             'program_key' : program_key,
-            'status': 'initiated',
+            'status': 'initialized',
             'start_date':request_body_dict['start_date']
         }
         enrollment_util.upsert_enrollment(enrollment)
         status = "success"
         send_parent_invite_email(parent_email, Provider.get_by_id(provider_id).schoolName, 'http://localhost:8080/login/parentsignup?email=%s' % parent_email)
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
-
-
-def add_enrollment_from_child_view(request):
-    status = "failure"
 
 
 def list_enrollment(request):
@@ -96,19 +92,45 @@ def list_enrollment_by_child(request):
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
     provider_id = request.session.get('user_id')
     request_body_dict = json.loads(request.body)
-    logger.info('provider_id %s, child_id %s, parent_email %s' % (
-        provider_id, request_body_dict['child_id'], request_body_dict['parent_email']))
+    logger.info('provider_id %s, child_id %s' % (provider_id, request_body_dict['child_id']))
     child_key = child_util.get_child_key(child_id=request_body_dict['child_id'])
     enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_id=provider_id, child_key=child_key)
     response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     logger.info("response is %s" % response)
     return response
 
-# TODO(zilong): finish this two methods
-def update_enrollment(request):
-    enrollment = enrollment_util.upsert(request.enrollment)
-    response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
-    return response
+
+def cancel_enrollment(request):
+    status = "failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    logger.info(request)
+    if request.method != 'POST':
+        logger.info("get non-post http request")
+        return
+    request_body_dict = json.loads(request.body)
+    provider_id = request.session.get("user_id")
+    enrollment_id = request_body_dict['enrollment_id']
+    if enrollment_util.cancel_enrollment(provider_id=provider_id, enrollment_id=enrollment_id):
+        status = 'success'
+    return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+
+
+def reactivate_enrollment(request):
+    status = "failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    logger.info(request)
+    if request.method != 'POST':
+        logger.info("get non-post http request")
+        return
+    request_body_dict = json.loads(request.body)
+    provider_id = request.session.get("user_id")
+    enrollment_id = request_body_dict['enrollment_id']
+    if enrollment_util.reactivate_enrollment(provider_id=provider_id, enrollment_id=enrollment_id):
+        status = 'success'
+    return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+
 
 
 def get_enrollment(request):
@@ -130,9 +152,3 @@ def get_enrollment(request):
     enrollment = enrollment_util.get_enrollment(provider_id, program_id, enrollment_id)
     response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
     return response
-
-
-def convert_camel_case_to_snake_case(name):
-    """Converts Camel Case Name to Snake Case Name"""
-    s1 = re.sub('(.)([A-Z][a-z]+)', r'\1_\2', name)
-    return re.sub('([a-z0-9])([A-Z])', r'\1_\2', s1).lower()

@@ -7,7 +7,7 @@
         </div>
         <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)">
             <label>Enrollments Information:</label><br>
-            <enrollment-list enrollments="$ctrl.enrollments"></enrollment-list>
+            <enrollment-list child="$ctrl.child" enrollments="$ctrl.enrollments"></enrollment-list>
         </div>
         <button type="button" class="btn btn-info" ng-click="$ctrl.openEnrollmentModal()">Add Enrollment</button>
     </div>

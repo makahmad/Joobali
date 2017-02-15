@@ -184,8 +184,9 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('enrollmentList',{
         templateUrl: '/static/enrollment/enrollment-list.template.html',
-        controller : ['$uibModal', EnrollmentListController],
+        controller : ['$uibModal', '$log', '$http', EnrollmentListController],
         bindings: {
-            enrollments: '<'
+            enrollments: '<',
+            child: '<'
         }
     });

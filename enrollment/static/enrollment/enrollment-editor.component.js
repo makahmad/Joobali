@@ -18,8 +18,33 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
       var get_program_request = {'program_id': enrollment.program_key[1][1]};
     };
 
-    self.handleSave = function() {
-    };
+    self.cancelEnrollment = function() {
+        var enrollment_id = enrollment.id;
+        $http.post('/enrollment/cancelEnrollment', {'enrollment_id' : enrollment_id})
+        .then(function successCallback(response) {
+            console.log(response.data);
+            self.closeModal(true);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
+
+    self.reactivateEnrollment = function() {
+        var enrollment_id = enrollment.id;
+        $http.post('/enrollment/reactivateEnrollment', {'enrollment_id' : enrollment_id})
+        .then(function successCallback(response) {
+            console.log(response.data);
+            self.closeModal(true);
+        }, function errorCallback(response) {
+            console.log(response);
+        });
+    }
+
+    self.isEnrollmentActive = function() {
+        return (self.enrollment.status == 'initialized'
+            || self.enrollment.status == 'invited'
+            || self.enrollment.status == 'active');
+    }
 
     self.$onInit = function() {
         self.renderEnrollmentEditor(self.enrollment);
@@ -29,7 +54,8 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
     self.openStartDatePicker = function() {
       self.startDatePickerOpened = true;
     };
-    self.closeModal = function() {
-      $uibModalInstance.close();
+
+    self.closeModal = function(refresh) {
+      $uibModalInstance.close({'refresh' : refresh});
     }
 }
