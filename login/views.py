@@ -203,10 +203,16 @@ def set_init_setup_finished(request):
 
 @ndb.transactional(xg=True)
 def get_or_insert(model, email, user):
-    result = model.get_by_id(email)
+    result = models.Unique.get_by_id(email)
     if result is not None:
         return result, False
     user.put()
+    unique = models.Unique(id=email)
+    if model._get_kind() == "Provider":
+        unique.provider_key = user.key
+    else:
+        unique.parent_key = user.key
+    unique.put()
     logger.info("INFO: successfully stored " + model._get_kind() + ":" + str(user))
     return user, True
 

@@ -69,11 +69,15 @@ def viewInvoice(request):
 		parent = Parent.query(Parent.email == invoice.parent_email).fetch(1)[0]
 		items = []
 		lineItems = InvoiceLineItem.query(ancestor=invoice.key)
+		total = 0
 		for lineItem in lineItems:
 			items.append({
 				'program_name': lineItem.program_name,
 				'amount': lineItem.amount,
 			})
+			total += lineItem.amount
+		if total != invoice.amount:
+			HttpResponse("error")
 		data = {
 			'invoice_id': invoice.key.id(),
             'provider_street': provider.address,
