@@ -50,7 +50,7 @@ def updateProfile(request):
         provider.schoolName = profile['schoolName']
         provider.firstName = profile['firstName']
         provider.lastName = profile['lastName']
-        # todo check for existing email address validation
+        # todo update transactions tied to this email address
         provider.email = profile['email']
         provider.password = pwd_context.encrypt(profile['password'])
         provider.phone = profile['phone']
