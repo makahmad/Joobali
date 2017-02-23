@@ -8,8 +8,10 @@ from wtforms_appengine.ndb import model_form
 from django.http import HttpResponse
 
 from login import models
+from login import provider_util
 from home.models import InitSetupStatus
 from parent.models import Parent
+from parent import parent_util
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 
@@ -83,15 +85,12 @@ def provider_signup(request):
         print form.validate()
         if form.validate():
             email = request.POST.get('email')
-            provider = models.Provider()
-            form.populate_obj(provider)
 
-            provider.password = pwd_context.encrypt(provider.password)
-
-            (provider, created) = get_or_insert(models.Provider, email, provider)
+            (provider, created) = get_or_insert(models.Provider, email, form)
             if created:
                 logger.info("Generating customerId for this provider")
                 request.session['email'] = provider.email
+                request.session['user_id'] = provider.key.id()
                 create_new_init_setup_status(provider.email)
 
                 # Dummy request to dwolla UAT instance to acquire a customer url.
@@ -132,14 +131,11 @@ def parent_signup(request):
         form.validate()
         if form.validate():
             email = request.POST.get('email')
-            parent = Parent(id=email)
-            form.populate_obj(parent)
 
-            parent.password = pwd_context.encrypt(parent.password)
-
-            (parent, created) = get_or_insert(Parent, email, parent)
+            (parent, created) = get_or_insert(Parent, email, form)
             if created:
                 request.session['email'] = parent.email
+                request.session['user_id'] = parent.key.id()
                 create_new_init_setup_status(parent.email)
 
                 request_body = {
@@ -202,10 +198,15 @@ def set_init_setup_finished(request):
 
 
 @ndb.transactional(xg=True)
-def get_or_insert(model, email, user):
+def get_or_insert(model, email, form):
     result = models.Unique.get_by_id(email)
     if result is not None:
         return result, False
+
+    user = model(id=model.get_next_available_id())
+    form.populate_obj(user)
+
+    user.password = pwd_context.encrypt(user.password)
     user.put()
     unique = models.Unique(id=email)
     if model._get_kind() == "Provider":
