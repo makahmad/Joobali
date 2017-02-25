@@ -30,6 +30,9 @@ def updateProfile(request):
     if not check_session(request):
         return HttpResponseRedirect('/login')
 
+    if not request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
     profile = json.loads(request.body)
 
     if not profile['id']:
