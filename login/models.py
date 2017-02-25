@@ -28,9 +28,24 @@ class Provider(ndb.Model):
     graceDays = ndb.IntegerProperty(default=0)
     lateFee = ndb.FloatProperty(default=0.0)
 
-    @classmethod
-    def generate_key(cls, provider_id):
-        return ndb.Key(cls.__name__, provider_id)
+    @staticmethod
+    def get_next_available_id():
+        counter = ProviderIdCounter.get_by_id("ProviderIdCounter")
+        id = 0
+        if counter:
+            id = counter.current_available_id
+            counter.current_available_id = counter.current_available_id + 1
+            counter.put()
+        else:
+            id = 1  # TODO(rongjian): think about continue with the currently max id number
+            counter = ProviderIdCounter(id="ProviderIdCounter")
+            counter.current_available_id = 2
+            counter.put()
+        return id
+
+class ProviderIdCounter(ndb.Model):
+    current_available_id = ndb.IntegerProperty(required=True) # increment it after use in a transaction
+
 
 # The parent is the corresponding user object
 class Unique(ndb.Model):
