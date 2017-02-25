@@ -511,3 +511,10 @@ a.delete:hover {
 	border-top:1px solid #e5e5e5;
 	padding: 24px 49px 0 49px;
 }
+
+@media (min-width: 840px) {
+	.modal-dialog {
+		width:63% !important;
+		margin:auto !important;
+	}
+}
