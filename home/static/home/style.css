@@ -541,13 +541,13 @@ a.delete:hover {
 
 .profileFormHeader {
   padding: 15px;
-  border-bottom: 1px solid #e5e5e5;
+  /*border-bottom: 1px solid #e5e5e5;*/
 }
 
 .profileFormBody {
 	background: #F5F5F5;
   /*margin: 24px;*/
-  border: 1px solid #e3e3e3;
+  border-top: 1px solid #e3e3e3;
   border-radius: 4px;
   padding: 15px;
   position: relative;
@@ -555,7 +555,7 @@ a.delete:hover {
 
 .profile-title {
   font-size: 30px;
-  padding: 26px 0;
+  padding: 26px 0 5px 0;
   text-align: center;
 	margin: 0;
   line-height: 1.42857143;

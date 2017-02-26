@@ -130,8 +130,8 @@
                         <i class="fa fa-home fa-lg"></i> Dashboard
                     </a>
                 </li>
-                <li>
-                    <a href="#!/programs">
+                <li ng-click="changeView('/programs')">
+                    <a>
 						<i class="fa fa-list-alt fa-lg"></i> Programs
 					</a>
                 </li>
@@ -142,25 +142,25 @@
                     <!--<li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)"  data-toggle="modal" data-target="#editProgramModal">{{ program.programName }}</li>-->
                 <!--</ul>-->
 
-                <li data-toggle="collapse" data-target="#children" class="collapsed">
-                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
+                <li data-toggle="collapse" data-target="#children" class="collapsed" ng-click="changeView('/child/list')">
+                    <a><i class="fa fa-child fa-lg"></i> Children</a>
                 </li>
 
-                <li>
-                    <a href="#!/invoice">
+                <li ng-click="changeView('/invoice')">
+                    <a>
 						<i class="fa fa-list-alt fa-lg"></i> Invoices
 					</a>
                 </li>
 
-                <li>
-                    <a href="#!/billing">
+                <li ng-click="changeView('/billing')">
+                    <a>
 						<i class="fa fa-money fa-lg"></i> Billing
 					</a>
                 </li>
 
 
-                <li>
-                    <a href="#!/profile">
+                <li ng-click="changeView('/profile')">
+                    <a>
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>
                 </li>
