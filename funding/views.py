@@ -87,22 +87,7 @@ def listFunding(request):
 		return HttpResponseRedirect('/login')
 	customer_url = request.session.get('dwolla_customer_url')
 
-	#request_body = {
-	#  "routingNumber": 'test',
-	#  "accountNumber": 'test',
-	#  "type": 'test',
-	#  "name": 'test'
-	#}
-
-	fundings = [];
-	funding_sources = account_token.get('%s/funding-sources' % customer_url)
-	for funding in funding_sources.body['_embedded']['funding-sources']:
-		fundings.append({
-			  "status": funding['status'],
-			  "type": funding['type'],
-			  "name": funding['name'],
-			  "id": funding['id']
-			})
+	fundings = funding_util.list_fundings(customer_url)
 		# Sample code to get funding source info
 		#funding_source = account_token.get(funding['_links']['self']['href']);
 		#print funding['_links']['self']['href'];

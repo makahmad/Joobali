@@ -1,0 +1,73 @@
+<div class="col-centered  setupAutopayForm">
+    <form id="autopaySetupForm" role="form" class="form-horizontal well">
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label">Provider:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="providerName" ng-model="$ctrl.data.providerName" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label">Program:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="programName" ng-model="$ctrl.data.programName" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label">Child:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="childFirstName" ng-model="$ctrl.data.childFirstName" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label">Payment Amount:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="paymentAmount" ng-model="$ctrl.data.paymentAmount" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label">Due Date:</label>
+            </div>
+            <div class="col-sm-6">
+                <input type="text" class="form-control"name="dueDate" ng-model="$ctrl.data.dueDate" readonly>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label" for="payDaysBefore">Make Automatic Payment:</label>
+            </div>
+            <div class="col-sm-1">
+                <select ng-model="$ctrl.data.payDaysBefore"  style="width: 40px" class="form-control" id="payDaysBefore" name="payDaysBefore" required="true">
+                    <option ng-repeat="dayNum in $ctrl.data.dayNums" value="{{dayNum}}">
+                      {{ dayNum }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-sm-5">
+                <label>day(s) before due date</label>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6">
+                <label class="control-label right-align-label" for="bankAccount">With Bank Account:</label>
+            </div>
+            <div class="col-sm-6">
+              <select ng-model="$ctrl.data.bankAccountId" ng-change="$ctrl.updateSelectedBankName()" class="form-control" id="bankAccount" name="bankAccount" required="true">
+                <option ng-repeat="account in $ctrl.data.bankAccounts" value="{{account.id}}">
+                  {{ account.name }}
+                </option>
+              </select>
+            </div>
+        </div>
+    </form>
+
+</div>

@@ -73,5 +73,7 @@ def list_enrollment_by_provider(provider_id):
     enrollment_query = Enrollment.query(ancestor=provider_key)
     enrollments = []
     for enrollment in enrollment_query:
-        enrollments.append(enrollment.to_dict())
+        dict = enrollment.to_dict()
+        dict['enrollment_id'] = enrollment.key.id()
+        enrollments.append(dict)
     return enrollments

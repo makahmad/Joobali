@@ -20,6 +20,8 @@ class Enrollment(ndb.Model):
     start_date = ndb.DateProperty()
     # Autopay funding source. If set, the related invoice will be automatically paid by this source.
     autopay_source_id = ndb.StringProperty()
+    # Autopay # of days before the due date
+    pay_days_before = ndb.IntegerProperty()
     # All possible status for an enrollment
     _POSSIBLE_STATUS = {'initialized', 'invited', 'active', 'payment_resolve_pending', 'inactive', 'expired'}
 

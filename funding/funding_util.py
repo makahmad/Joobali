@@ -24,3 +24,14 @@ def make_transfer(dest_customer_id, funding_source, amount):
     }
     account_token.post('transfers', request_body)
 
+def list_fundings(customer_url):
+    fundings = []
+    funding_sources = account_token.get('%s/funding-sources' % customer_url)
+    for funding in funding_sources.body['_embedded']['funding-sources']:
+        fundings.append({
+            "status": funding['status'],
+            "type": funding['type'],
+            "name": funding['name'],
+            "id": funding['id']
+        })
+    return fundings

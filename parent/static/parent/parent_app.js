@@ -69,6 +69,23 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
                  .otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
+	.component('initSetupComponent', {
+        templateUrl: '/static/parent/init_setup_component_tmpl.html',
+        controller: InitSetupComponentController
+    })
+    .component('autopaySetupFormComponent', {
+        templateUrl: '/static/parent/autopay_setup_form_component_tmpl.html',
+        controller: AutopaySetupFormComponentController,
+        bindings: {
+            data: '<',
+        }
+    })
+	.component('initSetupConfirmFormComponent', {
+        templateUrl: '/static/parent/init_setup_confirm_form_component_tmpl.html',
+        bindings: {
+            data: '<',
+        }
+    })
     .component('paymentSetupComponent', {
         templateUrl: '/static/parent/payment_setup_component_tmpl.html',
         controller: PaymentSetupComponentController

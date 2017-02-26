@@ -1,0 +1,30 @@
+.form-content.current {
+	display: block;
+}
+
+.form-content {
+	display: none;
+}
+
+.modal-title.current {
+	display: block;
+}
+
+.modal-title {
+	display: none;
+}
+
+.modal-body {
+    min-height: 300px;
+}
+
+#initSetupNextButton {
+	display: none;
+}
+#initSetupDoneButton {
+	display: none;
+}
+
+#initSetupIavContainer {
+    height: 700px;
+}

@@ -16,7 +16,6 @@ import enrollment_util
 import json
 import logging
 
-EnrollmentForm = model_form(Enrollment)
 logger = logging.getLogger(__name__)
 
 
@@ -153,7 +152,6 @@ def get_enrollment(request):
     response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
     return response
 
-
 def resent_enrollment_invitation(request):
     status = "Failure"
     if not check_session(request) or not is_provider(request):
@@ -171,3 +169,16 @@ def resent_enrollment_invitation(request):
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
+def setupAutopay(request):
+    data = json.loads(request.body)
+    pay_days_before = data['payDaysBefore']
+    source = data['bankAccountId']
+
+    #enrollment = Enrollment.get_by_id()
+
+    enrollment = Enrollment.get_by_id(4563797888991232, parent=ndb.Key('Provider', 12))
+    enrollment.autopay_source_id = source
+    enrollment.pay_days_before = int(pay_days_before)
+    enrollment.put()
+
+    return HttpResponse("success")

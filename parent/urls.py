@@ -7,4 +7,5 @@ urlpatterns = [
 	url(r'^getprofile', views.getProfile, name='getProfile'),
 	url(r'^updateprofile', views.updateProfile, name='updateProfile'),
 	url(r'^validateemail', views.validateEmail, name='validateEmail'),
+    url(r'^getautopaydata', views.get_autopay_data, name='getAutopayData'),
 ]

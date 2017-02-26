@@ -206,6 +206,7 @@ def is_init_setup_finished(request):
     return HttpResponse('false');
 
 
+@ndb.transactional(xg=True)
 def set_init_setup_finished(request):
     ''' Set true that the init setup status is finished '''
     email = request.session['email']
@@ -286,9 +287,11 @@ def getCustomerUrl(email):
     result = models.Provider.query().filter(models.Provider.email == email)
     if result.fetch(1):
         return result.fetch(1)[0].customerId
+
     result = parent_util.get_parents_by_email(email)
     if result is not None:
         return result.customerId
+
     raise Exception('user does not exist')
 
 

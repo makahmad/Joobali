@@ -57,7 +57,7 @@ def invoice_calculation(request):
             if should_proceed:
                 logger.info("Calculating Invoice: program: %s, child: %s" % (program, child))
 
-                provider_child_pair_key = provider.key.id() + str(child.key.id())
+                provider_child_pair_key = str(provider.key.id()) + str(child.key.id())
                 invoice = None
                 if provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
