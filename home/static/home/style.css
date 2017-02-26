@@ -567,3 +567,12 @@ a.delete:hover {
 		margin:auto !important;
 	}
 }
+.tooltip-inner {
+    background-color: #ff5b35;
+    color: #fff;
+    text-align: left;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: #ff5b35;
+}

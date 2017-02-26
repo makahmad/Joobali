@@ -49,6 +49,12 @@ def updateProfile(request):
         request.session['email'] = profile['email']
 
     if provider is not None:
+        if 'currentPassword' in profile and 'newPassword' in profile:
+            if pwd_context.verify(profile['currentPassword'], provider.password):
+                provider.password = pwd_context.encrypt(profile['newPassword'])
+            else:
+                return HttpResponseServerError('current password is incorrect')
+
         provider.schoolName = profile['schoolName']
         provider.firstName = profile['firstName']
         provider.lastName = profile['lastName']

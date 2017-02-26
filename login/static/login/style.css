@@ -22,7 +22,15 @@ body {background:#ff5b35;}
 .login-form{
     max-width:580px;
 }}
+.tooltip-inner {
+    background-color: #ff5b35;
+    color: #fff;
+    text-align: left;
+}
 
+.tooltip.top .tooltip-arrow {
+    border-top-color: #ff5b35;
+}
 /*------------ PW Progress Bar CSS Fixes ----------------*/
 .progress {
     height: 5px !important;
