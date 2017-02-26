@@ -1,19 +1,20 @@
-from common.session import check_session
-from common.json_encoder import JEncoder
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django import template
 from wtforms_appengine.ndb import model_form
+from google.appengine.ext import ndb
+
+from common.email.invoice import send_parent_enrollment_notify_email
+from common.session import check_session
+from common.session import is_provider
+from common.session import get_provider_id
+from common.json_encoder import JEncoder
 from models import Enrollment
 from child import child_util
-from google.appengine.ext import ndb
-from login.models import Provider
-from common.email.invoice import send_parent_invite_email
 import enrollment_util
 import json
 import logging
-import re
 
 EnrollmentForm = model_form(Enrollment)
 logger = logging.getLogger(__name__)
@@ -63,14 +64,14 @@ def add_enrollment(request):
         request_body_dict['start_date']
         enrollment = {
             'provider_key': ndb.Key('Provider', provider_id),
-            'child_key' : child_key,
-            'program_key' : program_key,
+            'child_key': child_key,
+            'program_key': program_key,
             'status': 'initialized',
-            'start_date':request_body_dict['start_date']
+            'start_date': request_body_dict['start_date']
         }
-        enrollment_util.upsert_enrollment(enrollment)
+        enrollment = enrollment_util.upsert_enrollment(enrollment)
         status = "success"
-        send_parent_invite_email(parent_email, Provider.get_by_id(provider_id).schoolName, 'http://localhost:8080/login/parentsignup?email=%s' % parent_email)
+        send_parent_enrollment_notify_email(enrollment, host='localhost:8080')
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 
@@ -132,7 +133,6 @@ def reactivate_enrollment(request):
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 
-
 def get_enrollment(request):
     status = "Failure"
     if not check_session(request):
@@ -152,3 +152,22 @@ def get_enrollment(request):
     enrollment = enrollment_util.get_enrollment(provider_id, program_id, enrollment_id)
     response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
     return response
+
+
+def resent_enrollment_invitation(request):
+    status = "Failure"
+    if not check_session(request) or not is_provider(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    if request.method != 'POST':
+        logger.info("get non-post http request")
+        return
+    request_body_dict = json.loads(request.body)
+    enrollment_id = request_body_dict['id']
+    provider_id = get_provider_id(request)
+    enrollment = Enrollment.get(provider_id=provider_id, enrollment_id=enrollment_id)
+    if not enrollment.can_resend_invitation():
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    send_parent_enrollment_notify_email(enrollment=enrollment, host="localhost:8080")
+    status = 'success'
+    return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+

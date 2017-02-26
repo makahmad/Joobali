@@ -23,9 +23,16 @@ class Enrollment(ndb.Model):
     # All possible status for an enrollment
     _POSSIBLE_STATUS = {'initialized', 'invited', 'active', 'payment_resolve_pending', 'inactive', 'expired'}
 
+    def can_resend_invitation(self):
+        return self.status in {'initialized', 'invited'}
+
     @classmethod
     def generate_key(cls, provider_id, enrollment_id):
         return ndb.Key(Provider.__name__, provider_id, cls.__name__, enrollment_id)
+
+    @classmethod
+    def get(cls, provider_id, enrollment_id):
+        return cls.generate_key(provider_id, enrollment_id).get()
 
     @classmethod
     def get_possible_status(cls):

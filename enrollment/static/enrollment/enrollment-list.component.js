@@ -9,6 +9,13 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         ''
     ];
 
+    self.resendEnrollmentInvitation = function(enrollment) {
+        $http.post('/enrollment/resendInvitation', enrollment).then(function successCallback(response) {
+            console.log("new invitation email sent!");
+        }, function errorCallback(response) {
+        });
+    }
+
     self.openEnrollmentEditorModal = function(enrollment) {
         console.log("Opening Add Enrollment Modal");
         console.log("Enrollment is " + JSON.stringify(enrollment));
