@@ -128,6 +128,7 @@ EditProgramComponentController.prototype.rollUpEndTime = function() {
 
 
 EditProgramComponentController.prototype.saveProgram = function() {
+
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/updateprogram',
@@ -135,7 +136,7 @@ EditProgramComponentController.prototype.saveProgram = function() {
 	}).then(
 		angular.bind(this, function (response) {
 			console.log('post suceeded');
-
+            this.program.css = 1;
             this.close({$value : this.program});
 
 		}),
