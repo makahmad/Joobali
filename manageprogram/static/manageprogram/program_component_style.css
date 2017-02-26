@@ -63,24 +63,43 @@
 .programActions {
 	background: rgba(110, 203, 184, .9);
   color: white;
-  position: relative;
   border-radius: 0 0 4px 4px;
-  margin-top: -17px;
-  padding: 7px !important;
-  text-align: end;
-  letter-spacing: 4.2em;
+  text-align: center;
 	box-shadow: inset -1px 7px 2px -6px #55a58e;
+	width:100%;
+  /*position: relative;
+	margin-top: -17px;
+	letter-spacing: 4.2em;*/
 }
 
-.programs i.fa.fa-pencil, program-component .programActions {display:none;}
+.programActions td {
+	padding: 7px 0 !important;
+}
 
-.programs:hover i.fa.fa-pencil {
+tr.programActions td:first-child {
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-bottom-left-radius: 5px;
+
+}
+
+tr.programActions td:last-child {
+    -moz-border-radius-topright: 5px;
+    -moz-border-radius-bottomright: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -webkit-border-bottom-right-radius: 5px;
+}
+
+/*.programs i.fa.fa-pencil, program-component .programActions*/ {display:none;}
+
+/*.programs:hover i.fa.fa-pencil {
     display:block;
-}
+}*/
 
 program-component:hover .programActions {
   transition: 0.3s;
-  display: table;
+  display: table-row;
 }
 
 .container {
