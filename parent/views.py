@@ -1,21 +1,18 @@
 import json
 
-from django import template
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.http import HttpResponseServerError
-from django.shortcuts import render_to_response
-from passlib.apps import custom_app_context as pwd_context
-
 from common.json_encoder import JEncoder
 from common.session import check_session
+from django.http import HttpResponse
+from django.http import HttpResponseServerError
+from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
+from django import template
+from passlib.apps import custom_app_context as pwd_context
 from models import Parent
 
 
-# Create your views here.
-
 def index(request):
-    if not check_session(request):
+    if not check_session(request) or request.session['is_provider'] is True:
         return HttpResponseRedirect('/login')
     return render_to_response(
         'parent/index.html',

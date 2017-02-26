@@ -1,6 +1,5 @@
 from google.appengine.ext import ndb
 from models import Enrollment
-from login.models import Provider
 from datetime import datetime
 import logging
 

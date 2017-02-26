@@ -2,57 +2,63 @@
 {% load staticfiles %}
 <html>
 <head>
-  <title>Parent Registration</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Parent Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <div class="container">
-  <div class="col-centered login-form">
-  	<img src="{{ STATIC_URL }}home/pics/logo/logo.png" class="img-responsive logo col-centered">
-	<br />
-    <!-- <p class="text-center">Welcome to Joobali. The first step is to register a account with us.</p> -->
-	  <form role="form" class="well" action="/login/parentsignup/" method="POST">
-	  	{% csrf_token %}
-		  <div class="form-group">
-		    <label class="control-label" for="first_name">First Name:</label>
-		    <input type="text" class="form-control" id="first_name" name="first_name" required="true" value="{{ form.first_name.data|safe }}">
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label" for="last_name">Last Name:</label>
-		    <input type="text" class="form-control" id="last_name" name="last_name" required="true" value="{{ form.last_name.data|safe }}">
-		  </div>
-		  <!--
-		  <div class="form-group">
-		    <label class="control-label" for="childFirstName">Child first Name:</label>
-		    <input type="text" class="form-control" id="childFirstName" name="childFirstName" required="true" value="{{ form.childFirstName.data|safe }}">
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label" for="childLastName">Child last Name:</label>
-		    <input type="text" class="form-control" id="childLastName" name="childLastName" required="true" value="{{ form.childLastName.data|safe }}">
-		  </div>
-	  	  -->
-	  	  <div class="form-group">
-		    <label class="control-label" for="email">Email:</label>
-		    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.data|safe }}">
-		  </div>
-		    {% if form.email.errors %}
-	  	      <div class="form-group">
-		        <span class="label label-warning">Email already registered...</span>
-		      </div>
-		    {% endif %}
-		  <div class="form-group">
-		    <label class="control-label" for="password">Password:</label>
-		    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.data|safe }}">
-		  </div>
-	  	  <div class="form-group">
-      	  <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
-	  </form>
-  </div>
-  </div>
+<div class="container">
+    <div class="col-centered login-form">
+        <img src="{{ STATIC_URL }}home/pics/logo/logo.png" class="img-responsive logo col-centered">
+        <br/>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <p>
+                    Provider <b>{{ provider_school_name }}</b> invites you to signup as parent for
+                    your child
+                    <b>{{child_first_name}}</b>
+                </p>
+            </div>
+        </div>
+        <form role="form" class="well" action="/login/parentsignup/" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="control-label" for="email">Email: </label>
+                <input readonly type="text" class="form-control" id="email" name="email" required="true" value="{{parent_email}}">
+            </div>
+            {% if form.email.errors %}
+            <div class="form-group">
+                <span class="label label-warning">Email already registered...</span>
+            </div>
+            {% endif %}
+            <div class="form-group">
+                <label class="control-label" for="first_name">First Name:</label>
+                <input type="text" class="form-control" id="first_name" name="first_name" required="true">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="last_name">Last Name:</label>
+                <input type="text" class="form-control" id="last_name" name="last_name" required="true">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password">Password:</label>
+                <input type="password" class="form-control" id="password" name="password" required="true">
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="phone">Phone number:</label>
+                <input type="text" class="form-control" id="phone" name="phone" required="true">
+            </div>
+            <div style="display:none;">
+                <input readonly type="text" class="form-control" name="invitation_token" value="{{invitation_token}}">
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

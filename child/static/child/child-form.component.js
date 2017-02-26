@@ -4,6 +4,7 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
     self.dateOfBirthFormat = 'MM/dd/yyyy';
     self.dateOfBirthPickerOpened = false;
     self.childInfo = {};
+    self.programs = {};
     self.currentStep = 0;
 
     self.nextButton = {};
@@ -20,7 +21,7 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
     self.saveButton.click = function() {
         console.log("save");
         console.log(self.childInfo);
-        var submittingForm = angular.copy(self.childOverview);
+        var submittingForm = angular.copy(self.overview);
         console.log("submitting " + submittingForm);
         $http.post('/child/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
@@ -53,10 +54,12 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
 
         self.currentStep += 1;
         if (isValid) {
-            if (self.currentStep == 1) {
+            if (self.currentStep == 2) {
                 console.log("childInfo: " + self.childInfo);
-                self.childOverview = angular.copy(self.childInfo);
-                self.childOverview.date_of_birth = moment(self.childOverview.date_of_birth).format('MM/DD/YYYY');
+                self.overview = angular.copy(self.childInfo);
+                self.overview.date_of_birth = moment(self.overview.date_of_birth).format('MM/DD/YYYY');
+                self.overview.program  = self.newEnrollment.program
+                self.overview.enrollment_start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
                 console.log("Reach the final step");
                 self.nextButton.show = false;
                 self.saveButton.show = true;
@@ -81,14 +84,39 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
         self.resetButton();
     }
 
+    self.setCurrentStep = function(newStep) {
+        self.currentStep = newStep;
+    };
+
     self.openDateOfBirthPicker = function() {
-        console.log("Toggle Date picker: " + self.dateOfBirthPickerOpened);
         self.dateOfBirthPickerOpened = ! self.dateOfBirthPickerOpened;
-    }
+    };
+
+    self.openStartDatePicker = function() {
+        self.startDatePickerOpened = ! self.startDatePickerOpened;
+    };
+
+    self.getProgramData = function() {
+        $http({
+            method: 'GET',
+            url: '/manageprogram/listprograms'
+        }).then(function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            self.programs = [];
+            angular.forEach(response.data, function(program) {
+                self.programs.push(JSON.parse(program));
+            });
+        }, function errorCallback(response) {
+            // TODO(zilong): deal with error here
+        });
+    };
 
     self.$onInit = function() {
         self.dateOfBirthPickerOpened = false;
+        self.startDatePickerOpened = false;
         self.resetButton();
+        self.getProgramData();
         self.currentStep = 0;
     }
 }

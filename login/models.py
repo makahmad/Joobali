@@ -31,17 +31,21 @@ class Provider(ndb.Model):
     @staticmethod
     def get_next_available_id():
         counter = ProviderIdCounter.get_by_id("ProviderIdCounter")
-        id = 0
         if counter:
-            id = counter.current_available_id
-            counter.current_available_id = counter.current_available_id + 1
+            provider_id = counter.current_available_id
+            counter.current_available_id += 1
             counter.put()
         else:
-            id = 1  # TODO(rongjian): think about continue with the currently max id number
+            provider_id = 1  # TODO(rongjian): think about continue with the currently max id number
             counter = ProviderIdCounter(id="ProviderIdCounter")
             counter.current_available_id = 2
             counter.put()
-        return id
+        return provider_id
+
+    @classmethod
+    def generate_key(cls, provider_id):
+        return ndb.Key(cls.__name__, provider_id)
+
 
 class ProviderIdCounter(ndb.Model):
     current_available_id = ndb.IntegerProperty(required=True) # increment it after use in a transaction
@@ -55,3 +59,7 @@ class Unique(ndb.Model):
     # Reference to its attached object
     provider_key = ndb.KeyProperty(kind=Provider)
     parent_key = ndb.KeyProperty(kind=Parent)
+
+    @classmethod
+    def generate_key(cls, email):
+        return ndb.Key(cls.__name__, email)
