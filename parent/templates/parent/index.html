@@ -47,6 +47,9 @@
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/make_payment_component_ctrl.js"></script>
 
+    <!-- Profile Related JS -->
+    <script src="{{ STATIC_URL }}parent/profile_component_ctrl.js"></script>
+
     <!-- Child Related JS -->
     <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-form.component.js"></script>
@@ -117,7 +120,7 @@
                     </a>
                 </li>
 
-                <li data-toggle="collapse" data-target="#children" class="collapsed active">
+                <li data-toggle="collapse" data-target="#children" class="collapsed">
                     <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
                 </li>
 
@@ -135,7 +138,7 @@
 
 
                 <li>
-                    <a href="#">
+                    <a href="#!/profile">
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>
                 </li>

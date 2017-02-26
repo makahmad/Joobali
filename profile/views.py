@@ -42,24 +42,29 @@ def updateProfile(request):
     provider = Provider.get_by_id(request.session['user_id'])
 
     if request.session['email'] != profile['email']:
-        if request.session['is_provider']:
-            query = Provider.query().filter(Provider.email == profile['email'])
-            result = query.fetch(1)
-            if result:
-                return HttpResponseServerError('email already exists')
-            request.session['email'] = profile['email']
+        query = Provider.query().filter(Provider.email == profile['email'])
+        result = query.fetch(1)
+        if result:
+            return HttpResponseServerError('email already exists')
+        request.session['email'] = profile['email']
 
     if provider is not None:
         provider.schoolName = profile['schoolName']
         provider.firstName = profile['firstName']
         provider.lastName = profile['lastName']
-        # todo update transactions tied to this email address
+        # todo for Rongjian update transactions tied to this email address and Unique object
         provider.email = profile['email']
         provider.password = pwd_context.encrypt(profile['password'])
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
         provider.put()
+
+    # return render_to_response(
+    # 	'profile/profile_component_tmpl.html',
+    # 	{'form': profile},
+    # 	template.RequestContext(request)
+    # )
 
     return HttpResponse('success')
 
