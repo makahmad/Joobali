@@ -1,4 +1,4 @@
-ChildFormController = function ChildFormController($http, $routeParams, $location) {
+ChildFormController = function ChildFormController($uibModalInstance, $http) {
     var self = this;
 
     self.dateOfBirthFormat = 'MM/dd/yyyy';
@@ -14,18 +14,14 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
     self.saveFailLabel = {};
 
     self.doneButton.click = function() {
-        console.log("resetting Modal");
         self.resetModal();
+        self.closeModal();
     };
 
     self.saveButton.click = function() {
-        console.log("save");
-        console.log(self.childInfo);
         var submittingForm = angular.copy(self.overview);
-        console.log("submitting " + submittingForm);
         $http.post('/child/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
-            console.log(response);
             if (response.data.status == 'success') {
                 isSaveSuccess = true;
             }
@@ -55,12 +51,10 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
         self.currentStep += 1;
         if (isValid) {
             if (self.currentStep == 2) {
-                console.log("childInfo: " + self.childInfo);
                 self.overview = angular.copy(self.childInfo);
                 self.overview.date_of_birth = moment(self.overview.date_of_birth).format('MM/DD/YYYY');
                 self.overview.program  = self.newEnrollment.program
                 self.overview.enrollment_start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
-                console.log("Reach the final step");
                 self.nextButton.show = false;
                 self.saveButton.show = true;
             } else {
@@ -118,5 +112,9 @@ ChildFormController = function ChildFormController($http, $routeParams, $locatio
         self.resetButton();
         self.getProgramData();
         self.currentStep = 0;
+    }
+
+    self.closeModal = function() {
+        $uibModalInstance.close();
     }
 }

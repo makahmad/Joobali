@@ -1,148 +1,141 @@
-<div id="addChildModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add a New Child</h4>
-                <div class="stepsDiv">
-                    <ul class="nav nav-pills nav-wizard">
-                        <li id="navStep1" class="form-nav" ng-class="{active: $ctrl.currentStep==0}">
-                            <a ng-click="$ctrl.setCurrentStep(0)">Enter Child Info</a>
-                            <div class="nav-arrow"></div>
-                        </li>
-                        <li id="navStep2" class="form-nav" ng-class="{active: $ctrl.currentStep==1}">
-                            <div class="nav-wedge"></div>
-                            <a ng-click="$ctrl.setCurrentStep(1)">Enter Enrollment Info</a>
-                            <div class="nav-arrow"></div>
-                        </li>
-                        <li id="navStep3" class="form-nav" ng-class="{active: $ctrl.currentStep==2}">
-                            <div class="nav-wedge"></div>
-                            <a>Review</a>
-                            <div class="nav-arrow"></div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<div class="modal-header">
+    <button type="button" class="close" ng-click="$ctrl.closeModal()">&times;</button>
+    <h4 class="modal-title">Add a New Child</h4>
+    <div class="stepsDiv">
+        <ul class="nav nav-pills nav-wizard">
+            <li id="navStep1" class="form-nav" ng-class="{active: $ctrl.currentStep==0}">
+                <a ng-click="$ctrl.setCurrentStep(0)">Enter Child Info</a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li id="navStep2" class="form-nav" ng-class="{active: $ctrl.currentStep==1}">
+                <div class="nav-wedge"></div>
+                <a ng-click="$ctrl.setCurrentStep(1)">Enter Enrollment Info</a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li id="navStep3" class="form-nav" ng-class="{active: $ctrl.currentStep==2}">
+                <div class="nav-wedge"></div>
+                <a>Review</a>
+                <div class="nav-arrow"></div>
+            </li>
+        </ul>
+    </div>
+</div>
 
-            <div class="modal-body">
-                <div class="col-centered childOverviewForm">
-                    <form name="addChildForm" role="form" class="well">
-                        <div id="addChildStep1"
-                             class="child-form-content"
-                             ng-show="$ctrl.currentStep==0"
-                             ng-class="{active: $ctrl.currentStep==0}">
-                            <div class="form-group"
-                                 ng-class="{'has-error': addChildForm.childFirstName.$invalid && addChildForm.childFirstName.$touched}">
-                                <label class="control-label">Child First Name</label>
-                                <input type="text" class="form-control" name="childFirstName"
-                                       required="true"
-                                       ng-model="$ctrl.childInfo.first_name">
-                            </div>
-                            <div class="form-group"
-                                 ng-class="{'has-error': addChildForm.childLastName.$invalid && addChildForm.childLastName.$touched}">
-                                <label class="control-label">Child Last Name</label>
-                                <input type="text" class="form-control" name="childLastName" required="true"
-                                       ng-model="$ctrl.childInfo.last_name">
-                            </div>
-                            <div class="form-group"
-                                 ng-class="{'has-error': addChildForm.dateOfBirth.$invalid && addChildForm.dateOfBirth.$touched}">
-                                <label class="control-label">Date of Birth (Month/Day/Year)</label>
-                                <p class="input-group">
-                                    <input name="dateOfBirth"
-                                           type="text" class="form-control"
-                                           uib-datepicker-popup="MM/dd/yyyy"
-                                           ng-model="$ctrl.childInfo.date_of_birth"
-                                           is-open="$ctrl.dateOfBirthPickerOpened"
-                                           ng-required="true"
-                                           close-text="Close"/>
-                                    <span class="input-group-btn">
+<div class="modal-body">
+    <div class="col-centered childOverviewForm">
+        <form name="addChildForm" role="form" class="well">
+            <div id="addChildStep1"
+                 class="child-form-content"
+                 ng-show="$ctrl.currentStep==0"
+                 ng-class="{active: $ctrl.currentStep==0}">
+                <div class="form-group"
+                     ng-class="{'has-error': addChildForm.childFirstName.$invalid && addChildForm.childFirstName.$touched}">
+                    <label class="control-label">Child First Name</label>
+                    <input type="text" class="form-control" name="childFirstName"
+                           required="true"
+                           ng-model="$ctrl.childInfo.first_name">
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': addChildForm.childLastName.$invalid && addChildForm.childLastName.$touched}">
+                    <label class="control-label">Child Last Name</label>
+                    <input type="text" class="form-control" name="childLastName" required="true"
+                           ng-model="$ctrl.childInfo.last_name">
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': addChildForm.dateOfBirth.$invalid && addChildForm.dateOfBirth.$touched}">
+                    <label class="control-label">Date of Birth (Month/Day/Year)</label>
+                    <p class="input-group">
+                        <input name="dateOfBirth"
+                               type="text" class="form-control"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               ng-model="$ctrl.childInfo.date_of_birth"
+                               is-open="$ctrl.dateOfBirthPickerOpened"
+                               ng-required="true"
+                               close-text="Close"/>
+                        <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openDateOfBirthPicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
-                                </p>
-                            </div>
-                            <div class="form-group"
-                                 ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}">
-                                <label class="control-label">Parent's Email</label>
-                                <input name="email" type="email"
-                                       class="form-control" required="true"
-                                       ng-model="$ctrl.childInfo.email">
-                            </div>
-                        </div>
+                    </p>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}">
+                    <label class="control-label">Parent's Email</label>
+                    <input name="email" type="email"
+                           class="form-control" required="true"
+                           ng-model="$ctrl.childInfo.email">
+                </div>
+            </div>
 
 
-                            <div id="addChildStep2"
-                                 class="child-form-content"
-                                 ng-show="$ctrl.currentStep==1"
-                                 ng-class="{active: $ctrl.currentStep==1}">
+            <div id="addChildStep2"
+                 class="child-form-content"
+                 ng-show="$ctrl.currentStep==1"
+                 ng-class="{active: $ctrl.currentStep==1}">
 
-                                <div class="form-group">
-                                    <label class="control-label" for="program">Program</label>
-                                    <select class="form-control" id="program" required="true"
-                                            ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
-                                            ng-model="$ctrl.newEnrollment.program"></select>
-                                </div>
+                <div class="form-group">
+                    <label class="control-label" for="program">Program</label>
+                    <select class="form-control" id="program" required="true"
+                            ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                            ng-model="$ctrl.newEnrollment.program"></select>
+                </div>
 
-                                <div class="form-group"
-                                     ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
-                                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
-                                    <p class="input-group">
-                                        <input name="startDate"
-                                               type="text" class="form-control"
-                                               uib-datepicker-popup="MM/dd/yyyy"
-                                               datepicker-options="{minDate: $ctrl.todayDate}"
-                                               ng-model="$ctrl.newEnrollment.start_date"
-                                               is-open="$ctrl.startDatePickerOpened"
-                                               ng-required="true"
-                                               close-text="Close"/>
-                                        <span class="input-group-btn">
+                <div class="form-group"
+                     ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
+                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
+                    <p class="input-group">
+                        <input name="startDate"
+                               type="text" class="form-control"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-options="{minDate: $ctrl.todayDate}"
+                               ng-model="$ctrl.newEnrollment.start_date"
+                               is-open="$ctrl.startDatePickerOpened"
+                               ng-required="true"
+                               close-text="Close"/>
+                        <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openStartDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div id="addChildStep3"
-                                 class="child-form-content"
-                                 ng-show="$ctrl.currentStep==2"
-                                 ng-class="{active: $ctrl.currentStep==2}">
-                                <div class="panel">
-                                    <label class="control-label">Child First Name</label>
-                                    <div>{{$ctrl.overview.first_name}}</div>
-                                    <label class="control-label">Child Last Name</label>
-                                    <div>{{$ctrl.overview.last_name}}</div>
-                                    <label class="control-label">Parent's Email</label>
-                                    <div>{{$ctrl.overview.email}}</div>
-                                    <label class="control-label">Date of Birth</label>
-                                    <div>{{$ctrl.overview.date_of_birth}}</div>
-                                </div>
-                                <div class="panel">
-                                    <label class="control-label">Program Info</label>
-                                    <div>
-                                        {{$ctrl.overview.program.id}}-{{$ctrl.overview.program.programName}}
-                                    </div>
-                                    <label class="control-label">Enrollment Start Date</label>
-                                    <div>{{$ctrl.overview.enrollment_start_date}}</div>
-                                </div>
-                                <label ng-show="$ctrl.saveSuccessLabel.show">Save Success</label>
-                                <label ng-show="$ctrl.saveFailLabel.show">Save Fail</label>
-                            </div>
-                    </form>
+                    </p>
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="$ctrl.nextButton.click()"
-                        ng-show="$ctrl.nextButton.show">Next
-                </button>
-                <button type="button" class="btn btn-primary" ng-click="$ctrl.saveButton.click()"
-                        ng-show="$ctrl.saveButton.show">Save
-                </button>
-                <button type="button" class="btn btn-primary" ng-click="$ctrl.doneButton.click()"
-                        ng-show="$ctrl.doneButton.show">Done
-                </button>
+
+            <div id="addChildStep3"
+                 class="child-form-content"
+                 ng-show="$ctrl.currentStep==2"
+                 ng-class="{active: $ctrl.currentStep==2}">
+                <div class="panel">
+                    <label class="control-label">Child First Name</label>
+                    <div>{{$ctrl.overview.first_name}}</div>
+                    <label class="control-label">Child Last Name</label>
+                    <div>{{$ctrl.overview.last_name}}</div>
+                    <label class="control-label">Parent's Email</label>
+                    <div>{{$ctrl.overview.email}}</div>
+                    <label class="control-label">Date of Birth</label>
+                    <div>{{$ctrl.overview.date_of_birth}}</div>
+                </div>
+                <div class="panel">
+                    <label class="control-label">Program Info</label>
+                    <div>
+                        {{$ctrl.overview.program.id}}-{{$ctrl.overview.program.programName}}
+                    </div>
+                    <label class="control-label">Enrollment Start Date</label>
+                    <div>{{$ctrl.overview.enrollment_start_date}}</div>
+                </div>
+                <label ng-show="$ctrl.saveSuccessLabel.show">Save Success</label>
+                <label ng-show="$ctrl.saveFailLabel.show">Save Fail</label>
             </div>
-        </div>
+        </form>
     </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-default" ng-click="$ctrl.nextButton.click()"
+            ng-show="$ctrl.nextButton.show">Next
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.saveButton.click()"
+            ng-show="$ctrl.saveButton.show">Save
+    </button>
+    <button type="button" class="btn btn-primary" ng-click="$ctrl.doneButton.click()"
+            ng-show="$ctrl.doneButton.show">Done
+    </button>
 </div>

@@ -1,4 +1,5 @@
-childListController = function ChildListController($http, $routeParams, $location) {
+childListController = function ChildListController($uibModal, $http, $routeParams, $location) {
+    var self = this;
     this.refreshList = function() {
         $http({
             method: 'GET',
@@ -18,7 +19,19 @@ childListController = function ChildListController($http, $routeParams, $locatio
         });
     };
 
-    this.$onInit = function() {
-        this.refreshList();
+    self.$onInit = function() {
+        self.refreshList();
     }
+
+    self.openAddChildModal = function() {
+        console.log("Opening Add Enrollment Modal");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/static/child/child-form.template.html',
+            controller: 'ChildFormController',
+            controllerAs: '$ctrl',
+        }).closed.then(function() {
+            self.refreshList();
+        });
+    };
 }

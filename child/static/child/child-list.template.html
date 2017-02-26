@@ -5,12 +5,7 @@
                         index="$index" flex></child-card>
         </div>
         <div class="addChildButtonDiv pull-left">
-            <button class="addChildButtonDiv btn btn-primary btn-lg" data-toggle="modal"
-                    data-target="#addChildModal">
-                Add Child
-            </button>
+            <button type="button" class="btn btn-info" ng-click="$ctrl.openAddChildModal()">Add Child</button>
         </div>
     </div>
-
-    <child-form></child-form>
 </div>

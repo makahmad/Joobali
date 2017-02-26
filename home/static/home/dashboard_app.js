@@ -95,15 +95,18 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .otherwise('/dashboard');
           }])
     .controller('DashboardCtrl', DashboardController)
-		// to support enrollment modal in child-card
-		// need child/child-enrollment.component.js
+    // to support enrollment modal in child-card
+    // need child/child-enrollment.component.js
     .controller('ChildEnrollmentController', ChildEnrollmentController)
-		// to support EnrollmentEditorModal
-		// need enrollment/enrollment-editor.component.js
-		.controller('EnrollmentEditorController', EnrollmentEditorController)
-		.component('initSetupComponent', {
-        templateUrl: '/static/home/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController
+    // to support add child modal in child list
+    // need child/child-form.component.js
+    .controller('ChildFormController', ChildFormController)
+    // to support EnrollmentEditorModal
+    // need enrollment/enrollment-editor.component.js
+    .controller('EnrollmentEditorController', EnrollmentEditorController)
+    .component('initSetupComponent', {
+    templateUrl: '/static/home/init_setup_component_tmpl.html',
+    controller: InitSetupComponentController
     })
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',
@@ -167,7 +170,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: ['$http', '$location', childListController]
+        controller: ['$uibModal','$http', '$location', childListController]
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
@@ -176,10 +179,6 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           child: '<',
           index: '<'
         }
-    })
-    .component('childForm',{
-        templateUrl: '/static/child/child-form.template.html',
-        controller : ['$http', '$routeParams', '$location', ChildFormController]
     })
     .component('enrollmentList',{
         templateUrl: '/static/enrollment/enrollment-list.template.html',

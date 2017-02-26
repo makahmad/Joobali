@@ -16,8 +16,8 @@ ChildCardController = function ChildCardController($uibModal, $scope, $http, $ro
                     return self.programs;
                 }
             }
-        })
-    }
+        });
+    };
 
     // TODO(zilong): Move this to ChildListController
     self.getProgramData = function() {
@@ -46,11 +46,9 @@ ChildCardController = function ChildCardController($uibModal, $scope, $http, $ro
             }));
         }), angular.bind(this, function errorCallback(response){
         }));
-    }
+    };
 
     self.$onInit = function() {
-        console.log("child is " + JSON.stringify(this.child));
-        console.log("index is " + this.index);
         this.getProgramData();
         this.getEnrollmentData();
     };
