@@ -54,10 +54,14 @@ def updateProfile(request):
         provider.lastName = profile['lastName']
         # todo for Rongjian update transactions tied to this email address and Unique object
         provider.email = profile['email']
-        provider.password = pwd_context.encrypt(profile['password'])
+        # provider.password = pwd_context.encrypt(profile['password'])
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
+
+        if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'], provider.password):
+            provider.password = pwd_context.encrypt(profile['newPassword'])
+
         provider.put()
 
     # return render_to_response(
