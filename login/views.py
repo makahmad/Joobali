@@ -8,18 +8,17 @@ from wtforms_appengine.ndb import model_form
 from django.http import HttpResponse
 
 from login import models
-from login import provider_util
 from home.models import InitSetupStatus
 from parent.models import Parent
 from parent import parent_util
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 
-import dwollav2
 import logging
 
 account_token = create_account_token('sandbox')
 logger = logging.getLogger(__name__)
+
 
 def home(request):
 
@@ -91,6 +90,7 @@ def provider_signup(request):
                 logger.info("Generating customerId for this provider")
                 request.session['email'] = provider.email
                 request.session['user_id'] = provider.key.id()
+                request.session['is_provider'] = True
                 create_new_init_setup_status(provider.email)
 
                 # Dummy request to dwolla UAT instance to acquire a customer url.
@@ -106,7 +106,6 @@ def provider_signup(request):
                     provider.customerId = customer.headers['location']
                     provider.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']
-                    request.session['user_id'] = provider.key.id()
                 except ValidationError as err:  # ValidationError as err
                     # Do nothing
                     logger.warning(err)
@@ -122,20 +121,22 @@ def provider_signup(request):
     )
 
 
-# TODO(zilong): Make sure this won't conflict with the parent data storage
-# in add-child for provider
+# TODO(zilong): Make sure this won't conflict with the parent data storage in add-child for provider
 def parent_signup(request):
-    form = ParentForm()
     if request.method == 'POST':
         form = ParentForm(request.POST)
-        form.validate()
         if form.validate():
             email = request.POST.get('email')
+            password = request.POST.get('password')
+            first_name = request.POST.get('first_name')
+            last_name = request.POST.get('last_name')
+            phone = request.POST.get('phone')
+            invitation_token = request.POST.get('invitation_token')
 
             (parent, created) = get_or_insert(Parent, email, form)
             if created:
-                request.session['email'] = parent.email
-                request.session['user_id'] = parent.key.id()
+                # For Joobali V1, there will be no newly created Parent object at signup
+                return None
                 create_new_init_setup_status(parent.email)
 
                 request_body = {
@@ -154,16 +155,39 @@ def parent_signup(request):
                     # Do nothing
                     print err
                     pass
+                request.session['email'] = parent.email
+                request.session['user_id'] = parent.key.id()
                 return HttpResponseRedirect('/parent')
             else:
-                form.email.errors.append('error: user exists')
-    else:
-        form.email.data = request.GET.get('email', '')
-    return render_to_response(
-        'login/parent_signup.html',
-        {'form': form},
-        template.RequestContext(request)
-    )
+                if not parent_util.verify_invitation_token(email, invitation_token):
+                    return HttpResponseRedirect('/login')
+                else:
+                    salted_password = pwd_context.encrypt(password)
+                    parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
+                                                               phone=phone,
+                                                               first_name=first_name, last_name=last_name)
+                    request.session['email'] = parent.email
+                    request.session['user_id'] = parent.key.id()
+                    request.session['is_provider'] = False
+                    return HttpResponseRedirect('/parent')
+        else:
+            logger.info("form.errors %s" % form.errors)
+    elif request.method == 'GET':
+        parent_email = request.GET['m']
+        invitation_token = request.GET['t']
+        if not parent_util.verify_invitation_token(email=parent_email, invitation_token=invitation_token):
+            return HttpResponseRedirect('/login')
+        parent = parent_util.get_parents_by_email(parent_email)
+        provider_school_name = parent.invitation.provider_key.get().schoolName
+        child_first_name = parent.invitation.child_first_name
+        return render_to_response(
+            'login/parent_signup.html',
+            {'parent_email': parent_email,
+             'invitation_token': invitation_token,
+             'child_first_name': child_first_name,
+             'provider_school_name' : provider_school_name},
+            template.RequestContext(request)
+        )
 
 
 def create_new_init_setup_status(email):
@@ -218,7 +242,6 @@ def get_or_insert(model, email, form):
     return user, True
 
 
-# TODO(zilong): Allow parent login
 def login(request):
     form = LoginForm()
 
@@ -263,7 +286,7 @@ def getCustomerUrl(email):
     result = models.Provider.query().filter(models.Provider.email == email)
     if result.fetch(1):
         return result.fetch(1)[0].customerId
-    result = Parent.get_by_id(email)
+    result = parent_util.get_parents_by_email(email)
     if result is not None:
         return result.customerId
     raise Exception('user does not exist')

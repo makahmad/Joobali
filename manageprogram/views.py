@@ -4,9 +4,7 @@ from django.shortcuts import render_to_response
 from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from google.appengine.ext import ndb
-from time import strftime, strptime
-from datetime import datetime, date, time
+from datetime import datetime
 from login.models import Provider
 from manageprogram import models
 from manageprogram import program_util
@@ -42,13 +40,20 @@ def edit(request):
 		template.RequestContext(request)
 	)
 
+
 def listPrograms(request):
 	"""Handles program listing request. Returns programs associated with the logged in user"""
 	user_id = request.session.get('user_id')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
 	programs = program_util.list_program_by_provider_user_id(user_id)
-	return HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
+	output = list()
+	for program in programs:
+		logger.info("program %s" % program)
+		logger.info("JEncoder().encode(program) %s" % JEncoder().encode(program))
+		output.append(program)
+	return HttpResponse(json.dumps([JEncoder().encode(program) for program in output]),
+						content_type="application/json")
 
 
 def getProgram(request):

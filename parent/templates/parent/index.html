@@ -114,30 +114,30 @@
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                <li>
+                <li ng-click="changeView('#')">
                     <a href="#">
                         <i class="fa fa-home fa-lg"></i> Joobali
                     </a>
                 </li>
 
-                <li data-toggle="collapse" data-target="#children" class="collapsed">
-                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
+                <li  data-target="#children" ng-click="changeView('/child/list')">
+                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children </a>
                 </li>
 
-                <li>
+                <li ng-click="changeView('/due')">
                     <a href="#!/due">
 						<i class="fa fa-list-alt fa-lg"></i> Payment Due
 					</a>
                 </li>
 
-                <li>
+                <li ng-click="changeView('/funding')">
                     <a href="#!/funding">
 						<i class="fa fa-money fa-lg"></i> Funding
 					</a>
                 </li>
 
 
-                <li>
+                <li ng-click="changeView('/profile')">
                     <a href="#!/profile">
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>

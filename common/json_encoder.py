@@ -3,6 +3,7 @@ from datetime import datetime, date, time
 from google.appengine.ext import ndb
 import json
 
+
 class JEncoder(json.JSONEncoder):
 
     def default(self, o):
