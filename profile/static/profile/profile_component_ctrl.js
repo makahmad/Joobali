@@ -1,4 +1,4 @@
-ProfileComponentController = function($scope, $http, $window) {
+ProfileComponentController = function($scope, $http, $window, $sce) {
     console.log('ProfileComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -6,6 +6,8 @@ ProfileComponentController = function($scope, $http, $window) {
 	this.emailError = false;
 	this.disableSave = false;
 	this.scope_ = $scope;
+    this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
+    '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
 
     if (angular.equals(this.profile, {})) {
     	$http({
@@ -44,6 +46,8 @@ ProfileComponentController.prototype.saveProfile = function() {
 
 			if (response.data=="email already exists")
                  this.emailError = true;
+			if (response.data=="current password is incorrect")
+                 this.currentPasswordError = true;
 			else
 			    alert("Something is wrong with the saving. Please try again later");
 	  }));
