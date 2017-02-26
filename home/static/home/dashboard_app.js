@@ -7,7 +7,6 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.scope_.programs = [];
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
-
 	this.initialize();
 
     $scope.changeView = function(view) {
