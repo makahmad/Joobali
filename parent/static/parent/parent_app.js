@@ -63,6 +63,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
              $routeProvider
                  .when('/funding', {templateUrl: '/static/parent/funding_component_tmpl.html'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
+                 .when('/profile', {template: '<profile></profile>'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/index');
@@ -97,6 +98,10 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     .component('addFundingIavComponent', {
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
+    })
+    .component('profile', {
+        templateUrl: '/static/parent/profile_component_tmpl.html',
+        controller: ProfileComponentController
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',

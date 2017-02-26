@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}child/style.css">
 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
@@ -46,6 +46,9 @@
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/make_payment_component_ctrl.js"></script>
+
+    <!-- Profile Related JS -->
+    <script src="{{ STATIC_URL }}parent/profile_component_ctrl.js"></script>
 
     <!-- Child Related JS -->
     <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
@@ -117,7 +120,7 @@
                     </a>
                 </li>
 
-                <li data-toggle="collapse" data-target="#children" class="collapsed active">
+                <li data-toggle="collapse" data-target="#children" class="collapsed">
                     <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
                 </li>
 
@@ -135,7 +138,7 @@
 
 
                 <li>
-                    <a href="#">
+                    <a href="#!/profile">
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>
                 </li>

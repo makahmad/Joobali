@@ -1,0 +1,62 @@
+<div class="profileFormContainer">
+	<div class="profileFormHeader">
+		<h2 class="profile-title">Edit Your Profile</h2>
+	</div>
+	<div class="profileFormBody">
+    <div class="col-centered">
+        <form id="profileForm" name="profileForm" role="form" class="well">
+            <div class="">
+                <div class="form-group">
+										<label class="control-label" for="firstName">First Name:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="firstName" name="firstName" required="true"
+                           ng-model="$ctrl.profile.first_name">
+										 </div>
+									 </div>
+									 <div class="form-group">
+	                  <label class="control-label" for="lastName">Last Name:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="lastName" name="lastName" required="true" ng-model="$ctrl.profile.last_name">
+										</div>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
+                    <label class="control-label" for="email">Email:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control" id="email" name="email" required="true"
+                           ng-model="$ctrl.profile.email"  ng-change="$ctrl.validateEmail()">
+										 </div>
+                    <span style="color:red" ng-show="(profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError">
+                        <span ng-show="profileForm.email.$error.required">Email is required.</span>
+                        <span ng-show="profileForm.email.$error.email">Invalid email address.</span>
+                        <span ng-show="$ctrl.emailError">Email address already used.</span>
+                    </span>
+                </div>
+
+		    <!--{% if form.email.errors %}-->
+	  	      <!--<div class="form-group">-->
+		        <!--<span class="label label-warning">Email already registered...</span>-->
+		      <!--</div>-->
+		    <!--{% endif %}-->
+
+                <div class="form-group">
+                    <label class="control-label" for="password">Password:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="password" name="password" required="true"
+                           ng-model="$ctrl.profile.password">
+										 </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="phone">Phone:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="phone" name="phone" required="false" ng-model="$ctrl.profile.phone">
+										</div>
+                </div><div>
+                </div>
+            </div>
+		        </form>
+						<div class="formActions">
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave">Update &raquo;</button>
+						</div> <!-- end formActions -->
+    </div>
+	</div>
+</div>
