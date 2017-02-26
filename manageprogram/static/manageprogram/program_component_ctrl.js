@@ -7,6 +7,8 @@ ProgramComponentController = function($uibModal, $log, $location) {
       $ctrl.animationsEnabled = true;
 
         $ctrl.openComponentModal = function () {
+            $ctrl.program.css =0;
+
             var modalInstance = $uibModal.open({
               animation: $ctrl.animationsEnabled,
               component: 'editProgramComponent',

@@ -128,7 +128,6 @@ EditProgramComponentController.prototype.rollUpEndTime = function() {
 
 
 EditProgramComponentController.prototype.saveProgram = function() {
-
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/updateprogram',
