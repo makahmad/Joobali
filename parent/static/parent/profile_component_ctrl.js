@@ -1,4 +1,4 @@
-ProfileComponentController = function($scope, $http, $window) {
+ProfileComponentController = function($scope, $http, $window, $sce) {
     console.log('ProfileComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -46,6 +46,8 @@ ProfileComponentController.prototype.saveProfile = function() {
 
 			if (response.data=="email already exists")
                  this.emailError = true;
+			else if (response.data=="current password is incorrect")
+                 this.currentPasswordError = true;
 			else
 			    alert("Something is wrong with the saving. Please try again later");
 	  }));

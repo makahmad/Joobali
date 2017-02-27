@@ -68,11 +68,15 @@ def updateProfile(request):
         request.session['email'] = profile['email']
 
     if parent is not None:
+        if 'currentPassword' in profile and 'newPassword' in profile:
+            if pwd_context.verify(profile['currentPassword'], parent.password):
+                parent.password = pwd_context.encrypt(profile['newPassword'])
+            else:
+                return HttpResponseServerError('current password is incorrect')
         parent.first_name = profile['first_name']
         parent.last_name = profile['last_name']
         # todo for Rongjian update transactions tied to this email address and Unique object
         parent.email = profile['email']
-        parent.password = pwd_context.encrypt(profile['password'])
         parent.phone = profile['phone']
         parent.put()
 
@@ -97,29 +101,30 @@ def validateEmail(request):
 
     return HttpResponse('success')
 
+
 def get_autopay_data(request):
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
 
-	enrollment = Enrollment.get_by_id(4563797888991232, parent=ndb.Key('Provider', 12))
-	provider = enrollment.key.parent().get()
-	child = enrollment.child_key.get()
-	program = enrollment.program_key.get()
-	due_date = enrollment.start_date
+    enrollment = Enrollment.get_by_id(4563797888991232, parent=ndb.Key('Provider', 12))
+    provider = enrollment.key.parent().get()
+    child = enrollment.child_key.get()
+    program = enrollment.program_key.get()
+    due_date = enrollment.start_date
 
-	due_date_text = ''
-	if program.billingFrequency == 'Monthly':
-		due_date_text = '%sth of the %s' % (due_date.weekday(), program.billingFrequency[:-2])
-	elif program.billingFrequency == 'Weekly':
-		due_date_text = 'Every %s' % due_date.strftime('%A')
-	data = {
-		'providerName': provider.schoolName,
-	    'programName': program.programName,
-	    'childFirstName': child.first_name,
-	    'paymentAmount': '%s / %s' % (program.fee, program.billingFrequency[:-2]),
-		'billingFrequency': program.billingFrequency,
-	    'dueDate': due_date_text,
-	    'bankAccounts': funding_util.list_fundings(request.session['dwolla_customer_url'])
-	}
+    due_date_text = ''
+    if program.billingFrequency == 'Monthly':
+        due_date_text = '%sth of the %s' % (due_date.weekday(), program.billingFrequency[:-2])
+    elif program.billingFrequency == 'Weekly':
+        due_date_text = 'Every %s' % due_date.strftime('%A')
+    data = {
+        'providerName': provider.schoolName,
+        'programName': program.programName,
+        'childFirstName': child.first_name,
+        'paymentAmount': '%s / %s' % (program.fee, program.billingFrequency[:-2]),
+        'billingFrequency': program.billingFrequency,
+        'dueDate': due_date_text,
+        'bankAccounts': funding_util.list_fundings(request.session['dwolla_customer_url'])
+    }
 
-	return HttpResponse(json.dumps([JEncoder().encode(data)]))
+    return HttpResponse(json.dumps([JEncoder().encode(data)]))

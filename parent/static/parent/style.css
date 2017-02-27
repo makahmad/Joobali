@@ -511,3 +511,34 @@ a.delete:hover {
 	border-top:1px solid #e5e5e5;
 	padding: 24px 49px 0 49px;
 }
+.tooltip-inner {
+    background-color: #ff5b35;
+    color: #fff;
+    text-align: left;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: #ff5b35;
+}
+/*------------ PW Progress Bar CSS Fixes ----------------*/
+.progress {
+    height: 5px !important;
+}
+
+.progress-bar-danger {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d9534f+0,f0ad4e+100 */
+	background: #d9534f; /* Old browsers */
+	background: -moz-linear-gradient(left,  #d9534f 88%, #f0ad4e 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  #d9534f 88%,#f0ad4e 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  #d9534f 88%,#f0ad4e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9534f', endColorstr='#f0ad4e',GradientType=1 ); /* IE6-9 */
+}
+
+.progress-bar-success {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f0ad4e+0,5cb850+12 */
+	background: #f0ad4e; /* Old browsers */
+	background: -moz-linear-gradient(left,  #f0ad4e 0%, #5cb850 12%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(left,  #f0ad4e 0%,#5cb850 12%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to right,  #f0ad4e 0%,#5cb850 12%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0ad4e', endColorstr='#5cb850',GradientType=1 ); /* IE6-9 */
+}

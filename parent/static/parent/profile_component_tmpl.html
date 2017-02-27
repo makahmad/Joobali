@@ -38,24 +38,47 @@
 		      <!--</div>-->
 		    <!--{% endif %}-->
 
-                <div class="form-group">
-                    <label class="control-label" for="password">Password:</label>
+              <div class="form-group" >
+                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="!showChangePassword">Change Password?</a>
+                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="showChangePassword">Nevermind, don't change password</a>
+                </div>
+                <div class="form-group"  ng-class="{ 'has-error' : profileForm.currentPassword.$error.required}" ng-show="showChangePassword">
+                    <label class="control-label" for="currentPassword">Current Password:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="password" name="password" required="true"
-                           ng-model="$ctrl.profile.password">
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                           ng-model="$ctrl.profile.currentPassword" ng-required='$ctrl.profile.newPassword.length>0 && showChangePassword'>
 										 </div>
+                      <span style="color:red" ng-show="$ctrl.currentPasswordError">
+                            Current password is incorrect.
+                    </span>
+
+                    <span style="color:red" ng-show="profileForm.currentPassword.$error.required">
+                        <span ng-show="profileForm.currentPassword.$error.required">Current password is required if entering new password.</span>
+                    </span>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
+                    <label class="control-label" for="newPassword">New Password:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" class="form-control" id="newPassword" name="newPassword"
+                           ng-model="$ctrl.profile.newPassword"  ng-required='$ctrl.profile.currentPassword.length>0 && showChangePassword' ng-model-options="{allowInvalid: true}" pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})">
+
+                    </div>
+                    <password-strength ng-model="$ctrl.profile.newPassword"></password-strength>
+                     <span style="color:red" ng-show="profileForm.newPassword.$error.required">
+                        <span ng-show="profileForm.newPassword.$error.required">New password is required if entering current password.</span>
+                    </span>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="phone">Phone:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="phone" name="phone" required="false" ng-model="$ctrl.profile.phone">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="phone" name="phone"  ng-model="$ctrl.profile.phone">
 										</div>
                 </div><div>
                 </div>
             </div>
 		        </form>
 						<div class="formActions">
-								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave">Update &raquo;</button>
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave||profileForm.$invalid">Update &raquo;</button>
 						</div> <!-- end formActions -->
     </div>
 	</div>

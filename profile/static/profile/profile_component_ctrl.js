@@ -46,7 +46,7 @@ ProfileComponentController.prototype.saveProfile = function() {
 
 			if (response.data=="email already exists")
                  this.emailError = true;
-			if (response.data=="current password is incorrect")
+			else if (response.data=="current password is incorrect")
                  this.currentPasswordError = true;
 			else
 			    alert("Something is wrong with the saving. Please try again later");
