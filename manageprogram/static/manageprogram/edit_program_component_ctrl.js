@@ -1,6 +1,6 @@
 var TIME_FORMAT =  'hh:mm A';
 
-EditProgramComponentController = function($http, $window, $location) {
+EditProgramComponentController = function($uibModal,$http, $window, $location) {
     console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -59,6 +59,24 @@ EditProgramComponentController = function($http, $window, $location) {
         $ctrl.cancel = function () {
           $ctrl.dismiss({$value: 'cancel'});
         };
+
+           $ctrl.confirmDeleteComponentModal = function () {
+                var modalInstance = $uibModal.open({
+                  animation: $ctrl.animationsEnabled,
+                  component: 'confirmDeleteProgramComponent',
+                   resolve: {
+                    programId: function () {
+                      return $ctrl.program.id;
+                    }
+                  }
+                });
+
+                modalInstance.result.then(function (selectedProgram) {
+                  $ctrl.program = selectedProgram;
+                }, function () {
+                  $log.info('modal-component dismissed at: ' + new Date());
+                });
+          };
 
 };
 

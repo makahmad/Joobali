@@ -136,6 +136,16 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         dismiss: '&'
       }
     })
+    .component('confirmDeleteProgramComponent', {
+      templateUrl: '/static/manageprogram/confirm_delete_program_component_tmpl.html',
+              controller: ConfirmDeleteProgramComponentController,
+      bindings: {
+        programs: '<',
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
         controller: InvoicesComponentController,
