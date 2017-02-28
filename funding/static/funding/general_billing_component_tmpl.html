@@ -1,0 +1,30 @@
+<div class="generalBillingFormContainer" >
+	<div class="generalBillingFormHeader">
+		<h2 class="general-billing-title">Other General Billing Options:</h2>
+	</div>
+	<div class="generalBillingFormBody">
+        <form id="generalBillingForm" name="generalBillingForm" role="form" class="well">
+            <div class="">
+
+                <div class="form-group">
+                    <label class="control-label" for="lateFee">Late Fee:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control"  ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="lateFee" name="lateFee" ng-required="false"
+                           ng-model="$ctrl.generalBilling.lateFee">
+									 <div>
+                </div>
+                        <div class="form-group">
+                    <label class="control-label" for="graceDays">Late Fee Grace Period (days):</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="graceDays" name="graceDays" ng-required="false"
+                           ng-model="$ctrl.generalBilling.graceDays">
+										 </div>
+                </div>
+            </div>
+		        </form>
+						<div class="formActions">
+								<button type="button" class="btn btn-default btn-lg pull-right joobali"
+                                        ng-click="$ctrl.saveGeneralBilling()" ng-disabled="generalBillingForm.$invalid">Update &raquo;</button>
+						</div> <!-- end formActions -->
+    </div>
+</div>

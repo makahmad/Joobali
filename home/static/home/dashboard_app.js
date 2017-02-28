@@ -157,6 +157,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           fundings: '<'
         }
     })
+    .component('generalBillingComponent', {
+        templateUrl: '/static/funding/general_billing_component_tmpl.html',
+        controller: GeneralBillingComponentController
+    })
     .component('transferComponent', {
         templateUrl: '/static/funding/transfer_component_tmpl.html',
         controller: TransferComponentController,
