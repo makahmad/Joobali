@@ -22,6 +22,7 @@ body {background:#ff5b35;}
 .login-form{
     max-width:580px;
 }}
+
 .tooltip-inner {
     background-color: #ff5b35;
     color: #fff;
@@ -31,25 +32,32 @@ body {background:#ff5b35;}
 .tooltip.top .tooltip-arrow {
     border-top-color: #ff5b35;
 }
-/*------------ PW Progress Bar CSS Fixes ----------------*/
-.progress {
-    height: 5px !important;
+
+/*-------------- Structure & Layout ----------------*/
+.jumbotron {
+    background: #fa5d26 url("./pics/img_homegbg.png") no-repeat top center;
+		background-size:100%;
+    color: #ffffff;
+    padding: 100px 25px;
 }
 
-.progress-bar-danger {
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d9534f+0,f0ad4e+100 */
-	background: #d9534f; /* Old browsers */
-	background: -moz-linear-gradient(left,  #d9534f 88%, #f0ad4e 100%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(left,  #d9534f 88%,#f0ad4e 100%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to right,  #d9534f 88%,#f0ad4e 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d9534f', endColorstr='#f0ad4e',GradientType=1 ); /* IE6-9 */
+.jumbotron .btn, .homePitch2 .btn {
+  -webkit-border-radius: 3;
+  -moz-border-radius: 3;
+  border-radius: 3px;
+  -webkit-box-shadow: .5px .5px 1px #000000;
+  -moz-box-shadow: .5px .5px 1px #000000;
+  box-shadow: .5px .5px 1px #000000;
+  font-family: 'Roboto', sans-serif;
+  color: #ffffff;
+  font-size: 20px;
+  background: #339999;
+  padding: 15px 24px 15px 24px;
+  text-decoration: none;
 }
 
-.progress-bar-success {
-	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f0ad4e+0,5cb850+12 */
-	background: #f0ad4e; /* Old browsers */
-	background: -moz-linear-gradient(left,  #f0ad4e 0%, #5cb850 12%); /* FF3.6-15 */
-	background: -webkit-linear-gradient(left,  #f0ad4e 0%,#5cb850 12%); /* Chrome10-25,Safari5.1-6 */
-	background: linear-gradient(to right,  #f0ad4e 0%,#5cb850 12%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0ad4e', endColorstr='#5cb850',GradientType=1 ); /* IE6-9 */
+.jumbotron .btn:hover, .homePitch2 .btn:hover {
+  background: #2e8f8f;
+  text-decoration: none;
 }
+

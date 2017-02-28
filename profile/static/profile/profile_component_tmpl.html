@@ -48,7 +48,7 @@
                     <a ng-click="showChangePassword = ! showChangePassword" ng-show="!showChangePassword">Change Password?</a>
                     <a ng-click="showChangePassword = ! showChangePassword" ng-show="showChangePassword">Nevermind, don't change password</a>
                 </div>
-                <div class="form-group"  ng-class="{ 'has-error' : profileForm.currentPassword.$error.required}" ng-show="showChangePassword">
+                <div class="form-group pwChange"  ng-class="{ 'has-error' : profileForm.currentPassword.$error.required}" ng-show="showChangePassword">
                     <label class="control-label" for="currentPassword">Current Password:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="currentPassword" name="currentPassword"
@@ -62,7 +62,7 @@
                         <span ng-show="profileForm.currentPassword.$error.required">Current password is required if entering new password.</span>
                     </span>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
+                <div class="form-group pwChange" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
                     <label class="control-label" for="newPassword">New Password:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" class="form-control" id="newPassword" name="newPassword"
