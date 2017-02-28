@@ -15,7 +15,11 @@ ProgramComponentController = function($uibModal, $log, $location) {
                resolve: {
                 programId: function () {
                   return $ctrl.program.id;
+                },
+                confirmDeleteComponentModal: function () {
+                  return $ctrl.confirmDeleteComponentModal;
                 }
+
               }
             });
 

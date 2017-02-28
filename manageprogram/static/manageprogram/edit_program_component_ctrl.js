@@ -60,23 +60,10 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
           $ctrl.dismiss({$value: 'cancel'});
         };
 
-           $ctrl.confirmDeleteComponentModal = function () {
-                var modalInstance = $uibModal.open({
-                  animation: $ctrl.animationsEnabled,
-                  component: 'confirmDeleteProgramComponent',
-                   resolve: {
-                    programId: function () {
-                      return $ctrl.program.id;
-                    }
-                  }
-                });
+    $ctrl.deleteProgram = function () {
+      $ctrl.resolve.confirmDeleteComponentModal();
+    };
 
-                modalInstance.result.then(function (selectedProgram) {
-                  $ctrl.program = selectedProgram;
-                }, function () {
-                  $log.info('modal-component dismissed at: ' + new Date());
-                });
-          };
 
 };
 
