@@ -1,6 +1,7 @@
 body {
 	background-color: #f1f1f1 !important;
 	font-family: 'Roboto', sans-serif !important;
+	letter-spacing:.05em;
 }
 
 .jumbotron {
@@ -634,7 +635,7 @@ a.delete:hover {
 }
 
 #signUp h3 {
-	font-size:12em;
+	font-size:8em;
 	margin:0;
 }
 
@@ -686,4 +687,9 @@ a.delete:hover {
 	background: -webkit-linear-gradient(left,  #f0ad4e 0%,#5cb850 12%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right,  #f0ad4e 0%,#5cb850 12%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0ad4e', endColorstr='#5cb850',GradientType=1 ); /* IE6-9 */
+}
+
+/*----------------- General bootstrap overrides ------------------*/
+label {
+	font-weight:200;
 }

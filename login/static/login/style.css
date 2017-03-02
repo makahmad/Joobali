@@ -1,4 +1,7 @@
-body {background:#ff5b35;}
+body {
+	background:#ff5b35;
+	letter-spacing:.05em;
+}
 
 @media (min-width: 768px) {
 .login-form{
@@ -61,3 +64,6 @@ body {background:#ff5b35;}
   text-decoration: none;
 }
 
+label {
+	font-weight:200;
+}
