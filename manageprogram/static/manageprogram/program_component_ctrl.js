@@ -52,7 +52,6 @@ ProgramComponentController = function($uibModal, $log, $location) {
 
 
 ProgramComponentController.prototype.click = function() {
-
     this.location_.path('/program/' + this.program.id);
 }
 
