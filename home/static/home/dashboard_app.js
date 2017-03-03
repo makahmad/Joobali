@@ -8,6 +8,7 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.initialize();
+	this.scope_.module = 'dashboard';
 
     $scope.changeView = function(view) {
         console.log("changeView(" + view + ")");
@@ -157,7 +158,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/profile/profile_component_tmpl.html',
         controller: ProfileComponentController,
         bindings: {
-          profile: '<'
+          profile: '<',
+          module: '='
         }
     })
     .component('fundingsComponent', {

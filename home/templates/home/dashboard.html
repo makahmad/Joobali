@@ -79,6 +79,7 @@
     <![endif]-->
 </head>
 <body ng-app="dashboardApp" ng-controller="DashboardCtrl as dashboardCtrl">
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-container">
         <div class="navbar-header">
@@ -123,7 +124,7 @@
 
  {% verbatim %}
     <div class="nav-side-menu">
-        <div class="brand">Joobali</div>
+        <div class="brand">Joobali </div>
 
         <div class="menu-list">
 
@@ -162,12 +163,14 @@
                 </li>
 
 
-                <li ng-click="changeView('/profile')">
+                <li ng-click="changeView('/profile')" ng-class="{active: module=='profile'}">
                     <a>
                         <i class="fa fa-user fa-lg"></i> Profile
                     </a>
                 </li>
-
+<li>
+    module = {{module}}
+</li>
             </ul>
         </div>
     </div>
