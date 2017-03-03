@@ -1,9 +1,29 @@
 var TIME_FORMAT =  'hh:mm A';
 
-AddProgramFormComponentController = function($scope) {
+AddProgramFormComponentController = function($scope,$http) {
     console.log('AddProgramFormComponentController running');
 
 	this.initializeTimePickers();
+
+    var $ctrl = this;
+
+    $ctrl.$onInit = function () {
+          	$http({
+            method: 'GET',
+            url: '/manageprogram/getdefaultlatefee'
+        }).then(angular.bind(this, function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+
+            this.newProgram.lateFee =JSON.parse(response.data);
+
+        }), function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log(response);
+        });
+
+    };
 
 };
 

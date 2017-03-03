@@ -14,4 +14,5 @@ urlpatterns = [
 	# url(r'^updatesession', views.updateSession, name='updateSession'),
 	# url(r'^deletesession', views.deleteSession, name='deleteSession'),
 	url(r'^edit', views.edit, name='edit'),
+	url(r'^getdefaultlatefee', views.getDefaultLateFee, name='getDefaultLateFee'),
 ]

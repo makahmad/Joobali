@@ -69,6 +69,15 @@ def getProgram(request):
 	program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
 	return HttpResponse(json.dumps([JEncoder().encode(program)]), content_type="application/json")
 
+def getDefaultLateFee(request):
+	"""Handles get program request. Returns the program with provided program ID"""
+	user_id = request.session.get('user_id')
+	if not check_session(request):
+		return HttpResponseRedirect('/login')
+
+	provider = Provider.get_by_id(user_id)
+	return HttpResponse(provider.lateFee)
+
 def updateProgram(request):
 	"""Updates the program with provided program ID"""
 	user_id = request.session.get('user_id')
