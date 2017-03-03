@@ -8,12 +8,14 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.initialize();
-	this.scope_.module = 'dashboard';
+	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
 
     $scope.changeView = function(view) {
         console.log("changeView(" + view + ")");
         $location.path(view);
+        this.module = view;
     }
+
 };
 
 DashboardController.prototype.initialize = function() {
@@ -158,8 +160,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/profile/profile_component_tmpl.html',
         controller: ProfileComponentController,
         bindings: {
-          profile: '<',
-          module: '='
+          profile: '<'
         }
     })
     .component('fundingsComponent', {

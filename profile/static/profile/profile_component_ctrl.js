@@ -7,14 +7,6 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 	this.disableSave = false;
 	this.scope_ = $scope;
 
-
-        console.log("module="+this.module);
-
-           this.module='profile';
-
-        console.log("module="+this.module);
-
-
     this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
     '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
 

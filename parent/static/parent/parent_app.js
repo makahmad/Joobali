@@ -6,12 +6,13 @@ ParentController = function($scope, $http, $window, $location) {
 	this.scope_.programs = [];
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
-
+	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
 	this.initialize();
 
     $scope.changeView = function(view) {
         console.log("changeView(" + view + ")");
         $location.path(view);
+        this.module=view;
     }
 };
 
