@@ -12,7 +12,7 @@ urlpatterns = [
     url(r'^login/', include('login.urls')),
     url(r'^profile/', include('profile.urls')),
     url(r'^invoice/', include('invoice.urls')),
-    url(r'^referal/', include('referal.urls')),
+    url(r'^referral/', include('referral.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^enrollment/', include('enrollment.urls')),
     url(r'^parent/', include('parent.urls')),
