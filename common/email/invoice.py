@@ -33,7 +33,7 @@ Our records indicate you are signed up for Joobali AutoPay. Joobali AutoPay will
     # [END send_mail]
 
 
-def send_parent_enrollment_notify_email(enrollment, host, sender_address="zilong@joobali.com"):
+def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongjian@joobali.com"):
     provider = enrollment.key.parent().get()
     parent = enrollment.child_key.get().parent_key.get()
     program = enrollment.program_key.get()
@@ -47,7 +47,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="zilong
         sender=sender_address,
         subject="Invitation from %s to make payments online." % provider_name)
 
-    message.to = "%s" % "zilong@joobali.com"
+    message.to = "%s" % parent_email
     if not is_parent_signup:
         global _signup_notification_template
         context = Context({
