@@ -1,6 +1,6 @@
 from google.appengine.api import mail
 
-def send_referral_email(receiver_name, receiver_address, referrer_name, template, sender_address="howdy@joobali.com", ):
+def send_referral_email(receiver_name, receiver_address, referrer_name, template, sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
