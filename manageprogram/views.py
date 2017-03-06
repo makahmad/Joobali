@@ -5,6 +5,8 @@ from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from datetime import datetime
+from child import child_util
+from enrollment import enrollment_util
 from login.models import Provider
 from manageprogram import models
 from manageprogram import program_util
@@ -163,6 +165,22 @@ def addProgram(request):
 	# 		session.endTime = datetime.strptime(newSession['endTime'], '%I:%M %p').time()
 	# 		session.put()
 	return HttpResponse("success")
+
+def list_program_by_child(request):
+    status = "failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    provider_id = request.session.get('user_id')
+    child_id = long(request.GET.get('child_id'))
+    logger.info('provider_id %s, child_id %s' % (provider_id, child_id))
+    child_key = child_util.get_child_key(child_id=child_id)
+    enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_id=provider_id, child_key=child_key)
+    programs = []
+    for enrollment in enrollments:
+        programs.append(enrollment.program_key.get())
+    response = HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
+    logger.info("response is %s" % response)
+    return response
 
 # Deprecated
 # def addSession(request):

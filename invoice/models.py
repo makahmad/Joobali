@@ -24,10 +24,7 @@ class InvoiceLineItem(ndb.Model):
     invoice_key = ndb.KeyProperty(required=True)
     program_name = ndb.StringProperty(required=True)
     amount = ndb.FloatProperty(required=True)
-    start_date = ndb.DateProperty(required=True)
-    end_date = ndb.DateProperty(required=True)
-
-class InvoiceAdjustment(ndb.Model):
-    invoice_key = ndb.KeyProperty(required=True)
-    reason = ndb.StringProperty(required=True)
-    amount = ndb.FloatProperty(required=True)
+    start_date = ndb.DateProperty()
+    end_date = ndb.DateProperty()
+    # Reason for adjustment
+    description = ndb.StringProperty()

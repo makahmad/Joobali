@@ -1,5 +1,5 @@
 
-DashboardController = function($scope, $http, $window, $location) {
+DashboardController = function($uibModal, $scope, $http, $window, $location) {
 	this.http_ = $http;
 	this.window_ = $window;
 	this.location_ = $location;
@@ -15,7 +15,6 @@ DashboardController = function($scope, $http, $window, $location) {
         $location.path(view);
         this.module = view;
     }
-
 };
 
 DashboardController.prototype.initialize = function() {
@@ -46,6 +45,7 @@ DashboardController.prototype.initialize = function() {
 	    angular.forEach(response.data, angular.bind(this, function(invoice) {
 	    	this.scope_.invoices.push(invoice);
 	    }));
+	    console.log(this.scope_.invoices);
 
 	  }), function errorCallback(response) {
 	    // called asynchronously if an error occurs
@@ -90,7 +90,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
-                 .when('/invoice', {templateUrl: '/static/home/invoice_component_tmpl.html'})
+                 .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
                  .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
@@ -107,6 +107,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     // to support EnrollmentEditorModal
     // need enrollment/enrollment-editor.component.js
     .controller('EnrollmentEditorController', EnrollmentEditorController)
+    .controller('AddInvoiceController', AddInvoiceController)
     .component('initSetupComponent', {
     templateUrl: '/static/home/init_setup_component_tmpl.html',
     controller: InitSetupComponentController
@@ -149,6 +150,15 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         dismiss: '&'
       }
     })
+    // The Invoice page in dashboard
+    .component('invoiceComponent', {
+        templateUrl: '/static/home/invoice_component_tmpl.html',
+        controller: InvoiceComponentController,
+        bindings: {
+          invoices: '<'
+        }
+    })
+    // The list of invoices inside invoice page
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
         controller: InvoicesComponentController,

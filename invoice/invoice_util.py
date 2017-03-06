@@ -1,5 +1,4 @@
 from google.appengine.ext import ndb
-from models import InvoiceAdjustment
 from models import InvoiceLineItem
 from models import Invoice
 from common import key_util
@@ -9,21 +8,30 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def create_invoice_line_item(enrollment_key, invoice, program, start_date, end_date):
+def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, end_date=None, description=None, amount=None):
     """Creates a new InvoiceLineItem"""
     invoice_line_item = InvoiceLineItem(parent=invoice.key)
     invoice_line_item.enrollment_key = enrollment_key
     invoice_line_item.invoice_key = invoice.key
-    invoice_line_item.amount = program.fee
+    if amount:
+        invoice_line_item.amount = amount
+    else:
+        invoice_line_item.amount = program.fee
     invoice_line_item.program_name = program.programName
     invoice_line_item.start_date = start_date
     invoice_line_item.end_date = end_date
+    invoice_line_item.description = description
     invoice_line_item.put()
     return invoice_line_item
 
-def create_invoice(provider, child, date, due_date, autopay_source_id=None):
+def create_invoice(provider, child, date, due_date, autopay_source_id=None, amount=None):
     """Creates a new Invoice"""
-    invoice = Invoice(id = "%s-%s-%s" % (provider.key.id(), child.key.id(), date))
+    id = "%s-%s-%s-%%s" % (provider.key.id(), child.key.id(), date)
+    index = 1
+    while Invoice.get_by_id(id % index):
+        index += 1
+
+    invoice = Invoice(id = id % index)
     invoice.provider_key = provider.key
     invoice.provider_email = provider.email
     invoice.provider_phone = provider.phone
@@ -33,7 +41,7 @@ def create_invoice(provider, child, date, due_date, autopay_source_id=None):
     invoice.parent_email = child.parent_email
     invoice.due_date = due_date
     invoice.date_created = date
-    invoice.amount = 0
+    invoice.amount = amount
     invoice.autopay_source_id = autopay_source_id
     invoice.put()
     return invoice
@@ -45,10 +53,6 @@ def sum_up_amount_due(invoice):
     lineItems = InvoiceLineItem.query(ancestor = invoice.key)
     for lineItem in lineItems:
         amount += lineItem.amount
-    # adjustment payment
-    adjustments = InvoiceAdjustment.query(ancestor = invoice.key)
-    for adjustment in adjustments:
-        amount += adjustment.amount
     return amount
 
 # def create_invoice_email(invoice):

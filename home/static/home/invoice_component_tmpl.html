@@ -1,2 +1,5 @@
 <span class="invoiceHeader"><b>Invoices:</b></span>
-<invoices-component invoices="invoices"></invoices-component>
+<invoices-component invoices="$ctrl.invoices"></invoices-component>
+<div class="InvoiceTableButtonDiv">
+    <button class="btn btn-primary btn-lg" ng-click="$ctrl.openAddInvoiceModal()">Create Invoice</button>
+</div>

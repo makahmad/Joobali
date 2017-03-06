@@ -59,6 +59,7 @@ def get_enrollment(provider_id, enrollment_id):
 def list_enrollment_by_provider_and_child(provider_id, child_key):
     provider_key = ndb.Key('Provider', provider_id)
     enrollment_query = Enrollment.query(Enrollment.child_key == child_key, ancestor=provider_key)
+
     if enrollment_query is None:
         logger.info("enrollment_query is none")
     enrollments = list()
@@ -66,6 +67,16 @@ def list_enrollment_by_provider_and_child(provider_id, child_key):
         enrollments.append(enrollment)
     return enrollments
 
+def list_enrollment_by_provider_and_child_and_program(provider_id, child_key, program_key):
+    provider_key = ndb.Key('Provider', provider_id)
+    enrollment_query = Enrollment.query(Enrollment.child_key == child_key, Enrollment.program_key == program_key, ancestor=provider_key)
+
+    if enrollment_query is None:
+        logger.info("enrollment_query is none")
+    enrollments = list()
+    for enrollment in enrollment_query:
+        enrollments.append(enrollment)
+    return enrollments
 
 def list_enrollment_by_provider(provider_id):
     """List all enrollment given a provider id"""

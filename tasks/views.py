@@ -19,7 +19,6 @@ logger = logging.getLogger(__name__)
 def invoice_calculation(request):
     print "INVOICE CALCULATION"
     today = date.today()
-    print today
     invoice_dict = dict()
     days_before = 5
     # loop over providers...
