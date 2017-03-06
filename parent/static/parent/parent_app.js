@@ -1,4 +1,4 @@
-ParentController = function($scope, $http, $window, $location) {
+ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.http_ = $http;
 	this.window_ = $window;
 	this.location_ = $location;
@@ -8,12 +8,20 @@ ParentController = function($scope, $http, $window, $location) {
 	this.scope_.invoices = [];
 	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
 	this.initialize();
+    this.animationsEnabled = true;
 
-    $scope.changeView = function(view) {
+    this.scope_.changeView = function(view) {
         console.log("changeView(" + view + ")");
         $location.path(view);
         this.module=view;
     }
+
+    this.scope_.openReferralComponentModal = function () {
+        var modalInstance = $uibModal.open({
+          animation: this.animationsEnabled,
+          component: 'referralComponent'
+        });
+      };
 };
 
 ParentController.prototype.initialize = function() {
@@ -97,6 +105,15 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
         bindings: {
           invoices: '<'
         }
+    })
+    .component('referralComponent', {
+      templateUrl: '/static/parent/referral_component_tmpl.html',
+              controller: ReferralComponentController,
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
     })
     .component('fundingsComponent', {
         templateUrl: '/static/funding/fundings_component_tmpl.html',

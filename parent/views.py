@@ -7,13 +7,17 @@ from enrollment.models import Enrollment
 from django.http import HttpResponseRedirect
 from django import template
 from passlib.apps import custom_app_context as pwd_context
+from common.email.referral import send_parent_referral_email
 from models import Parent
+from referral import models
 from funding import funding_util
 from django.http import HttpResponse
 from google.appengine.ext import ndb
-
+import logging
 import json
 
+
+logger = logging.getLogger(__name__)
 
 def index(request):
     if not check_session(request) or request.session['is_provider'] is True:
@@ -128,3 +132,38 @@ def get_autopay_data(request):
     }
 
     return HttpResponse(json.dumps([JEncoder().encode(data)]))
+
+
+def parentReferral(request):
+    """A form function to handle internal referral form POST requests"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
+    response = dict()
+
+    if request.method != 'POST':
+        logger.info('request.method is %s', request.method)
+        response['status'] = 'failure'
+    else:
+        referralForm = json.loads(request.body)
+        parent = Parent.get_by_id(request.session['user_id'])
+
+        referral = models.Referral()
+        referral.schoolName = referralForm['schoolName']
+        referral.referrerName = parent.firstName+" "+parent.lastName
+        referral.referrerEmail = parent.email
+        referral.schoolEmail = referralForm['email']
+        referral.schoolPhone = referralForm['phone']
+        referral.put()
+
+        emailTemplate = template.loader.get_template('referral/external_referral.html')
+        data = {
+            'school_name': referralForm['schoolName']
+        }
+        send_parent_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
+                            emailTemplate.render(data), "rongjian@joobali.com")
+        response['status'] = 'success'
+    return HttpResponse(json.dumps(response), content_type="application/json")

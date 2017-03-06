@@ -5,3 +5,4 @@ class Referral(ndb.Model):
 	schoolEmail = ndb.StringProperty(required=True)
 	schoolPhone = ndb.StringProperty()
 	referrerName = ndb.StringProperty(required=True)
+	referrerEmail = ndb.StringProperty()
