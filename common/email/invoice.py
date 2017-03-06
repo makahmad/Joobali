@@ -1,15 +1,15 @@
 import os
 import logging
 from google.appengine.api import mail
-from django.template import Context, Template
+from django.template import loader
+from django.template import Context
 
 logger = logging.getLogger(__name__)
 module_dir = os.path.dirname(__file__)
 
 # TODO(zilong): Refine the html template with proper input parameters
-_enrollment_notification_template = Template(
-    open(module_dir + '/html_template/enrollment_notification_template.html').read())
-_signup_notification_template = Template(open(module_dir + '/html_template/signup_invitation_template.html').read())
+_enrollment_notification_template = loader.get_template('enrollment/enrollment_notification_template.html')
+_signup_notification_template = loader.get_template('enrollment/signup_invitation_template.html')
 
 
 def send_invoice_email(parent_address, invoice, start_date, end_date, template, sender_address="rongjian@joobali.com"):
@@ -37,6 +37,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
     provider = enrollment.key.parent().get()
     parent = enrollment.child_key.get().parent_key.get()
     program = enrollment.program_key.get()
+    child = enrollment.child_key.get()
 
     is_parent_signup = parent.invitation.token is None
     parent_email = parent.email
@@ -51,7 +52,11 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
     if not is_parent_signup:
         global _signup_notification_template
         context = Context({
+            'host': host,
             'provider_school_name': provider.schoolName,
+            'program_name': program.programName,
+            'child_first_name': child.first_name,
+            'enrollment_start_date': enrollment.start_date,
             'signup_url': signup_url,
         })
         message.html = _signup_notification_template.render(context)

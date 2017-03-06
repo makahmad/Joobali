@@ -123,7 +123,7 @@
                             <tbody>
                             <tr>
                                 <td style="font-size: 12px; color:#929292; text-align:center; font-family: sans-serif;">
-                                    <a href="#"><img src="logo.png" width="220" height="100" alt=""/></a></td>
+                                    <a href="#"><img src="http://{{host}}/static/home/pics/logo/logo.png" width="220" height="100" alt=""/></a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -159,11 +159,18 @@
                                 <!-- Row container for Intro/ Description -->
                                 <td align="left"
                                     style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
-                                    <p><strong> {{ provider_school_name }} </strong>has invited you to make payments online and
+                                    <div >
+                                    <p><strong> {{ provider_school_name }} </strong>has invited you to make payments
+                                        online and
                                         view invoices for child care services provided. <br>
                                         <br>
-                                    <p>Please signup <a href="{{signup_url}}">here</a></p>
-                                    <p>&quot;</p></td>
+                                    <p>Your child <strong>{{ child_first_name }}</strong> is enrolled in program
+                                        <strong>{{program_name}}</strong>, starting at
+                                        <strong>{{enrollment_start_date}}</strong></p>
+                                    <p>Please signup <a href="{{signup_url}}">here</a> and accept the enrollment</p>
+                                    <p>&quot;</p>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                     </td>
