@@ -10,6 +10,8 @@ body {
     padding: 100px 25px;
 }
 
+a.menu_links { cursor: pointer; }
+
 .jumbotron .btn, .homePitch2 .btn {
   -webkit-border-radius: 3;
   -moz-border-radius: 3;

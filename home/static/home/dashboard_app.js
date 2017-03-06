@@ -1,5 +1,5 @@
 
-DashboardController = function($scope, $http, $window, $location) {
+DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.http_ = $http;
 	this.window_ = $window;
 	this.location_ = $location;
@@ -9,12 +9,22 @@ DashboardController = function($scope, $http, $window, $location) {
 	this.scope_.invoices = [];
 	this.initialize();
 	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
+    this.animationsEnabled = true;
 
-    $scope.changeView = function(view) {
+    this.scope_.changeView = function(view) {
         console.log("changeView(" + view + ")");
         $location.path(view);
         this.module = view;
     }
+
+    this.scope_.openReferralComponentModal = function () {
+        var modalInstance = $uibModal.open({
+          animation: this.animationsEnabled,
+          component: 'referralComponent'
+        });
+      };
+
+
 
 };
 
@@ -128,6 +138,15 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('addProgramComponent', {
         templateUrl: '/static/manageprogram/add_program_component_tmpl.html',
         controller: AddProgramComponentController
+    })
+    .component('referralComponent', {
+      templateUrl: '/static/referral/referral_component_tmpl.html',
+              controller: ReferralComponentController,
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
     })
     .component('editProgramComponent', {
       templateUrl: '/static/manageprogram/edit_program_component_tmpl.html',

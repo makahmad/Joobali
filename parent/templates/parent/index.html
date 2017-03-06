@@ -56,6 +56,9 @@
     <script src="{{ STATIC_URL }}child/child-card.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-enrollment.component.js"></script>
 
+    <!-- Referral Related JS-->
+    <script src="{{ STATIC_URL }}parent/referral_component_ctrl.js"></script>
+
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
     <!-- Dashboard Related JS -->
@@ -94,6 +97,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-click="changeView('/profile')"><a href="#!/profile">Profile</a></li>
+                        <li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a class="menu_links">Refer</a></li>
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>

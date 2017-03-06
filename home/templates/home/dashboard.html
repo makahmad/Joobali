@@ -67,9 +67,14 @@
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
     <script src="{{ STATIC_URL}}enrollment/enrollment-editor.component.js"></script>
+
+   <!-- Referral Related JS-->
+    <script src="{{ STATIC_URL }}referral/referral_component_ctrl.js"></script>
+
     <!-- Dashboard Related JS -->
     <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -107,6 +112,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-click="changeView('/profile')"><a href="#!/profile">Profile</a></li>
+                        <li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a>Refer</a></li>
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>
