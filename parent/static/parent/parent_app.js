@@ -73,8 +73,9 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
                  .when('/funding', {templateUrl: '/static/parent/funding_component_tmpl.html'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
-                 .when('/child/list', {template: '<child-list></child-list>'})
+                 .when('/child/list', {template: '<child-list-parent-view></child-list-parent-view>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
+                 .when('/enrollmentview/:providerId/:enrollmentId', {template: '<enrollment-parent-view></enrollment-parent-view>'})
                  .otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
@@ -138,16 +139,28 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
         templateUrl: '/static/parent/profile_component_tmpl.html',
         controller: ProfileComponentController
     })
-    .component('childList', {
-        templateUrl: '/static/child/child-list.template.html',
-        controller: ['$http', '$location', childListController]
+    .component('enrollmentParentView', {
+        templateUrl: '/static/enrollment/enrollment-parent-view.template.html',
+        controller: ['$http', '$routeParams', EnrollmentParentViewController]
     })
-    .component('childCard', {
-        templateUrl: '/static/child/child-card.template.html',
-        controller : ['$scope', '$http', '$routeParams', '$location', ChildCardController],
+    .component('childListParentView', {
+        templateUrl: '/static/child/child-list-parent-view.template.html',
+        controller: ['$http', '$location', ChildListParentViewController]
+    })
+    .component('childCardParentView', {
+        templateUrl: '/static/child/child-card-parent-view.template.html',
+        controller : ['$http', ChildCardParentViewController],
         bindings: {
           child: '<',
           index: '<'
+        }
+    })
+    .component('enrollmentListParentView', {
+        templateUrl: '/static/enrollment/enrollment-list-parent-view.template.html',
+        controller: ['$http', EnrollmentListParentViewController],
+        bindings: {
+            child : '<',
+            enrollments : '<'
         }
     })
     .directive('passwordStrength', [

@@ -1,0 +1,15 @@
+<!--Showing List of Enrollments that can be edited -->
+<div class="panel panel-default">
+    <table class="table table-striped table-bordered table-condensed enrollmentList">
+        <thead>
+        <th ng-repeat="header in $ctrl.headers">{{ header }}</th>
+        </thead>
+        <tbody>
+        <tr data-ng-repeat="enrollment in $ctrl.enrollments">
+            <td>{{ enrollment.program_key[1][1] }}</td>
+            <td>{{ enrollment.status }}</td>
+            <td>{{ enrollment.start_date}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

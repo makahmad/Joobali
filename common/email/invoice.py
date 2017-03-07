@@ -49,6 +49,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
         subject="Invitation from %s to make payments online." % provider_name)
 
     message.to = "%s" % parent_email
+    logger.info('resending invitation to %s' % parent_email)
     if not is_parent_signup:
         global _signup_notification_template
         context = Context({
@@ -67,7 +68,6 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
             'program_name' : program.programName
         })
         message.html = _enrollment_notification_template.render(context)
-    logger.info(message.html)
     message.send()
 
     # [END send_mail]
