@@ -161,7 +161,8 @@ def parentReferral(request):
 
         emailTemplate = template.loader.get_template('referral/external_referral.html')
         data = {
-            'school_name': referralForm['schoolName']
+            'school_name': referralForm['schoolName'],
+            'referrer_name': referral.referrerName
         }
         send_parent_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
                             emailTemplate.render(data), "rongjian@joobali.com")

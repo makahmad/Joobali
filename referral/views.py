@@ -33,7 +33,8 @@ def referralForm(request):
             logger.info("INFO: successfully stored Referral:" + str(referral))
             emailTemplate = template.loader.get_template('referral/external_referral.html')
             data = {
-                'school_name': referral.schoolName
+                'school_name': referral.schoolName,
+                'referrer_name': referral.referrerName
             }
             send_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
                                 emailTemplate.render(data), "rongjian@joobali.com")
@@ -74,7 +75,8 @@ def providerReferral(request):
 
         emailTemplate = template.loader.get_template('referral/external_referral.html')
         data = {
-            'school_name': referralForm['schoolName']
+            'school_name': referralForm['schoolName'],
+            'referrer_name': referral.referrerName
         }
         send_provider_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
                             emailTemplate.render(data), "rongjian@joobali.com")

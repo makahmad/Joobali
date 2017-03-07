@@ -28,22 +28,22 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 };
 
 DashboardController.prototype.initialize = function() {
-	this.http_({
-		method: 'GET',
-		url: '/home/listprograms'
-	}).then(angular.bind(this, function successCallback(response) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-	    this.scope_.programs = [];
-	    angular.forEach(response.data, angular.bind(this, function(program) {
-	    	this.scope_.programs.push(JSON.parse(program));
-	    }));
-
-	}), function errorCallback(response) {
-		// called asynchronously if an error occurs
-		// or server returns response with an error status.
-		console.log(response);
-	});
+//	this.http_({
+//		method: 'GET',
+//		url: '/home/listprograms'
+//	}).then(angular.bind(this, function successCallback(response) {
+//	    // this callback will be called asynchronously
+//	    // when the response is available
+//	    this.scope_.programs = [];
+//	    angular.forEach(response.data, angular.bind(this, function(program) {
+//	    	this.scope_.programs.push(JSON.parse(program));
+//	    }));
+//
+//	}), function errorCallback(response) {
+//		// called asynchronously if an error occurs
+//		// or server returns response with an error status.
+//		console.log(response);
+//	});
 	this.http_({
 	  method: 'GET',
 	  url: '/invoice/listinvoices'
