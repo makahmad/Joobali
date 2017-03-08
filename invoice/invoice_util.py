@@ -78,6 +78,15 @@ def get_invoice_period(invoice):
         break
     return (start_date, end_date)
 
+def get_autopay_days_before(invoice):
+    """ Gets the number of days before due date for autopayment from enrollment associated with this invoice"""
+    pay_days_before = None
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    for lineItem in lineItems:
+        pay_days_before = lineItem.enrollment_key.get().pay_days_before
+        return (pay_days_before, True)
+    return (-1, False)
+
 def get_invoice_enrollments(invoice):
     """ Gets all the enrollments contributing to the line items of this invoice"""
     lineItems = InvoiceLineItem.query(ancestor = invoice.key)
