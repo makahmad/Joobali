@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from models import Enrollment
 from datetime import datetime
+from common.email.invoice import send_parent_enrollment_notify_email
 import logging
 
 logger = logging.getLogger(__name__)
@@ -16,6 +17,8 @@ def upsert_enrollment(enrollment_input):
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.put()
+    # TODO(zilong): get the real host from server
+    send_parent_enrollment_notify_email(enrollment, host='localhost:8080')
     return enrollment
 
 
@@ -67,6 +70,7 @@ def list_enrollment_by_provider_and_child(provider_id, child_key):
         enrollments.append(enrollment)
     return enrollments
 
+
 def list_enrollment_by_provider_and_child_and_program(provider_id, child_key, program_key):
     provider_key = ndb.Key('Provider', provider_id)
     enrollment_query = Enrollment.query(Enrollment.child_key == child_key, Enrollment.program_key == program_key, ancestor=provider_key)
@@ -77,6 +81,7 @@ def list_enrollment_by_provider_and_child_and_program(provider_id, child_key, pr
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
     return enrollments
+
 
 def list_enrollment_by_provider(provider_id):
     """List all enrollment given a provider id"""
