@@ -162,6 +162,7 @@ def parent_signup(request):
                 if not parent_util.verify_invitation_token(email, invitation_token):
                     return HttpResponseRedirect('/login')
                 else:
+                    create_new_init_setup_status(parent.email)
                     salted_password = pwd_context.encrypt(password)
                     parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
                                                                phone=phone,

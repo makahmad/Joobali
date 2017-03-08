@@ -14,15 +14,33 @@ def is_provider(request):
     return request.session.get('is_provider')
 
 
+def is_parent(request):
+    return not request.session.get('is_provider')
+
+
 def get_provider_email(request):
     if is_provider(request):
-        return request.session.get("email")
+        return request.session.get('email')
     else:
         raise RuntimeError("Cannot get provider email from a non-provider session")
 
 
 def get_provider_id(request):
     if is_provider(request):
+        return request.session.get("user_id")
+    else:
+        raise RuntimeError("Cannot get provider id from a non-provider session")
+
+
+def get_parent_email(request):
+    if is_parent(request):
+        return request.session.get('email')
+    else:
+        raise RuntimeError("Cannot get parent email from a non-provider session")
+
+
+def get_parent_id(request):
+    if is_parent(request):
         return request.session.get("user_id")
     else:
         raise RuntimeError("Cannot get provider id from a non-provider session")

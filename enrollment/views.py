@@ -2,13 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django import template
-from wtforms_appengine.ndb import model_form
 from google.appengine.ext import ndb
-
 from common.email.invoice import send_parent_enrollment_notify_email
 from common.session import check_session
 from common.session import is_provider
+from common.session import is_parent
 from common.session import get_provider_id
+from common.session import get_parent_id
 from common.json_encoder import JEncoder
 from models import Enrollment
 from child import child_util
@@ -68,9 +68,8 @@ def add_enrollment(request):
             'status': 'initialized',
             'start_date': request_body_dict['start_date']
         }
-        enrollment = enrollment_util.upsert_enrollment(enrollment)
+        enrollment_util.upsert_enrollment(enrollment)
         status = "success"
-        send_parent_enrollment_notify_email(enrollment, host='localhost:8080')
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
 
@@ -133,24 +132,62 @@ def reactivate_enrollment(request):
 
 
 def get_enrollment(request):
-    status = "Failure"
+    """
+    :param request: the HTTP Request
+    :return: a HttpResponse containing either enrollments' basic info, or a list of enrollment details including the
+    child info, program info and basic enrollment info.
+    The requester's identity will be used to filter results, which can prevent potential privacy issue.
+    For provider, only enrollments belonging to the same provider will be returned.
+    For Parent, only enrollments concerning his/her child will be returned.
+    """
     if not check_session(request):
-        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
-    provider_id = request.session.get('email')
-    if request.method != 'GET':
-        logger.info("get non-post http request")
-        # TODO(zilong): return error in this case
         return
-    enrollment_id = request.GET.get('enrollmentId', '')
-    program_id = request.GET.get('programId', '')
-    if len(enrollment_id) == 0:
-        logger.info("did not receive an enrollmentId")
-        return
-    enrollment_id = int(enrollment_id)
-    program_id = int(program_id)
-    enrollment = enrollment_util.get_enrollment(provider_id, program_id, enrollment_id)
-    response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
-    return response
+    if request.method == 'GET':
+        provider_id = request.session.get('email')
+        enrollment_id = request.GET.get('enrollmentId', '')
+        program_id = request.GET.get('programId', '')
+        if len(enrollment_id) == 0:
+            logger.info("did not receive an enrollmentId")
+            return
+        enrollment_id = int(enrollment_id)
+        program_id = int(program_id)
+        enrollment = enrollment_util.get_enrollment(provider_id, program_id, enrollment_id)
+        response = HttpResponse(json.dumps(JEncoder().encode(enrollment)))
+        return response
+    if request.method == 'POST':
+        logger.info('Get a POST request')
+        request_body_dict = json.loads(request.body)
+        enrollments_details = list()
+        filtering_provider_id = None
+        filtering_parent_id = None
+        if is_provider(request):
+            filtering_provider_id = get_provider_id(request)
+        if is_parent(request):
+            filtering_parent_id = get_parent_id(request)
+        for enrollment in request_body_dict['enrollments']:
+            provider_id = int(enrollment['provider_id'])
+            enrollment_id = int(enrollment['id'])
+            enrollment = Enrollment.generate_key(provider_id, enrollment_id).get()
+            logger.info('getting enrollment %s' % enrollment)
+            if filtering_provider_id is not None:
+                if filtering_provider_id != provider_id:
+                    logger.warning('provider_id %s try to access {provider_id: %s, enrollment_id: %s}' % (
+                        filtering_provider_id, provider_id, enrollment_id))
+                    continue
+            child = enrollment.child_key.get()
+            if filtering_parent_id is not None:
+                if filtering_parent_id != child.parent_key.id():
+                    logger.warning('parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
+                        filtering_parent_id, provider_id, enrollment_id, child.key.id()))
+                    continue
+            enrollment_detail = {
+                'enrollment': enrollment,
+                'child': child,
+                'program': enrollment.program_key.get()
+            }
+            enrollments_details.append(enrollment_detail)
+        return HttpResponse(json.dumps(JEncoder().encode(enrollments_details)), content_type='application/json')
+
 
 def resent_enrollment_invitation(request):
     status = "Failure"
@@ -168,6 +205,7 @@ def resent_enrollment_invitation(request):
     send_parent_enrollment_notify_email(enrollment=enrollment, host="localhost:8080")
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+
 
 def setupAutopay(request):
     data = json.loads(request.body)
