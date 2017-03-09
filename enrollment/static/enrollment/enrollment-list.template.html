@@ -6,14 +6,16 @@
         </thead>
         <tbody>
         <tr data-ng-repeat="enrollment in $ctrl.enrollments">
-            <td>{{ enrollment.program_key[1][1] }}</td>
-            <td>{{ enrollment.status }}</td>
-            <td>{{ enrollment.start_date}}</td>
+            <td>{{ enrollment.program.id}}</td>
+            <td>{{ enrollment.program.programName}}</td>
+            <td>{{ enrollment.enrollment.status }}</td>
+            <td>{{ enrollment.enrollment.start_date}}</td>
             <td>
                 <button type="button" class="btn btn-info"
-                        ng-click="$ctrl.openEnrollmentEditorModal(enrollment)">Edit
+                        ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)">Edit
                 </button>
-                <button type="button" class="btn btn-info" ng-click="$ctrl.resendEnrollmentInvitation(enrollment)">
+                <button type="button" class="btn btn-info"
+                        ng-click="$ctrl.resendEnrollmentInvitation(enrollment.enrollment)">
                     Resend invitation
                 </button>
             </td>

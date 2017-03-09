@@ -1,20 +1,19 @@
 ChildCardParentViewController = function ChildCardParentViewController($http) {
+    this.http_ = $http;
+    this.enrollments = [];
+}
 
-    var self = this;
-
-    self.getEnrollmentData = function() {
-        $http.post('/enrollment/listByChildId', { 'child_id' : this.child.id })
-        .then(angular.bind(this, function successCallback(response) {
-            this.enrollments = [];
-            console.log('enrollment/listByChild: ' + response.data)
-            angular.forEach(response.data, angular.bind(this, function(enrollment) {
-                this.enrollments.push(JSON.parse(enrollment));
-            }));
-        }), angular.bind(this, function errorCallback(response){
+ChildCardParentViewController.prototype.getEnrollmentData = function() {
+    this.http_.post('/enrollment/listByChildId', { 'child_id' : this.child.id })
+    .then(angular.bind(this, function successCallback(response) {
+        this.enrollments = [];
+        angular.forEach(response.data, angular.bind(this, function(enrollment) {
+            this.enrollments.push(JSON.parse(enrollment));
         }));
-    };
+    }), angular.bind(this, function errorCallback(response){
+    }));
+}
 
-    self.$onInit = function() {
-        this.getEnrollmentData();
-    };
+ChildCardParentViewController.prototype.$onInit = function() {
+    this.getEnrollmentData();
 }

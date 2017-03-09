@@ -38,4 +38,12 @@ class ProviderChildView(ndb.Model):
 
     @classmethod
     def generate_key(cls, provider_child_view_id):
-        return ndb.Key(cls.__name__, provider_child_view_id);
+        return ndb.Key(cls.__name__, provider_child_view_id)
+
+    @classmethod
+    def query_by_child_id(cls, child_id):
+        return cls.query(cls.child_key == Child.generate_key(child_id))
+
+    @classmethod
+    def query_by_provider_id(cls, provider_id):
+        return cls.query(cls.provider_key == Provider.generate_key(provider_id))

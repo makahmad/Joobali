@@ -1,9 +1,8 @@
 EnrollmentListController = function EnrollmentListController($uibModal, $log, $http) {
     var self = this;
-    console.log(self.enrollments);
-    console.log(self.child);
     self.headers = [
         'Program Id',
+        'Program Name',
         'Status',
         'Start Date',
         ''

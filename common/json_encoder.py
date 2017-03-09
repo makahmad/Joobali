@@ -12,7 +12,10 @@ class JEncoder(json.JSONEncoder):
             result['id'] = o.key.id()
             return result
         elif isinstance(o, ndb.Key):
-            return o.pairs()
+            dict_pairs = dict()
+            for pair in o.pairs():
+                dict_pairs[pair[0]] = pair[1]
+            return dict_pairs
         elif isinstance(o, datetime):
             return o.isoformat()	  # Or whatever other date format you're OK with...
         elif isinstance(o, date):

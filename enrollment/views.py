@@ -12,6 +12,9 @@ from common.session import get_parent_id
 from common.json_encoder import JEncoder
 from models import Enrollment
 from child import child_util
+from child.models import Child, ProviderChildView
+from parent.models import Parent
+from login.models import Provider
 import enrollment_util
 import json
 import logging
@@ -89,14 +92,56 @@ def list_enrollment_by_child(request):
     status = "failure"
     if not check_session(request):
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
-    provider_id = request.session.get('user_id')
     request_body_dict = json.loads(request.body)
-    logger.info('provider_id %s, child_id %s' % (provider_id, request_body_dict['child_id']))
-    child_key = child_util.get_child_key(child_id=request_body_dict['child_id'])
-    enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_id=provider_id, child_key=child_key)
-    response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
-    logger.info("response is %s" % response)
-    return response
+    if is_provider(request):
+        # List enrollments for a provider
+        provider_key = Provider.generate_key(request.session.get('user_id'))
+        child_key = child_util.get_child_key(child_id=request_body_dict['child_id'])
+        logger.info('provider_key %s, child_key %s' % (provider_key, child_key))
+        enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_key=provider_key,
+                                                                            child_key=child_key)
+        enrollment_results = list()
+        for enrollment in enrollments:
+            enrollment_results.append({
+                'enrollment': enrollment,
+                'program': enrollment.program_key.get()
+            })
+        response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollment_results]))
+        return response
+    if is_parent(request):
+        # List enrollments for a parent
+        child = Child.generate_key(request_body_dict['child_id']).get()
+        parent = Parent.generate_key(get_parent_id(request)).get()
+        if parent.key != child.parent_key:
+            return
+        provider_child_view_query = ProviderChildView.query_by_child_id(child.key.id())
+        enrollments = list()
+        for provider_child_view in provider_child_view_query:
+            provider_key = provider_child_view.provider_key
+            child_key = provider_child_view.child_key
+            enrollments += enrollment_util.list_enrollment_by_provider_and_child(provider_key=provider_key,
+                                                                                 child_key=child_key)
+        enrollment_results = list()
+        for enrollment in enrollments:
+            program = enrollment.program_key.get()
+            provider = program.key.parent().get()
+            enrollment_results.append({
+                'enrollment': enrollment,
+                'child': enrollment.child_key.get(),
+                'program': {
+                    'programName': program.programName,
+                    'registrationFee': program.registrationFee,
+                    'fee': program.fee,
+                    'lateFee': program.lateFee,
+                    'billingFrequency': program.billingFrequency
+                },
+                'provider': {
+                    'id': provider.key.id(),
+                    'schoolName': provider.schoolName
+                }
+            })
+        response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollment_results]))
+        return response
 
 
 def cancel_enrollment(request):
@@ -180,10 +225,17 @@ def get_enrollment(request):
                     logger.warning('parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
                         filtering_parent_id, provider_id, enrollment_id, child.key.id()))
                     continue
+            program = enrollment.program_key.get()
             enrollment_detail = {
                 'enrollment': enrollment,
                 'child': child,
-                'program': enrollment.program_key.get()
+                'program': {
+                    'programName': program.programName,
+                    'registrationFee': program.registrationFee,
+                    'fee': program.fee,
+                    'lateFee': program.lateFee,
+                    'billingFrequency': program.billingFrequency
+                }
             }
             enrollments_details.append(enrollment_detail)
         return HttpResponse(json.dumps(JEncoder().encode(enrollments_details)), content_type='application/json')

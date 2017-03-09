@@ -9,6 +9,14 @@
     text-align:center;
 }
 
+.enrollmentRow {
+}
+
+.enrollmentRow:hover {
+    cursor: pointer;
+    background-color: #9f9 !important;
+}
+
 .enrollmentEditor {
     width: 80%;
     min-height: 400px;
