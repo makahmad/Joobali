@@ -2,6 +2,7 @@ from google.appengine.ext import ndb
 from models import Enrollment
 from datetime import datetime
 from common.email.invoice import send_parent_enrollment_notify_email
+from parent.models import Parent
 import logging
 
 logger = logging.getLogger(__name__)
@@ -44,6 +45,22 @@ def reactivate_enrollment(provider_id, enrollment_id):
     enrollment = enrollment_key.get()
     if enrollment.status == 'inactive':
         enrollment.status = 'initialized'
+        enrollment.put()
+        return True
+    else:
+        return False
+
+
+def accept_enrollment(provider_id, enrollment_id, parent_id):
+    enrollment_key = Enrollment.generate_key(provider_id=int(provider_id), enrollment_id=int(enrollment_id))
+    if enrollment_key.get() is None:
+        logger.False('invalid provider_id %s and enrollment_id %s pair', provider_id, enrollment_id)
+        return None
+    enrollment = enrollment_key.get()
+    if enrollment.child_key.get().parent_key != Parent.generate_key(parent_id):
+        return False
+    if enrollment.status == 'invited' or enrollment.status == 'initialized':
+        enrollment.status = 'active'
         enrollment.put()
         return True
     else:

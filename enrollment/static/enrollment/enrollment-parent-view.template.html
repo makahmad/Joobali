@@ -26,6 +26,7 @@
                 <th>Program billing cycle type</th>
                 <th>Program late fee</th>
                 <th>Enrollment start date</th>
+                <th>Enrollment status</th>
                 </thead>
                 <tr>
                     <td>{{$ctrl.enrollmentDetail.program.programName}}</td>
@@ -34,9 +35,14 @@
                     <td>{{$ctrl.enrollmentDetail.program.billingFrequency}}</td>
                     <td>{{$ctrl.enrollmentDetail.program.lateFee}}</td>
                     <td>{{$ctrl.enrollmentDetail.enrollment.start_date}}</td>
+                    <td>{{$ctrl.enrollmentDetail.enrollment.status}}</td>
                 </tr>
             </table>
         </div>
-        <div class="panel-footer"></div>
+        <div class="panel-footer">
+            <button class="btn-primary" ng-show="$ctrl.isWaitingAcceptance()" ng-click="$ctrl.acceptEnrollment()">Accept
+                Enrollment
+            </button>
+        </div>
     </div>
 </div>

@@ -43,7 +43,7 @@ def add_enrollment(request):
     """Handles HttpRequest about adding a new enrollment"""
     status = "failure"
     if not check_session(request):
-        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+        return
     logger.info(request)
     if request.method != 'POST':
         logger.info("get non-post http request")
@@ -144,6 +144,7 @@ def list_enrollment_by_child(request):
         return response
 
 
+# TODO(zilong): combine cancel, reactive and accept as one single endpoint
 def cancel_enrollment(request):
     status = "failure"
     if not check_session(request):
@@ -172,6 +173,25 @@ def reactivate_enrollment(request):
     provider_id = request.session.get("user_id")
     enrollment_id = request_body_dict['enrollment_id']
     if enrollment_util.reactivate_enrollment(provider_id=provider_id, enrollment_id=enrollment_id):
+        status = 'success'
+    return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+
+
+def accept_enrollment(request):
+    status = "failure"
+    if not check_session(request):
+        return
+    logger.info(request)
+    if request.method != 'POST':
+        logger.info("get non-post http request")
+        return
+    if not is_parent(request):
+        return
+    request_body_dict = json.loads(request.body)
+    provider_id = request_body_dict['provider_id']
+    enrollment_id = request_body_dict['enrollment_id']
+    parent_id = get_parent_id(request)
+    if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
         status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 

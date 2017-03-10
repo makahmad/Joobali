@@ -52,3 +52,7 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         }));
     }
 }
+
+EnrollmentListController.prototype.canResendEnrollmentInvitation = function(enrollment) {
+    return (enrollment.status == 'initialized' || enrollment.status == 'invited')
+}
