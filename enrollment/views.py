@@ -52,7 +52,6 @@ def add_enrollment(request):
     provider_id = request.session.get("user_id")
     request_body_dict = json.loads(request.body)
     logger.info(request_body_dict)
-    parent_email = request_body_dict['parent_email']
     child_key = child_util.get_child_key(request_body_dict['child_id'])
     program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
     child = child_key.get()
@@ -71,7 +70,7 @@ def add_enrollment(request):
             'status': 'initialized',
             'start_date': request_body_dict['start_date']
         }
-        enrollment_util.upsert_enrollment(enrollment)
+        enrollment_util.upsert_enrollment(enrollment, host=request.get_host())
         status = "success"
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 

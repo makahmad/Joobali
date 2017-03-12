@@ -75,7 +75,7 @@ def add_child(request):
             'status': 'initialized',
             'start_date': enrollment_start_date
         }
-        enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+        enrollment = enrollment_util.upsert_enrollment(enrollment_input, host=request.get_host())
 
         if parent.invitation.token is None:
             # The parent already signup

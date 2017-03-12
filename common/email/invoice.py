@@ -2,7 +2,6 @@ import os
 import logging
 from google.appengine.api import mail
 from django.template import loader
-from django.template import Context
 
 logger = logging.getLogger(__name__)
 module_dir = os.path.dirname(__file__)
@@ -52,22 +51,22 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
     logger.info('resending invitation to %s' % parent_email)
     if not is_parent_signup:
         global _signup_notification_template
-        context = Context({
+        rendering_data = {
             'host': host,
             'provider_school_name': provider.schoolName,
             'program_name': program.programName,
             'child_first_name': child.first_name,
             'enrollment_start_date': enrollment.start_date,
             'signup_url': signup_url,
-        })
-        message.html = _signup_notification_template.render(context)
+        }
+        message.html = _signup_notification_template.render(rendering_data)
     else:
         global _enrollment_notification_template
-        context = Context({
+        rendering_data = {
             'provider_school_name' : provider.schoolName,
             'program_name' : program.programName
-        })
-        message.html = _enrollment_notification_template.render(context)
+        }
+        message.html = _enrollment_notification_template.render(rendering_data)
     message.send()
 
     # [END send_mail]

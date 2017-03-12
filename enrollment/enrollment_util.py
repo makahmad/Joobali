@@ -8,7 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def upsert_enrollment(enrollment_input):
+def upsert_enrollment(enrollment_input, host=''):
     """Upserts an enrollment"""
     enrollment = Enrollment(parent=enrollment_input['provider_key'])
     enrollment.child_key = enrollment_input['child_key']
@@ -19,7 +19,7 @@ def upsert_enrollment(enrollment_input):
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.put()
     # TODO(zilong): get the real host from server
-    send_parent_enrollment_notify_email(enrollment, host='localhost:8080')
+    send_parent_enrollment_notify_email(enrollment, host=host)
     return enrollment
 
 
