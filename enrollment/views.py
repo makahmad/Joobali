@@ -70,6 +70,7 @@ def add_enrollment(request):
             'status': 'initialized',
             'start_date': request_body_dict['start_date']
         }
+        logger.info("request.get_host() is %s", request.get_host())
         enrollment_util.upsert_enrollment(enrollment, host=request.get_host())
         status = "success"
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
@@ -273,7 +274,8 @@ def resent_enrollment_invitation(request):
     enrollment = Enrollment.get(provider_id=provider_id, enrollment_id=enrollment_id)
     if not enrollment.can_resend_invitation():
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
-    send_parent_enrollment_notify_email(enrollment=enrollment, host="localhost:8080")
+    logger.info("request.get_host() %s", request.get_host())
+    send_parent_enrollment_notify_email(enrollment=enrollment, host=request.get_host())
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 

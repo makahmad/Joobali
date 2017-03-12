@@ -48,8 +48,8 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
         subject="Invitation from %s to make payments online." % provider_name)
 
     message.to = "%s" % parent_email
-    logger.info('resending invitation to %s' % parent_email)
     if not is_parent_signup:
+        logger.info('sending enrollment invitation to %s' % parent_email)
         global _signup_notification_template
         rendering_data = {
             'host': host,
@@ -61,6 +61,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
         }
         message.html = _signup_notification_template.render(rendering_data)
     else:
+        logger.info('sending signup invitation to %s' % parent_email)
         global _enrollment_notification_template
         rendering_data = {
             'provider_school_name' : provider.schoolName,
