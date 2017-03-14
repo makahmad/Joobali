@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <!--Quite a few clients strip your Doctype out, and some even apply their own. Many clients do honor your doctype and it can make things much easier if you can validate constantly against a Doctype.-->
 <html>
 <head>
@@ -123,7 +123,7 @@
                             <tbody>
                             <tr>
                                 <td style="font-size: 12px; color:#929292; text-align:center; font-family: sans-serif;">
-                                    <a href="#"><img src="logo.png" width="220" height="100" alt=""/></a></td>
+                                    <a href="#"><img src="http://{{host}}/static/home/pics/logo/logo.png" width="220" height="100" alt=""/></a></td>
                             </tr>
                             </tbody>
                         </table>
@@ -146,14 +146,24 @@
                     <td>
                         <table>
                             <tr>
+                                <!-- Row container for Intro/ Description -->
+                                <td align="left"
+                                    style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
+                                    <p><strong>{{ provider_school_name }}</strong> has invited you to make payments
+                                        online and
+                                        view invoices for child care services provided. </p>
+                                </td>
+                            </tr>
+                            <tr>
                                 <table width="96%" align="center" cellpadding="0" cellspacing="0"
                                        style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; text-align:center;">
                                     <tr>
                                         <td>&nbsp; </td>
                                         <!-- pay invoice button -->
-                                        <td cellpadding="4" bgcolor="#1E988A"><a href="#"
-                                                                                 style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">PAY
-                                            INVOICE</a></td>
+                                        <td colspan="2" cellpadding="4" bgcolor="#1E988A">
+                                            <a href="{{enrollment_detail_url}}"
+                                               style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">Accept
+                                                this Enrollment</a></td>
                                         <td>&nbsp; </td>
                                     </tr>
                                     <tr>
@@ -163,30 +173,40 @@
                                         <td align="center">
                                             <table>
                                                 <tr>
-                                                    <td align="center">INVOICE</td>
+                                                    <td align="center">Child Name</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="center" style="color:black;">[#01542568]</td>
+                                                    <td align="center" style="color:black;">{{ child_first_name }}</td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td align="center">
+                                            <table>
+                                                <tr>
+                                                    <td align="center">Program Name</td>
+                                                </tr>
+                                                <tr>
+                                                    <td align="center" style="color:black;">{{program_name}}</td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td align="center">
                                             <table width="100%">
                                                 <tr>
-                                                    <td align="center">BILLING PERIOD</td>
+                                                    <td align="center">Billing Frequency</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="center" style="color:black;">12/1/16 - 12/31/16</td>
+                                                    <td align="center" style="color:black;">{{program_billing_frequency}}</td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td align="center">
                                             <table width="100%">
                                                 <tr>
-                                                    <td align="center">DUE DATE</td>
+                                                    <td align="center">Start Date</td>
                                                 </tr>
                                                 <tr>
-                                                    <td align="center" style="color:black;"><strong>1/1/2017</strong>
+                                                    <td align="center" style="color:black;"><strong>{{enrollment_start_date}}</strong>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -208,15 +228,10 @@
                                 <!-- Row container for Intro/ Description -->
                                 <td align="left"
                                     style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
-                                    <p><strong>[[Program Name]] </strong>has invited you to make payments online and
-                                        view invoices for child care services provided. <br>
-                                        <br>
-                                        Please sign up and make a payment via Joobli on or before the due date
-                                        indicated. If you do not pay online, be sure to make a payment directy to
-                                        [[Ayumi's Family DayCare]] by <strong>[DUE DATE]</strong>. </p>
+                                    <p>If you do not pay online, be sure to make a payment directy to
+                                        {{ provider_school_name }} by <strong>{{enrollment_start_date}}</strong>. </p>
                                     <p>Don’t forget, late fees may be incurred if payments are not made on time. </p>
-                                    <p><strong>A Note from [[Program Name]]:</strong></p>
-                                    <p>&quot;</p></td>
+                                </td>
                             </tr>
                         </table>
                     </td>
@@ -240,7 +255,7 @@
                             <tr>
                                 <td><p align="center"
                                        style="font-size: 22px; font-weight:300; line-height: 2.5em; color: #929292; font-family: sans-serif;">
-                                    Ayumi's Family DayCare</p>
+                                    {{provider_school_name}}</p>
                                     <p align="center"
                                        style="font-size: 12px; color:#929292; text-align:center; font-family: sans-serif;">
                                         Because someon has to watch the zoo.</p></td>
@@ -251,16 +266,12 @@
                             <tr>
                                 <td>
                                     <p style="font-size: 14px; font-style: normal; font-weight:normal; color: #ffffff; line-height: 1.8; text-align:justify;padding-top:10px; margin-left:20px; margin-right:20px; font-family: sans-serif;">
-                                        Joobali is a service being provided to you by [[Program Name]] to make automated
+                                        Joobali is a service being provided to you by Joobali Inc. to make automated
                                         payments and view/revidw invoices any updates regarding your fees for child
                                         care.. </p>
                                     <p align="right" style="font-family: sans-serif;"><a
                                             style="color:#929292; text-decoration:none; padding-left:20px; font-size:14px;"
-                                            href="http://joobali.com/">Sign Up</a> <a
-                                            style="color:#929292; text-decoration:none; padding-left:20px;  font-size:14px;"
-                                            href="#">Link 2</a> <a
-                                            style="color:#929292; text-decoration:none; font-size:14px; padding-left:20px; padding-right:20px; "
-                                            href="#">Link 3</a></p></td>
+                                            href="http://joobali.com/">Joobali</a></p></td>
                             </tr>
                         </table>
                     </td>

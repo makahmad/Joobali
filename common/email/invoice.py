@@ -49,7 +49,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
 
     message.to = "%s" % parent_email
     if not is_parent_signup:
-        logger.info('sending enrollment invitation to %s' % parent_email)
+        logger.info('sending signup invitation to %s' % parent_email)
         global _signup_notification_template
         rendering_data = {
             'host': host,
@@ -61,11 +61,18 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="rongji
         }
         message.html = _signup_notification_template.render(rendering_data)
     else:
-        logger.info('sending signup invitation to %s' % parent_email)
+        logger.info('sending enrollment invitation to %s' % parent_email)
+        enrollment_detail_url = ("http://%s/parent/#!/enrollmentview/%d/%d" % (
+            host, provider.key.id(), enrollment.key.id()))
         global _enrollment_notification_template
         rendering_data = {
+            'host': host,
             'provider_school_name' : provider.schoolName,
-            'program_name' : program.programName
+            'program_name' : program.programName,
+            'child_first_name': child.first_name,
+            'enrollment_start_date': enrollment.start_date,
+            'enrollment_detail_url': enrollment_detail_url,
+            'program_billing_frequency': program.billingFrequency
         }
         message.html = _enrollment_notification_template.render(rendering_data)
     message.send()
