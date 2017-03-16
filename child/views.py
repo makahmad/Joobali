@@ -26,9 +26,13 @@ def list_child(request):
     if not session.check_session(request):
         return HttpResponseRedirect('/login')
     if session.is_provider(request):
-        provider_email = session.get_provider_id(request)
-        provider_key = ndb.Key('Provider', provider_email)
-        children = child_util.list_child_by_provider(provider_key=provider_key)
+        provider_id = session.get_provider_id(request)
+        if 'programId' in request.GET:
+            program_id = request.GET['programId']
+            children = child_util.list_child_by_provider_program(provider_id=provider_id, program_id=program_id)
+        else:
+            provider_key = Provider.generate_key(provider_id)
+            children = child_util.list_child_by_provider(provider_key=provider_key)
     else:
         parent_id = request.session['user_id']
         parent_key = Parent.generate_key(parent_id)

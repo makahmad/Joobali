@@ -1,9 +1,30 @@
-<div>
-    <div>
+<div clsss="panel panel-default">
+    <div class="panel-header">
+        <table>
+            <tr>
+                <td>
+                    <div>
+                        <select class="form-control"
+                                ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                                ng-model="$ctrl.selectedFilteringProgram"
+                                ng-change="$ctrl.updateFilteringProgram()">
+                            <option value="">- Program -</option>
+                        </select>
+                    </div>
+                </td>
+                <td><!-- place holder for other filter --></td>
+                <td><!-- place holder for other filter --></td>
+            </tr>
+        </table>
+    </div>
+    <div class="panel-body">
         <div class="child-card-group" layout="column">
             <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
+                        programs="$ctrl.programs"
                         index="$index" flex></child-card>
         </div>
+    </div>
+    <div class="panel-footer">
         <div class="addChildButtonDiv pull-left">
             <button type="button" class="btn btn-info" ng-click="$ctrl.openAddChildModal()">Add Child</button>
         </div>

@@ -104,6 +104,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
+                 .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/dashboard');
           }])
@@ -216,14 +217,15 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: ['$uibModal','$http', '$location', childListController]
+        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController]
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
         controller : ['$uibModal', '$scope', '$http', '$routeParams', '$location', ChildCardController],
         bindings: {
           child: '<',
-          index: '<'
+          index: '<',
+          programs: '<'
         }
     })
     .component('enrollmentList',{

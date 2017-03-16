@@ -3,6 +3,8 @@ from models import Enrollment
 from datetime import datetime
 from common.email.invoice import send_parent_enrollment_notify_email
 from parent.models import Parent
+from manageprogram.models import Program
+from login.models import Provider
 import logging
 
 logger = logging.getLogger(__name__)
@@ -102,7 +104,19 @@ def list_enrollment_by_provider(provider_id):
     enrollment_query = Enrollment.query(ancestor=provider_key)
     enrollments = []
     for enrollment in enrollment_query:
-        dict = enrollment.to_dict()
-        dict['enrollment_id'] = enrollment.key.id()
-        enrollments.append(dict)
+        enrollment_dict = enrollment.to_dict()
+        enrollment_dict['enrollment_id'] = enrollment.key.id()
+        enrollments.append(enrollment_dict)
+    return enrollments
+
+
+def list_enrollment_by_provider_program(provider_id, program_id):
+    program = Program.generate_key(provider_id, program_id).get()
+    if program is None:
+        return []
+    provider_key = Provider.generate_key(provider_id)
+    enrollment_query = Enrollment.query(Enrollment.program_key == program.key, ancestor=provider_key)
+    enrollments = list()
+    for enrollment in enrollment_query:
+        enrollments.append(enrollment)
     return enrollments

@@ -4,6 +4,7 @@ import logging
 # Internal Libraries
 from models import Child
 from models import ProviderChildView
+from enrollment import enrollment_util
 
 logger = logging.getLogger(__name__)
 
@@ -71,6 +72,17 @@ def list_child_by_provider(provider_key):
     children = list()
     for view in provider_children_views:
         children.append(view.child_key.get())
+    return children
+
+
+def list_child_by_provider_program(provider_id, program_id):
+    provider_id = int(provider_id)
+    program_id = int(program_id)
+    logger.info("listing child by provider %d and program %d" % (provider_id, program_id))
+    enrollments = enrollment_util.list_enrollment_by_provider_program(provider_id=provider_id, program_id=program_id)
+    children = list()
+    for enrollment in enrollments:
+        children.append(enrollment.child_key.get())
     return children
 
 
