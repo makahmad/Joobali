@@ -70,6 +70,11 @@ def get_parents_by_email(email):
         return None
     return unique.parent_key.get()
 
+def get_parent_by_dwolla_id(customer_url):
+    result = Parent.query(Parent.customerId == customer_url).fetch(1)
+    if result:
+        return result[0]
+    return None
 
 def verify_invitation_token(email, invitation_token):
     parent = get_parents_by_email(email)

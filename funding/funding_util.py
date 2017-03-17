@@ -6,12 +6,18 @@ import logging
 logger = logging.getLogger(__name__)
 account_token = create_account_token('sandbox')
 
-def make_transfer(dest_customer_id, funding_source, amount):
+def make_transfer(dest_customer_url, funding_source, amount):
     """Make Dwolla Money Transfer"""
+    fundings_url = '%s/funding-sources' % dest_customer_url
+    logger.info(fundings_url)
+    funding_sources = account_token.get(fundings_url)
+    dest_funding_source_id = None # TODO(rongjian): allow users to set receiving bank source.
+    for funding in funding_sources.body['_embedded']['funding-sources']:
+        dest_funding_source_id = funding['id']
     request_body = {
         '_links': {
             'destination': {
-                'href': 'https://api.dwolla.com/customers/' + dest_customer_id
+                'href': 'https://api.dwolla.com/funding-sources/' + dest_funding_source_id
             },
             'source': {
                 'href': 'https://api.dwolla.com/funding-sources/' + funding_source
@@ -22,7 +28,8 @@ def make_transfer(dest_customer_id, funding_source, amount):
             'value': amount
         }
     }
-    account_token.post('transfers', request_body)
+    transfer = account_token.post('transfers', request_body)
+    logger.info(transfer.headers['location']) # funded_transfer url
 
 def list_fundings(customer_url):
     fundings = []

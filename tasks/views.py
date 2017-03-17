@@ -2,22 +2,30 @@ from django.http import HttpResponse
 from enrollment import enrollment_util
 from invoice import invoice_util
 from parent import parent_util
+from login import provider_util
 from login.models import Provider
 from invoice.models import Invoice, InvoiceLineItem
 from google.appengine.ext import ndb
 from datetime import datetime, date
 from datetime import timedelta
+from common.dwolla import parse_webhook_data
+from common.dwolla import get_funding_transfer, get_funded_transfer
+from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
+from common.email.dwolla import send_payment_success_email, send_payment_failure_email
+from common.dwolla import start_webhook
 from django.template import loader
+from django.views.decorators.csrf import csrf_exempt
 from funding import funding_util
 from dwollav2.error import ValidationError
 from parent.models import Parent
 import logging
+import json
 
 logger = logging.getLogger(__name__)
 
 def invoice_calculation(request):
-    print "INVOICE CALCULATION"
+    logger.info("INVOICE CALCULATION")
     today = date.today()
     invoice_dict = dict() # a map from provider-child pair to invoice
     days_before = 5
@@ -46,7 +54,7 @@ def invoice_calculation(request):
             if program.billingFrequency == 'Weekly':
                 program_cycle_time = timedelta(days=7)
             elif program.billingFrequency == 'Monthly':
-                program_cycle_time = timedelta(months=1)
+                program_cycle_time = timedelta(days=30) # TODO(rongjian): figure out the way to increment by month gracefully
             else:
                 logger.info("Skipping invoice calculation. Unexpected program cycle: %s" % program)
                 should_proceed = False
@@ -96,7 +104,7 @@ def invoice_calculation(request):
 
 
 def invoice_notification(request):
-    print "INVOICE NOTIFICATION"
+    logger.info("INVOICE NOTIFICATION")
     today = date.today()
     invoice_dict = dict()
     days_before = 5 # send notification 5 days before due date
@@ -104,6 +112,7 @@ def invoice_notification(request):
     # loop over invoices...
     invoices = Invoice.query(Invoice.paid==False).fetch()
     for invoice in invoices:
+        logger.info("Sending notification for invoice: %s" % invoice)
         if today + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
             template = loader.get_template('invoice/invoice_invite.html')
@@ -123,23 +132,58 @@ def invoice_notification(request):
     return HttpResponse(status=200)
 
 def autopay(request):
-    print "INVOICE AUTOPAY"
+    logger.info("INVOICE AUTOPAY")
+    #start_webhook()
+
     today = date.today()
     invoice_dict = dict()
     # loop over invoices...
     invoices = Invoice.query(Invoice.paid==False).fetch()
     for invoice in invoices:
-        (pay_days_before, contain_pay_days_before) = invoice_util.get_autopay_days_before(invoice)
+        (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
         # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-        if invoice.autopay_source_id and contain_pay_days_before and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.paid:
+        if autopay_source_id and pay_days_before and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.paid:
+            logger.info("Autopaying for invoice: %s" % invoice)
             provider = invoice.provider_key.get()
 
             try:
-                funding_util.make_transfer(provider.customerId, invoice.autopay_source_id, invoice.amount)
+                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount)
             except ValidationError as err:
                 return HttpResponse(err.body['_embedded']['errors'][0]['message'])
             invoice.paid = True
             invoice.put()
             break # temporary only do one test autopay, remove before launch
+        else:
+            logger.info("Skipping autopay for invoice: %s" % invoice)
+
+    return HttpResponse(status=200)
+
+@csrf_exempt
+def dwolla_webhook(request):
+    logger.info("DWOLLA_WEBHOOK")
+    webhook = json.loads(request.body)
+
+    logger.info(webhook)
+    webhook_data = parse_webhook_data(webhook)
+    if ('customer_bank_transfer_completed' in webhook_data['topic']):
+        funding_transfer = get_funding_transfer(webhook_data['transfer_url'])
+        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
+        amount = funded_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
+        destination_customer_url = funded_transfer['destination_customer_url']
+        provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+        print parent
+        print provider
+        send_payment_success_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
+    if ('failed' in webhook_data['topic']):
+        funding_transfer = get_funding_transfer(webhook_data['transfer_url'])
+        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
+        amount = funded_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
+        destination_customer_url = funded_transfer['destination_customer_url']
+        provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+        print parent
+        print provider
+        send_payment_failure_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
 
     return HttpResponse(status=200)
