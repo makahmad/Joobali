@@ -1,12 +1,13 @@
 
 from common.dwolla import create_account_token
+from invoice.models import Invoice
 import dwollav2
 import logging
 
 logger = logging.getLogger(__name__)
 account_token = create_account_token('sandbox')
 
-def make_transfer(dest_customer_url, funding_source, amount):
+def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
     """Make Dwolla Money Transfer"""
     fundings_url = '%s/funding-sources' % dest_customer_url
     logger.info(fundings_url)
@@ -29,7 +30,10 @@ def make_transfer(dest_customer_url, funding_source, amount):
         }
     }
     transfer = account_token.post('transfers', request_body)
-    logger.info(transfer.headers['location']) # funded_transfer url
+    if invoice:
+        invoice.dwolla_transfer_id = transfer.headers['location'] # funded_transfer url
+        invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
+        invoice.put()
 
 def list_fundings(customer_url):
     fundings = []

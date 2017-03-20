@@ -70,7 +70,7 @@ def listInvoices(request):
             'child': invoice.child_key.get().first_name,
             'amount' : invoice.amount,
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
-            'paid' : invoice.paid
+            'paid' : invoice.is_paid(),
         })
 	return HttpResponse(json.dumps(results))
 

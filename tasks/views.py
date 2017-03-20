@@ -36,6 +36,8 @@ def invoice_calculation(request):
 
         enrollments = enrollment_util.list_enrollment_by_provider(provider.key.id())
         for enrollment in enrollments:
+            if enrollment['status'] != 'active':
+                continue
             logger.info("Calculating invoice for enrollment: %s" % enrollment)
 
             child_key = enrollment["child_key"]
@@ -110,7 +112,7 @@ def invoice_notification(request):
     days_before = 5 # send notification 5 days before due date
 
     # loop over invoices...
-    invoices = Invoice.query(Invoice.paid==False).fetch()
+    invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         logger.info("Sending notification for invoice: %s" % invoice)
         if today + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
@@ -138,20 +140,19 @@ def autopay(request):
     today = date.today()
     invoice_dict = dict()
     # loop over invoices...
-    invoices = Invoice.query(Invoice.paid==False).fetch()
+    invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
         # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-        if autopay_source_id and pay_days_before and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.paid:
+        if autopay_source_id and pay_days_before and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid():
             logger.info("Autopaying for invoice: %s" % invoice)
             provider = invoice.provider_key.get()
 
             try:
-                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount)
+                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice)
             except ValidationError as err:
                 return HttpResponse(err.body['_embedded']['errors'][0]['message'])
-            invoice.paid = True
-            invoice.put()
+
             break # temporary only do one test autopay, remove before launch
         else:
             logger.info("Skipping autopay for invoice: %s" % invoice)
@@ -172,8 +173,12 @@ def dwolla_webhook(request):
         parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
         destination_customer_url = funded_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
-        print parent
-        print provider
+
+        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        if invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']:
+            invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
+            invoice.put()
+
         send_payment_success_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
     if ('failed' in webhook_data['topic']):
         funding_transfer = get_funding_transfer(webhook_data['transfer_url'])
@@ -182,8 +187,12 @@ def dwolla_webhook(request):
         parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
         destination_customer_url = funded_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
-        print parent
-        print provider
+
+        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        if invoice.status != Invoice._POSSIBLE_STATUS['FAILED']:
+            invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
+            invoice.put()
+
         send_payment_failure_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
 
     return HttpResponse(status=200)

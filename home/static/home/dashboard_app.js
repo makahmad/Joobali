@@ -35,6 +35,7 @@ DashboardController.prototype.initialize = function() {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.programs = [];
+	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(program) {
 	    	this.scope_.programs.push(JSON.parse(program));
 	    }));

@@ -14,10 +14,21 @@ class Invoice(ndb.Model):
     parent_email= ndb.StringProperty(required=True)
     # other
     date_created = ndb.DateProperty(required=True)
-    paid = ndb.BooleanProperty(required=True, default=False)
+    status = ndb.StringProperty(required=True, default="new")
+    # All possible status for a invoice
+    _POSSIBLE_STATUS = {
+        'NEW': 'NEW',
+        'PROCESSING': 'PROCESSING',
+        'COMPLETED': 'COMPLETED',
+        'FAILED': 'FAILED'
+    }
     email_sent = ndb.BooleanProperty(required=True, default=False)
     autopay_source_id = ndb.StringProperty() # come from enrollment
+    dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment
     pdf = ndb.BlobProperty()
+
+    def is_paid(self):
+        return self.status == Invoice._POSSIBLE_STATUS['COMPLETED']
 
 class InvoiceLineItem(ndb.Model):
     enrollment_key = ndb.KeyProperty(required=True)

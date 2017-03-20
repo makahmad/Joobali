@@ -285,9 +285,9 @@ def setupAutopay(request):
     pay_days_before = data['payDaysBefore']
     source = data['bankAccountId']
 
-    #enrollment = Enrollment.get_by_id()
+    parent = Parent.get_by_id(request.session['user_id'])
 
-    enrollment = Enrollment.get_by_id(4563797888991232, parent=ndb.Key('Provider', 12))
+    enrollment = parent.invitation.enrollment_key.get()
     enrollment.autopay_source_id = source
     enrollment.pay_days_before = int(pay_days_before)
     enrollment.put()

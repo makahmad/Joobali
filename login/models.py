@@ -23,6 +23,8 @@ class Provider(ndb.Model):
 
     # Dwolla customer id
     customerId = ndb.StringProperty()
+    # Dwolla funding source to receive money
+    default_funding_source = ndb.StringProperty()
 
     # General Invoice Related Fields
     graceDays = ndb.IntegerProperty(default=0)

@@ -46,6 +46,13 @@ def create_invoice(provider, child, date, due_date, autopay_source_id=None, amou
     invoice.put()
     return invoice
 
+def get_invoice_by_transfer_id(transfer_id):
+    """ Gets a Invoice by the dwolla transfer id (must be funded_transfer because it's unique compared to funding_transfer """
+    result = Invoice.query(Invoice.dwolla_transfer_id == transfer_id).fetch(1)
+    if result:
+        return result[0]
+    return None
+
 def sum_up_amount_due(invoice):
     """Sums up all the payment amount due for this invoice"""
     amount = 0

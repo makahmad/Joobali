@@ -127,14 +127,14 @@ def makeTransfer(request):
         invoice = Invoice.get_by_id(invoice_id)
         if invoice.amount != data['amount']:
             return HttpResponse("failure: payment amount must be equal to invoice amount")
+        if invoice.is_paid():
+            return HttpResponse("failure: the invoice has already been paid")
     try:
-        funding_util.make_transfer(data['destination'], data['source'], data['amount'])
+        funding_util.make_transfer(data['destination'], data['source'], data['amount'], invoice)
     except ValidationError as err:
         return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     # print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'
 
-    invoice.paid = True
-    invoice.put()
     return HttpResponse("success")
 
 def funding(request):

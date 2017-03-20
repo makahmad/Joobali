@@ -110,7 +110,8 @@ def get_autopay_data(request):
     if not check_session(request):
         return HttpResponseRedirect('/login')
 
-    enrollment = Enrollment.get_by_id(4563797888991232, parent=ndb.Key('Provider', 12))
+    parent = Parent.get_by_id(request.session['user_id'])
+    enrollment = parent.invitation.enrollment_key.get()
     provider = enrollment.key.parent().get()
     child = enrollment.child_key.get()
     program = enrollment.program_key.get()
@@ -118,7 +119,15 @@ def get_autopay_data(request):
 
     due_date_text = ''
     if program.billingFrequency == 'Monthly':
-        due_date_text = '%sth of the %s' % (due_date.weekday(), program.billingFrequency[:-2])
+        number_th = 'th'
+        number_day = due_date.day
+        if number_day == 1:
+            number_th = 'st'
+        elif number_day == 2:
+            number_th = 'nd'
+        elif number_day == 3:
+            number_th = 'rd'
+        due_date_text = '%s%s of the %s' % (number_day, number_th, program.billingFrequency[:-2])
     elif program.billingFrequency == 'Weekly':
         due_date_text = 'Every %s' % due_date.strftime('%A')
     data = {

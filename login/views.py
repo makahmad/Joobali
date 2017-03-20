@@ -13,6 +13,7 @@ from parent.models import Parent
 from parent import parent_util
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
+from os import environ
 
 import logging
 
@@ -87,12 +88,13 @@ def provider_signup(request):
 
             (provider, created) = get_or_insert(models.Provider, email, form)
             if created:
-                logger.info("Generating customerId for this provider")
                 request.session['email'] = provider.email
                 request.session['user_id'] = provider.key.id()
                 request.session['is_provider'] = True
                 create_new_init_setup_status(provider.email)
 
+
+                logger.info("Generating customerId for this provider")
                 # Dummy request to dwolla UAT instance to acquire a customer url.
                 request_body = {
                     'firstName': provider.firstName,
@@ -107,9 +109,17 @@ def provider_signup(request):
                     provider.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']
                 except ValidationError as err:  # ValidationError as err
-                    # Do nothing
                     logger.warning(err)
+                    # If dwolla customer for this email already exists, reuse it, only in DEV environment.
+                    # This shouldn't happen in Prod.
+                    if environ.get('IS_DEV') == 'True':
+                        if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0]['code']:
+                            provider.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
+                            request.session['dwolla_customer_url'] = provider.customerId
+                            provider.put()
                     pass
+
+
                 return HttpResponseRedirect('/home/dashboard')
             else:
                 form.email.errors.append('error: user exists')
@@ -152,8 +162,14 @@ def parent_signup(request):
                     request.session['dwolla_customer_url'] = customer.headers['location']
                     request.session['parent_id'] = parent.key.id()
                 except ValidationError as err:  # ValidationError as err
-                    # Do nothing
-                    print err
+                    if environ.get('IS_DEV') == 'True':
+                        # If dwolla customer for this email already exists, reuse it, only in DEV environment.
+                        # This shouldn't happen in Prod.
+                        if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0][
+                            'code']:
+                            parent.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
+                            request.session['dwolla_customer_url'] = parent.customerId
+                            parent.put()
                     pass
                 request.session['email'] = parent.email
                 request.session['user_id'] = parent.key.id()
@@ -170,6 +186,33 @@ def parent_signup(request):
                     request.session['email'] = parent.email
                     request.session['user_id'] = parent.key.id()
                     request.session['is_provider'] = False
+
+                    # Setup Dwolla Account
+                    request_body = {
+                        'firstName': first_name,
+                        'lastName': last_name,
+                        'email': email,
+                        'ipAddress': '99.99.99.99'
+                    }
+                    try:
+                        customer = account_token.post('customers', request_body)
+                        parent.customerId = customer.headers['location']
+                        parent.put()
+                        request.session['dwolla_customer_url'] = customer.headers['location']
+                        request.session['parent_id'] = parent.key.id()
+                    except ValidationError as err:  # ValidationError as err
+                        if environ.get('IS_DEV') == 'True':
+                            # If dwolla customer for this email already exists, reuse it, only in DEV environment.
+                            # This shouldn't happen in Prod.
+                            if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0][
+                                'code']:
+                                parent.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
+                                request.session['dwolla_customer_url'] = parent.customerId
+                                parent.put()
+                        pass
+                    request.session['email'] = parent.email
+                    request.session['user_id'] = parent.key.id()
+
                     return HttpResponseRedirect('/parent')
         else:
             logger.info("form.errors %s" % form.errors)

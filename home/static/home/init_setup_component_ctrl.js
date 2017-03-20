@@ -42,6 +42,16 @@ InitSetupComponentController = function($http) {
                 // or server returns response with an error status.
                 console.log(response);
             });
+
+            this.http_({
+              method: 'POST',
+              url: '/login/setinitsetupfinished'
+            }).then(angular.bind(this, function successCallback(response) {
+            }), function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log(response);
+            });
 	    } else {
             $('#initSetupModal').remove();
 	    }
