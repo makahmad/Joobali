@@ -67,7 +67,7 @@ def listInvoices(request):
 			'invoice_id': invoice.key.id(),
             'provider': invoice.provider_key.get().schoolName,
             'provider_customer_id': invoice.provider_key.get().customerId,
-            'child': invoice.child_key.get().first_name,
+            'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
             'amount' : invoice.amount,
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
@@ -134,4 +134,14 @@ def setupAutopay(request):
 			enrollment.pay_days_before = 5 # TODO(rongjian): allow users to set it
 			enrollment.put()
 
+	return HttpResponse("success")
+
+def markPaid(request):
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	invoice = None
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		invoice.status = Invoice._POSSIBLE_STATUS['MARKED_PAID']
+		invoice.put()
 	return HttpResponse("success")

@@ -1,18 +1,53 @@
-InvoicesComponentController = function($location) {
+InvoicesComponentController = function($location, $http) {
     console.log('InvoicesComponentController running');
     this.location_ = $location;
+    this.http_ = $http;
 }
-InvoicesComponentController.prototype.showModal = function(clicked_invoice) {
 
-    // TODO(rongjian): check if payment method was setup
-    if (false) {
-        $('#paymentSetupModal').modal('show');
-    } else {
-        $('#makePaymentModal').modal('show');
-        for (i in this.invoices) {
-            invoice = this.invoices[i];
-            invoice.selected = false;
+InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) {
+    if (this.isProvider == 'true') {
+        var data = {
+            'invoice_id': clicked_invoice.invoice_id
         }
-        clicked_invoice.selected = true;
+        this.http_({
+          method: 'POST',
+          url: '/invoice/markpaid',
+          data: JSON.stringify(data)
+        })
+        .then(
+            function(response){
+                console.log('post suceeded');
+                if (response.data !== 'success') {
+                    alert(response.data);
+                } else {
+                    alert('Marking invoice paid succeeded.')
+                    clicked_invoice.paid = true;
+                }
+            },
+            function(response){
+                alert('Something is wrong. Please try again.');
+            }
+         );
+    } else {
+        // TODO(rongjian): check if payment method was setup
+        if (false) {
+            $('#paymentSetupModal').modal('show');
+        } else {
+            $('#makePaymentModal').modal('show');
+            for (i in this.invoices) {
+                invoice = this.invoices[i];
+                invoice.selected = false;
+            }
+            clicked_invoice.selected = true;
+        }
+    }
+
+}
+
+InvoicesComponentController.prototype.getButtonText = function() {
+    if (this.isProvider == 'true') {
+        return "Mark Paid";
+    } else {
+        return "Make Payment"
     }
 }

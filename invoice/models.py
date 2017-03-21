@@ -19,8 +19,9 @@ class Invoice(ndb.Model):
     _POSSIBLE_STATUS = {
         'NEW': 'NEW',
         'PROCESSING': 'PROCESSING',
-        'COMPLETED': 'COMPLETED',
-        'FAILED': 'FAILED'
+        'COMPLETED': 'COMPLETED', # paid by parents
+        'FAILED': 'FAILED',
+        'MARKED_PAID': 'MARKED_PAID', # marked paid by provider
     }
     email_sent = ndb.BooleanProperty(required=True, default=False)
     autopay_source_id = ndb.StringProperty() # come from enrollment
@@ -28,7 +29,7 @@ class Invoice(ndb.Model):
     pdf = ndb.BlobProperty()
 
     def is_paid(self):
-        return self.status == Invoice._POSSIBLE_STATUS['COMPLETED']
+        return self.status == Invoice._POSSIBLE_STATUS['COMPLETED'] or self.status == Invoice._POSSIBLE_STATUS['MARKED_PAID']
 
 class InvoiceLineItem(ndb.Model):
     enrollment_key = ndb.KeyProperty(required=True)

@@ -184,7 +184,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
         controller: InvoicesComponentController,
         bindings: {
-          invoices: '<'
+          invoices: '<',
+          isProvider: '@'
         }
     })
     .component('profileComponent', {

@@ -24,7 +24,8 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
         console.log(data);
         $http.post('/invoice/addinvoice', data).then(function successCallback(response) {
             if (response.data == 'success') {
-                alert('success');
+                alert('Invoice created!');
+                self.closeModal();
             } else {
                 alert('something is wrong');
             }
@@ -41,14 +42,13 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
         }).then(angular.bind(this, function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            console.log(response);
             this.programs = [];
             angular.forEach(response.data, angular.bind(this, function(program) {
                 this.programs.push(JSON.parse(program));
             }));
             this.newInvoice.program = this.programs[0];
         }), function errorCallback(response) {
-            // TODO(zilong): deal with error here
+            alert('Something is wrong here. Please refresh the page and try again');
         });
     }
 
