@@ -76,25 +76,22 @@ def listInvoices(request):
 
 def viewInvoice(request):
 	""" Display a specific invoice content"""
-	email = request.session.get('email')
 	if not check_session(request):
 		return HttpResponseRedirect('/login')
-	invoices = None
-	print email
-	provider = Provider.query().filter(Provider.email == email).get()
-	if not provider:
-		invoices = Invoice.query(Invoice.parent_email == email)
-	else:
-		invoices = Invoice.query(Invoice.provider_key == provider.key)
 
-	# TODO: handle parent invoice listing.
+	invoice_id = request.GET['id']
 
-	for invoice in invoices:
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+
 		(start_date, end_date) = invoice_util.get_invoice_period(invoice)
+		provider = invoice.provider_key.get()
 		parent = Parent.query(Parent.email == invoice.parent_email).fetch(1)[0]
-		items = []
+		child = invoice.child_key.get()
+
 		lineItems = InvoiceLineItem.query(ancestor=invoice.key)
 		total = 0
+		items = []
 		for lineItem in lineItems:
 			items.append({
 				'program_name': lineItem.program_name,
@@ -102,15 +99,18 @@ def viewInvoice(request):
 			})
 			total += lineItem.amount
 		if total != invoice.amount:
-			HttpResponse("error")
+			HttpResponse("Something is wrong when retrieving the invoice.")
 		data = {
 			'invoice_id': invoice.key.id(),
-            'provider_street': provider.address,
+			'invoice_date': invoice.date_created.strftime('%m/%d/%Y'),
+            # 'provider_street': provider.address,
+			# 'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.postalCode),
+			'provider_name': provider.schoolName,
             'provider_phone_number': provider.phone,
-            'child_name': invoice.child_key.get().first_name + ', ' + invoice.child_key.get().last_name,
-            'parent_name' : parent.first_name + ', ' + parent.last_name,
-			'start_date': start_date.strftime('%m/%d/%Y'),
-			'end_date': end_date.strftime('%m/%d/%Y'),
+            'child_name': '%s %s' % (child.first_name, child.last_name),
+            'parent_name' : '%s %s' % (parent.first_name, parent.last_name),
+			'start_date': start_date.strftime('%m/%d/%Y') if start_date else 'N/A',
+			'end_date': end_date.strftime('%m/%d/%Y') if end_date else 'N/A',
 			'due_date': invoice.due_date.strftime('%m/%d/%Y'),
 			'parent_id': parent.key.id(),
 			'total': invoice.amount,
@@ -125,7 +125,6 @@ def setupAutopay(request):
 	data = json.loads(request.body)
 	invoice_id = data['invoice_id']
 	source = data['source']
-	invoice = None
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		enrollments = get_invoice_enrollments(invoice)
@@ -139,7 +138,6 @@ def setupAutopay(request):
 def markPaid(request):
 	data = json.loads(request.body)
 	invoice_id = data['invoice_id']
-	invoice = None
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		invoice.status = Invoice._POSSIBLE_STATUS['MARKED_PAID']

@@ -82,7 +82,8 @@ def get_invoice_period(invoice):
     for lineItem in lineItems:
         start_date = lineItem.start_date
         end_date = lineItem.end_date
-        break
+        if start_date and end_date:
+            break
     return (start_date, end_date)
 
 def get_autopay_info(invoice):

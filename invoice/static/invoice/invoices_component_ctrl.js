@@ -1,7 +1,11 @@
-InvoicesComponentController = function($location, $http) {
+InvoicesComponentController = function($window, $http) {
     console.log('InvoicesComponentController running');
-    this.location_ = $location;
+    this.window_ = $window;
     this.http_ = $http;
+}
+
+InvoicesComponentController.prototype.viewInvoice = function(clicked_invoice) {
+    this.window_.location.href = '/invoice/viewinvoice?id=' + clicked_invoice.invoice_id;
 }
 
 InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) {
@@ -41,7 +45,6 @@ InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) 
             clicked_invoice.selected = true;
         }
     }
-
 }
 
 InvoicesComponentController.prototype.getButtonText = function() {
