@@ -229,23 +229,29 @@ a.logoLink:hover {
 footer {
 	background: #363B3F;
 	color: white;
+  margin-top: -30px;
 }
 
 footer h4 {
 	color:white;
+	text-align:left;
 }
 
 footer ul {
 	list-style: none;
-	text-align:center;
+	text-align:left;
+  color: #222222;
+  font-weight: 100;
 }
 
 footer a {
-	text-decoration: underline;
+	text-decoration: none;
+	color:#339999 !important;
 }
 
 footer a:hover {
 	cursor:pointer;
+	text-decoration:underline;
 }
 
 footer .glyphicon {
