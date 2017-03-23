@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^home/', include('home.urls')),
     url(r'^manageprogram/', include('manageprogram.urls')),
     url(r'^funding/', include('funding.urls')),
-    url(r'^$', include('login.urls')),
+    url(r'^$', include('home.urls')),
     url(r'^login/', include('login.urls')),
     url(r'^profile/', include('profile.urls')),
     url(r'^invoice/', include('invoice.urls')),
