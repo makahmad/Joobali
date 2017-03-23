@@ -35,6 +35,10 @@ body {
 	margin: 75px auto 70px auto;
 }
 
+.whyJoobali {
+	margin-bottom:-10px;
+}
+
 .whyJoobali p {
 	font-size:16px;
 	font-weight:100;
@@ -78,7 +82,7 @@ body {
 .homePitch2 {
 	background: #a2a2a2 url("./pics/img_home2bg.png") no-repeat top center;
 	background-size: 100%;
-	padding:0 0 120px 0;
+	padding:10px 0 120px 0;
 }
 
 .homePitch2 h2 {
