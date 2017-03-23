@@ -12,7 +12,7 @@ body {
     margin: 0 auto;
 }
 .logo {
-    padding: 50, 50, 10, 50;
+    margin-bottom: 25px;
 }
 }
 
@@ -37,6 +37,10 @@ body {
 }
 
 /*-------------- Structure & Layout ----------------*/
+.container {
+	margin:37px auto;
+}
+
 .jumbotron {
     background: #fa5d26 url("./pics/img_homegbg.png") no-repeat top center;
 		background-size:100%;
@@ -66,4 +70,106 @@ body {
 
 label {
 	font-weight:200;
+}
+
+/* ----------------- Buttons -------------------*/
+center {
+	width:50%;
+	margin:auto;
+}
+
+.btn-default.joobali {
+  background: #339999;
+	color: #ffffff;
+	width: 100% !important;
+  margin-top: 10px;
+  border-radius: 3px !important;
+	}
+
+.btn-default.joobali:hover , .btn-default.joobali.hover {
+  background: #2e8f8f;
+    color: #ffffff;
+    width: auto;
+}
+
+.btn-default.joobali:focus, .btn-default.joobali.focus, .btn-default.joobali:active, .btn-default.joobali.active, .btn-default.joobali:active:focus, .btn-default.joobali.active:focus {
+   background: #2e8f8f;
+    color: #ffffff;
+    width: auto;
+}
+
+a {
+  color: #339999;
+  text-decoration: underline;
+}
+
+/* ----------------- Modals Override ----------------- */
+.modal-title {
+	font-size:30px;
+	padding:26px 0;
+	text-align: center;
+}
+
+.modal-content {
+		width:50%;
+		margin: 0 auto !important;
+}
+
+.modal-body {
+	background: #F5F5F5;
+	margin:24px;
+	border: 1px solid #e3e3e3;
+  border-radius: 4px;
+}
+
+.modal-footer {
+	border:none !important;
+}
+
+.form-group {
+  margin: 15px auto;
+  width: 50%;
+}
+
+.form-group .col-1 {
+	width:49%;
+	display:inline-block;
+}
+
+/*.input-group.date {
+  width: 49%;
+  display: inline-table;
+}
+*/
+
+.well {
+	-webkit-box-shadow:none;
+  box-shadow: none;
+  padding: 6px 0;
+	border:none;
+}
+
+.input-group-addon.cal {
+	position: relative;
+	right: 43px;
+	z-index: 2;
+	background:none;
+}
+
+a.delete {
+  color: red;
+  text-decoration: underline;
+	margin:15px auto;
+}
+
+a.delete:hover {
+	color:darkgray;
+}
+
+.formActions{
+	display: table;
+  width: 80%;
+  margin: 0 auto;
+	border-top:1px solid #e5e5e5;
+	padding: 24px 49px 0 49px;
 }

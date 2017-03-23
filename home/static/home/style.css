@@ -5,7 +5,7 @@ body {
 }
 
 .jumbotron {
-    background: #fa5d26 url("./pics/img_homegbg.png") no-repeat top center;
+    background: #fa5d26 url("./pics/img_headerbg2.jpg") no-repeat top center;
 		background-size:100%;
     color: #ffffff;
     padding: 100px 25px;
@@ -642,7 +642,7 @@ a.delete:hover {
 #signUp h3 sup {
 	font-size: 46%;
   line-height: 0;
-  margin: 0 0 0 -10px;
+  margin: 0 0 0 -5px;
 }
 
 #signUp .featureList ul {

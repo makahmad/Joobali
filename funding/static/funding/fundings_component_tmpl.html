@@ -8,9 +8,9 @@
       </thead>
       <tbody>
         <tr data-ng-repeat="funding in $ctrl.fundings track by $index">
-          <td>{{ funding.name }}</td>
-          <td>{{ funding.type }}</td>
-          <td>{{ funding.status }}</td>
+          <td class="name">Chase Bank {{ funding.name }}</td>
+          <td class="type">Type {{ funding.type }}</td>
+          <td class="status">Status {{ funding.status }}</td>
         </tr>
       </tbody>
     </table>
