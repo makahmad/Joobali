@@ -46,7 +46,7 @@ MakePaymentComponentController.prototype.makePayment = function() {
             },
             function(response){
                 console.log('post failed');
-                console.log(response);
+                alert(response);
             }
          );
       }

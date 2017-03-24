@@ -27,7 +27,20 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
         'amount': {
             'currency': 'USD',
             'value': amount
-        }
+        },
+        'fees': [
+            {
+                '_links': {
+                    'charge-to':{
+                        'href': dest_customer_url
+                    }
+                },
+                'amount': {
+                    'value': round(amount * 0.029, 2),
+                    'currency': 'USD'
+                }
+            }
+        ]
     }
     transfer = account_token.post('transfers', request_body)
     if invoice:
