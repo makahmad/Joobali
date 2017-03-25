@@ -3,29 +3,6 @@ body {
 	letter-spacing:.05em;
 }
 
-@media (min-width: 768px) {
-.login-form{
-    max-width:440px;
-}
-.col-centered {
-    float: none;
-    margin: 0 auto;
-}
-.logo {
-    margin-bottom: 25px;
-}
-}
-
-@media (min-width: 992px) {
-.login-form{
-    max-width:500px;
-}}
-
-@media (min-width: 1200px) {
-.login-form{
-    max-width:580px;
-}}
-
 .tooltip-inner {
     background-color: #ff5b35;
     color: #fff;
@@ -172,4 +149,86 @@ a.delete:hover {
   margin: 0 auto;
 	border-top:1px solid #e5e5e5;
 	padding: 24px 49px 0 49px;
+}
+
+/*---------------- Responsive Stuff ------------------*/
+
+@media (min-width: 1200px) {
+	.login-form{
+	    max-width:580px;
+	}
+	.logo {
+    width: 25%;
+    margin: 0px auto 25px;
+	}
+}
+
+
+@media screen and (max-width: 1200px) {
+	.modal-content {
+		width:50%;
+		margin: 0 auto !important;
+	}
+	.container {
+		width: 100%;
+	}
+	.login-form{
+	    max-width:580px;
+	}
+	.logo {
+    width: 25%;
+    margin: 0px auto 25px;
+	}
+}
+
+@media screen and (max-width: 916px) {
+	.modal-content {
+		width:63%;
+		margin: 0 auto !important;
+	}
+	.container {
+		width: 100%;
+	}
+	.login-form{
+	    max-width:500px;
+	}	
+}
+
+@media screen and (max-width: 768px) {
+	.login-form{
+	    max-width:440px;
+	}
+	.col-centered {
+	    float: none;
+	    margin: 0 auto;
+	}
+	.logo {
+    margin-bottom: 10px;
+    width: 30%;
+	}
+	.modal-content {
+		width:80%;
+		margin: 0 auto !important;
+	}
+	.container {
+		width: 100%;
+/*    padding-right: 0px;
+    padding-left: 0px;*/
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.modal-content {
+		width:100%;
+		margin: 0 auto !important;
+	}
+	.container {
+		width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+	}
+	.logo {
+    width: 50%;
+    margin: 0px auto 10px;
+	}
 }
