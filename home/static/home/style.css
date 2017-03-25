@@ -116,6 +116,22 @@ a.logoLink:hover {
         text-align: center;
         margin: 25px 0;
     }
+		.logo {
+	    width: 80%;
+	    height: auto;
+		}
+		.elevPitch {
+			margin:0 auto;
+		}
+		.jumbotron, .homePitch2 {
+			padding:55px 10px 0 10px;
+		}
+		.jumbotron .btn, .homePitch2 .btn {
+			margin:0;
+		}
+		.homePitch2 h2 {
+		    margin: 0px auto 25px auto;
+		}
 }
 
 @media screen and (max-width: 950px) {
