@@ -3,12 +3,22 @@ from google.appengine.ext import ndb
 from parent.models import Parent
 
 
+class ProviderStatus(ndb.Model):
+    _POSSIBLE_STATUS = {'signup', 'active'}
+    status = ndb.StringProperty()
+    verification_token = ndb.StringProperty()
+    password_reset_token = ndb.StringProperty()
+
+
 class Provider(ndb.Model):
     firstName = ndb.StringProperty(required=True)
     lastName = ndb.StringProperty(required=True)
     schoolName = ndb.StringProperty(required=True)
     email = ndb.StringProperty(required=True)
     password = ndb.StringProperty(required=True)
+
+    status = ndb.StructuredProperty(ProviderStatus, repeated=False)
+
     phone = ndb.StringProperty()
     website = ndb.StringProperty()
     license = ndb.StringProperty()
