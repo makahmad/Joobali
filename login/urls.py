@@ -4,6 +4,7 @@ from login import views
 
 urlpatterns = [
 	url(r'^signup', views.provider_signup),
+	url(r'^forgot', views.forgot),
 	url(r'^parentsignup', views.parent_signup),
 	url(r'^logout', views.logout),
 	url(r'^isinitsetupfinished', views.is_init_setup_finished),

@@ -2,7 +2,7 @@
 {% load staticfiles %}
 <html>
 <head>
-  <title>User Registration</title>
+  <title>Reset password email sent</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -23,39 +23,19 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 		  <div class="modal-header">
-		    <h4 class="modal-title">Log in to your account:</h4>
+		    <h4 class="modal-title">Forgot your password?</h4>
 		  </div> <!-- end modal-header -->
 		  <div class="modal-body">
 				<div class="col-centered programOverviewForm">
-				  	<form role="form" class="well" action="/login/" method="POST">
-				  	  {% csrf_token %}
-					    {% if form.email.errors or form.password.erros %}
-				  	      <div class="form-group">
-					        <span class="label label-warning">The combination of credentials are invalid.</span>
-					      </div>
-					    {% endif %}
-				  	  <div class="form-group">
-					    <label class="control-label" for="email">Email:</label>
-					    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.data|safe }}">
-					  </div>
 					  <div class="form-group">
-					    <label class="control-label" for="password">Password:</label>
-					    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.data|safe }}">
+						<span class="label label-success">Reset email has been sent to your email.</span>
 					  </div>
-							<center>
-			      	  <button type="submit" class="btn btn-default btn-lg joobali">Log In</button>
-							</center>
-							<center>
-								<p><a href="forgot" class="pull-right">Forgot your password?</a></p>
-							</center>
-						<div class="formActions">
-							<h3>Don't have an account?</h3>
-							<p><a href="signup">Sign up</a> and start receiving payments <br />on time, every time.</p>
+                     <div class="formActions">
+							<p><a href="/login">Login?</a> </p>
 						</div> <!-- end formActions -->
-				  </form>
-				</div><!-- end col-centered programOerviewForm -->		
+				</div><!-- end col-centered programOerviewForm -->
 			</div> <!-- end modal body -->
-	
+
 				<div class="modal-footer">&nbsp;</div>
 
 		</div> <!-- end modal-content -->
