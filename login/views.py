@@ -337,6 +337,55 @@ def forgot(request):
         template.RequestContext(request))
 
 
+def reset(request):
+    form = LoginForm()
+
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        form.validate()
+        password = request.POST.get('password')
+
+        # if password:
+        #     is_provider = True
+        #     query = models.Provider.query().filter(models.Provider.email == email)
+        #     result = query.fetch(1)
+        #
+        #     if not result:
+        #         is_provider = False
+        #         query = Parent.query().filter(Parent.email == email)
+        #         result = query.fetch(1)
+        #         if not result:
+        #             form.email.errors.append('error: user does not exist')
+        #         else:
+        #             first_name = result[0].first_name
+        #     else:
+        #         first_name = result[0].firstName
+        #
+        #     if result:
+        #         emailTemplate = template.loader.get_template('login/forgot_password_email.html')
+        #         data = {
+        #             'first_name': first_name,
+        #             'email': email
+        #         }
+        #         send_reset_password_email(first_name, email,
+        #                             emailTemplate.render(data), "howdy@joobali.com")
+        #
+        #         return render_to_response('login/forgot_sent.html',
+        #                                   {'form': form},
+        #                                   template.RequestContext(request))
+
+    # if check_session(request):
+    #     if request.session.get('is_provider') is True:
+    #         return HttpResponseRedirect("/home/dashboard")
+    #     else:
+    #         return HttpResponseRedirect("/parent")
+
+    return render_to_response(
+        'login/reset_password.html',
+        {'form': form},
+        template.RequestContext(request))
+
+
 def login(request):
     form = LoginForm()
 

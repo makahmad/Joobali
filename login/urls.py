@@ -11,4 +11,5 @@ urlpatterns = [
 	url(r'^setinitsetupfinished', views.set_init_setup_finished),
 	url(r'^$', views.login),
 	url(r'^home', views.home),
+	url(r'^reset', views.reset),
 ]
