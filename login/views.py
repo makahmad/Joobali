@@ -325,9 +325,9 @@ def forgot(request):
                 send_reset_password_email(first_name, email,
                                     emailTemplate.render(data), "howdy@joobali.com")
 
-                return render_to_response('login/forgot_sent.html',
-                                          {'form': form},
-                                          template.RequestContext(request))
+        return render_to_response('login/forgot_sent.html',
+                                  {'form': form},
+                                  template.RequestContext(request))
 
     if check_session(request):
         if request.session.get('is_provider') is True:
