@@ -1,5 +1,7 @@
-from __future__ import unicode_literals
+from google.appengine.ext import ndb
 
-from django.db import models
-
-# Create your models here.
+class DwollaEvent(ndb.Model):
+    ''' Dwolla Events Registery object, used to keep track of which dwolla events has been recognized (notification email sent).
+        Note invoice payment related dwolla transfer is kept by Invoice.dwolla_transfer_id '''
+    event_id = ndb.StringProperty(required=True)
+    event_content = ndb.StringProperty()

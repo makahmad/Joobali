@@ -70,6 +70,7 @@ DashboardController.prototype.initialize = function() {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.fundings = [];
+	    console.log(response);
 	    angular.forEach(response.data, angular.bind(this, function(funding) {
 	    	this.scope_.fundings.push(JSON.parse(funding));
 	    }));

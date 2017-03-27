@@ -52,7 +52,17 @@ def list_fundings(customer_url):
     fundings = []
     funding_sources = account_token.get('%s/funding-sources' % customer_url)
     for funding in funding_sources.body['_embedded']['funding-sources']:
-        if funding['type'] != 'balance':
+        # Example funding:
+        # {u'id': u'31245d2d-7ac4-46c5-8b97-731be8ce7bd2', u'channels': [u'ach'], u'created': u'2016-10-12T23:26:11.000Z',
+        #  u'_links': {u'initiate-micro-deposits': {u'type': u'application/vnd.dwolla.v1.hal+json',
+        #                                           u'resource-type': u'micro-deposits',
+        #                                           u'href': u'https://api-uat.dwolla.com/funding-sources/31245d2d-7ac4-46c5-8b97-731be8ce7bd2/micro-deposits'},
+        #              u'self': {u'type': u'application/vnd.dwolla.v1.hal+json', u'resource-type': u'funding-source',
+        #                        u'href': u'https://api-uat.dwolla.com/funding-sources/31245d2d-7ac4-46c5-8b97-731be8ce7bd2'},
+        #              u'customer': {u'type': u'application/vnd.dwolla.v1.hal+json', u'resource-type': u'customer',
+        #                            u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'}},
+        #  u'status': u'unverified', u'type': u'bank', u'name': u'123', u'removed': True}
+        if funding['type'] != 'balance' and funding['removed'] != True:
             fundings.append({
                 "status": funding['status'],
                 "type": funding['type'],

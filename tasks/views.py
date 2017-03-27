@@ -9,16 +9,16 @@ from google.appengine.ext import ndb
 from datetime import datetime, date
 from datetime import timedelta
 from common.dwolla import parse_webhook_data
-from common.dwolla import get_funding_transfer, get_funded_transfer
+from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding_source
 from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
-from common.email.dwolla import send_payment_success_email, send_payment_failure_email
+from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_processing_email
 from common.dwolla import start_webhook
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from funding import funding_util
 from dwollav2.error import ValidationError
-from parent.models import Parent
+from models import DwollaEvent
 import logging
 import json
 
@@ -162,12 +162,33 @@ def autopay(request):
 @csrf_exempt
 def dwolla_webhook(request):
     logger.info("DWOLLA_WEBHOOK")
-    webhook = json.loads(request.body)
+    webhook_content = json.loads(request.body)
 
-    logger.info(webhook)
-    webhook_data = parse_webhook_data(webhook)
-    if ('customer_bank_transfer_completed' in webhook_data['topic']):
-        funding_transfer = get_funding_transfer(webhook_data['transfer_url'])
+    logger.info(webhook_content)
+    webhook_data = parse_webhook_data(webhook_content)
+    if DwollaEvent.get_by_id(webhook_data['id']) != None:
+        logger.info("Webhook already processed.")
+        return HttpResponse(status=200)
+    if ('customer_transfer_created' in webhook_content['topic']):
+        funded_transfer = get_funded_transfer(webhook_data['resource_url'])
+        amount = funded_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
+        destination_customer_url = funded_transfer['destination_customer_url']
+        provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+
+        invoice = invoice_util.get_invoice_by_transfer_id(webhook_data['resource_url'])
+        if invoice.status != Invoice._POSSIBLE_STATUS['PROCESSING']:
+            invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
+            invoice.put()
+
+        send_payment_processing_email(parent.email, parent.first_name, provider.schoolName, amount)
+
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = webhook_content
+        event.put()
+    elif ('customer_bank_transfer_completed' in webhook_data['topic']):
+        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
         funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
         amount = funded_transfer['amount']
         parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
@@ -179,9 +200,9 @@ def dwolla_webhook(request):
             invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
             invoice.put()
 
-        send_payment_success_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
-    if ('failed' in webhook_data['topic']):
-        funding_transfer = get_funding_transfer(webhook_data['transfer_url'])
+        send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount)
+    elif ('customer_bank_transfer_failed' in webhook_data['topic']):
+        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
         funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
         amount = funded_transfer['amount']
         parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
@@ -193,6 +214,48 @@ def dwolla_webhook(request):
             invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
             invoice.put()
 
-        send_payment_failure_email(parent.email, "%s %s" % (parent.first_name, parent.last_name), provider.schoolName, amount)
+        send_payment_failure_email(parent.email, parent.first_name, provider.schoolName, amount)
+    elif 'customer_funding_source_added' in webhook_data['topic']:
+        funding_source = get_funding_source(webhook_data['resource_url'])
+        first_name = None
+        last_name = None
+        email = None
+        parent = parent_util.get_parent_by_dwolla_id(webhook_data['customer_url'])
+        if not parent:
+            provider = provider_util.get_provider_by_dwolla_id(webhook_data['customer_url'])
+            first_name = provider.firstName
+            last_name = provider.lastName
+            email = provider.email
+        else:
+            first_name = parent.first_name
+            last_name = parent.last_name
+            email = parent.email
+        send_funding_source_addition_email(email, first_name, funding_source['name'])
 
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = webhook_content
+        event.put()
+
+    elif 'customer_funding_source_removed' in webhook_data['topic']:
+        funding_source = get_funding_source(webhook_data['resource_url'])
+        first_name = None
+        last_name = None
+        email = None
+        parent = parent_util.get_parent_by_dwolla_id(webhook_data['customer_url'])
+        if not parent:
+            provider = provider_util.get_provider_by_dwolla_id(webhook_data['customer_url'])
+            first_name = provider.firstName
+            last_name = provider.lastName
+            email = provider.email
+        else:
+            first_name = parent.first_name
+            last_name = parent.last_name
+            email = parent.email
+        send_funding_source_removal_email(email, first_name, funding_source['name'])
+
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = webhook_content
+        event.put()
     return HttpResponse(status=200)

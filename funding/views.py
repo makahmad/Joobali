@@ -137,12 +137,16 @@ def makeTransfer(request):
 
     return HttpResponse("success")
 
-def funding(request):
-    
-    funding_source_url = 'https://api.dwolla.com/funding-sources/692486f8-29f6-4516-a6a5-c69fd2ce854c'
+def removeFunding(request):
+    data = json.loads(request.body)
+    funding_source_id = data['funding_source_id']
+    funding_source_url = 'https://api-uat.dwolla.com/funding-sources/%s' % funding_source_id
 
-    funding_source = account_token.get(funding_source_url)
-    return HttpResponse(funding_source.body['_embedded'])
+    try:
+        account_token.post(funding_source_url, { 'removed': True })
+    except ValidationError as err:
+        return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+    return HttpResponse("success")
 
 def getGeneralBilling(request):
     """Handles get general billing details (i.e. Provider model)"""

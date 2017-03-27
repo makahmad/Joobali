@@ -74,7 +74,6 @@ def get_funding_source(funding_source_url):
     result = {}
     result['name'] = source['name']
     result['status'] = source['status']
-    result['bank_name'] = source['bankName']
     result['type'] = source['type']
     result['removed'] = source['removed']
     result['balance_url'] = source['_links']['balance']['href']
@@ -265,6 +264,7 @@ def get_funded_transfer(transfer_url):
 
 def parse_webhook_data(webhook_json):
     # Example webhook event json:
+    # Transfer event
     # {
     #     u'created': u'2017-03-10T06:32:13.529   Z',
     #     u'resourceId': u'a877aa33-5b05-e711-80ee-0aa34a9b2388',
@@ -286,11 +286,21 @@ def parse_webhook_data(webhook_json):
     #     u'timestamp': u'2017-03-10T06:32:13.529   Z',
     #     u'id': u'eb46bf79-9cb4-4e8c-a46e-950049f27e1c'
     # }
+    # Funding source remove:
+    # {u'created': u'2017-03-26T23:12:47.553Z', u'resourceId': u'a3f37a8e-8e8e-4ffe-9025-0d25df7f469e',
+    #  u'topic': u'customer_funding_source_removed',
+    #  u'_links': {u'customer': {u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'},
+    #              u'self': {u'href': u'https://api-uat.dwolla.com/events/f6071cba-6fc5-4b4e-86b1-68cb7ba509ff'},
+    #              u'resource': {
+    #                  u'href': u'https://api-uat.dwolla.com/funding-sources/a3f37a8e-8e8e-4ffe-9025-0d25df7f469e'},
+    #              u'account': {u'href': u'https://api-uat.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'}},
+    #  u'timestamp': u'2017-03-26T23:12:47.553Z', u'id': u'f6071cba-6fc5-4b4e-86b1-68cb7ba509ff'}
     result = {}
+    result['id'] = webhook_json['id']
     result['topic'] = webhook_json['topic']
     result['customer_url'] = webhook_json['_links']['customer']['href']
     result['event_url'] = webhook_json['_links']['self']['href']
-    result['transfer_url'] = webhook_json['_links']['resource']['href']
+    result['resource_url'] = webhook_json['_links']['resource']['href']
     result['account_url'] = webhook_json['_links']['account']['href']
     result['timestamp'] = webhook_json['timestamp'] # TODO(rongjian): parse into datetime object
     return result
