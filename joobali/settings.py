@@ -184,8 +184,8 @@ REST_FRAMEWORK = {
 # Joobali Settings
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False # turn to True when deploying to PROD.
+CSRF_COOKIE_SECURE = False # turn to True when deploying to PROD.
 
 # Comment this line before deploy to PROD.
 SSLIFY_DISABLE = True
