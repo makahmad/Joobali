@@ -1,9 +1,7 @@
 from common.json_encoder import JEncoder
 from common.session import check_session
-from django.http import HttpResponse
 from django.http import HttpResponseServerError
 from django.shortcuts import render_to_response
-from enrollment.models import Enrollment
 from django.http import HttpResponseRedirect
 from django import template
 from passlib.apps import custom_app_context as pwd_context
@@ -12,12 +10,12 @@ from models import Parent
 from referral import models
 from funding import funding_util
 from django.http import HttpResponse
-from google.appengine.ext import ndb
 import logging
 import json
 
 
 logger = logging.getLogger(__name__)
+
 
 def index(request):
     if not check_session(request) or request.session['is_provider'] is True:

@@ -1,10 +1,8 @@
-import os
 import logging
 from google.appengine.api import mail
 from django.template import loader
 
 logger = logging.getLogger(__name__)
-module_dir = os.path.dirname(__file__)
 
 # TODO(zilong): Refine the html template with proper input parameters
 _enrollment_notification_template = loader.get_template('enrollment/enrollment_notification_template.html')

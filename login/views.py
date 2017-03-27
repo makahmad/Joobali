@@ -1,18 +1,21 @@
-from common.session import check_session
-from common.dwolla import create_account_token
-from common.email.login import send_reset_password_email
-
 from django.shortcuts import render_to_response
 from django import template
+from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
-from django.http import HttpResponse
+
+from common.session import check_session
+from common.dwolla import create_account_token
+from common.email.verification import send_provider_email_address_verification
+from common.email.login import send_reset_password_email
 
 from login import models
 from home.models import InitSetupStatus
+from login.models import ProviderStatus, Provider
 from parent.models import Parent
 from parent import parent_util
+from verification.models import VerificationToken
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 from os import environ
@@ -24,10 +27,10 @@ logger = logging.getLogger(__name__)
 
 
 def home(request):
-
-    customers = account_token.get('customers')
-    logger.info("Customer info: %s" % customers.body['_embedded']['customers'])
-    return HttpResponse(customers.body['_embedded']['customers'])
+    if request.method == 'GET':
+        customers = account_token.get('customers')
+        logger.info("Customer info: %s" % customers.body['_embedded']['customers'])
+        return HttpResponse(customers.body['_embedded']['customers'])
 
 stripFilter = lambda x: x.strip()  if x else ''
 ProviderForm = model_form(models.Provider, field_args={
@@ -90,11 +93,7 @@ def provider_signup(request):
 
             (provider, created) = get_or_insert(models.Provider, email, form)
             if created:
-                request.session['email'] = provider.email
-                request.session['user_id'] = provider.key.id()
-                request.session['is_provider'] = True
                 create_new_init_setup_status(provider.email)
-
 
                 logger.info("Generating customerId for this provider")
                 # Dummy request to dwolla UAT instance to acquire a customer url.
@@ -120,9 +119,14 @@ def provider_signup(request):
                             request.session['dwolla_customer_url'] = provider.customerId
                             provider.put()
                     pass
-
-
-                return HttpResponseRedirect('/home/dashboard')
+                provider_status = ProviderStatus()
+                provider_status.status = 'signup'
+                provider.status = provider_status
+                provider.put()
+                token = VerificationToken.create_new_provider_email_token(provider=provider)
+                token.put()
+                send_provider_email_address_verification(token, host=request.get_host())
+                return HttpResponseRedirect('/login')
             else:
                 form.email.errors.append('error: user exists')
 
@@ -397,24 +401,37 @@ def login(request):
         if email and password:
             is_provider = True
             query = models.Provider.query().filter(models.Provider.email == email)
-            result = query.fetch(1)
+            result = query.get()
             if not result:
                 is_provider = False
                 query = Parent.query().filter(Parent.email == email)
-                result = query.fetch(1)
+                result = query.get()
                 if not result:
-                    form.email.errors.append('error: user does not exist')
+                    logger.info('Error: wrong combination of credential');
+                    form.email.errors = 'Error: wrong combination of credential'
+                    return render_to_response(
+                        'login/login.html',
+                        {'form': form},
+                        template.RequestContext(request))
+            if isinstance(result, Provider):
+                if result.status.status != 'active':
+                    logger.info('Error: user has not yet verify email');
+                    form.email.errors = 'Error: user has not yet verify email'
+                    return render_to_response(
+                        'login/login.html',
+                        {'form': form},
+                        template.RequestContext(request))
 
-            if result and pwd_context.verify(password, result[0].password):
+            if result and pwd_context.verify(password, result.password):
                 # authentication succeeded.
                 logger.info('login successful')
                 request.session['email'] = email
-                request.session['user_id'] = result[0].key.id()
+                request.session['user_id'] = result.key.id()
                 request.session['is_provider'] = is_provider
                 request.session['dwolla_customer_url'] = getCustomerUrl(email)
                 logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
             else:
-                form.email.errors.append('error: password wrong')
+                form.email.errors = 'Error: wrong combination of credential'
     if check_session(request):
         if request.session.get('is_provider') is True:
             return HttpResponseRedirect("/home/dashboard")

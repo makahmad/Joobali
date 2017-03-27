@@ -17,7 +17,8 @@ urlpatterns = [
     url(r'^enrollment/', include('enrollment.urls')),
     url(r'^parent/', include('parent.urls')),
     url(r'^child/', include('child.urls')),
-    url(r'^tasks/', include('tasks.urls'))
+    url(r'^tasks/', include('tasks.urls')),
+    url(r'^verification/', include('verification.urls'))
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),
