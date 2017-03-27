@@ -151,6 +151,92 @@ a.delete:hover {
 	padding: 24px 49px 0 49px;
 }
 
+/*--------------- Sign Up Page -------------------*/
+#signUp .container {
+	margin:0px auto;
+}
+
+#signUp .profileFormHeader, 
+#signUp .profileFormBody, 
+#signUp .profileFormContainer {
+	margin:auto;
+	width:63%;
+}
+
+#signUp .profileFormContainer {
+	width:100%;
+}
+
+#signUp .profileFormHeader{
+  background: white;
+  border-radius: 4px 4px 0 0;
+}
+#signUp .profileFormBody {
+	border-radius:0 0 4px 4px;
+  overflow: auto;
+}
+
+#signUp .jumbotron {
+	background: #fa5d26 url("./pics/img_signupbg.jpg") no-repeat top center;
+	background-size:inherit 100%;
+	color: #333;
+}
+
+#signUp .jumbotron form {
+  /*background: white;*/
+}
+
+#signUp .signUpFeatures {
+	background: white;
+	border-radius:4px;
+	outline:.6px solid #e5e5e5;
+	padding:0 30px 40px;
+}
+
+#signUp .row {
+}
+
+#signUp .form-group {
+  width: 87%;
+	margin-top:0;
+}
+
+#signUp h1 {
+	font-size:16pt;
+}
+
+#signUp h3 {
+	font-size:8em;
+	margin:0;
+}
+
+#signUp h3 sup {
+	font-size: 46%;
+  line-height: 0;
+  margin: 0 0 0 -5px;
+}
+
+#signUp .featureList ul {
+	-webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 0px;
+}
+		
+#signUp .featureList li {
+	list-style:none;
+	color: #adafb0;
+	border-bottom:1px solid #adafb0;
+  padding: 10px 0px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+#signUp .featureList li:last-of-type {
+	border-bottom:none;
+}
+
 /*---------------- Responsive Stuff ------------------*/
 
 @media (min-width: 1200px) {
@@ -192,6 +278,19 @@ a.delete:hover {
 	.login-form{
 	    max-width:500px;
 	}	
+	/*.col-sm-6 {
+		width:100%;
+	}*/
+	#signUp .profileFormHeader, #signUp .profileFormBody, #signUp .profileFormContainer {
+		width:100%;
+    min-width: auto !important;
+	}
+	#signUp .signUpFeatures {
+		padding:0 30px 10px;
+	}
+	#signUp .jumbotron {
+		background-size:auto 100%;
+	}
 }
 
 @media screen and (max-width: 768px) {
@@ -214,6 +313,16 @@ a.delete:hover {
 		width: 100%;
 /*    padding-right: 0px;
     padding-left: 0px;*/
+	}
+	#signUp .profileFormHeader, #signUp .profileFormBody, #signUp .profileFormContainer {
+		width:100%;
+    min-width: auto !important;
+	}
+	#signUp .signUpFeatures {
+		padding:0 30px 10px;
+	}
+	#signUp .jumbotron {
+		background-size:auto 100%;
 	}
 }
 
