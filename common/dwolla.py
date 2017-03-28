@@ -76,7 +76,6 @@ def get_funding_source(funding_source_url):
     result['status'] = source['status']
     result['type'] = source['type']
     result['removed'] = source['removed']
-    result['balance_url'] = source['_links']['balance']['href']
     result['customer_url'] = source['_links']['customer']['href']
     return result
 

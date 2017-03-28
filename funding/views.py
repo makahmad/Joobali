@@ -36,53 +36,6 @@ FundingForm = model_form(models.Funding, field_args={
     }
 })
 
-# Zilong's ID: eeb997f4-e6b2-40bf-9f35-863f8769202c
-# Rongjian's ID (rongjian@joobali.com): 45ad438b-dc6f-4210-b9d7-f651a870265b
-# Rongjian's ID (rongjian@google.net): 199f1583-de16-4d83-868c-ef272942e636
-# Rongjian - verified ID (rongjian.lan@gmail.com): 255b92a7-300b-42fc-b72f-5301c0c6c42e
-# Bei's ID: f4871302-e98d-4d87-808f-31c6424199e4
-# Choose the one as test customer.
-# test_customer_url = 'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
-
-
-def index(request):
-    if not request.session.get('email'):
-        return HttpResponseRedirect('/login')
-    customer_url = request.session.get('dwolla_customer_url')
-    form = FundingForm()
-    if request.method == 'POST':
-        form = FundingForm(request.POST)
-
-        name = request.POST.get('name');
-        type = request.POST.get('type');
-        accountNumber = request.POST.get('accountNumber');
-        routingNumber = request.POST.get('routingNumber');
-
-        form.validate()
-        request_body = {
-          "routingNumber": routingNumber,
-          "accountNumber": accountNumber,
-          "type": type,
-          "name": name
-        }
-        try:
-            funding = account_token.post('%s/funding-sources' % customer_url, request_body)
-        except ValidationError as err: # ValidationError as err
-            # e.g.: {"code":"ValidationError","message":"Validation error(s) present. See embedded errors list for more details.","_embedded":{"errors":[{"code":"Invalid","message":"Invalid parameter.","path":"/routingNumber"}]}}
-            if 'routing' in err.body['_embedded']['errors'][0]['path']:
-                form.routingNumber.errors.append('Invalid Routing Number')
-            return render_to_response(
-                'funding/index.html',
-                {'form': form},
-                template.RequestContext(request)
-            )
-        return HttpResponseRedirect('/funding')
-    return render_to_response(
-        'funding/index.html',
-        {},
-        template.RequestContext(request)
-    )
-
 def listFunding(request):
     if not request.session.get('email'):
         return HttpResponseRedirect('/login')
