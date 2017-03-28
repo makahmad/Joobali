@@ -142,6 +142,7 @@ INSTALLED_APPS = (
     'child',
     'parent',
     'tasks',
+    'verification',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -184,7 +185,7 @@ REST_FRAMEWORK = {
 # Joobali Settings
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
-SESSION_COOKIE_SECURE = False # turn to True when deploying to PROD.
+SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = False # turn to True when deploying to PROD.
 
 # Comment this line before deploy to PROD.

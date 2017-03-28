@@ -29,10 +29,15 @@
 				<div class="col-centered programOverviewForm">
 				  	<form role="form" class="well" action="/login/" method="POST">
 				  	  {% csrf_token %}
-					    {% if form.email.errors or form.password.erros %}
-				  	      <div class="form-group">
-					        <span class="label label-warning">The combination of credentials are invalid.</span>
-					      </div>
+					    {% if form.email.errors %}
+						<div class="form-group">
+							<span class="label label-warning"> {{ form.email.errors }}</span>
+						</div>
+					    {% endif %}
+						{% if form.password.errors %}
+						<div class="form-group">
+							<span class="label label-warning"> {{ form.password.errors }}</span>
+						</div>
 					    {% endif %}
 				  	  <div class="form-group">
 					    <label class="control-label" for="email">Email:</label>

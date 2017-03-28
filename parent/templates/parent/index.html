@@ -22,8 +22,9 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}enrollment/style.css">
 
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
@@ -84,13 +85,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_infinitylogo.png" alt="Logo" width="61" height="50"></a>
+            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_infinitylogo.png" alt="Logo"
+                                              width="61" height="50"></a>
         </div>
 
-		<div class="collapse navbar-collapse" id="myNavbar">
+        <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
-				<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
+                <li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}
@@ -98,7 +100,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li ng-click="changeView('/profile')"><a href="#!/profile">Profile</a></li>
-                        <li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a class="menu_links">Refer</a></li>
+                        <li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a
+                                class="menu_links">Refer</a></li>
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>
@@ -127,20 +130,21 @@
                     </a>
                 </li>
 
-                <li  data-target="#children" ng-click="changeView('/child/list')" ng-class="{active: module=='/child/list'}">
+                <li data-target="#children" ng-click="changeView('/child/list')"
+                    ng-class="{active: module=='/child/list'}">
                     <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children </a>
                 </li>
 
                 <li ng-click="changeView('/due')" ng-class="{active: module=='/due'}">
                     <a href="#!/due">
-						<i class="fa fa-list-alt fa-lg"></i> Payment Due
-					</a>
+                        <i class="fa fa-list-alt fa-lg"></i> Payment Due
+                    </a>
                 </li>
 
                 <li ng-click="changeView('/funding')" ng-class="{active: module=='/funding'}">
                     <a href="#!/funding">
-						<i class="fa fa-money fa-lg"></i> Funding
-					</a>
+                        <i class="fa fa-money fa-lg"></i> Funding
+                    </a>
                 </li>
 
 
@@ -177,6 +181,8 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+
+
 
 </script>
 

@@ -6,8 +6,6 @@ from parent.models import Parent
 class ProviderStatus(ndb.Model):
     _POSSIBLE_STATUS = {'signup', 'active'}
     status = ndb.StringProperty()
-    verification_token = ndb.StringProperty()
-    password_reset_token = ndb.StringProperty()
 
 
 class Provider(ndb.Model):
@@ -60,7 +58,7 @@ class Provider(ndb.Model):
 
 
 class ProviderIdCounter(ndb.Model):
-    current_available_id = ndb.IntegerProperty(required=True) # increment it after use in a transaction
+    current_available_id = ndb.IntegerProperty(required=True)  # increment it after use in a transaction
 
 
 # The parent is the corresponding user object
