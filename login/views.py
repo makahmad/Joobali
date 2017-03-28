@@ -8,7 +8,7 @@ from wtforms_appengine.ndb import model_form
 from common.session import check_session
 from common.dwolla import create_account_token
 from common.email.verification import send_provider_email_address_verification
-from common.email.login import send_reset_password_email
+from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent
 
 from login import models
 from home.models import InitSetupStatus
@@ -16,6 +16,7 @@ from login.models import ProviderStatus, Provider
 from parent.models import Parent
 from parent import parent_util
 from verification.models import VerificationToken
+from verification import verification_util
 from dwollav2.error import ValidationError
 from passlib.apps import custom_app_context as pwd_context
 from os import environ
@@ -292,6 +293,7 @@ def get_or_insert(model, email, form):
     logger.info("INFO: successfully stored " + model._get_kind() + ":" + str(user))
     return user, True
 
+
 def forgot(request):
     form = LoginForm()
 
@@ -301,29 +303,24 @@ def forgot(request):
         email = request.POST.get('email')
 
         if email:
-            is_provider = True
             query = models.Provider.query().filter(models.Provider.email == email)
-            result = query.fetch(1)
+            provider_result = query.fetch(1)
+            parent_result = None
 
-            if not result:
-                is_provider = False
+            if not provider_result:
                 query = Parent.query().filter(Parent.email == email)
-                result = query.fetch(1)
-                if not result:
+                parent_result = query.fetch(1)
+                if not parent_result:
                     form.email.errors.append('error: user does not exist')
-                else:
-                    first_name = result[0].first_name
-            else:
-                first_name = result[0].firstName
 
-            if result:
-                emailTemplate = template.loader.get_template('login/forgot_password_email.html')
-                data = {
-                    'first_name': first_name,
-                    'email': email
-                }
-                send_reset_password_email(first_name, email,
-                                    emailTemplate.render(data), "howdy@joobali.com")
+            if provider_result:
+                token = VerificationToken.create_new_provider_password_reset_token(provider_result[0])
+                token.put()
+                send_reset_password_email_for_provider(token, request.get_host())
+            elif parent_result:
+                token = VerificationToken.create_new_parent_password_reset_token(parent_result[0])
+                token.put()
+                send_reset_password_email_for_parent(token, request.get_host())
 
         return render_to_response('login/forgot_sent.html',
                                   {'form': form},
@@ -342,52 +339,49 @@ def forgot(request):
 
 
 def reset(request):
-    form = LoginForm()
+    if request.method == 'GET':
+        token_id = request.GET['t']
+        token = verification_util.get_password_reset_token(token_id)
+        if token is not None:
+            form = dict()
+            form['token'] = token.token_id
+            if token.provider_key is not None:
+                provider = token.provider_key.get()
+                form['first_name'] = provider.firstName
+                form['email_address'] = provider.email
+            elif token.parent_key is not None:
+                parent = token.parent_key.get()
+                form['first_name'] = parent.first_name
+                form['email_address'] = parent.email
+            else:
+                return None
+            return render_to_response(
+                'login/reset_password.html',
+                {'form': form},
+                template.RequestContext(request))
 
     if request.method == 'POST':
-        form = LoginForm(request.POST)
-        form.validate()
-        password = request.POST.get('password')
+        token_id = request.POST.get('token')
+        token = verification_util.get_password_reset_token(token_id)
+        if token is not None:
+            password = request.POST.get('password')
+            salted_password = pwd_context.encrypt(password)
+            if token.provider_key is not None:
+                provider = token.provider_key.get()
+                provider.password = salted_password
+                provider.put()
+            elif token.parent_key is not None:
+                parent = token.parent_key.get()
+                parent.password = salted_password
+                parent.put()
+            token.key.delete()
+        return HttpResponse("password successfully reset")
 
-        # if password:
-        #     is_provider = True
-        #     query = models.Provider.query().filter(models.Provider.email == email)
-        #     result = query.fetch(1)
-        #
-        #     if not result:
-        #         is_provider = False
-        #         query = Parent.query().filter(Parent.email == email)
-        #         result = query.fetch(1)
-        #         if not result:
-        #             form.email.errors.append('error: user does not exist')
-        #         else:
-        #             first_name = result[0].first_name
-        #     else:
-        #         first_name = result[0].firstName
-        #
-        #     if result:
-        #         emailTemplate = template.loader.get_template('login/forgot_password_email.html')
-        #         data = {
-        #             'first_name': first_name,
-        #             'email': email
-        #         }
-        #         send_reset_password_email(first_name, email,
-        #                             emailTemplate.render(data), "howdy@joobali.com")
-        #
-        #         return render_to_response('login/forgot_sent.html',
-        #                                   {'form': form},
-        #                                   template.RequestContext(request))
-
-    # if check_session(request):
-    #     if request.session.get('is_provider') is True:
-    #         return HttpResponseRedirect("/home/dashboard")
-    #     else:
-    #         return HttpResponseRedirect("/parent")
-
-    return render_to_response(
-        'login/reset_password.html',
-        {'form': form},
-        template.RequestContext(request))
+    if check_session(request):
+        if request.session.get('is_provider') is True:
+            return HttpResponseRedirect("/home/dashboard")
+        else:
+            return HttpResponseRedirect("/parent")
 
 
 def login(request):
