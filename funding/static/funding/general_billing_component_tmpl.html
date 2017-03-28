@@ -4,21 +4,19 @@
 	</div>
 	<div class="generalBillingFormBody">
         <form id="generalBillingForm" name="generalBillingForm" role="form" class="well">
-            <div class="">
+            <div class="" style="width:150px">
 
                 <div class="form-group">
                     <label class="control-label" for="lateFee">Late Fee:</label>
-                    <div class="input-group">
                         <input type="text" class="form-control"  ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="lateFee" name="lateFee" ng-required="false"
                            ng-model="$ctrl.generalBilling.lateFee">
-									 <div>
                 </div>
                         <div class="form-group">
                     <label class="control-label" for="graceDays">Late Fee Grace Period (days):</label>
-                    <div class="input-group">
+
                         <input type="text" class="form-control" ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="graceDays" name="graceDays" ng-required="false"
                            ng-model="$ctrl.generalBilling.graceDays">
-										 </div>
+
                 </div>
             </div>
 		        </form>
