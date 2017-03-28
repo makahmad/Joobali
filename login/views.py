@@ -322,7 +322,8 @@ def forgot(request):
                 token.put()
                 send_reset_password_email_for_parent(token, request.get_host())
 
-        return render_to_response('login/forgot_sent.html',
+            if provider_result or parent_result:
+                return render_to_response('login/forgot_sent.html',
                                   {'form': form},
                                   template.RequestContext(request))
 
