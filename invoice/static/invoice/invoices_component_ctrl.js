@@ -33,8 +33,7 @@ InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) 
             }
          );
     } else {
-        // TODO(rongjian): check if payment method was setup
-        if (false) {
+        if (this.fundings.length == 0) {
             $('#paymentSetupModal').modal('show');
         } else {
             $('#makePaymentModal').modal('show');
