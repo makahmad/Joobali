@@ -104,6 +104,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
         controller: InvoicesComponentController,
         bindings: {
+          fundings: '<',
           invoices: '<'
         }
     })
