@@ -354,7 +354,7 @@ def reset(request):
                 form['first_name'] = parent.first_name
                 form['email_address'] = parent.email
             else:
-                return None
+                return HttpResponseRedirect("/login")
             return render_to_response(
                 'login/reset_password.html',
                 {'form': form},
@@ -383,6 +383,8 @@ def reset(request):
             return HttpResponseRedirect("/home/dashboard")
         else:
             return HttpResponseRedirect("/parent")
+
+    return HttpResponseRedirect("/login")
 
 
 def login(request):
