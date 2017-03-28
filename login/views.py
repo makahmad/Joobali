@@ -375,7 +375,8 @@ def reset(request):
                 parent.password = salted_password
                 parent.put()
             token.key.delete()
-            return HttpResponse("password successfully reset")
+            return render_to_response('login/reset_done.html', None,
+                                      template.RequestContext(request))
 
     if check_session(request):
         if request.session.get('is_provider') is True:
