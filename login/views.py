@@ -375,7 +375,7 @@ def reset(request):
                 parent.password = salted_password
                 parent.put()
             token.key.delete()
-        return HttpResponse("password successfully reset")
+            return HttpResponse("password successfully reset")
 
     if check_session(request):
         if request.session.get('is_provider') is True:
