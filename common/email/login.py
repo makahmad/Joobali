@@ -32,7 +32,8 @@ def _send_reset_password_email(token, host, sender_address="howdy@joobali.com", 
     message.to = "%s <%s>" % (receiver_name, receiver_address)
     data = {
         'root_path': root_path,
-        'reset_password_link': reset_password_link
+        'reset_password_link': reset_password_link,
+        'first_name': receiver_name
     }
     message.html = _forget_password_email_template.render(data)
     message.send()
