@@ -43,7 +43,7 @@
 							</table>
 							
 							<table class="programTable list">
-								<tr>
+								<tr ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal">
 									<td class="theData"><div class="mainName">{{ $ctrl.program.programName }}</div></td>									
 									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
 									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
