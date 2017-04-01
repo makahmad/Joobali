@@ -132,6 +132,9 @@ a.logoLink:hover {
 		.homePitch2 h2 {
 		    margin: 0px auto 25px auto;
 		}
+		.h1, h1 {
+		    font-size: 32px;
+		}
 }
 
 @media screen and (max-width: 950px) {
@@ -206,9 +209,10 @@ a.logoLink:hover {
 	background: rgba(255, 91, 53, 1) !important;
 }
 
-#myNavbar {
+/*#myNavbar {
 	display:none;
 }
+*/
 
 .navbar li a, .navbar .navbar-brand {
     color: #fff !important;
