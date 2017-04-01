@@ -23,6 +23,8 @@ from os import environ
 
 import logging
 
+from verification.verification_util import get_parent_signup_verification_token
+
 account_token = create_account_token('sandbox')
 logger = logging.getLogger(__name__)
 
@@ -138,8 +140,25 @@ def provider_signup(request):
     )
 
 
-# TODO(zilong): Make sure this won't conflict with the parent data storage in add-child for provider
 def parent_signup(request):
+    if request.method == 'GET':
+        token_id = request.GET['t']
+        verification_token = get_parent_signup_verification_token(token_id)
+        if verification_token is not None:
+            parent = verification_token.parent_key.get()
+            provider_school_name = parent.invitation.provider_key.get().schoolName
+            child_first_name = parent.invitation.child_first_name
+            verification_token.key.delete()
+            return render_to_response(
+                'login/parent_signup.html',
+                {'parent_email': parent.email,
+                 'invitation_token': token_id,
+                 'child_first_name': child_first_name,
+                 'provider_school_name' : provider_school_name},
+                template.RequestContext(request)
+            )
+        else:
+            return HttpResponse("Need a valid token id for parent to signup")
     if request.method == 'POST':
         form = ParentForm(request.POST)
         if form.validate():
@@ -148,19 +167,28 @@ def parent_signup(request):
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
             phone = request.POST.get('phone')
-            invitation_token = request.POST.get('invitation_token')
+            token_id = request.POST.get('invitation_token')
+            verification_token = get_parent_signup_verification_token(token_id)
 
-            (parent, created) = get_or_insert(Parent, email, form)
-            if created:
-                # For Joobali V1, there will be no newly created Parent object at signup
-                return None
+            if verification_token is None:
+                return HttpResponseRedirect('/login')
+            else:
+                parent = verification_token.parent_key.get()
                 create_new_init_setup_status(parent.email)
+                salted_password = pwd_context.encrypt(password)
+                parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
+                                                           phone=phone,
+                                                           first_name=first_name, last_name=last_name)
+                request.session['email'] = parent.email
+                request.session['user_id'] = parent.key.id()
+                request.session['is_provider'] = False
 
+                # Setup Dwolla Account
                 request_body = {
-                  'firstName': parent.first_name,
-                  'lastName': parent.last_name,
-                  'email': parent.email,
-                  'ipAddress': '99.99.99.99'
+                    'firstName': first_name,
+                    'lastName': last_name,
+                    'email': email,
+                    'ipAddress': '99.99.99.99'
                 }
                 try:
                     customer = account_token.post('customers', request_body)
@@ -180,65 +208,10 @@ def parent_signup(request):
                     pass
                 request.session['email'] = parent.email
                 request.session['user_id'] = parent.key.id()
+
                 return HttpResponseRedirect('/parent')
-            else:
-                if not parent_util.verify_invitation_token(email, invitation_token):
-                    return HttpResponseRedirect('/login')
-                else:
-                    create_new_init_setup_status(parent.email)
-                    salted_password = pwd_context.encrypt(password)
-                    parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
-                                                               phone=phone,
-                                                               first_name=first_name, last_name=last_name)
-                    request.session['email'] = parent.email
-                    request.session['user_id'] = parent.key.id()
-                    request.session['is_provider'] = False
-
-                    # Setup Dwolla Account
-                    request_body = {
-                        'firstName': first_name,
-                        'lastName': last_name,
-                        'email': email,
-                        'ipAddress': '99.99.99.99'
-                    }
-                    try:
-                        customer = account_token.post('customers', request_body)
-                        parent.customerId = customer.headers['location']
-                        parent.put()
-                        request.session['dwolla_customer_url'] = customer.headers['location']
-                        request.session['parent_id'] = parent.key.id()
-                    except ValidationError as err:  # ValidationError as err
-                        if environ.get('IS_DEV') == 'True':
-                            # If dwolla customer for this email already exists, reuse it, only in DEV environment.
-                            # This shouldn't happen in Prod.
-                            if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0][
-                                'code']:
-                                parent.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
-                                request.session['dwolla_customer_url'] = parent.customerId
-                                parent.put()
-                        pass
-                    request.session['email'] = parent.email
-                    request.session['user_id'] = parent.key.id()
-
-                    return HttpResponseRedirect('/parent')
         else:
             logger.info("form.errors %s" % form.errors)
-    elif request.method == 'GET':
-        parent_email = request.GET['m']
-        invitation_token = request.GET['t']
-        if not parent_util.verify_invitation_token(email=parent_email, invitation_token=invitation_token):
-            return HttpResponseRedirect('/login')
-        parent = parent_util.get_parents_by_email(parent_email)
-        provider_school_name = parent.invitation.provider_key.get().schoolName
-        child_first_name = parent.invitation.child_first_name
-        return render_to_response(
-            'login/parent_signup.html',
-            {'parent_email': parent_email,
-             'invitation_token': invitation_token,
-             'child_first_name': child_first_name,
-             'provider_school_name' : provider_school_name},
-            template.RequestContext(request)
-        )
 
 
 def create_new_init_setup_status(email):

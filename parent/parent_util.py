@@ -1,10 +1,10 @@
-from models import Parent
-from models import ParentInvitation
+import time
+
+from models import Parent, ParentInvitation, ParentStatus
 from passlib.apps import custom_app_context as pwd_context
 from login.models import Unique
 from login import unique_util
-import time
-import hashlib
+from verification.models import VerificationToken
 
 
 def setup_parent_for_child(email, provider_key, child_first_name):
@@ -23,22 +23,29 @@ def setup_parent_for_child(email, provider_key, child_first_name):
     existing_parent = get_parents_by_email(email)
     if existing_parent is None:
         parent.email = email
+
         # Generate invitation information
         parent_invitation = ParentInvitation()
-        random_str = parent.email + str(time.time())
-        parent_invitation.token = hashlib.md5(random_str).hexdigest()
         parent_invitation.child_first_name = child_first_name
         parent_invitation.provider_key = provider_key
-        parent_invitation.link = '?m=%s&t=%s' % (email, parent_invitation.token)
-
         parent.invitation = parent_invitation
-        parent.password = pwd_context.encrypt(parent_invitation.token)
+
+        # Generate status information
+        parent_status = ParentStatus()
+        parent_status.status = 'invited'
+        parent.status = parent_status
+
+        # Generate random initial password so that it can pass the 'required' check
+        random_str = parent.email + str(time.time())
+        parent.password = pwd_context.encrypt(random_str)
+
         parent.put()
-        # TODO(zilong): handle possible email existing exception
         unique_util.upsert_parent(parent.email, parent.key)
-        return parent
+        verification_token = VerificationToken.create_new_parent_signup_token(parent)
+        verification_token.put()
+        return parent, verification_token
     else:
-        return existing_parent
+        return existing_parent, None
 
 
 def signup_invited_parent(email, salted_password, phone, first_name, last_name):
@@ -53,16 +60,6 @@ def signup_invited_parent(email, salted_password, phone, first_name, last_name):
     return parent
 
 
-def invite_parent_for_enrollment(parent, enrollment):
-    parent.invitation.enrollment_key = enrollment.key
-    parent.put()
-
-
-# TODO(zilong): Implement this
-def notify_parent_for_enrollment(parent, enrollment):
-    pass
-
-
 # TODO(zilong): Make this transactional
 def get_parents_by_email(email):
     unique = Unique.generate_key(email).get()
@@ -70,15 +67,9 @@ def get_parents_by_email(email):
         return None
     return unique.parent_key.get()
 
+
 def get_parent_by_dwolla_id(customer_url):
     result = Parent.query(Parent.customerId == customer_url).fetch(1)
     if result:
         return result[0]
     return None
-
-def verify_invitation_token(email, invitation_token):
-    parent = get_parents_by_email(email)
-    if parent.invitation is None or parent.invitation.token is None:
-        return False
-    elif parent.invitation.token == invitation_token:
-        return True
