@@ -290,6 +290,7 @@ def setupAutopay(request):
     enrollment = parent.invitation.enrollment_key.get()
     enrollment.autopay_source_id = source
     enrollment.pay_days_before = int(pay_days_before)
+    enrollment.status = 'active'
     enrollment.put()
 
     return HttpResponse("success")

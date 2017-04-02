@@ -148,7 +148,6 @@ def parent_signup(request):
             parent = verification_token.parent_key.get()
             provider_school_name = parent.invitation.provider_key.get().schoolName
             child_first_name = parent.invitation.child_first_name
-            verification_token.key.delete()
             return render_to_response(
                 'login/parent_signup.html',
                 {'parent_email': parent.email,
@@ -171,6 +170,7 @@ def parent_signup(request):
             verification_token = get_parent_signup_verification_token(token_id)
 
             if verification_token is None:
+                logger.info("verification_token %s id is invalid" % token_id)
                 return HttpResponseRedirect('/login')
             else:
                 parent = verification_token.parent_key.get()
@@ -205,10 +205,11 @@ def parent_signup(request):
                             parent.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
                             request.session['dwolla_customer_url'] = parent.customerId
                             parent.put()
-                    pass
+
+                # Configs HTTP Session for client
                 request.session['email'] = parent.email
                 request.session['user_id'] = parent.key.id()
-
+                verification_token.key.delete()
                 return HttpResponseRedirect('/parent')
         else:
             logger.info("form.errors %s" % form.errors)

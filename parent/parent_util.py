@@ -1,4 +1,5 @@
 import time
+import logging
 
 from models import Parent, ParentInvitation, ParentStatus
 from passlib.apps import custom_app_context as pwd_context
@@ -6,6 +7,8 @@ from login.models import Unique
 from login import unique_util
 from verification.models import VerificationToken
 
+
+logger = logging.getLogger(__name__)
 
 def setup_parent_for_child(email, provider_key, child_first_name):
     """
@@ -54,8 +57,8 @@ def signup_invited_parent(email, salted_password, phone, first_name, last_name):
     parent.first_name = first_name
     parent.last_name = last_name
     parent.phone = phone
-    # Clean the invitation token to flag that the parent has registered
-    parent.invitation.token = None
+    logger.info("setting the parent %s status to active" % email)
+    parent.status.status = 'active'
     parent.put()
     return parent
 
