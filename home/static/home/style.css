@@ -130,10 +130,24 @@ a.logoLink:hover {
 	    margin: 0 auto 30px;
 		}
 		.homePitch2 h2 {
-		    margin: 0px auto 25px auto;
+	    margin: 0px auto 25px auto;
 		}
 		.h1, h1 {
-		    font-size: 32px;
+	    font-size: 32px;
+		}
+		.navbar-nav {
+	    margin: 0 -15px;
+	    background: #363B3F;
+		}
+		.navbar-default .navbar-nav>li>a {
+	    color: white;
+	    padding-top: 30px !important;
+	    padding-bottom: 30px !important;
+	    font-size: 1.2em;
+		}
+		.navbar-nav li a:hover, .navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
+	    color: white !important;
+	    background-color: #737E86 !important;
 		}
 }
 
