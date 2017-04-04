@@ -19,6 +19,7 @@ class Provider(ndb.Model):
 
     tos_pp_accepted = ndb.BooleanProperty(default=False) # joobali/dwolla terms of service and privacy policy accepted
 
+    logo = ndb.BlobKeyProperty()
     phone = ndb.StringProperty()
     website = ndb.StringProperty()
     license = ndb.StringProperty()

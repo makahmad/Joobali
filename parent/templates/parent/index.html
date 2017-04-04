@@ -137,10 +137,14 @@
 
                 <li ng-click="changeView('/due')" ng-class="{active: module=='/due'}">
                     <a href="#!/due">
-                        <i class="fa fa-list-alt fa-lg"></i> Payment Due
+                        <i class="fa fa-list-alt fa-lg"></i> Invoices
                     </a>
                 </li>
-
+                <li ng-click="changeView('/due')" ng-class="{active: module=='/payments'}">
+                    <a href="#!/payments">
+                        <i class="fa fa-list-alt fa-lg"></i> Payment
+                    </a>
+                </li>
                 <li ng-click="changeView('/funding')" ng-class="{active: module=='/funding'}">
                     <a href="#!/funding">
                         <i class="fa fa-money fa-lg"></i> Funding
