@@ -1,32 +1,27 @@
-<div clsss="panel panel-default">
-    <div class="panel-header">
-        <table>
-            <tr>
-                <td>
-                    <div>
-                        <select class="form-control"
-                                ng-options="program.programName for program in $ctrl.programs track by program.id"
-                                ng-model="$ctrl.selectedFilteringProgram"
-                                ng-change="$ctrl.updateFilteringProgram()">
-                            <option value="">- Program -</option>
-                        </select>
-                    </div>
-                </td>
-                <td><!-- place holder for other filter --></td>
-                <td><!-- place holder for other filter --></td>
-            </tr>
-        </table>
-    </div>
-    <div class="panel-body">
-        <div class="child-card-group" layout="column">
-            <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
-                        programs="$ctrl.programs"
-                        index="$index" flex></child-card>
+<!-- ************************ -->
+
+
+<span class="programHeader"><b>Children</b></span>
+<div class="programsContainer">
+	
+    <div class="programsDiv">
+
+		  <div class="well well-sm">
+        <div class="buttonDiv addChildButtonDiv pull-left">
+            <a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openAddChildModal()">Add A Child
+							<i class="fa fa-plus-circle fa-lg"></i>
+						</a>
         </div>
-    </div>
-    <div class="panel-footer">
-        <div class="addChildButtonDiv pull-left">
-            <button type="button" class="btn btn-info" ng-click="$ctrl.openAddChildModal()">Add Child</button>
-        </div>
+				
+	      <div class="btn-group">
+					&nbsp;
+					<!-- <a id="grid" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th"></span>Grid</a>
+	      	<a id="list" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th-list"></span>List</a> -->
+	      </div>
+		  </div>
+			
+				<ol>
+					<child-card data-ng-repeat="child in $ctrl.children track by $index" child="child" programs="$ctrl.programs" index="$index" flex></child-card>
+				</ol>
     </div>
 </div>

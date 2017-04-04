@@ -4,9 +4,10 @@
         <div class="panel">
             <h4>{{$ctrl.child.first_name}} {{$ctrl.child.last_name}}</h4>
             <p>Date of Birth: {{$ctrl.child.date_of_birth}}</p>
+            <div>Your email:<a href="mailto:"{{$ctrl.child.email}}>{{$ctrl.child.email}}</a></div>
         </div>
         <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)">
-            <label>Enrollments Information:</label><br>
+            <label>Enrollment Information:</label><br>
             <enrollment-list-parent-view child="$ctrl.child" enrollments="$ctrl.enrollments"></enrollment-list-parent-view>
         </div>
     </div>
