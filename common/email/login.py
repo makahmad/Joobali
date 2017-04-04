@@ -1,5 +1,5 @@
 from google.appengine.api import mail
-from django.template import loader
+from django.template import Context, loader
 from os import environ
 
 _forget_password_email_template = loader.get_template('login/forgot_password_email.html')
@@ -35,5 +35,5 @@ def _send_reset_password_email(token, host, sender_address="howdy@joobali.com", 
         'reset_password_link': reset_password_link,
         'first_name': receiver_name
     }
-    message.html = _forget_password_email_template.render(data)
+    message.html = _forget_password_email_template.render(Context(data))
     message.send()

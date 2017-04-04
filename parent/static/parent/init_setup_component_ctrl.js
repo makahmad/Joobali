@@ -105,8 +105,7 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
           method: 'POST',
           url: '/enrollment/setupautopay',
           data: JSON.stringify(request)
-        })
-        .then(
+        }).then(
             function(response){
                 console.log('post suceeded');
                 console.log(response);

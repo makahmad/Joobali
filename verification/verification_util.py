@@ -9,7 +9,7 @@ def get_provider_email_verification_token(token_id):
     return _get_verification_token(token_id, 'provider_email')
 
 
-def verify_parent_signup_verification_token(token_id):
+def get_parent_signup_verification_token(token_id):
     return _get_verification_token(token_id, 'parent_signup')
 
 

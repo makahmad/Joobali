@@ -8,6 +8,7 @@ import logging
 # Internal Libraries
 from common import session
 from common.json_encoder import JEncoder
+from common.email.invoice import send_parent_enrollment_notify_email
 from manageprogram.models import Program
 from child import child_util
 from child.models import Child
@@ -15,7 +16,6 @@ from parent import parent_util
 from parent.models import Parent
 from login.models import Provider
 from enrollment import enrollment_util
-
 
 # Create your views here.
 
@@ -58,8 +58,9 @@ def add_child(request):
 
         # Setup Parent entity for child
         provider_key = Provider.generate_key(session.get_provider_id(request))
-        parent = parent_util.setup_parent_for_child(email=request_content['email'], provider_key=provider_key,
-                                                    child_first_name=child_first_name)
+        (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['email'],
+                                                                          provider_key=provider_key,
+                                                                          child_first_name=child_first_name)
 
         # Setup Child entity
         to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
@@ -79,14 +80,17 @@ def add_child(request):
             'status': 'initialized',
             'start_date': enrollment_start_date
         }
-        enrollment = enrollment_util.upsert_enrollment(enrollment_input, host=request.get_host())
-
-        if parent.invitation.token is None:
+        enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+        if parent.status is 'active':
             # The parent already signup
             parent_util.notify_parent_for_enrollment(parent, enrollment)
+            send_parent_enrollment_notify_email(enrollment, host=request.get_host())
         else:
             # The parent has not yet signup
-            parent_util.invite_parent_for_enrollment(parent, enrollment)
+            parent.invitation.enrollment_key = enrollment.key
+            parent.put()
+            send_parent_enrollment_notify_email(enrollment, host=request.get_host(),
+                                                verification_token=verification_token)
         response['status'] = 'success'
     return HttpResponse(json.dumps(response), content_type="application/json")
 

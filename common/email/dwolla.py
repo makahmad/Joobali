@@ -1,8 +1,5 @@
-import os
 import logging
 from google.appengine.api import mail
-from django.template import loader
-from django.template import Context
 
 logger = logging.getLogger(__name__)
 
