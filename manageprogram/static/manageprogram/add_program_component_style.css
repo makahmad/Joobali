@@ -81,13 +81,13 @@
 }
 
 .nav-pills.nav-wizard > li.active .nav-arrow {
-  border-color: transparent transparent transparent #5cb85c;
+  border-color: transparent transparent transparent #428BCA;
 }
 .nav-pills.nav-wizard > li.active .nav-wedge {
-  border-color: #5cb85c #5cb85c #5cb85c transparent;
+  border-color: #428BCA #428BCA #428BCA transparent;
 }
 .nav-pills.nav-wizard > li.active a {
-  background-color: #5cb85c;
+  background-color: #428BCA;
   color: #fff;
 }
 
@@ -102,8 +102,14 @@
   color: #fff;
 }
 
+.stepsDiv {
+	width: 80% !important;
+	margin:0 auto !important;
+}
 
-
+.nav {
+  margin: 0 auto !important;
+}
 
 .programField {
 	width: 150px;
@@ -115,12 +121,6 @@
 	margin-left: 10px;
 	display: inline-block;
 }
-
-.stepsDiv {
-	width: 380px;
-	margin: 0 auto;
-}
-
 
 .form-content.current {
 	display: block;
@@ -136,4 +136,23 @@
 
 #saveButton {
 	visibility: visible;
+}
+
+@media (min-width: 982px) {
+	.stepsDiv {
+		width: 90%;
+	}
+}
+
+@media (min-width: 840px) {
+	.modal-dialog {
+		width: 66% !important;
+		margin: auto !important;
+	}
+}
+
+@media (min-width: 525px) {
+	.stepsDiv {
+		width:380px;
+	}
 }

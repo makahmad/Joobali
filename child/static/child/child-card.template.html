@@ -1,14 +1,16 @@
 <div class="child-card panel">
-    <div class="child-card-container" ng-mouseenter="$ctrl.showEnrollment = true"
-         ng-mouseleave="$ctrl.showEnrollment = false">
+    <div class="child-card-container">
+		<!-- <div class="child-card-container" ng-mouseenter="$ctrl.showEnrollment = true" ng-mouseleave="$ctrl.showEnrollment = false"> -->
         <div class="panel">
             <h4>{{$ctrl.child.first_name}} {{$ctrl.child.last_name}}</h4>
             <p>Date of Birth: {{$ctrl.child.date_of_birth}}</p>
+						Email:<a href="mailto:{{$ctrl.child.email}}">{{$ctrl.child.email}}</a>
         </div>
-        <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)">
-            <label>Enrollments Information:</label><br>
+				<div class="child-enrollment-container">
+        <!-- <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)"> -->
+            <label>Enrollment Information:</label><br>
             <enrollment-list child="$ctrl.child" enrollments="$ctrl.enrollments"></enrollment-list>
         </div>
-        <button type="button" class="btn btn-info" ng-click="$ctrl.openEnrollmentModal()">Add Enrollment</button>
+        <button type="button" class="btn btn-info btn-default joobali" ng-click="$ctrl.openEnrollmentModal()">Add Enrollment</button>
     </div>
 </div>

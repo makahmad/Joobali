@@ -11,10 +11,10 @@
             <td>{{ enrollment.enrollment.status }}</td>
             <td>{{ enrollment.enrollment.start_date}}</td>
             <td>
-                <button type="button" class="btn btn-info"
+                <button type="button" class="btn btn-info btn-default joobali"
                         ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)">Edit
                 </button>
-                <button type="button" class="btn btn-info"
+                <button type="button" class="btn btn-info btn-default joobali"
                         ng-click="$ctrl.resendEnrollmentInvitation(enrollment.enrollment)"
                         ng-show="$ctrl.canResendEnrollmentInvitation(enrollment.enrollment)">
                     Resend invitation

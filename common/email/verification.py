@@ -1,6 +1,7 @@
 import logging
 from google.appengine.api import mail
 from django.template import loader
+from django.template import Context
 from os import environ
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ def send_provider_email_address_verification(verification_token, host, sender_ad
         'provider_school_name': provider.schoolName,
         'verification_link': verification_link
     }
-    message.html = _provider_email_verification_template.render(data)
+    message.html = _provider_email_verification_template.render(Context(data))
     message.send()
 
     # [END send_mail]

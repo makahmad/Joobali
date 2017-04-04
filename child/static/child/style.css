@@ -78,6 +78,147 @@
 	display: none;
 }
 
+@media screen and (max-width: 768px) {
+	.nav {
+	  width: 480px;
+		margin:0 auto;
+	}
+}
+.nav-pills.nav-wizard > li {
+  position: relative;
+  overflow: visible;
+  border-right: 15px solid transparent;
+  border-left: 15px solid transparent;
+}
+.nav-pills.nav-wizard > li + li {
+  margin-left:0;
+}
+.nav-pills.nav-wizard > li:first-child {
+  border-left: 0;
+}
+.nav-pills.nav-wizard > li:first-child a {
+  border-radius: 5px 0 0 5px;
+}
+.nav-pills.nav-wizard > li:last-child {
+  border-right: 0;
+}
+.nav-pills.nav-wizard > li:last-child a {
+  border-radius: 0;
+}
+.nav-pills.nav-wizard > li a {
+  border-radius: 0;
+  background-color: #eee;
+}
+.nav-pills.nav-wizard > li .nav-arrow {
+  position: absolute;
+  top: 0px;
+  right: -20px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 20px 0 20px 20px;
+  border-color: transparent transparent transparent #eee;
+  z-index: 150;
+}
+.nav-pills.nav-wizard > li .nav-wedge {
+  position: absolute;
+  top: 0px;
+  left: -20px;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 20px 0 20px 20px;
+  border-color: #eee #eee #eee transparent;
+  z-index: 150;
+}
+.nav-pills.nav-wizard > li:hover .nav-arrow {
+  border-color: transparent transparent transparent #aaa;
+}
+.nav-pills.nav-wizard > li:hover .nav-wedge {
+  border-color: #aaa #aaa #aaa transparent;
+}
+.nav-pills.nav-wizard > li:hover a {
+  background-color: #aaa;
+  color: #fff;
+}
+
+.nav-pills.nav-wizard > li.active .nav-arrow {
+  border-color: transparent transparent transparent #428BCA;
+}
+.nav-pills.nav-wizard > li.active .nav-wedge {
+  border-color: #428BCA #428BCA #428BCA transparent;
+}
+.nav-pills.nav-wizard > li.active a {
+  background-color: #428BCA;
+  color: #fff;
+}
+
+.nav-pills.nav-wizard > li.current .nav-arrow {
+  border-color: transparent transparent transparent #428bca;
+}
+.nav-pills.nav-wizard > li.current .nav-wedge {
+  border-color: #428bca #428bca #428bca transparent;
+}
+.nav-pills.nav-wizard > li.current a {
+  background-color: #428bca;
+  color: #fff;
+}
+
+.stepsDiv {
+	width: 80% !important;
+	margin:0 auto !important;
+}
+
+.nav {
+  margin: 0 auto !important;
+}
+
+.programField {
+	width: 150px;
+	text-align: right;
+	display: inline-block;
+}
+
+.programValue {
+	margin-left: 10px;
+	display: inline-block;
+}
+
+.form-content.current {
+	display: block;
+}
+
+.form-content {
+	display: none;
+}
+
+#nextButton {
+	visibility: visible;
+}
+
+#saveButton {
+	visibility: visible;
+}
+
+@media (min-width: 982px) {
+	.stepsDiv {
+		width: 90%;
+	}
+}
+
+@media (min-width: 840px) {
+	.modal-dialog {
+		width: 66% !important;
+		margin: auto !important;
+	}
+}
+
+@media (min-width: 525px) {
+	.stepsDiv {
+		width:380px;
+	}
+}
+
 /* Override Datepicker z-index in order to pop out before modal window. */
 .datepicker{z-index:1151 !important;}
 
