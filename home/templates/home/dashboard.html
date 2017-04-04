@@ -55,6 +55,11 @@
     <script src="{{ STATIC_URL }}home/invoice_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
 
+    <!-- Payment Related JS -->
+    <script src="{{ STATIC_URL }}home/payment_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}payments/payments_component_ctrl.js"></script>
+
+
     <!-- Funding Related JS -->
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
@@ -167,7 +172,7 @@
 
                 <li ng-click="changeView('/payments')" ng-class="{active: module=='/payments'}">
                     <a>
-						<i class="fa fa-list-alt fa-lg"></i> Payments
+						<i class="fa fa-money fa-lg"></i> Payments
 					</a>
                 </li>
 

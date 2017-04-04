@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^funding/', include('funding.urls')),
     url(r'^$', include('home.urls')),
     url(r'^login/', include('login.urls')),
+    url(r'^payments/', include('payments.urls')),
     url(r'^profile/', include('profile.urls')),
     url(r'^invoice/', include('invoice.urls')),
     url(r'^referral/', include('referral.urls')),

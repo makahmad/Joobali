@@ -135,6 +135,7 @@ INSTALLED_APPS = (
     'home',
     'manageprogram',
     'invoice',
+    'payments',
     'profile',
     'funding',
     'users',

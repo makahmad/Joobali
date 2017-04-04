@@ -103,6 +103,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
+                 .when('/payments', {template: '<payment-component invoices="invoices"></payment-component>'})
                  .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
@@ -184,6 +185,23 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
         controller: InvoicesComponentController,
+        bindings: {
+          invoices: '<',
+          isProvider: '@'
+        }
+    })
+    // The Payments page in dashboard
+    .component('paymentComponent', {
+        templateUrl: '/static/home/payment_component_tmpl.html',
+        controller: PaymentComponentController,
+        bindings: {
+          invoices: '<'
+        }
+    })
+    // The list of payments inside payments page
+    .component('paymentsComponent', {
+        templateUrl: '/static/payments/payments_component_tmpl.html',
+        controller: PaymentsComponentController,
         bindings: {
           invoices: '<',
           isProvider: '@'
