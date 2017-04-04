@@ -1,11 +1,11 @@
 PaymentComponentController = function($uibModal) {
     var self = this;
-    self.openAddInvoiceModal = function() {
-        console.log("Opening Add Invoice Modal");
+    self.openAddPaymentModal = function() {
+        console.log("Opening Add Payment Modal");
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: '/static/payments/add_invoice_component_tmpl.html',
-            controller: 'AddInvoiceController',
+            templateUrl: '/static/payments/add_payment_component_tmpl.html',
+            controller: 'AddPaymentController',
             controllerAs: '$ctrl',
         });
     };

@@ -122,6 +122,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     // need enrollment/enrollment-editor.component.js
     .controller('EnrollmentEditorController', EnrollmentEditorController)
     .controller('AddInvoiceController', AddInvoiceController)
+    .controller('AddPaymentController', AddPaymentController)
     .component('initSetupComponent', {
     templateUrl: '/static/home/init_setup_component_tmpl.html',
     controller: InitSetupComponentController
@@ -195,7 +196,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/home/payment_component_tmpl.html',
         controller: PaymentComponentController,
         bindings: {
-          invoices: '<'
+          payments: '<'
         }
     })
     // The list of payments inside payments page
@@ -203,7 +204,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/payments/payments_component_tmpl.html',
         controller: PaymentsComponentController,
         bindings: {
-          invoices: '<',
+          payments: '<',
           isProvider: '@'
         }
     })

@@ -1,5 +1,5 @@
 PaymentsComponentController = function($window, $http) {
-    console.log('InvoicesComponentController running');
+    console.log('PaymentsComponentController running');
     this.window_ = $window;
     this.http_ = $http;
 }

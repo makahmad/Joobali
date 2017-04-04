@@ -1,0 +1,74 @@
+
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.closeModal()">x</button>
+<h4 class="modal-title">Add New Payment:</h4>
+</div>
+<div class="modal-body">
+  <div class="col-centered programOverviewForm">
+    <form id="paymentForm" name="paymentForm" role="form" class="well">
+        <div class="form-group">
+            <label class="control-label" for="child">Child</label>
+            <select class="form-control" id="child" ng-required="true"
+                    ng-options="child.id + '-' + child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
+                    ng-model="$ctrl.newPayment.child"
+                    ng-change="$ctrl.updateProgramOptions($ctrl.newPayment.child.id)"></select>
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" for="program">Program</label>-->
+            <!--<select class="form-control" id="program" required="true"-->
+                    <!--ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"-->
+                    <!--ng-model="$ctrl.newPayment.program"></select>-->
+        <!--</div>-->
+        <div class="form-group">
+            <label class="control-label" for="amount">Amount:</label>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="number" min="0" step="0.01" class="form-control" id="amount" name="amount"
+                         ng-required="true"  ng-model="$ctrl.newPayment.amount">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="payer">Payer:</label>
+            <div class="input-group" style="width:100%;">
+                <input class="form-control" type="text" id="payer" name="payer"
+                         ng-required="true"  ng-model="$ctrl.newPayment.payer">
+                    </input>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Payment Date (MM/DD/YYYY)</label>
+            <p class="input-group">
+                <input name="payment_date"
+                       type="text" class="form-control"
+                       uib-datepicker-popup="MM/dd/yyyy"
+                       datepicker-options="{minDate: $ctrl.todayDate}"
+                       ng-model="$ctrl.newPayment.payment_date"
+                       is-open="$ctrl.paymentDatePickerOpened"
+                       ng-required="true"
+                       close-text="Close"/>
+                <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"
+                                    ng-click="$ctrl.openPaymentDatePicker()">
+                                <i class="glyphicon glyphicon-calendar"></i></button></span>
+            </p>
+        </div>
+        <div class="form-group">
+            <label class="control-label" for="payment_type">Payment Type</label>
+            <select class="form-control" id="payment_type" ng-model="$ctrl.newPayment.payment_type"
+            ng-options="paymentType as paymentType.label for paymentType in paymentTypes track by paymentType.id">
+            </select>
+        </div>
+    </form>
+  </div>
+<div class="modal-footer">
+        <div class="formActions">
+            <center>
+                <button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.createButton.click()"
+                ng-disabled="!paymentForm.$valid">Add &raquo;</button>
+                <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
+            </center>
+        </div> <!-- end formActions -->
+<!-- <center><button id="saveButton" type="button" class="btn btn-default joobali" ng-click="$ctrl.handleSave()">Save</button></center> -->
+
+</div>
+</div>

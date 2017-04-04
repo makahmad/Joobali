@@ -10,9 +10,10 @@ from login.models import Provider
 from invoice.models import Invoice
 from invoice.models import InvoiceLineItem
 from invoice.invoice_util import get_invoice_enrollments
-from parent.models import Parent
+
 from child.models import Child
-from enrollment import enrollment_util
+from payments.models import Payment
+
 from django.template import loader
 from invoice import invoice_util
 from common.pdf import render_to_pdf
@@ -25,7 +26,7 @@ DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
 
 
-def add_invoice(request):
+def add_payment(request):
     """Handles invoice listing request. Returns invoices associated with the logged in user (provider or parent)"""
     email = request.session.get('email')
     if not check_session(request):
@@ -33,20 +34,21 @@ def add_invoice(request):
 
     data = json.loads(request.body)
     child_id = long(data['child_id'])
-    program_id = long(data['program_id'])
-    description = data['description']
+    # program_id = long(data['program_id'])
+    payer = data['payer']
+    payment_type = data['payment_type']
     amount = data['amount']
-    due_date = datetime.strptime(data['due_date'], DATE_FORMAT).date()
+    payment_date = datetime.strptime(data['payment_date'], DATE_FORMAT).date()
     created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
 
     provider = Provider.get_by_id(request.session.get('user_id'))
     child = Child.get_by_id(child_id)
-    program = ndb.Key('Provider', provider.key.id(), 'Program', program_id).get()
-    enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
-        provider_id=provider.key.id(), child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
-    invoice = invoice_util.create_invoice(provider, child, created_date, due_date, enrollment.autopay_source_id, amount)
-    invoice_util.create_invoice_line_item(ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()),
-                                          invoice, program, None, None, description, amount)
+    newPayment = Payment(provider_key=provider.key,child_key=child.key)
+    newPayment.amount = amount
+    newPayment.payer = payer
+    newPayment.type = payment_type
+    newPayment.date = payment_date
+    newPayment.put()
 
     return HttpResponse('success')
 
