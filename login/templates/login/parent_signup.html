@@ -26,7 +26,7 @@
                 </p>
             </div>
         </div>
-        <form role="form" class="well" action="/login/parentsignup/" method="POST">
+        <form name="loginForm" role="form" class="well" action="/login/parentsignup/" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label class="control-label" for="email">Email: </label>
@@ -66,8 +66,8 @@
             <div style="display:none;">
                 <input readonly type="text" class="form-control" name="invitation_token" value="{{invitation_token}}">
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary btn-block btn-lg" ng-disabled="loginForm.$invalid || !tos_pp_accepted">Sign Up</button>
+            <div class="formActions">
+                <button type="submit" class="btn btn-default btn-lg pull-right joobali" ng-disabled="loginForm.$invalid || !tos_pp_accepted">Sign Up</button>
             </div>
         </form>
     </div>

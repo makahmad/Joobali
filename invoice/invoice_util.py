@@ -2,7 +2,8 @@ from google.appengine.ext import ndb
 from models import InvoiceLineItem
 from models import Invoice
 from common import key_util
-from datetime import datetime
+from datetime import datetime, timedelta
+from calendar import monthrange
 import logging
 
 logger = logging.getLogger(__name__)
@@ -103,3 +104,9 @@ def get_invoice_enrollments(invoice):
     for lineItem in lineItems:
         results.append(lineItem.enrollment_key.get())
     return results
+
+def get_next_due_date(due_date, billing_freq):
+    if billing_freq == 'Weekly':
+        return due_date + timedelta(days=7)
+    elif billing_freq == 'Monthly':
+        return due_date + timedelta(days=monthrange(due_date.year, due_date.month)[1])

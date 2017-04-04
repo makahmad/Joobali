@@ -44,7 +44,7 @@ def invoice_calculation(request):
             program_key = enrollment["program_key"]
             child = child_key.get()
             program = program_key.get()
-            cycle_start_date = program.startDate
+            #cycle_start_date = program.startDate
             # using enrollment start date as due_date anchor,
             # which means if the start date is a Wednesday and the billing cycle is Weekly,
             # then the next invoice due date will be upcomming Wednesday.
@@ -79,8 +79,8 @@ def invoice_calculation(request):
 
 
             # figure out the current cycle period, which is the program cycle period overlapping with current due date
-            while cycle_start_date + program_cycle_time <= due_date:
-                cycle_start_date += program_cycle_time
+            #while cycle_start_date + program_cycle_time <= due_date:
+            #    cycle_start_date += program_cycle_time
 
             if should_proceed:
                 logger.info("Calculating Invoice: program: %s, child: %s" % (program, child))
@@ -94,7 +94,7 @@ def invoice_calculation(request):
                 else:
                     invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'], 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
-                invoice_util.create_invoice_line_item(enrollment_key, invoice, program, cycle_start_date, cycle_start_date + program_cycle_time)
+                invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, invoice_util.get_next_due_date(due_date, program.billingFrequency) - timedelta(days=1))
 
     # Sum up total amount due
     for key in invoice_dict:
