@@ -185,7 +185,7 @@ def dwolla_webhook(request):
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
-        event.event_content = webhook_content
+        event.event_content = str(webhook_content)
         event.put()
     elif ('customer_bank_transfer_completed' in webhook_data['topic']):
         funding_transfer = get_funding_transfer(webhook_data['resource_url'])
@@ -201,6 +201,11 @@ def dwolla_webhook(request):
             invoice.put()
 
         send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount)
+
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = str(webhook_content)
+        event.put()
     elif ('customer_bank_transfer_failed' in webhook_data['topic']):
         funding_transfer = get_funding_transfer(webhook_data['resource_url'])
         funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
@@ -215,6 +220,11 @@ def dwolla_webhook(request):
             invoice.put()
 
         send_payment_failure_email(parent.email, parent.first_name, provider.schoolName, amount)
+
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = str(webhook_content)
+        event.put()
     elif 'customer_funding_source_added' in webhook_data['topic']:
         funding_source = get_funding_source(webhook_data['resource_url'])
         first_name = None
@@ -234,7 +244,7 @@ def dwolla_webhook(request):
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
-        event.event_content = webhook_content
+        event.event_content = str(webhook_content)
         event.put()
 
     elif 'customer_funding_source_removed' in webhook_data['topic']:
@@ -256,6 +266,6 @@ def dwolla_webhook(request):
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
-        event.event_content = webhook_content
+        event.event_content = str(webhook_content)
         event.put()
     return HttpResponse(status=200)

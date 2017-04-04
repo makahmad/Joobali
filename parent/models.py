@@ -27,6 +27,8 @@ class Parent(ndb.Model):
     phone = ndb.StringProperty()
     invitation = ndb.StructuredProperty(ParentInvitation, repeated=False)
 
+    tos_pp_accepted = ndb.BooleanProperty(default=False) # joobali/dwolla terms of service and privacy policy accepted
+
     # Dwolla customer id
     customerId = ndb.StringProperty()
 

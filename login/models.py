@@ -17,6 +17,8 @@ class Provider(ndb.Model):
 
     status = ndb.StructuredProperty(ProviderStatus, repeated=False)
 
+    tos_pp_accepted = ndb.BooleanProperty(default=False) # joobali/dwolla terms of service and privacy policy accepted
+
     phone = ndb.StringProperty()
     website = ndb.StringProperty()
     license = ndb.StringProperty()

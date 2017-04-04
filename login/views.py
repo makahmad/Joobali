@@ -133,7 +133,8 @@ def provider_signup(request):
 
     return render_to_response(
         'login/provider_signup.html',
-        {'form': form},
+        {'form': form,
+         'host': request.get_host()},
         template.RequestContext(request)
     )
 
@@ -236,7 +237,9 @@ def parent_signup(request):
             {'parent_email': parent_email,
              'invitation_token': invitation_token,
              'child_first_name': child_first_name,
-             'provider_school_name' : provider_school_name},
+             'provider_school_name' : provider_school_name,
+             'host': request.get_host()
+        },
             template.RequestContext(request)
         )
 
@@ -460,3 +463,11 @@ def logout(request):
     if loggedIn:
         request.session.terminate()
     return HttpResponseRedirect('/login')
+
+def terms_of_service(request):
+    return render_to_response(
+        'login/docs/terms_of_service.html')
+
+def privacy_policy(request):
+    return render_to_response(
+        'login/docs/privacy_policy.html')

@@ -12,4 +12,6 @@ urlpatterns = [
 	url(r'^$', views.login),
 	url(r'^home', views.home),
 	url(r'^reset', views.reset),
+	url(r'^termsofservice', views.terms_of_service),
+	url(r'^privacypolicy', views.privacy_policy),
 ]
