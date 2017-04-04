@@ -1,7 +1,6 @@
 from google.appengine.ext import ndb
 from models import Enrollment
 from datetime import datetime
-from common.email.invoice import send_parent_enrollment_notify_email
 from parent.models import Parent
 from manageprogram.models import Program
 from login.models import Provider
@@ -10,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def upsert_enrollment(enrollment_input, host=''):
+def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
     enrollment = Enrollment(parent=enrollment_input['provider_key'])
     enrollment.child_key = enrollment_input['child_key']
@@ -20,8 +19,6 @@ def upsert_enrollment(enrollment_input, host=''):
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.put()
-    # TODO(zilong): get the real host from server
-    send_parent_enrollment_notify_email(enrollment, host=host)
     return enrollment
 
 
@@ -56,7 +53,7 @@ def reactivate_enrollment(provider_id, enrollment_id):
 def accept_enrollment(provider_id, enrollment_id, parent_id):
     enrollment_key = Enrollment.generate_key(provider_id=int(provider_id), enrollment_id=int(enrollment_id))
     if enrollment_key.get() is None:
-        logger.False('invalid provider_id %s and enrollment_id %s pair', provider_id, enrollment_id)
+        logger.warning('invalid provider_id %s and enrollment_id %s pair' % (provider_id, enrollment_id))
         return None
     enrollment = enrollment_key.get()
     if enrollment.child_key.get().parent_key != Parent.generate_key(parent_id):

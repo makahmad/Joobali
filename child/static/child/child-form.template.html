@@ -76,7 +76,7 @@
                 <div class="form-group">
                     <label class="control-label" for="program">Program</label>
                     <select class="form-control" id="program" required="true"
-                            ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                            ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                             ng-model="$ctrl.newEnrollment.program"></select>
                 </div>
 
@@ -117,7 +117,7 @@
                 <div class="panel">
                     <label class="control-label">Program Info</label>
                     <div>
-                        {{$ctrl.overview.program.id}}-{{$ctrl.overview.program.programName}}
+                        {{$ctrl.overview.program.programName}} - ({{$ctrl.overview.program.billingFrequency}})
                     </div>
                     <label class="control-label">Enrollment Start Date</label>
                     <div>{{$ctrl.overview.enrollment_start_date}}</div>

@@ -159,15 +159,20 @@
                                 <!-- Row container for Intro/ Description -->
                                 <td align="left"
                                     style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
-                                    <div >
-                                    <p><strong> {{ provider_school_name }} </strong>has invited you to make payments
-                                        online and
-                                        view invoices for childcare services provided. <br>
-                                        <br>
-                                    <p>Your child <strong>{{ child_first_name }}</strong> is enrolled in program
-                                        <strong>{{program_name}}</strong>, starting at
-                                        <strong>{{enrollment_start_date}}</strong></p>
-                                    <p>Please signup <a href="{{signup_url}}">here</a> and accept the enrollment</p>
+                                    <div>
+                                        <p><strong> {{ provider_school_name }} </strong>has invited you to make payments
+                                            online and
+                                            view invoices for childcare services provided. <br>
+                                            <br>
+                                        </p>
+                                        <p>Your child <strong>{{ child_first_name }}</strong> is enrolled in program
+                                            <strong>{{program_name}}</strong>, billing will start at
+                                            <strong>{{enrollment_start_date}}</strong>
+                                        </p>
+                                        <p>
+                                            The program will cost you <strong>{{program_fee}}</strong> <strong>{{program_billing_cycle}}</strong>.
+                                        </p>
+                                        <p>Please signup <a href="{{signup_url}}">here</a> and accept the enrollment</p>
                                     </div>
                                 </td>
                             </tr>
