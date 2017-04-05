@@ -25,8 +25,23 @@ import json
 logger = logging.getLogger(__name__)
 
 def invoice_calculation(request):
-    logger.info("INVOICE CALCULATION")
     today = date.today()
+
+    logger.info("LATE FEE CALCULATION")
+    # loop over invoices...
+    for invoice in Invoice.query().fetch():
+        if not invoice.is_paid() and invoice.due_date < today and not invoice_util.get_invoice_late_fee_added(invoice):
+            program = invoice_util.get_invoice_program(invoice)
+            enrollment = invoice_util.get_invoice_enrollment(invoice)
+            provider = provider_util.get_provider_by_email(invoice.provider_email)
+            lateFee = program.lateFee if program.lateFee else provider.lateFee
+            if lateFee != 0:
+                invoice_util.create_invoice_line_item(enrollment.key, invoice, program, None, None, "Late Fee", lateFee)
+
+            invoice.amount = invoice_util.sum_up_amount_due(invoice)
+            invoice.put()
+
+    logger.info("INVOICE CALCULATION")
     invoice_dict = dict() # a map from provider-child pair to invoice
     days_before = 5
     # loop over providers...
@@ -51,19 +66,18 @@ def invoice_calculation(request):
             due_date = enrollment['start_date']
 
             should_proceed = False # whether we should generate a invoice for this enrollment now
-
             program_cycle_time = None # either a weekly cycle or a monthly cycle
-            if program.billingFrequency == 'Weekly':
-                program_cycle_time = timedelta(days=7)
-            elif program.billingFrequency == 'Monthly':
-                program_cycle_time = timedelta(days=30) # TODO(rongjian): figure out the way to increment by month gracefully
-            else:
+            if program.billingFrequency != 'Weekly' or program.billingFrequency != 'Monthly':
                 logger.info("Skipping invoice calculation. Unexpected program cycle: %s" % program)
                 should_proceed = False
 
             # find the upcomming due date in adding bill cycles to the enrollment start date until it passes today
             while due_date < today:
-                due_date += program_cycle_time
+                due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
+
+            should_add_registration_fee = False # if it's first invoice, we should add registration fee
+            if due_date == enrollment['start_date']:
+                should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"])
             if due_date - timedelta(days=5) <= today: # 5 days ahead billing before due date
@@ -95,6 +109,8 @@ def invoice_calculation(request):
                     invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'], 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
                 invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, invoice_util.get_next_due_date(due_date, program.billingFrequency) - timedelta(days=1))
+                if should_add_registration_fee:
+                    invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
 
     # Sum up total amount due
     for key in invoice_dict:

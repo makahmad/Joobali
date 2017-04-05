@@ -93,8 +93,16 @@ def viewInvoice(request):
 		total = 0
 		items = []
 		for lineItem in lineItems:
+			description = ''
+			if lineItem.program_name:
+				description = lineItem.program_name
+			if lineItem.description:
+				if description != '':
+					description = '%s (%s)' % (description, lineItem.description)
+				else:
+					description = lineItem.description
 			items.append({
-				'program_name': lineItem.program_name,
+				'description': description,
 				'amount': lineItem.amount,
 			})
 			total += lineItem.amount

@@ -2,7 +2,7 @@ from google.appengine.ext import ndb
 from models import InvoiceLineItem
 from models import Invoice
 from common import key_util
-from datetime import datetime, timedelta
+from datetime import date, timedelta
 from calendar import monthrange
 import logging
 
@@ -75,6 +75,16 @@ def sum_up_amount_due(invoice):
 #         html += 'adjust#:%s, %s' % (adjustment.reason, adjustment.amount);
 #     return html
 
+def get_invoice_late_fee_added(invoice):
+    """ Gets whether the late fee has been added to this unpaid late invoice. """
+    today = date.today()
+    if not invoice.is_paid() and invoice.due_date < today:
+        lineItems = InvoiceLineItem.query(ancestor=invoice.key)
+        for lineItem in lineItems:
+            if lineItem.description == 'Late Fee':
+                return True
+    return False
+
 def get_invoice_period(invoice):
     """ Gets the start and end date of current invoice billing period"""
     start_date = None
@@ -86,6 +96,22 @@ def get_invoice_period(invoice):
         if start_date and end_date:
             break
     return (start_date, end_date)
+
+def get_invoice_enrollment(invoice):
+    """ Gets the first related enrollment of an invoice. None if their is no related enrollment. """
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    for lineItem in lineItems:
+        if lineItem.enrollment_key and lineItem.enrollment_key.get():
+            return lineItem.enrollment_key.get()
+    return None
+
+def get_invoice_program(invoice):
+    """ Gets the first related program of an invoice. None if their is no related program. """
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    for lineItem in lineItems:
+        if lineItem.enrollment_key and lineItem.enrollment_key.get() and lineItem.enrollment_key.get().program_key:
+            return lineItem.enrollment_key.get().program_key.get()
+    return None
 
 def get_autopay_info(invoice):
     """ Gets the funding source id and the number of days before due date for autopayment from enrollment associated with this invoice"""
