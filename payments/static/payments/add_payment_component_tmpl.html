@@ -13,12 +13,12 @@
                     ng-model="$ctrl.newPayment.child"
                     ng-change="$ctrl.updateProgramOptions($ctrl.newPayment.child.id)"></select>
         </div>
-        <!--<div class="form-group">-->
-            <!--<label class="control-label" for="program">Program</label>-->
-            <!--<select class="form-control" id="program" required="true"-->
-                    <!--ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"-->
-                    <!--ng-model="$ctrl.newPayment.program"></select>-->
-        <!--</div>-->
+        <div class="form-group">
+            <label class="control-label" for="program">Program (optional)</label>
+            <select class="form-control" id="program"
+                    ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                    ng-model="$ctrl.newPayment.program"><option value="" selected></option></select>
+        </div>
         <div class="form-group">
             <label class="control-label" for="amount">Amount:</label>
             <div class="input-group">
@@ -54,7 +54,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" for="payment_type">Payment Type</label>
-            <select class="form-control" id="payment_type" ng-model="$ctrl.newPayment.payment_type"
+            <select class="form-control" id="payment_type"  ng-required="true" ng-model="$ctrl.newPayment.payment_type"
             ng-options="paymentType as paymentType.label for paymentType in paymentTypes track by paymentType.id">
             </select>
         </div>
@@ -63,8 +63,9 @@
 <div class="modal-footer">
         <div class="formActions">
             <center>
-                <button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.createButton.click()"
-                ng-disabled="!paymentForm.$valid">Add &raquo;</button>
+                <button type="button" class="btn btn-default btn-lg pull-right joobali"
+                        ng-click="$ctrl.addPayment()" data-toggle="modal" data-target="#confirmAddModal"
+                        ng-disabled="!paymentForm.$valid">Add &raquo;</button><
                 <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->

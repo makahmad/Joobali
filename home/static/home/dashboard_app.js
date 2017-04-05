@@ -6,6 +6,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.programs = [];
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
+	this.scope_.payments = [];
 	this.initialize();
 	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
@@ -65,6 +66,24 @@ DashboardController.prototype.initialize = function() {
 	  });
 	this.http_({
 	  method: 'GET',
+	  url: '/payments/listpayments'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.payments = [];
+	    console.log(response.data);
+	    angular.forEach(response.data, angular.bind(this, function(payment) {
+	    	this.scope_.payments.push(payment);
+	    }));
+	    console.log(this.scope_.payments);
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
+	this.http_({
+	  method: 'GET',
 	  url: '/funding/listfunding'
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
@@ -103,7 +122,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
-                 .when('/payments', {template: '<payment-component invoices="invoices"></payment-component>'})
+                 .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
@@ -166,9 +185,29 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('confirmDeleteProgramComponent', {
       templateUrl: '/static/manageprogram/confirm_delete_program_component_tmpl.html',
-              controller: ConfirmDeleteProgramComponentController,
+      controller: ConfirmDeleteProgramComponentController,
       bindings: {
         programs: '<',
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
+     .component('addPaymentComponent', {
+      templateUrl: '/static/payments/add_payment_component_tmpl.html',
+      controller: AddPaymentController,
+      bindings: {
+        newPayment: '<',
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
+    .component('confirmAddPaymentComponent', {
+      templateUrl: '/static/payments/confirm_add_payment_component_tmpl.html',
+              controller: ConfirmAddPaymentComponentController,
+      bindings: {
+        newPayment: '<',
         resolve: '<',
         close: '&',
         dismiss: '&'

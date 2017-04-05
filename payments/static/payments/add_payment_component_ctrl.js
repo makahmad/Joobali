@@ -1,4 +1,4 @@
-AddPaymentController = function AddPaymentController($uibModalInstance, $http, $scope) {
+AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
     /*
      * @input: programs
      */
@@ -10,6 +10,7 @@ AddPaymentController = function AddPaymentController($uibModalInstance, $http, $
     self.createSuccessLabel = {};
     self.createFailLabel = {};
 
+
     $scope.paymentTypes = [{
       id: 'Cash',
       label: 'Cash'
@@ -18,29 +19,12 @@ AddPaymentController = function AddPaymentController($uibModalInstance, $http, $
       label: 'Check'
     }];
 
-    self.createButton.click = function() {
-        console.log("createButton is clicked");
-        var data = {
-            'child_id': self.newPayment.child.id,
-           // 'program_id': self.newPayment.program.id,
-            'payment_date': moment(self.newPayment.payment_date).format('MM/DD/YYYY'),
-            'payer': self.newPayment.payer,
-            'payment_type': self.newPayment.payment_type.id,
-            'amount': self.newPayment.amount,
-            'created_date': moment().format('MM/DD/YYYY'),
-        };
-        console.log(data);
-        $http.post('/payments/addpayment', data).then(function successCallback(response) {
-            if (response.data == 'success') {
-                alert('Payment created!');
-                self.closeModal();
-            } else {
-                alert('something is wrong');
-            }
-        }, function errorCallback(response) {
-            alert('something is wrong');
-        });
-    }
+    self.addPayment = function () {
+
+      self.resolve.confirmAddComponentModal(self.newPayment);
+    };
+
+
 
     self.updateProgramOptions = function(child_id) {
         $http({
@@ -54,7 +38,7 @@ AddPaymentController = function AddPaymentController($uibModalInstance, $http, $
             angular.forEach(response.data, angular.bind(this, function(program) {
                 this.programs.push(JSON.parse(program));
             }));
-            this.newPayment.program = this.programs[0];
+            //this.newPayment.program = this.programs[0];
         }), function errorCallback(response) {
             alert('Something is wrong here. Please refresh the page and try again');
         });
@@ -75,7 +59,7 @@ AddPaymentController = function AddPaymentController($uibModalInstance, $http, $
     };
 
     self.closeModal = function() {
-        $uibModalInstance.close();
+        self.dismiss({$value: 'cancel'});
     }
 
     $http({

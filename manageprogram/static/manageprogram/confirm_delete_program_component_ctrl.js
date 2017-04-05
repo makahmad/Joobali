@@ -1,7 +1,7 @@
 
 
 ConfirmDeleteProgramComponentController = function($http, $window, $location) {
-    console.log('EditProgramComponentController running');
+    console.log('ConfirmDeleteProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.program = {};
