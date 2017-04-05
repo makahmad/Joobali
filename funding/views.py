@@ -127,6 +127,17 @@ def updateGeneralBilling(request):
     provider = Provider.get_by_id(request.session['user_id'])
     provider.lateFee = float(generalBilling['lateFee'])
     provider.graceDays = int(generalBilling['graceDays'])
+
+    try:
+        provider.lateFeeInvoiceNote = generalBilling['lateFeeInvoiceNote']
+    except KeyError:
+        None
+
+    try:
+        provider.generalInvoiceNote = generalBilling['generalInvoiceNote']
+    except KeyError:
+        None
+
     provider.put()
 
     return HttpResponse('success')

@@ -40,6 +40,9 @@ class Provider(ndb.Model):
     # General Invoice Related Fields
     graceDays = ndb.IntegerProperty(default=0)
     lateFee = ndb.FloatProperty(default=0.0)
+    lateFeeInvoiceNote = ndb.StringProperty()
+    generalInvoiceNote = ndb.StringProperty()
+
 
     @staticmethod
     def get_next_available_id():
