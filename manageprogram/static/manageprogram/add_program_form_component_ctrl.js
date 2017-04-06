@@ -23,6 +23,7 @@ AddProgramFormComponentController = function($scope,$http) {
             // when the response is available
 
             this.newProgram.lateFee =JSON.parse(response.data);
+            this.newProgram.registrationFee = 0;
 
         }), function errorCallback(response) {
             // called asynchronously if an error occurs

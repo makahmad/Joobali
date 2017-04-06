@@ -11,7 +11,7 @@
       </div>
       <div class="modal-body">
           <div class="col-centered programOverviewForm">
-            <form id="programForm" role="form" class="well">
+            <form id="programForm" name="programForm"  role="form" class="well">
                 <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
               </div>
             </form>
@@ -19,7 +19,7 @@
       <div class="modal-footer">
 				<div class="formActions">
 					<center>
-						<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.handleSave()">Save &raquo;</button>
+						<button type="button" ng-disabled="!programForm.$valid" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.handleSave()">Save &raquo;</button>
 						<a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
 					</center>
 				</div> <!-- end formActions -->
