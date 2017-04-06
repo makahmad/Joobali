@@ -100,14 +100,20 @@ def updateProgram(request):
     program.programName = newProgram['programName']
 
     # program.maxCapacity = newProgram['maxCapacity']
-    program.registrationFee = newProgram['registrationFee']
-    program.fee = newProgram['fee']
+    # program.registrationFee = newProgram['registrationFee']
+    # program.fee = newProgram['fee']
     # program.feeType = newProgram['feeType']
-    program.lateFee = newProgram['lateFee']
-    program.billingFrequency = newProgram['billingFrequency']
+    # program.lateFee = newProgram['lateFee']
+    # program.billingFrequency = newProgram['billingFrequency']
 
     program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
-    program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+
+    if newProgram['indefinite']:
+        program.indefinite = newProgram['indefinite']
+        program.endDate = None
+    else:
+        program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+
     # program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
     program.put()
 
@@ -150,8 +156,17 @@ def addProgram(request):
     program.lateFee = newProgram['lateFee']
     program.billingFrequency = newProgram['billingFrequency']
 
+    program.monthlyBillDay = str(newProgram['monthlyBillDay'])
+    program.weeklyBillDay = newProgram['weeklyBillDay']
+
     program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
-    program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+
+    if newProgram['indefinite']:
+        program.indefinite = newProgram['indefinite']
+        program.endDate = None
+    else:
+        program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+
     # program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
 
     program.put()

@@ -25,6 +25,11 @@ ProgramComponentController = function($uibModal, $log, $location) {
 
             modalInstance.result.then(function (selectedProgram) {
               $ctrl.program = selectedProgram;
+
+                if($ctrl.program.indefinite)
+                    $ctrl.program.endDate = "Indefinite";
+
+
             }, function () {
               $log.info('modal-component dismissed at: ' + new Date());
             });

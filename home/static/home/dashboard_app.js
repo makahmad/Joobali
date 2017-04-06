@@ -38,7 +38,10 @@ DashboardController.prototype.initialize = function() {
 	    this.scope_.programs = [];
 	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(program) {
-	    	this.scope_.programs.push(JSON.parse(program));
+            program = JSON.parse(program);
+            if(program.indefinite)
+                program.endDate = "Indefinite";
+	    	this.scope_.programs.push(program);
 	    }));
 
 	}), function errorCallback(response) {

@@ -18,10 +18,17 @@
 			                <label class="control-label" for="endDate">End Date:</label>
 			                <div class="input-group date">
 			                    <input type="text" id="endDate" required="true" class="form-control" name="endDate"
-			                           ng-model="$ctrl.newProgram.endDate">
+			                           ng-model="$ctrl.newProgram.endDate" ng-disabled="$ctrl.newProgram.indefinite">
 			                    <span class="input-group-addon">
 			                        <span class="glyphicon glyphicon-calendar"></span>
 			                    </span>
+
+								 <span class="input-group-addon">
+									<label class="checkbox-inline">
+										<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.newProgram.indefinite"
+																	   value="True" >Indefinite</label>
+								  </span>
+
 			                </div>
 			            </div>
 							</div>
@@ -40,8 +47,23 @@
 		              </span>
 		              </div>
 		          </div>
-					
-				
+		          <div class="form-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">
+		              <label class="control-label" for="weeklyBillDay">What day of the week do you bill?</label>
+		              <div class="input-group">
+						<select class="form-control" id="weeklyBillDay" required="true"
+								ng-options="weeklyBillDay for weeklyBillDay in $ctrl.weeklyBillDays"
+								ng-model="$ctrl.newProgram.weeklyBillDay"></select>
+		              </div>
+		          </div>
+		          <div class="form-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly'">
+		              <label class="control-label" for="monthlyBillDay">What day of the month do you bill?</label>
+		              <div class="input-group">
+						<select class="form-control" id="monthlyBillDay" required="true"
+								ng-options="monthlyBillDay for monthlyBillDay in $ctrl.monthlyBillDays"
+								ng-model="$ctrl.newProgram.monthlyBillDay"></select>
+		              </div>
+		          </div>
+
 		          <div class="form-group">
 								<div class="col-1">
 		              <label class="control-label" for="registrationFee">Registration Fee:</label>
