@@ -71,7 +71,7 @@ def add_enrollment(request):
             'start_date': request_body_dict['start_date']
         }
         logger.info("request.get_host() is %s", request.get_host())
-        enrollment_util.upsert_enrollment(enrollment, host=request.get_host())
+        enrollment_util.upsert_enrollment(enrollment)
         status = "success"
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 

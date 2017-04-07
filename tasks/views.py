@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from enrollment import enrollment_util
+from manageprogram import program_util
 from invoice import invoice_util
 from parent import parent_util
 from login import provider_util
@@ -52,6 +53,7 @@ def invoice_calculation(request):
         enrollments = enrollment_util.list_enrollment_by_provider(provider.key.id())
         for enrollment in enrollments:
             if enrollment['status'] != 'active':
+                logger.info("Enrollment not active. Skipping invoice calc: %s" % enrollment)
                 continue
             logger.info("Calculating invoice for enrollment: %s" % enrollment)
 
@@ -59,11 +61,9 @@ def invoice_calculation(request):
             program_key = enrollment["program_key"]
             child = child_key.get()
             program = program_key.get()
+
             #cycle_start_date = program.startDate
-            # using enrollment start date as due_date anchor,
-            # which means if the start date is a Wednesday and the billing cycle is Weekly,
-            # then the next invoice due date will be upcomming Wednesday.
-            due_date = enrollment['start_date']
+            due_date = program_util.get_first_bill_due_date(program)
 
             should_proceed = False # whether we should generate a invoice for this enrollment now
             program_cycle_time = None # either a weekly cycle or a monthly cycle
@@ -75,8 +75,13 @@ def invoice_calculation(request):
             while due_date < today:
                 due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
 
+            if not program.indefinite:
+                if due_date > program.endDate:
+                    logger.info("Program already ended for this cycle. Skipping invoice calc: %s" % program)
+                    continue
+
             should_add_registration_fee = False # if it's first invoice, we should add registration fee
-            if due_date == enrollment['start_date']:
+            if due_date == program_util.get_first_bill_due_date(program):
                 should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"])
@@ -91,11 +96,11 @@ def invoice_calculation(request):
                         should_proceed = False
 
 
-
             # figure out the current cycle period, which is the program cycle period overlapping with current due date
             #while cycle_start_date + program_cycle_time <= due_date:
             #    cycle_start_date += program_cycle_time
 
+            cycle_end_date = invoice_util.get_next_due_date(due_date, program.billingFrequency) - timedelta(days=1)
             if should_proceed:
                 logger.info("Calculating Invoice: program: %s, child: %s" % (program, child))
 
@@ -108,7 +113,7 @@ def invoice_calculation(request):
                 else:
                     invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'], 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
-                invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, invoice_util.get_next_due_date(due_date, program.billingFrequency) - timedelta(days=1))
+                invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
                 if should_add_registration_fee:
                     invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
 
