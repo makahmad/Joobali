@@ -55,6 +55,7 @@ def add_payment(request):
     newPayment.program_id = program_id
 
     newPayment.amount = amount
+    newPayment.balance = amount
     newPayment.payer = payer
     newPayment.provider_email = provider.email
     newPayment.type = payment_type

@@ -1,8 +1,10 @@
 from google.appengine.ext import ndb
+from child.models import Child
+from login.models import Provider
 
 class Payment(ndb.Model):
-    child_key = ndb.KeyProperty(required=True)
-    provider_key = ndb.KeyProperty(required=True)
+    child_key = ndb.KeyProperty(kind=Child, required=True)
+    provider_key = ndb.KeyProperty(kind=Provider, required=True)
     provider_email = ndb.StringProperty(required=True)
     program_id = ndb.FloatProperty(required=False)
     amount = ndb.FloatProperty(required=True)
@@ -10,3 +12,5 @@ class Payment(ndb.Model):
     type = ndb.StringProperty(required=False)
     date = ndb.DateProperty(required=True)
     date_created = ndb.DateProperty(required=True)
+
+    balance = ndb.FloatProperty(required=True)

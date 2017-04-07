@@ -9,7 +9,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, end_date=None, description=None, amount=None):
+def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, end_date=None, description=None, amount=None, payment=None):
     """Creates a new InvoiceLineItem"""
     invoice_line_item = InvoiceLineItem(parent=invoice.key)
     invoice_line_item.enrollment_key = enrollment_key
@@ -17,11 +17,12 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
     if amount:
         invoice_line_item.amount = amount
     else:
-        invoice_line_item.amount = program.fee
-    invoice_line_item.program_name = program.programName
+        invoice_line_item.amount = program.fee if program else 0.0
+    invoice_line_item.program_name = program.programName if program else ''
     invoice_line_item.start_date = start_date
     invoice_line_item.end_date = end_date
     invoice_line_item.description = description
+    invoice_line_item.payment_key = payment.key
     invoice_line_item.put()
     return invoice_line_item
 

@@ -20,10 +20,29 @@ from django.views.decorators.csrf import csrf_exempt
 from funding import funding_util
 from dwollav2.error import ValidationError
 from models import DwollaEvent
+from payments.models import Payment
 import logging
 import json
 
 logger = logging.getLogger(__name__)
+
+@ndb.transactional(xg=True)
+def pay(invoice, payment):
+    if payment.balance >= invoice.amount:
+        invoice_util.create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
+                                              -invoice.amount, payment)
+        payment.balance = payment.balance - invoice.amount
+        invoice.status = Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
+        invoice.amount = 0
+        payment.put()
+        invoice.put()
+    else:
+        invoice_util.create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
+                                              -payment.balance, payment)
+        invoice.amount = invoice.amount - payment.balance
+        payment.balance = 0
+        payment.put()
+        invoice.put()
 
 def invoice_calculation(request):
     today = date.today()
@@ -41,6 +60,17 @@ def invoice_calculation(request):
 
             invoice.amount = invoice_util.sum_up_amount_due(invoice)
             invoice.put()
+
+    logger.info("PAYMENT CALCULATION")
+    # loop over invoices...
+    for invoice in Invoice.query().fetch():
+        if not invoice.is_paid():
+            logger.info("Considering payment for child: %s" % invoice.child_key)
+            for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
+                if payment.balance > 0:
+                    logger.info("Making payment: %s" % invoice)
+                    pay(invoice, payment)
+
 
     logger.info("INVOICE CALCULATION")
     invoice_dict = dict() # a map from provider-child pair to invoice
