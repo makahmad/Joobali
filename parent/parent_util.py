@@ -10,6 +10,7 @@ from verification.models import VerificationToken
 
 logger = logging.getLogger(__name__)
 
+
 def setup_parent_for_child(email, provider_key, child_first_name):
     """
         Add a new Parent object with invitation info if the email is not yet used.

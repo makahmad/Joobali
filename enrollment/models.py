@@ -16,7 +16,7 @@ class Enrollment(ndb.Model):
     program_key = ndb.KeyProperty(kind=Program)
     # The enrollment status
     status = ndb.StringProperty()
-    # Effective Start Date for the enrollment, might be helpful for computing invoice ?
+    # Effective Start Date for the billing, used for computing invoice.
     start_date = ndb.DateProperty()
     # Autopay funding source. If set, the related invoice will be automatically paid by this source.
     autopay_source_id = ndb.StringProperty()
