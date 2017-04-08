@@ -200,6 +200,10 @@
 	visibility: visible;
 }
 
+.panel {
+	background:none;
+}
+
 @media (min-width: 982px) {
 	.stepsDiv {
 		width: 90%;

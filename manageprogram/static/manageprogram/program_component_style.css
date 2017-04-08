@@ -61,11 +61,11 @@
 }
 
 .programActions {
-	background: rgba(110, 203, 184, .9);
+	background: rgba(250, 250, 250, .9);
   color: white;
   border-radius: 0 0 4px 4px;
   text-align: center;
-	box-shadow: inset -1px 7px 2px -6px #55a58e;
+	box-shadow: inset -1px 7px 2px -6px #f4f4f4;
 	width:100%;
 	z-index:+1;
   /*position: relative;
