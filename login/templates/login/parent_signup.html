@@ -2,35 +2,76 @@
 {% load staticfiles %}
 <html>
 <head>
-    <title>Parent Registration</title>
+    <title>Joobali - Parent Registration</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" /> -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css"/>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+    <script src="{{ STATIC_URL }}login/password_module.js"></script>
 </head>
-<body>
-<div class="container">
-    <div class="col-centered login-form">
-        <img src="{{ STATIC_URL }}home/pics/logo/logo.png" class="img-responsive logo col-centered">
-        <br/>
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <p>
-                    Provider <b>{{ provider_school_name }}</b> invites you to signup as parent for
-                    your child
-                    <b>{{child_first_name}}</b>
-                </p>
-            </div>
+
+<body id="signUp">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button> -->
+            <a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png"
+                                                  class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
+            &nbsp;
         </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                {% if loggedIn %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{ email }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="/home/dashboard">Dashboard</a></li>
+                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="row">
+        <div ng-app="password_module" ng-controller="credentialsController" class="profileFormContainer container">
+            <div class="profileFormHeader">
+                <h2 class="profile-title">                   Provider <b>{{ provider_school_name }}</b> invites you to signup as parent for
+                    your child
+                    <b>{{child_first_name}}</b></h2>
+            </div>
+            <div class="profileFormBody">
+                <div class="col-sm-6">
         <form name="loginForm" role="form" class="well" action="/login/parentsignup/" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label class="control-label" for="email">Email: </label>
-                <input readonly type="text" class="form-control" id="email" name="email" required="true"
+                <input  readonly type="text" class="form-control" id="email" name="email"
                        value="{{parent_email}}">
             </div>
             {% if form.email.errors %}
@@ -40,23 +81,31 @@
             {% endif %}
             <div class="form-group">
                 <label class="control-label" for="first_name">First Name:</label>
-                <input type="text" class="form-control" id="first_name" name="first_name" required="true">
+                <input type="text" class="form-control" id="first_name" ng-model="first_name" name="first_name" ng-equired="true">
             </div>
             <div class="form-group">
                 <label class="control-label" for="last_name">Last Name:</label>
-                <input type="text" class="form-control" id="last_name" name="last_name" required="true">
+                <input type="text" class="form-control" id="last_name" ng-model="last_name" name="last_name" ng-required="true">
             </div>
             <div class="form-group">
-                <label class="control-label" for="password">Password:</label>
-                <input type="password" class="form-control" id="password" name="password" required="true">
+                <label class="control-label" for="password">Password: <sup><i
+                        class="fa fa-question-circle-o" uib-tooltip-html="htmlTooltip"></i></sup> </label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+                    <input type="password" class="form-control" ng-model="password"
+                           pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})" id="password"
+                           name="password" ng-required="true" value="{{ loginForm.password.data|safe }}">
+                </div>
+                <password-strength ng-model="password"></password-strength>
             </div>
             <div class="form-group">
                 <label class="control-label" for="phone">Phone number:</label>
-                <input type="text" class="form-control" id="phone" name="phone" required="true">
+                <input type="text" class="form-control" id="phone" name="phone" ng-model="phone" ng-required="true">
             </div>
             <div class="form-group">
                 <div class="checkbox">
-                    <label><input id="tos_pp_accepted" name="tos_pp_accepted" type="checkbox" ng-model="tos_app_accepted">Please accept Terms of Service for <a
+                    <label><input id="tos_pp_accepted" name="tos_pp_accepted" type="checkbox" ng-model="tos_pp_accepted">
+                            Please accept Terms of Service for <a
                             href="http://{{host}}/login/termsofservice">Joobali</a> and <a
                             href="https://www.dwolla.com/legal/tos/?whitelabel">Dwolla</a>, and Privacy
                         Policy for <a href="http://{{host}}/login/privacypolicy">Joobali</a> and
@@ -70,7 +119,99 @@
                 <button type="submit" class="btn btn-default btn-lg pull-right joobali" ng-disabled="loginForm.$invalid || !tos_pp_accepted">Sign Up</button>
             </div>
         </form>
+                  <div class="row text-center">
+                        Already a member? <a href="/login">Login</a> here.
+                    </div>
+                </div>
+                <div class="col-sm-6 signUpFeatures text-center">
+                    <div class="row">
+                        <h1>Sign up and setup auto-pay for free!</h1>
+                    </div>
+
+                    <div class="row featureList">
+                        <ul>
+                            <li>Securely send auto-payments directly to your daycare provider for free</li>
+                            <li>Automated billing and invoicing reports</li>
+                        </ul>
+                    </div>
+                    <!-- <div class="row">
+                        <br />
+                        <br />
+                        <br />
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>
+
+<footer class="container-fluid text-center">
+    <br/>
+    <div class
+    "row text-center">
+    <div class="col-sm-12 text-center">
+        <a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    </div>
+    </div>
+    <div class
+    "row text-center">
+    <div class="col-sm-3 text-center">
+        <h4>Providers </h4>
+        <ul>
+            <li><a href="/login/signup">Sign Up &amp; Pricing</a></li>
+            <li>Resources</li>
+            <li>Terms and Conditions</li>
+            <li>Provider Care</li>
+            <li>Request a Feature/Optimization</li>
+            <!-- <li><a href="#">ONE</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>Parents </h4>
+        <ul>
+            <li>Sign Up</li>
+            <li>Refer your Provider</li>
+            <li>Terms of Use</li>
+            <li>Parent Care</li>
+            <!-- <li><a href="#">ONE</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>About </h4>
+        <ul>
+            <li>About Joobali</li>
+            <li>Contact</li>
+            <!-- <li><a href="#">Legal</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>Find Us On</h4>
+        <ul>
+            <li><a href="https://twitter.com/joobalicare"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
+            </li>
+            <li><a href="https://www.facebook.com/joobalicare"><i class="fa fa-facebook" aria-hidden="true"></i>
+                Facebook</a></li>
+            <li><a href="https://www.instagram.com/joobalicare/"><i class="fa fa-instagram" aria-hidden="true"></i>
+                Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/joobali"><i class="fa fa-linkedin-square"
+                                                                      aria-hidden="true"></i> LinkedIn</a></li>
+        </ul>
+    </div>
+    </div>
+    <br/>
+    <br/>
+    <div class
+    "row text-center" style="clear:both;">
+    <p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p>
+    </div>
+</footer>
+
 </body>
 </html>
