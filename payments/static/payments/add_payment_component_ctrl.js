@@ -17,6 +17,9 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
     }, {
       id: 'Check',
       label: 'Check'
+    }, {
+      id: 'Other',
+      label: 'Other'
     }];
 
     self.addPayment = function () {
