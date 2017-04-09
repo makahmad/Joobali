@@ -12,34 +12,29 @@
 		                <input type="text" class="form-control" id="programName" name="programName" ng-required="true"
 		                       ng-model="$ctrl.program.programName">
 		            </div>
+								
 								<div class="form-group">
-			            <div class="col-1">
-			                <label class="control-label" for="startDate">Billing Start Date:</label>
-			                <div class="input-group date">
-			                    <input type="text" id="startDate" ng-required="true" class="form-control" name="startDate"
-			                           ng-model="$ctrl.program.startDate">
-			                    <span class="input-group-addon">
-			                        <span class="glyphicon glyphicon-calendar"></span>
-			                    </span>
-			                </div>
-			            </div>
-			            <div class="col-1">
-			                <label class="control-label" for="endDate">Billing End Date:</label>
-			                <div class="input-group date">
-			                    <input type="text" id="endDate" ng-required="!$ctrl.program.indefinite" class="form-control" name="endDate"
-			                           ng-model="$ctrl.program.endDate" ng-disabled="$ctrl.program.indefinite">
-			                    <span class="input-group-addon">
-			                        <span class="glyphicon glyphicon-calendar"></span>
-			                    </span>
-
-								<span class="input-group-addon">
-									<label class="checkbox-inline">
-										<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.program.indefinite"
-																	   value="True" >Indefinite</label>
-								  </span>
-			                </div>
-			            </div>
-							</div>
+	                <label class="control-label" for="startDate">Billing Start Date:</label>
+	                <div class="input-group date">
+	                    <input type="text" id="startDate" ng-required="true" class="form-control" name="startDate"
+	                           ng-model="$ctrl.program.startDate">
+	                    <span class="input-group-addon">
+	                        <span class="glyphicon glyphicon-calendar"></span>
+	                    </span>
+	                </div>
+		            </div>
+								
+								<div class="form-group">
+									<label class="control-label" for="endDate">Billing End Date:</label>
+									<div class="input-group date">
+									  <input type="text" id="endDate" ng-required="!$ctrl.program.indefinite" class="form-control" name="endDate" ng-model="$ctrl.program.endDate" ng-disabled="$ctrl.program.indefinite">
+									  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+										<span class="input-group-addon">
+											<label class="checkbox-inline">
+												<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.program.indefinite" value="True" >Indefinite</label>
+									  </span>
+									</div>
+		            </div>
 					
 		          <div class="form-group">
 		              <label class="control-label" for="fee">Billing Rate:</label>
