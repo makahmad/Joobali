@@ -1,5 +1,9 @@
-<span class="invoiceHeader"><b>Invoices:</b></span>
-<invoices-component invoices="$ctrl.invoices" is-provider="true"></invoices-component>
-<div class="InvoiceTableButtonDiv">
-    <button class="btn btn-primary btn-lg" ng-click="$ctrl.openAddInvoiceModal()">Create Invoice</button>
+<span class="programHeader"><b>Invoices:</b></span>
+<div class="programsContainer">
+	<div class="programsDiv">
+		<div class="well well-sm">
+			<div class="InvoiceTableButtonDiv"><a class="btn btn-default btn-lg pull-left programHeader joobali" ng-click="$ctrl.openAddInvoiceModal()">CREATE AN INVOICE <i class="fa fa-plus-circle fa-lg"></i></a></div>
+			<invoices-component invoices="$ctrl.invoices" is-provider="true"></invoices-component>
+		</div>
+	</div>
 </div>

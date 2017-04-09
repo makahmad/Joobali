@@ -1,6 +1,6 @@
 .fundingTable {
-    width: 80%;
-    min-height: 400px;
+/*    width: 80%;
+    min-height: 400px;*/
     padding: 100px 25px;
     margin: 0 auto;
 }
@@ -29,6 +29,6 @@ tr:nth-child(even).fundingRow {
 }
 
 .fundingMouseOver {
-	background-color: #1E988A !important;
+	background-color: #E7E7E7 !important;
 	cursor: pointer;
 }

@@ -8,11 +8,10 @@
       </thead>
       <tbody>
         <tr class='fundingRow'  ng-class="{fundingMouseOver: funding.hover}"  data-ng-repeat="funding in $ctrl.fundings track by $index" ng-mouseover="funding.hover = true" ng-mouseleave="funding.hover = false">
-          <td class="name">Chase Bank {{ funding.name }}</td>
-          <td class="type">Type {{ funding.type }}</td>
-          <td class="status">Status {{ funding.status }}</td>
-          <td>
-            <button class="RemoveFundingButton btn btn-primary btn-sm" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" ng-show="funding.hover">Remove</button>
+          <td class="name">{{ funding.name }}</td>
+          <td class="type">{{ funding.type }}</td>
+          <td class="status">{{ funding.status }}</td>
+          <td>&nbsp;<button class="RemoveFundingButton btn btn-primary btn-sm" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" ng-show="funding.hover">Remove</button>
           </td>
         </tr>
       </tbody>
