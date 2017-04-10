@@ -3,12 +3,6 @@ import unittest
 from google.appengine.ext import ndb
 from google.appengine.ext import testbed
 
-from login.models import Provider
-from child.models import Child
-
-import enrollment_util
-from manageprogram.models import Program
-
 
 class EnrollmentUtilTestCase(unittest.TestCase):
 

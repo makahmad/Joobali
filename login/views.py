@@ -7,8 +7,8 @@ from wtforms_appengine.ndb import model_form
 
 from common.session import check_session
 from common.dwolla import create_account_token
-from common.email.verification import send_provider_email_address_verification
-from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent
+from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent, \
+    send_provider_email_address_verification
 
 from login import models
 from home.models import InitSetupStatus

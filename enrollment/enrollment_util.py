@@ -1,4 +1,6 @@
 from google.appengine.ext import ndb
+
+from common.email.enrollment import send_unenroll_email, send_parent_enrollment_notify_email
 from models import Enrollment
 from datetime import datetime
 from parent.models import Parent
@@ -22,7 +24,7 @@ def upsert_enrollment(enrollment_input):
     return enrollment
 
 
-def cancel_enrollment(provider_id, enrollment_id):
+def cancel_enrollment(provider_id, enrollment_id, host):
     """Cancels an enrollment"""
     enrollment_key = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id)
     if enrollment_key.get() is None:
@@ -31,12 +33,13 @@ def cancel_enrollment(provider_id, enrollment_id):
     if enrollment.status == 'invited' or enrollment.status == 'initialized' or enrollment.status == 'active':
         enrollment.status = 'inactive'
         enrollment.put()
+        send_unenroll_email(enrollment, host)
         return True
     else:
         return False
 
 
-def reactivate_enrollment(provider_id, enrollment_id):
+def reactivate_enrollment(provider_id, enrollment_id, host):
     """Reactivates an enrollment"""
     enrollment_key = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id)
     if enrollment_key.get() is None:
@@ -45,6 +48,7 @@ def reactivate_enrollment(provider_id, enrollment_id):
     if enrollment.status == 'inactive':
         enrollment.status = 'initialized'
         enrollment.put()
+        send_parent_enrollment_notify_email(enrollment, host)
         return True
     else:
         return False

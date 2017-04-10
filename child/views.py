@@ -8,7 +8,7 @@ import logging
 # Internal Libraries
 from common import session
 from common.json_encoder import JEncoder
-from common.email.invoice import send_parent_enrollment_notify_email
+from common.email.enrollment import send_parent_enrollment_notify_email
 from manageprogram.models import Program
 from child import child_util
 from child.models import Child

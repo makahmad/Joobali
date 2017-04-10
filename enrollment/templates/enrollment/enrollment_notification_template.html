@@ -149,22 +149,40 @@
                                 <!-- Row container for Intro/ Description -->
                                 <td align="left"
                                     style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
+                                    {% if is_acceptance_reminder %}
                                     <p><strong>{{ provider_school_name }}</strong> has invited you to make payments
                                         online and
-                                        view invoices for childcare services provided. </p>
+                                        view invoices for childcare services provided.
+                                    </p>
+                                    {% endif %}
+                                    {% if is_unenroll_reminder %}
+                                    <p><strong>{{ provider_school_name }}</strong> has cancelled the following
+                                        enrollment.
+                                    </p>
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>
                                 <table width="96%" align="center" cellpadding="0" cellspacing="0"
                                        style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; text-align:center;">
                                     <tr>
-                                        <td>&nbsp; </td>
+                                        <td></td>
                                         <!-- pay invoice button -->
+                                        {% if is_acceptance_reminder %}
                                         <td colspan="2" cellpadding="4" bgcolor="#1E988A">
                                             <a href="{{enrollment_detail_url}}"
                                                style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">Accept
-                                                this Enrollment</a></td>
-                                        <td>&nbsp; </td>
+                                                this Enrollment</a>
+                                        </td>
+                                        {% endif %}
+                                        {% if is_unenroll_reminder %}
+                                        <td colspan="2" cellpadding="4" bgcolor="#1E988A">
+                                            <a href="{{enrollment_detail_url}}"
+                                               style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">
+                                                View this Enrollment
+                                            </a>
+                                        </td>
+                                        {% endif %}
                                     </tr>
                                     <tr>
                                         <td colspan="3">&nbsp; </td>
@@ -228,9 +246,11 @@
                                 <!-- Row container for Intro/ Description -->
                                 <td align="left"
                                     style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
+                                    {% if is_acceptance_reminder %}
                                     <p>If you do not pay online, be sure to make a payment directy to
                                         {{ provider_school_name }} by <strong>{{enrollment_start_date}}</strong>. </p>
                                     <p>Don’t forget, late fees may be incurred if payments are not made on time. </p>
+                                    {% endif %}
                                 </td>
                             </tr>
                         </table>
@@ -253,12 +273,12 @@
                         <table class="footer" width="48%" align="left" cellpadding="0" cellspacing="0">
                             <!-- First column of footer content -->
                             <tr>
-                                <td><p align="center"
-                                       style="font-size: 22px; font-weight:300; line-height: 2.5em; color: #929292; font-family: sans-serif;">
-                                    {{provider_school_name}}</p>
+                                <td>
                                     <p align="center"
-                                       style="font-size: 12px; color:#929292; text-align:center; font-family: sans-serif;">
-                                        Because someon has to watch the zoo.</p></td>
+                                       style="font-size: 22px; font-weight:300; line-height: 2.5em; color: #929292; font-family: sans-serif;">
+                                        {{provider_school_name}}
+                                    </p>
+                                </td>
                             </tr>
                         </table>
                         <table class="footer" width="48%" align="left" cellpadding="0" cellspacing="0">
@@ -268,10 +288,13 @@
                                     <p style="font-size: 14px; font-style: normal; font-weight:normal; color: #ffffff; line-height: 1.8; text-align:justify;padding-top:10px; margin-left:20px; margin-right:20px; font-family: sans-serif;">
                                         Joobali is a service being provided to you by Joobali Inc. to make automated
                                         payments and view/revidw invoices any updates regarding your fees for child
-                                        care.. </p>
-                                    <p align="right" style="font-family: sans-serif;"><a
-                                            style="color:#929292; text-decoration:none; padding-left:20px; font-size:14px;"
-                                            href="http://joobali.com/">Joobali</a></p></td>
+                                        care..
+                                    </p>
+                                    <p align="right" style="font-family: sans-serif;">
+                                        <a style="color:#929292; text-decoration:none; padding-left:20px; font-size:14px;"
+                                                href="http://joobali.com/">Joobali</a>
+                                    </p>
+                                </td>
                             </tr>
                         </table>
                     </td>
