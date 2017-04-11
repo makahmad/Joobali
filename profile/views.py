@@ -11,8 +11,9 @@ from passlib.apps import custom_app_context as pwd_context
 
 logger = logging.getLogger(__name__)
 
+
 def getProviderLogo(request):
-    """Handles get profile request. Returns the profile with provided email"""
+    """Handles get provider logo request. Returns logo if one exists. """
     if not check_session(request):
         return HttpResponseRedirect('/login')
 
@@ -23,6 +24,7 @@ def getProviderLogo(request):
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
+
 def getProfile(request):
     """Handles get profile request. Returns the profile with provided email"""
     if not check_session(request):
@@ -30,7 +32,12 @@ def getProfile(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
-        provider.logo = None
+        if provider.logo:
+            provider.logo = None   # set to none as HTTP response encode breaks for blobs
+            provider.showLogo = True # this is used to decide whether to show thumbnail or not
+        else:
+            provider.showLogo = False
+
         return HttpResponse(json.dumps([JEncoder().encode(provider)]))
 
     # todo Must specify parent since id is not unique in DataStore
@@ -38,7 +45,7 @@ def getProfile(request):
 
 
 def updateProfile(request):
-    """Updates the program with provided program ID"""
+    """Updates the provider profile"""
     if not check_session(request):
         return HttpResponseRedirect('/login')
 
@@ -75,7 +82,8 @@ def updateProfile(request):
         provider.website = profile['website']
         provider.license = profile['license']
 
-        if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'], provider.password):
+        if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'],
+                                                                                            provider.password):
             provider.password = pwd_context.encrypt(profile['newPassword'])
 
         provider.put()
@@ -88,6 +96,7 @@ def updateProfile(request):
 
     return HttpResponse('success')
 
+
 def updateLogo(request):
     """Updates the provider's logo"""
     if not check_session(request):
@@ -97,11 +106,11 @@ def updateLogo(request):
         return HttpResponseRedirect('/login')
 
     provider = Provider.get_by_id(request.session['user_id'])
-    if request.body:
-        provider.logo = request.body
-        provider.put()
+    provider.logo = request.body
+    provider.put()
 
     return HttpResponse('success')
+
 
 def validateEmail(request):
     """Validates user email. Successful if email does not already exist in the system, otherwise failure"""

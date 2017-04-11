@@ -108,6 +108,7 @@ def getGeneralBilling(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
+        provider.logo = None
         return HttpResponse(json.dumps([JEncoder().encode(provider)]))
 
     # todo Must specify parent since id is not unique in DataStore
