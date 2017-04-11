@@ -32,12 +32,7 @@ def getProfile(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
-        if provider.logo:
-            provider.logo = None   # set to none as HTTP response encode breaks for blobs
-            provider.showLogo = True # this is used to decide whether to show thumbnail or not
-        else:
-            provider.showLogo = False
-
+        provider.logo = None  # set to none as HTTP response encode breaks for blobs
         return HttpResponse(json.dumps([JEncoder().encode(provider)]))
 
     # todo Must specify parent since id is not unique in DataStore
@@ -107,6 +102,12 @@ def updateLogo(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     provider.logo = request.body
+
+    if request.body:
+        provider.showLogo = True
+    else:
+        provider.showLogo = False
+
     provider.put()
 
     return HttpResponse('success')

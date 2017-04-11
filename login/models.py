@@ -23,7 +23,7 @@ class Provider(ndb.Model):
     website = ndb.StringProperty()
     license = ndb.StringProperty()
     logo = ndb.BlobProperty()
-    showLogo = ndb.BooleanProperty(default=False) # used only to decide whether to show logo on the profile page
+    showLogo = ndb.BooleanProperty(default=False) # used to decide whether to show logo on the profile page
 
     # Additional fields for Dwolla verified customer.
     address = ndb.StringProperty()
