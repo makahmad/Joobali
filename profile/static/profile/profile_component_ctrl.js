@@ -38,7 +38,31 @@ ProfileComponentController.prototype.saveProfile = function() {
 	    // this callback will be called asynchronously
 	    // when the response is available
         console.log('post suceeded');
-        location.reload();
+
+
+        if(this.profile.logo)
+        {
+        	this.http_({
+                method: 'POST',
+                url: '/profile/updatelogo',
+                data: this.profile.logo
+            }).then(angular.bind(this, function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                console.log('logo post suceeded');
+                location.reload();
+
+              }), angular.bind(this, function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                    console.log('logo post failed');
+
+                     alert("Something is wrong with the saving. Please try again later");
+              }));
+        }
+        else
+            location.reload();
+
 
 	  }), angular.bind(this, function errorCallback(response) {
 	    // called asynchronously if an error occurs

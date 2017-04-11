@@ -36,7 +36,7 @@ def home(request):
         return HttpResponse(customers.body['_embedded']['customers'])
 
 stripFilter = lambda x: x.strip()  if x else ''
-ProviderForm = model_form(models.Provider, field_args={
+ProviderForm = model_form(models.Provider, exclude=['logo'],field_args={
     'firstName': {
         'filters': [stripFilter],
     },
@@ -56,8 +56,8 @@ ProviderForm = model_form(models.Provider, field_args={
         'filters': [stripFilter],
     },
     'license': {
-        'filters': [stripFilter],
-    },
+        'filters': [stripFilter]
+    }
 })
 
 ParentForm = model_form(Parent, field_args={
@@ -75,7 +75,7 @@ ParentForm = model_form(Parent, field_args={
     },
 })
 
-LoginForm = model_form(models.Provider, field_args={
+LoginForm = model_form(models.Provider, only={
     'email': {
         'filters': [stripFilter],
     },

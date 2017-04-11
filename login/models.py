@@ -22,6 +22,7 @@ class Provider(ndb.Model):
     phone = ndb.StringProperty()
     website = ndb.StringProperty()
     license = ndb.StringProperty()
+    logo = ndb.BlobProperty()
     # Additional fields for Dwolla verified customer.
     address = ndb.StringProperty()
     city = ndb.StringProperty()

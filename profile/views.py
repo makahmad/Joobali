@@ -11,6 +11,17 @@ from passlib.apps import custom_app_context as pwd_context
 
 logger = logging.getLogger(__name__)
 
+def getProviderLogo(request):
+    """Handles get profile request. Returns the profile with provided email"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    provider = Provider.get_by_id(request.session['user_id'])
+    if provider is not None:
+        return HttpResponse(provider.logo, content_type="image/png")
+
+    # todo Must specify parent since id is not unique in DataStore
+    return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
 def getProfile(request):
     """Handles get profile request. Returns the profile with provided email"""
@@ -19,6 +30,7 @@ def getProfile(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
+        provider.logo = None
         return HttpResponse(json.dumps([JEncoder().encode(provider)]))
 
     # todo Must specify parent since id is not unique in DataStore
@@ -34,7 +46,6 @@ def updateProfile(request):
         return HttpResponseRedirect('/login')
 
     profile = json.loads(request.body)
-
     if not profile['id']:
         raise Exception('no profile id is provided')
 
@@ -60,7 +71,6 @@ def updateProfile(request):
         provider.lastName = profile['lastName']
         # todo for Rongjian update transactions tied to this email address and Unique object
         provider.email = profile['email']
-        # provider.password = pwd_context.encrypt(profile['password'])
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
@@ -78,6 +88,20 @@ def updateProfile(request):
 
     return HttpResponse('success')
 
+def updateLogo(request):
+    """Updates the provider's logo"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if not request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
+    provider = Provider.get_by_id(request.session['user_id'])
+    if request.body:
+        provider.logo = request.body
+        provider.put()
+
+    return HttpResponse('success')
 
 def validateEmail(request):
     """Validates user email. Successful if email does not already exist in the system, otherwise failure"""
