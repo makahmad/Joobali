@@ -8,6 +8,7 @@
         <th>Amount</th>
         <th>Type</th>
         <th>Program</th>
+        <th>Note</th>
       </thead>
       <tbody>
         <tr class='invoiceRow' data-ng-repeat="payment in $ctrl.payments  track by $index" >
@@ -17,6 +18,7 @@
           <td>{{ payment.amount }}</td>
           <td>{{ payment.type }}</td>
           <td>{{ payment.program }}</td>
+          <td>{{ payment.note }}</td>
         </tr>
       </tbody>
     </table>

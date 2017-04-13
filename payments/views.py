@@ -43,7 +43,7 @@ def add_payment(request):
     payer = data['payer']
 
     payment_type = data['payment_type']
-
+    note = data['note']
     amount = data['amount']
     payment_date = datetime.strptime(data['payment_date'], DATE_FORMAT).date()
     created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
@@ -59,6 +59,7 @@ def add_payment(request):
     newPayment.payer = payer
     newPayment.provider_email = provider.email
     newPayment.type = payment_type
+    newPayment.note = note
     newPayment.date = payment_date
     newPayment.date_created = created_date
     newPayment.put()
@@ -87,5 +88,6 @@ def listPayments(request):
             'type': payment.type,
             'payer': payment.payer,
             'program': payment.program_id,
+            'note': payment.note,
         })
     return HttpResponse(json.dumps(results))

@@ -33,6 +33,7 @@ ConfirmAddPaymentComponentController.prototype.addPayment = function() {
         'payment_date': moment(self.newPayment.payment_date).format('MM/DD/YYYY'),
         'payer': self.newPayment.payer,
         'payment_type': self.newPayment.payment_type.id,
+        'note': self.newPayment.note,
         'amount': self.newPayment.amount,
         'created_date': moment().format('MM/DD/YYYY'),
     };
