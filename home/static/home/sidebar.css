@@ -140,8 +140,8 @@ html,body { height:100%;
 }
 @media (max-width: 767px) {
   .nav-side-menu {
-    position: relative;
-    width: 100%;
+    /*position: relative;
+    width: 100%;*/
     margin-bottom: 10px;
   }
   .nav-side-menu .toggle-btn {
@@ -166,7 +166,7 @@ html,body { height:100%;
 }
 @media (min-width: 767px) {
   .nav-side-menu .menu-list .menu-content {
-    display: block;
+    display: block;}
   }
 }
 body {
@@ -176,17 +176,25 @@ body {
 }
 
 .page-content-wrapper {
-    background-color: #f1f1f1;
-    height: 100%;
+  background-color: #f1f1f1;
+  height: 100%;
   padding-left: 180px;
   padding-top: 50px;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 }
 
 .page-content-container {
     background-color: #f1f1f1;
     padding: 30px;
+}
+
+@media (max-width: 550px) {
+  .nav-side-menu {
+    position: relative;
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }

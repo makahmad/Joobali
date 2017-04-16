@@ -80,7 +80,7 @@ body {
 }
 
 .homePitch2 {
-	background: #a2a2a2 url("./pics/img_home2bg.png") no-repeat top center;
+	background: #a2a2a2 url("./pics/img_homebtbg.jpg") no-repeat center;
 	background-size: 100%;
 	padding:10px 0 120px 0;
 }
@@ -321,8 +321,34 @@ footer .glyphicon {
 
 .programHeader {
     color: #2a9d90;
-    font-size: 14px;
+    font-size: 18px;
+		/*border:1px solid black;*/
+		width:33.333333333333333333%;
+		display:inline-block;
 }
+
+.pageInstructions {
+	text-align:left;
+	display:inline-block;
+	background:#FFEAAD;
+	padding: 10px 20px;
+	margin:5px auto 0;
+}
+
+.fa-question-circle-o:hover {
+	cursor:pointer;
+}
+
+/*.pageInstructions::before {
+	content:" ";
+  width: 0;
+  height: 0;
+  border-top: 10px solid gray;
+  border-bottom: 10px solid purple;
+  border-right: 8.666px solid blue;
+	border-left: 8.6666px solid green;
+}
+*/
 
 /* programs grid/list css */
 
