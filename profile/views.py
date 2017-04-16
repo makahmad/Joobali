@@ -9,17 +9,26 @@ from common.session import check_session
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 
-logger = logging.getLogger(__name__)
 
+logger = logging.getLogger(__name__)
 
 def getProviderLogo(request):
     """Handles get provider logo request. Returns logo if one exists. """
-    if not check_session(request):
-        return HttpResponseRedirect('/login')
+    if request.method != 'GET':
+        return
+    provider_id = request.GET.get('id', None)
+    provider = None
+    print provider_id
+    if provider_id:
+        provider = Provider.get_by_id(int(provider_id))
 
-    provider = Provider.get_by_id(request.session['user_id'])
+    if provider is None:
+        if not check_session(request):
+            return HttpResponseRedirect('/login')
+        provider = Provider.get_by_id(request.session['user_id'])
+
     if provider is not None:
-        return HttpResponse(provider.logo, content_type="image/png")
+        return HttpResponse(provider.logo, content_type="image/jpeg")
 
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))

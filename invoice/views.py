@@ -17,6 +17,7 @@ from django.template import loader
 from invoice import invoice_util
 from common.pdf import render_to_pdf
 from google.appengine.ext import ndb
+from os import environ
 
 import json
 import logging
@@ -108,6 +109,9 @@ def viewInvoice(request):
 			total += lineItem.amount
 		if total != invoice.amount:
 			HttpResponse("Something is wrong when retrieving the invoice.")
+
+		http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+		root_path = http_prefix + request.get_host()
 		data = {
 			'invoice_id': invoice.key.id(),
 			'invoice_date': invoice.date_created.strftime('%m/%d/%Y'),
@@ -123,6 +127,7 @@ def viewInvoice(request):
 			'parent_id': parent.key.id(),
 			'total': invoice.amount,
 			'items': items,
+			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()),
         }
 		return render_to_pdf(
 			'invoice/invoice_content.html',
