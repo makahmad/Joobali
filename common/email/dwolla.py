@@ -3,7 +3,7 @@ from google.appengine.api import mail
 
 logger = logging.getLogger(__name__)
 
-def send_payment_processing_email(parent_address, parent_name, school_name, amount, sender_address="rongjian@joobali.com"):
+def send_payment_processing_email(parent_address, parent_name, school_name, amount, sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -15,7 +15,7 @@ def send_payment_processing_email(parent_address, parent_name, school_name, amou
 
     message.send()
 
-def send_payment_success_email(parent_address, parent_name, school_name, amount, sender_address="rongjian@joobali.com"):
+def send_payment_success_email(parent_address, parent_name, school_name, amount, sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -29,7 +29,7 @@ def send_payment_success_email(parent_address, parent_name, school_name, amount,
 
 
 
-def send_payment_failure_email(parent_address, parent_name, school_name, amount, sender_address="rongjian@joobali.com"):
+def send_payment_failure_email(parent_address, parent_name, school_name, amount, sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -41,7 +41,7 @@ def send_payment_failure_email(parent_address, parent_name, school_name, amount,
 
     message.send()
 
-def send_funding_source_removal_email(email_address, name, funding_source_name, sender_address="rongjian@joobali.com"):
+def send_funding_source_removal_email(email_address, name, funding_source_name, sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -54,7 +54,7 @@ def send_funding_source_removal_email(email_address, name, funding_source_name, 
     message.send()
 
 def send_funding_source_addition_email(email_address, name, funding_source_name,
-                                      sender_address="rongjian@joobali.com"):
+                                      sender_address="howdy@joobali.com"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
