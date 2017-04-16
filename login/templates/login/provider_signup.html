@@ -72,7 +72,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
                                 <input type="text" class="form-control" id="firstName" name="firstName"
-                                       ng-model="firstName" required="true" value="{{ form.firstName.data|safe }}">
+                                        required="true" value="{{ form.firstName.data|safe }}">
                             </div>
                         </div>
 
@@ -81,14 +81,14 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
                                 <input type="text" class="form-control" id="lastName" name="lastName"
-                                       ng-model="lastName" required="true" value="{{ form.lastName.data|safe }}">
+                                      required="true" value="{{ form.lastName.data|safe }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" for="schoolName">Child Care Name:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span>
-                                <input type="text" class="form-control" id="schoolName" ng-model="schoolName"
+                                <input type="text" class="form-control" id="schoolName"
                                        name="schoolName" required="true" value="{{ form.schoolName.data|safe }}">
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             <label class="control-label" for="email">Email:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span>
-                                <input type="email" class="form-control" id="email" ng-model="email" name="email"
+                                <input type="email" class="form-control" id="email"  name="email"
                                        required="true" value="{{ form.email.data|safe }}">
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                         </div>
 
                         <div class="formActions">
-                            <button type="submit" ng-disabled="loginForm.$invalid || !tos_pp_accepted"
+                            <button type="submit" ng-disabled="!tos_pp_accepted"
                                     class="btn btn-default btn-lg pull-right joobali">Sign Up
                             </button>
                         </div> <!-- end formActions -->

@@ -129,7 +129,10 @@ def provider_signup(request):
                 token = VerificationToken.create_new_provider_email_token(provider=provider)
                 token.put()
                 send_provider_email_address_verification(token, host=request.get_host())
-                return HttpResponseRedirect('/login')
+                return render_to_response('login/provider_signup_confirmation.html',
+                                  {'form': form},
+                                  template.RequestContext(request))
+                # return HttpResponseRedirect('/login')
             else:
                 form.email.errors.append('error: user exists')
 
