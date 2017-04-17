@@ -126,7 +126,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
-                 .when('/profile', {templateUrl: '/static/home/profile_component_tmpl.html'})
+                 .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
+                 .when('/helpcenter', {template: '<helpcenter-component></helpcenter-component>'})
                  .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
@@ -249,6 +250,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           payments: '<',
           isProvider: '@'
         }
+    })
+    .component('helpcenterComponent', {
+        templateUrl: '/static/helpcenter/helpcenter_component_tmpl.html',
+        controller: HelpCenterComponentController
     })
     .component('profileComponent', {
         templateUrl: '/static/profile/profile_component_tmpl.html',

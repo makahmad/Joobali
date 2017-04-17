@@ -50,6 +50,9 @@
     <!-- Profile Related JS -->
     <script src="{{ STATIC_URL }}profile/profile_component_ctrl.js"></script>
 
+    <!-- Help Center Related JS -->
+    <script src="{{ STATIC_URL }}helpcenter/helpcenter_component_ctrl.js"></script>
+
     <!-- Invoice Related JS -->
     <script src="{{ STATIC_URL }}invoice/add_invoice_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/invoice_component_ctrl.js"></script>
@@ -187,6 +190,12 @@
                 <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
                     <a>
                         <i class="fa fa-user fa-lg"></i> Profile
+                    </a>
+                </li>
+
+                <li ng-click="changeView('/helpcenter')" ng-class="{active: module=='/helpcenter'}">
+                    <a>
+                        <i class="fa fa-life-ring fa-lg"></i> Help Center
                     </a>
                 </li>
             </ul>
