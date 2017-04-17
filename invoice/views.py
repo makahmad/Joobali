@@ -112,6 +112,8 @@ def viewInvoice(request):
 
 		http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
 		root_path = http_prefix + request.get_host()
+
+		note = provider.lateFeeInvoiceNote if provider.lateFeeInvoiceNote else provider.generalInvoiceNote
 		data = {
 			'invoice_id': invoice.key.id(),
 			'invoice_date': invoice.date_created.strftime('%m/%d/%Y'),
@@ -128,7 +130,9 @@ def viewInvoice(request):
 			'total': invoice.amount,
 			'items': items,
 			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()),
+			'note': note,
         }
+		print data
 		return render_to_pdf(
 			'invoice/invoice_content.html',
 			data
