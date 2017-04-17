@@ -3,6 +3,7 @@ HelpCenterComponentController = function($scope, $http, $window, $sce) {
 	this.http_ = $http;
 	this.window_ = $window;
 	this.help = {};
+	this.help.sent = false;
 	this.scope_ = $scope;
 
 };
@@ -17,7 +18,7 @@ HelpCenterComponentController.prototype.sendComments = function() {
 	    // when the response is available
         console.log('post suceeded');
 
-            location.reload();
+            this.help.sent = true;
 
 
 	  }), angular.bind(this, function errorCallback(response) {

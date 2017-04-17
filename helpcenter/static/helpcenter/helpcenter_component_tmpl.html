@@ -4,6 +4,7 @@
 	</div>
 	<div class="helpCenterFormBody">
     <div class="col-centered">
+        <div ng-show="!$ctrl.help.sent">
         <form id="helpCenterForm" name="helpCenterForm" role="form" class="well" >
             <div class="">
                 <div class="form-group">
@@ -20,7 +21,12 @@
 
             </div>
 		        </form>
+        </div>
+        <div ng-show="$ctrl.help.sent">
+            <br>
+            Question or comment has been. If it's a question, a member of our staff will contact you shortly.
 
+        </div>
 
         <hr>
         <h3>FAQ</h3>
