@@ -1,11 +1,7 @@
 <!-- ************************ -->
-
-
 <span class="programHeader"><b>Children</b></span>
-<div class="programsContainer">
-	
+<div class="programsContainer">	
     <div class="programsDiv">
-
 		  <div class="well well-sm">
         <div class="buttonDiv addChildButtonDiv pull-left">
             <a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openAddChildModal()">ADD A CHILD
@@ -20,7 +16,7 @@
 	      </div>
 		  </div>
 			
-				<ol>
+				<ol class="childrenList">
 					<child-card data-ng-repeat="child in $ctrl.children track by $index" child="child" programs="$ctrl.programs" index="$index" flex></child-card>
 				</ol>
     </div>
