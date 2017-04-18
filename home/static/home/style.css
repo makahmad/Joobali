@@ -333,6 +333,7 @@ footer .glyphicon {
 	background:#FFEAAD;
 	padding: 10px 20px;
 	margin:5px auto 0;
+	min-width: 80%
 }
 
 .fa-question-circle-o:hover {
@@ -366,6 +367,7 @@ footer .glyphicon {
 
 .btn-group {
 	float:right !important;
+	text-align:center;
 }
 
 .glyphicon { margin-right:5px; }
@@ -516,6 +518,21 @@ program-component {
 .list-group-item-text
 {
     margin: 0 0 11px;
+}
+
+/* ----------------- Invoice Styles ------------------ */
+tr.invoiceRow.ng-scope td {
+	padding:20px 2px;
+}
+
+tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
+	background:#ccc;
+	cursor:pointer;
+}
+
+/* ----------------- Children Styles ------------------ */
+.childrenList{
+	width:100%;
 }
 
 /* ----------------- Modals Override ----------------- */
