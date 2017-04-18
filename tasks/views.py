@@ -26,24 +26,6 @@ import json
 
 logger = logging.getLogger(__name__)
 
-@ndb.transactional(xg=True)
-def pay(invoice, payment):
-    if payment.balance >= invoice.amount:
-        invoice_util.create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
-                                              -invoice.amount, payment)
-        payment.balance = payment.balance - invoice.amount
-        invoice.status = Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
-        invoice.amount = 0
-        payment.put()
-        invoice.put()
-    else:
-        invoice_util.create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
-                                              -payment.balance, payment)
-        invoice.amount = invoice.amount - payment.balance
-        payment.balance = 0
-        payment.put()
-        invoice.put()
-
 def invoice_calculation(request):
     today = date.today()
 
@@ -67,9 +49,10 @@ def invoice_calculation(request):
         if not invoice.is_paid():
             logger.info("Considering payment for child: %s" % invoice.child_key)
             for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
-                if payment.balance > 0:
-                    logger.info("Making payment: %s" % invoice)
-                    pay(invoice, payment)
+                if not payment.invoice_key or payment.invoice_key and payment.invoice_key == invoice.key:
+                    if payment.balance > 0:
+                        logger.info("Making payment: %s" % invoice)
+                        invoice_util.pay(invoice, payment)
 
 
     logger.info("INVOICE CALCULATION")

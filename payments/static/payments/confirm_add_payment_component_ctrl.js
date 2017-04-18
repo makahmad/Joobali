@@ -23,13 +23,13 @@ ConfirmAddPaymentComponentController = function($http, $window, $location) {
 ConfirmAddPaymentComponentController.prototype.addPayment = function() {
     var self = this;
 
-    var program_id;
-    if (self.newPayment.program!=null)
-        program_id = self.newPayment.program.id;
+    var invoice_id;
+    if (self.newPayment.invoice!=null)
+        invoice_id = self.newPayment.invoice.id;
     console.log("addPayment is clicked");
     var data = {
         'child_id': self.newPayment.child.id,
-        'program_id': program_id,
+        'invoice_id': invoice_id,
         'payment_date': moment(self.newPayment.payment_date).format('MM/DD/YYYY'),
         'payer': self.newPayment.payer,
         'payment_type': self.newPayment.payment_type.id,

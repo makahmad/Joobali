@@ -36,14 +36,18 @@ def add_payment(request):
     child_id = long(data['child_id'])
 
     try:
-        program_id = data['program_id']
+        invoice_id = data['invoice_id']
     except KeyError:
-        program_id = None
+        invoice_id = None
 
     payer = data['payer']
 
     payment_type = data['payment_type']
-    note = data['note']
+
+    try:
+        note = data['note']
+    except KeyError:
+        note = None
     amount = data['amount']
     payment_date = datetime.strptime(data['payment_date'], DATE_FORMAT).date()
     created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
@@ -52,7 +56,9 @@ def add_payment(request):
     child = Child.get_by_id(child_id)
 
     newPayment = Payment(provider_key=provider.key,child_key=child.key)
-    newPayment.program_id = program_id
+
+    if invoice_id:
+        newPayment.invoice_key = ndb.Key('Invoice', invoice_id)
 
     newPayment.amount = amount
     newPayment.balance = amount
@@ -64,6 +70,8 @@ def add_payment(request):
     newPayment.date_created = created_date
     newPayment.put()
 
+    if newPayment.invoice_key:
+        invoice_util.pay(newPayment.invoice_key.get(), newPayment)
     return HttpResponse('success')
 
 
@@ -87,7 +95,7 @@ def listPayments(request):
             'date': payment.date.strftime('%m/%d/%Y'),
             'type': payment.type,
             'payer': payment.payer,
-            'program': payment.program_id,
+            'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
             'note': payment.note,
         })
     return HttpResponse(json.dumps(results))

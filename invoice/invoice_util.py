@@ -22,7 +22,8 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
     invoice_line_item.start_date = start_date
     invoice_line_item.end_date = end_date
     invoice_line_item.description = description
-    invoice_line_item.payment_key = payment.key
+    if payment:
+        invoice_line_item.payment_key = payment.key
     invoice_line_item.put()
     return invoice_line_item
 
@@ -137,3 +138,29 @@ def get_next_due_date(due_date, billing_freq):
         return due_date + timedelta(days=7)
     elif billing_freq == 'Monthly':
         return due_date + timedelta(days=monthrange(due_date.year, due_date.month)[1])
+
+def list_invoice_by_provider_and_child(provider_key, child_key):
+    invoice_query = Invoice.query(Invoice.child_key == child_key, Invoice.provider_key == provider_key)
+    invoices = list()
+    for invoice in invoice_query:
+        invoices.append(invoice)
+    return invoices
+
+
+@ndb.transactional(xg=True)
+def pay(invoice, payment):
+    if payment.balance >= invoice.amount:
+        create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
+                                              -invoice.amount, payment)
+        payment.balance = payment.balance - invoice.amount
+        invoice.status = Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
+        invoice.amount = 0
+        payment.put()
+        invoice.put()
+    else:
+        create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
+                                              -payment.balance, payment)
+        invoice.amount = invoice.amount - payment.balance
+        payment.balance = 0
+        payment.put()
+        invoice.put()

@@ -160,3 +160,21 @@ def markPaid(request):
 		invoice.status = Invoice._POSSIBLE_STATUS['MARKED_PAID']
 		invoice.put()
 	return HttpResponse("success")
+
+def list_invoice_by_child(request):
+    status = "failure"
+    if not check_session(request):
+        return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+    provider_id = request.session.get('user_id')
+    child_id = long(request.GET.get('child_id'))
+    logger.info('provider_id %s, child_id %s' % (provider_id, child_id))
+    child_key = Child.generate_key(child_id)
+    provider_key = Provider.generate_key(provider_id)
+    all_invoices = invoice_util.list_invoice_by_provider_and_child(provider_key=provider_key, child_key=child_key)
+    invoices = []
+    for invoice in all_invoices:
+        if not invoice.is_paid():
+            invoices.append(invoice)
+    response = HttpResponse(json.dumps([JEncoder().encode(invoice) for invoice in invoices]))
+    logger.info("response is %s" % response)
+    return response

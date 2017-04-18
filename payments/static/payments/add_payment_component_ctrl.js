@@ -3,7 +3,7 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
      * @input: programs
      */
     var self = this;
-    self.programs = [];
+    self.invoices = [];
     self.children = [];
     self.newPayment = {};
     self.createButton = {};
@@ -32,14 +32,17 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
     self.updateProgramOptions = function(child_id) {
         $http({
             method: 'GET',
-            url: '/manageprogram/listprogrambychild',
+            url: '/invoice/listinvoicebychild',
             params: {'child_id': child_id}
         }).then(angular.bind(this, function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            this.programs = [];
-            angular.forEach(response.data, angular.bind(this, function(program) {
-                this.programs.push(JSON.parse(program));
+            this.invoices = [];
+            angular.forEach(response.data, angular.bind(this, function(invoice) {
+                inv = JSON.parse(invoice);
+                if (inv.amount > 0) {
+                    this.invoices.push(inv);
+                }
             }));
             //this.newPayment.program = this.programs[0];
         }), function errorCallback(response) {
