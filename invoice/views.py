@@ -161,6 +161,17 @@ def markPaid(request):
 		invoice.put()
 	return HttpResponse("success")
 
+def adjust_invoice(request):
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	amount = data['amount']
+	reason = data['reason']
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		invoice_util.adjust_invoice(invoice, amount, reason)
+		invoice.put()
+	return HttpResponse("success")
+
 def list_invoice_by_child(request):
     status = "failure"
     if not check_session(request):

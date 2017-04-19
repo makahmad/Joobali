@@ -1,5 +1,19 @@
-InvoicesComponentController = function($window, $http) {
+InvoicesComponentController = function($window, $http, $uibModal) {
     console.log('InvoicesComponentController running');
+    var self = this;
+
+    self.openAdjustInvoiceModal = function(clicked_invoice) {
+        console.log("Opening Adjust Invoice Modal");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            component: 'adjustInvoiceComponent',
+            resolve: {
+                clickedInvoice: function () {
+                  return clicked_invoice;
+                }
+              }
+            });
+    };
     this.window_ = $window;
     this.http_ = $http;
 }
@@ -43,6 +57,12 @@ InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) 
             }
             clicked_invoice.selected = true;
         }
+    }
+}
+
+InvoicesComponentController.prototype.adjustButtonClicked = function(clicked_invoice) {
+    if (this.isProvider == 'true') {
+        this.openAdjustInvoiceModal(clicked_invoice);
     }
 }
 

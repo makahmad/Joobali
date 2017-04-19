@@ -164,3 +164,11 @@ def pay(invoice, payment):
         payment.balance = 0
         payment.put()
         invoice.put()
+
+
+@ndb.transactional(xg=True)
+def adjust_invoice(invoice, amount, reason):
+    create_invoice_line_item(None, invoice, None, None, None, reason,
+                                          -amount, None)
+    invoice.amount = invoice.amount - amount
+    invoice.put()
