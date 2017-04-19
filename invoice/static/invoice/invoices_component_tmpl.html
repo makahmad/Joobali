@@ -16,8 +16,8 @@
           <td>{{ invoice.amount }}</td>
           <td>{{ invoice.paid ? "Paid" : "Unpaid" }}</td>
           <td>
-            <button class="PayBillButton btn btn-primary btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid && invoice.hover">{{ $ctrl.getButtonText() }}</button>
-            <button class="AdjustButton btn btn-primary btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider">Adjust</button>
+            <button class="PayBillButton btn btn-primary btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid">{{ $ctrl.getButtonText() }}</button>
+            <button class="AdjustButton btn btn-primary btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid">Adjust</button>
           </td>
         </tr>
       </tbody>
