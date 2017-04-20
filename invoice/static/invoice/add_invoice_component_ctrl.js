@@ -13,14 +13,29 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
 
     self.createButton.click = function() {
         console.log("createButton is clicked");
-        var data = {
-            'child_id': self.newInvoice.child.id,
-            'program_id': self.newInvoice.program.id,
-            'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
-            'description': self.newInvoice.description,
-            'amount': self.newInvoice.amount,
-            'created_date': moment().format('MM/DD/YYYY'),
-        };
+        var data = {};
+        if (self.newInvoice.child) {
+            data = {
+                'child_id': self.newInvoice.child.id,
+                'program_id': self.newInvoice.program.id,
+                'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                'description': self.newInvoice.description,
+                'amount': self.newInvoice.amount,
+                'created_date': moment().format('MM/DD/YYYY'),
+            };
+        } else {
+            all_ids = [];
+            for (i in self.children) {
+                all_ids.push(self.children[i].id);
+            }
+            data = {
+                'all_children': all_ids,
+                'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                'description': self.newInvoice.description,
+                'amount': self.newInvoice.amount,
+                'created_date': moment().format('MM/DD/YYYY'),
+            };
+        }
         console.log(data);
         $http.post('/invoice/addinvoice', data).then(function successCallback(response) {
             if (response.data == 'success') {
@@ -35,21 +50,25 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
     }
 
     self.updateProgramOptions = function(child_id) {
-        $http({
-            method: 'GET',
-            url: '/manageprogram/listprogrambychild',
-            params: {'child_id': child_id}
-        }).then(angular.bind(this, function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
+        if (this.newInvoice.child) {
+            $http({
+                method: 'GET',
+                url: '/manageprogram/listprogrambychild',
+                params: {'child_id': child_id}
+            }).then(angular.bind(this, function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                this.programs = [];
+                angular.forEach(response.data, angular.bind(this, function(program) {
+                    this.programs.push(JSON.parse(program));
+                }));
+                this.newInvoice.program = this.programs[0];
+            }), function errorCallback(response) {
+                alert('Something is wrong here. Please refresh the page and try again');
+            });
+        } else {
             this.programs = [];
-            angular.forEach(response.data, angular.bind(this, function(program) {
-                this.programs.push(JSON.parse(program));
-            }));
-            this.newInvoice.program = this.programs[0];
-        }), function errorCallback(response) {
-            alert('Something is wrong here. Please refresh the page and try again');
-        });
+        }
     }
 
     self.openDueDatePicker = function() {

@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 from enrollment.models import Enrollment
 from payments.models import Payment
+from datetime import date
 
 class Invoice(ndb.Model):
     child_key = ndb.KeyProperty(required=True)
@@ -30,6 +31,10 @@ class Invoice(ndb.Model):
     autopay_source_id = ndb.StringProperty() # come from enrollment
     dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment
     pdf = ndb.BlobProperty()
+
+
+    def is_late(self):
+        return self.due_date < date.today()
 
     def is_paid(self):
         return self.status == Invoice._POSSIBLE_STATUS['COMPLETED'] or self.status == Invoice._POSSIBLE_STATUS['MARKED_PAID'] or self.status == Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
