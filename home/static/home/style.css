@@ -300,7 +300,7 @@ footer .glyphicon {
     height: 100%;
     margin: 10px 0;
     padding: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0px 67px 0 rgba(0,0,0,0.01);
     display: block;
 }
 

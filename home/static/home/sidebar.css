@@ -17,12 +17,12 @@ html,body { height:100%;
   overflow: auto;
 /*  font-family: verdana;*/
   font-family: 'Roboto', sans-serif;
-  font-size: .8em;
+  font-size: .95em;
   font-weight: 100;
   background-color: #181D1F;
   position: fixed;
   top: 0px;
-  width: 180px;
+  width: 220px;
   height: 100%;
   color: #F2F2F2;
   padding: 48px 0 0 0;
@@ -193,7 +193,7 @@ body {
 .page-content-wrapper {
   background-color: #f1f1f1;
   height: 100%;
-  padding-left: 180px;
+  padding-left: 220px;
   padding-top: 50px;
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
