@@ -6,7 +6,9 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from time import strftime, strptime
 from datetime import datetime, date, time
-from login.models import Provider
+from login.models import Provider, Unique
+from parent.models import Parent
+from parent import parent_util
 from invoice.models import Invoice
 from invoice.models import InvoiceLineItem
 from invoice.invoice_util import get_invoice_enrollments
@@ -17,6 +19,7 @@ from payments.models import Payment
 from django.template import loader
 from invoice import invoice_util
 from common.pdf import render_to_pdf
+from common import dwolla
 from google.appengine.ext import ndb
 
 import json
@@ -98,4 +101,43 @@ def listPayments(request):
             'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
             'note': payment.note,
         })
+    results.extend(list_dwolla_payments(email))
     return HttpResponse(json.dumps(results))
+
+
+def list_dwolla_payments(email):
+    """Returns dwolla payments associated with the logged in user (provider or parent)"""
+    invoices = []
+
+    unique_customer = Unique.get_by_id(email)
+    print unique_customer
+    if unique_customer:
+        if unique_customer.provider_key:
+            for invoice in Invoice.query(Invoice.provider_key == unique_customer.provider_key).fetch():
+                invoices.append(invoice)
+        elif unique_customer.parent_key:
+            for invoice in Invoice.query(Invoice.parent_email == email).fetch():
+                invoices.append(invoice)
+
+
+    results = []
+    for invoice in invoices:
+        if invoice.dwolla_transfer_id:
+            transfer = dwolla.get_funded_transfer(invoice.dwolla_transfer_id)
+            amount = transfer['amount']
+            source_customer_url = transfer['source_customer_url']
+            status = transfer['status']
+            date = transfer['created_date']
+            parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
+            if parent:
+                results.append({
+                    'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+                    'amount': amount,
+                    'date': date,
+                    'type': 'Online Transfer',
+                    'payer': '%s %s' % (parent.first_name, parent.last_name),
+                    'invoice': invoice.key.id() if invoice else 'NA',
+                    'note': '',
+                })
+
+    return results

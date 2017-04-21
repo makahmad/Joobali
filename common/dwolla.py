@@ -259,6 +259,7 @@ def get_funded_transfer(transfer_url):
     result['destination_customer_url'] = transfer['_links']['destination']['href']
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href']
     result['status'] = transfer['status']
+    result['created_date'] = transfer['created'][0:10]
     return result
 
 def parse_webhook_data(webhook_json):

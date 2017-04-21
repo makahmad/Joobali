@@ -119,10 +119,11 @@ def get_autopay_info(invoice):
     """ Gets the funding source id and the number of days before due date for autopayment from enrollment associated with this invoice"""
     lineItems = InvoiceLineItem.query(ancestor = invoice.key)
     for lineItem in lineItems:
-        enrollment = lineItem.enrollment_key.get()
-        if enrollment:
-            if enrollment.pay_days_before and enrollment.autopay_source_id:
-                return (enrollment.pay_days_before, enrollment.autopay_source_id)
+        if lineItem.enrollment_key:
+            enrollment = lineItem.enrollment_key.get()
+            if enrollment:
+                if enrollment.pay_days_before and enrollment.autopay_source_id:
+                    return (enrollment.pay_days_before, enrollment.autopay_source_id)
     return (None, None)
 
 def get_invoice_enrollments(invoice):
