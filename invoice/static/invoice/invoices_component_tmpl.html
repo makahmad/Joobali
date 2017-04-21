@@ -9,15 +9,16 @@
         <th>Status</th>
       </thead>
       <tbody>
-        <tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-class="{invoiceMouseOver: invoice.hover}" ng-click="$ctrl.viewInvoice(invoice)" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false">
+        <!-- <tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-class="{invoiceMouseOver: invoice.hover}" ng-click="$ctrl.viewInvoice(invoice)" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false"> -->
+				<tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-click="$ctrl.viewInvoice(invoice)">
           <td>{{ invoice.provider }}</td>
           <td>{{ invoice.child }}</td>
           <td>{{ invoice.due_date }}</td>
           <td>{{ invoice.amount }}</td>
           <td>{{ invoice.paid ? "Paid" : "Unpaid" }}</td>
           <td>
-            <button class="PayBillButton btn btn-primary btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid">{{ $ctrl.getButtonText() }}</button>
-            <button class="AdjustButton btn btn-primary btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid">Adjust</button>
+            <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid"><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText() }}</button>
+            <button class="AdjustButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid"><i class="fa fa-pencil fa-lg"></i> &nbsp;Adjust</button>
           </td>
         </tr>
       </tbody>
