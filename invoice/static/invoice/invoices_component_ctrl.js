@@ -6,7 +6,9 @@ InvoicesComponentController = function($window, $http, $uibModal) {
         console.log("Opening Adjust Invoice Modal");
         var modalInstance = $uibModal.open({
             animation: true,
-            component: 'adjustInvoiceComponent',
+            templateUrl: '/static/invoice/adjust_invoice_component_tmpl.html',
+            controller: 'AdjustInvoiceComponentController',
+            controllerAs: '$ctrl',
             resolve: {
                 clickedInvoice: function () {
                   return clicked_invoice;

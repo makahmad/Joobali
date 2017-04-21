@@ -234,17 +234,6 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           isProvider: '@'
         }
     })
-    // The adjust invoice modal
-    .component('adjustInvoiceComponent', {
-        templateUrl: '/static/invoice/adjust_invoice_component_tmpl.html',
-        controller: AdjustInvoiceComponentController,
-        bindings: {
-          invoices: '<',
-          resolve: '<',
-          close: '&',
-          dismiss: '&'
-        }
-    })
     // The Payments page in dashboard
     .component('paymentComponent', {
         templateUrl: '/static/home/payment_component_tmpl.html',
