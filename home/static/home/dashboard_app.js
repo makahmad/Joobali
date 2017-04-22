@@ -145,6 +145,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     // need enrollment/enrollment-editor.component.js
     .controller('EnrollmentEditorController', EnrollmentEditorController)
     .controller('AddInvoiceController', AddInvoiceController)
+    .controller('InvoiceSettingsController', InvoiceSettingsController)
     .controller('AddPaymentController', AddPaymentController)
     .component('initSetupComponent', {
     templateUrl: '/static/home/init_setup_component_tmpl.html',
@@ -268,10 +269,6 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         bindings: {
           fundings: '<'
         }
-    })
-    .component('generalBillingComponent', {
-        templateUrl: '/static/funding/general_billing_component_tmpl.html',
-        controller: GeneralBillingComponentController
     })
     .component('transferComponent', {
         templateUrl: '/static/funding/transfer_component_tmpl.html',

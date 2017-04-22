@@ -54,6 +54,7 @@
     <script src="{{ STATIC_URL }}helpcenter/helpcenter_component_ctrl.js"></script>
 
     <!-- Invoice Related JS -->
+    <script src="{{ STATIC_URL }}invoice/invoice_settings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}invoice/add_invoice_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/invoice_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
@@ -69,7 +70,6 @@
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
-    <script src="{{ STATIC_URL }}funding/general_billing_component_ctrl.js"></script>
 
     <!-- Child Related JS -->
     <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
@@ -183,7 +183,7 @@
 
                 <li ng-click="changeView('/billing')" ng-class="{active: module=='/billing'}">
                     <a>
-						<i class="fa fa-money fa-2x"></i> &nbsp; Billing
+						<i class="fa fa-university fa-2x"></i> &nbsp; Funds
 					</a>
                 </li>
 

@@ -85,7 +85,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
         self.resetModal();
     };
 
-    self.closeModal = function() {
+    self.cancel = function() {
         $uibModalInstance.close();
     }
 

@@ -9,4 +9,15 @@ InvoiceComponentController = function($uibModal) {
             controllerAs: '$ctrl',
         });
     };
+
+    self.openInvoiceSettingsModal = function() {
+        console.log("Opening  Invoice Settings Modal");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/static/invoice/invoice_settings_component_tmpl.html',
+            controller: 'InvoiceSettingsController',
+            controllerAs: '$ctrl',
+        });
+    };
+
 };
