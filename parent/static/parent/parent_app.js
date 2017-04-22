@@ -76,7 +76,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
                  .when('/child/list', {template: '<child-list-parent-view></child-list-parent-view>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .when('/enrollmentview/:providerId/:enrollmentId', {template: '<enrollment-parent-view></enrollment-parent-view>'})
-                 .otherwise('/index');
+                 .otherwise('/due'); //.otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
 	.component('initSetupComponent', {

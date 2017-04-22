@@ -132,7 +132,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
-                 .otherwise('/dashboard');
+                 .otherwise('/programs'); //.otherwise('/dashboard');
           }])
     .controller('DashboardCtrl', DashboardController)
     // to support enrollment modal in child-card
