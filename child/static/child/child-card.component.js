@@ -8,7 +8,6 @@ ChildCardController = function ChildCardController($uibModal, $scope, $http, $ro
 
 ChildCardController.prototype.$onInit = function() {
     this.getEnrollmentData();
-    console.log(moment(this.child.date_of_birth, "MM/DD/YYYY").toNow(true));
     var currentDate = moment(new Date());
     var dateDiff = moment.duration(currentDate.diff(moment(this.child.date_of_birth, "MM/DD/YYYY")));
     diff_str = "";
