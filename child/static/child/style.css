@@ -36,6 +36,11 @@
     padding: 2px 16px;
 }
 
+.child-list-filter-options {
+    padding: 2px 16px;
+    box-shadow:0 0px 27px 0 rgba(0,0,0,0.2);
+}
+
 .stepsDiv {
 	width: 63%;
 	margin: 0 auto;
