@@ -6,6 +6,7 @@
         <th>Child</th>
         <th>Due Date</th>
         <th>Amount</th>
+        <th>Balance Due</th>
         <th>Status</th>
       </thead>
       <tbody>
@@ -14,7 +15,8 @@
           <td>{{ invoice.provider }}</td>
           <td>{{ invoice.child }}</td>
           <td>{{ invoice.due_date }}</td>
-          <td>{{ invoice.amount }}</td>
+          <td>${{ invoice.original_amount }}</td>
+          <td>${{ invoice.amount }}</td>
           <td>{{ invoice.paid ? "Paid" : "Unpaid" }}</td>
           <td>
             <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid"><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText() }}</button>

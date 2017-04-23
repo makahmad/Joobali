@@ -65,6 +65,16 @@ def sum_up_amount_due(invoice):
         amount += lineItem.amount
     return amount
 
+def sum_up_original_amount_due(invoice):
+    """Sums up all the payment amount due for this invoice"""
+    amount = 0
+    # program related payment
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key).filter(InvoiceLineItem.payment_key == None)
+    for lineItem in lineItems:
+        amount += lineItem.amount
+    return amount
+
+
 # def create_invoice_email(invoice):
 #     """ Create the html email notification to customers"""
 #     html = ''
