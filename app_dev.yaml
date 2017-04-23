@@ -20,6 +20,8 @@ libraries:
   version: "0.15"
 - name: ssl
   version: latest
+- name: pycrypto
+  version: latest
 
 builtins:
 - django_wsgi: on

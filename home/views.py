@@ -6,9 +6,11 @@ from django import template
 from django.http import HttpResponse
 from login.models import Provider
 from manageprogram.models import Program
-
 import json
 import logging
+from jose import jwt
+from datetime import datetime
+import random
 
 def index(request):
 	loggedIn = False
@@ -35,12 +37,21 @@ def dashboard(request):
 	if provider is not None:
 		schoolName = provider.schoolName
 
+	payload = {
+		'name': request.session.get('user_id'),
+		'email': request.session.get('email'),
+		'iat': datetime.now(),
+		'jti': request.session.get('email')+str(random.getrandbits(64))
+	}
+	zendesk_token = jwt.encode(payload, '142f1e0db16dae59354211d49d1962cd')
+
 	return render_to_response(
 		'home/dashboard.html',
 		{
 			'loggedIn': True,
 			'email': request.session.get('email'),
-			'schoolName': schoolName
+			'schoolName': schoolName,
+			'zendesk_token': zendesk_token
 		 },
 		template.RequestContext(request)
 	)
