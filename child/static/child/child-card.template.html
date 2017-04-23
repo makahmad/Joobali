@@ -2,12 +2,27 @@
     <div class="child-card-container">
 		<!-- <div class="child-card-container" ng-mouseenter="$ctrl.showEnrollment = true" ng-mouseleave="$ctrl.showEnrollment = false"> -->
         <div class="panel">
-            <h4>{{$ctrl.child.first_name}} {{$ctrl.child.last_name}}</h4>
-            <p>Date of Birth: {{$ctrl.child.date_of_birth}}</p>
-						Email:<a href="mailto:{{$ctrl.child.email}}">{{$ctrl.child.email}}</a>
+            <div class="panel panel-header">
+                <h4>
+                    <span class="label label-info">Name</span>
+                    {{$ctrl.child.first_name}} {{$ctrl.child.last_name}}
+                </h4>
+                <h4>
+                    <span class="label label-info">Date of Birth</span>
+                    {{$ctrl.child.date_of_birth}}
+                </h4>
+                <h4>
+                    <span class="label label-info">Age</span>
+                    {{$ctrl.child.age}}
+                </h4>
+                <h4>
+                    <span class="label label-info">Email</span>
+                    <a href="mailto:{{$ctrl.child.email}}">{{$ctrl.child.email}}</a>
+                </h4>
+            </div>
         </div>
-				<div class="child-enrollment-container">
-        <!-- <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)"> -->
+        <div class="child-enrollment-container">
+            <!-- <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)"> -->
             <label>Enrollment Information:</label><br>
             <enrollment-list child="$ctrl.child" enrollments="$ctrl.enrollments"></enrollment-list>
         </div>

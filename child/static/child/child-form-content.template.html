@@ -19,6 +19,7 @@
             <input name="dateOfBirth"
                    type="text" class="form-control"
                    uib-datepicker-popup="MM/dd/yyyy"
+                   datepicker-options="{maxDate: $ctrl.todayDate}"
                    ng-model="$ctrl.newChildEnrollmentInfo.child_date_of_birth"
                    is-open="$ctrl.dateOfBirthPickerOpened"
                    ng-required="true"
