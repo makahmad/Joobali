@@ -1,23 +1,18 @@
-<!-- ************************ -->
 <span class="programHeader"><b>Children</b></span>
-<div class="programsContainer">	
+<div class="programsContainer">
     <div class="programsDiv">
-		  <div class="well well-sm">
-        <div class="buttonDiv addChildButtonDiv pull-left">
-            <a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openAddChildModal()">ADD A CHILD
-							<i class="fa fa-plus-circle fa-lg"></i>
-						</a>
+        <div class="well well-sm">
+            <div class="buttonDiv addChildButtonDiv pull-left">
+                <a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openAddChildModal()">
+                    Enroll a new Child<i class="fa fa-plus-circle fa-lg"></i>
+                </a>
+            </div>
         </div>
-				
-	      <div class="btn-group">
-					&nbsp;
-					<!-- <a id="grid" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th"></span>Grid</a>
-	      	<a id="list" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th-list"></span>List</a> -->
-	      </div>
-		  </div>
-			
-				<ol class="childrenList">
-					<child-card data-ng-repeat="child in $ctrl.children track by $index" child="child" programs="$ctrl.programs" index="$index" flex></child-card>
-				</ol>
+        <div>
+            <ol class="childrenList">
+                <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
+                            programs="$ctrl.programs" index="$index" flex></child-card>
+            </ol>
+        </div>
     </div>
 </div>

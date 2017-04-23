@@ -49,16 +49,16 @@ def add_child(request):
         response['status'] = 'failure'
     else:
         request_content = json.loads(request.body)
-        child_first_name = request_content['first_name']
-        child_last_name = request_content['last_name']
-        date_of_birth = request_content['date_of_birth']
-        parent_email = request_content['email']
+        child_first_name = request_content['child_first_name']
+        child_last_name = request_content['child_last_name']
+        date_of_birth = request_content['child_date_of_birth']
+        parent_email = request_content['child_parent_email']
         program = request_content['program']
-        enrollment_start_date = request_content['enrollment_start_date']
+        billing_start_date = request_content['start_date']
 
         # Setup Parent entity for child
         provider_key = Provider.generate_key(session.get_provider_id(request))
-        (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['email'],
+        (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
                                                                           provider_key=provider_key,
                                                                           child_first_name=child_first_name)
 
@@ -78,7 +78,7 @@ def add_child(request):
             'provider_key': provider_key,
             'program_key': program_key,
             'status': 'initialized',
-            'start_date': enrollment_start_date
+            'start_date': billing_start_date
         }
         enrollment = enrollment_util.upsert_enrollment(enrollment_input)
         if parent.status is 'active':

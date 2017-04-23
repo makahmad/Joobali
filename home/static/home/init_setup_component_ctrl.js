@@ -1,6 +1,7 @@
 InitSetupComponentController = function($http) {
     console.log('InitSetupComponentController running');
     this.dateOfBirthPickerOpened = false;
+    this.isDone = false;
 
     this.openDateOfBirthPicker = function() {
         console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
@@ -84,6 +85,7 @@ InitSetupComponentController.prototype.handleNext = function() {
             }).then(
                 angular.bind(this, function (response) {
                     console.log('post suceeded');
+                    this.getPrograms();
                     this.moveToNext(curContent, curNav);
                 }),
                 function (response) {
@@ -97,26 +99,41 @@ InitSetupComponentController.prototype.handleNext = function() {
     }
 };
 
+InitSetupComponentController.prototype.getPrograms = function() {
+    this.http_({
+        method: 'GET',
+        url: '/manageprogram/listprograms'
+    }).then(angular.bind(this, function successCallback(response) {
+        // this callback will be called asynchronously
+        // when the response is available
+        this.programs = [];
+        angular.forEach(response.data, angular.bind(this, function(program) {
+            this.programs.push(JSON.parse(program));
+        }));
+    }), angular.bind(this, function errorCallback(response) {
+        // TODO(zilong): deal with error here
+    }));
+};
+
+InitSetupComponentController.prototype.onSaveChildEnrollmentInfo = function(isSaved) {
+    this.isDone = isSaved;
+}
 
 InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
-    // TODO: save the last task (i.e. add child)
-    console.log('$ctrl.childInfo: ');
-    console.log(this.childInfo);
-    this.childOverview = angular.copy(this.childInfo);
-    this.childOverview.date_of_birth = moment(this.childOverview.date_of_birth).format('MM/DD/YYYY');
-    console.log(this.childOverview);
-    this.http_.post('/child/add', this.childOverview).then(function successCallback(response) {
+    console.log('$ctrl.newChildEnrollmentInfo: ' + this.newChildEnrollmentInfo);
+    var submittingForm = angular.copy(this.newChildEnrollmentInfo);
+    this.http_.post('/child/add', submittingForm).then(function successCallback(response) {
         var isSaveSuccess = false;
         console.log(response);
         if (response.data.status == 'success') {
             isSaveSuccess = true;
         }
         if (!isSaveSuccess) {
-            alert("Something is wrong with the saving child info. Please try again later");
+            console.log("Something is wrong with the saving child info. Please try again later");
         }
     }, function errorCallback(response) {
-        alert("Something is wrong with the saving child info. Please try again later");
+        console.log("Something is wrong with the saving child info. Please try again later");
     });
 
     this.http_({

@@ -149,8 +149,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .controller('AdjustInvoiceComponentController', AdjustInvoiceComponentController)
     .controller('AddPaymentController', AddPaymentController)
     .component('initSetupComponent', {
-    templateUrl: '/static/home/init_setup_component_tmpl.html',
-    controller: InitSetupComponentController
+        templateUrl: '/static/home/init_setup_component_tmpl.html',
+        controller: InitSetupComponentController
     })
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',
@@ -199,7 +199,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         dismiss: '&'
       }
     })
-     .component('addPaymentComponent', {
+    .component('addPaymentComponent', {
       templateUrl: '/static/payments/add_payment_component_tmpl.html',
       controller: AddPaymentController,
       bindings: {
@@ -293,6 +293,14 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           child: '<',
           index: '<',
           programs: '<'
+        }
+    })
+    .component('childFormContent', {
+        templateUrl: '/static/child/child-form-content.template.html',
+        controller: ['$http', ChildFormContentController],
+        bindings: {
+            programs : '<',
+            onSave : '&'
         }
     })
     .component('enrollmentList',{

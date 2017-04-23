@@ -45,9 +45,9 @@ ChildListController.prototype.openAddChildModal = function() {
         templateUrl: '/static/child/child-form.template.html',
         controller: 'ChildFormController',
         controllerAs: '$ctrl',
-    }).closed.then(function() {
+    }).closed.then(angular.bind(this, function() {
         this.refreshList();
-    });
+    }));
 };
 
 ChildListController.prototype.getProgramData = function() {

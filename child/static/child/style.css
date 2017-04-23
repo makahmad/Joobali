@@ -59,15 +59,6 @@
 	}
 }
 
-
-.child-form-content {
-	visibility: hidden;
-}
-
-.child-form-content.active {
-	visibility: visible;
-}
-
 #addChildNextButton {
 	visibility: visible;
 }

@@ -30,9 +30,7 @@ AddProgramFormComponentController = function($scope,$http) {
             // or server returns response with an error status.
             console.log(response);
         });
-
     };
-
 };
 
 AddProgramFormComponentController.prototype.initializeTimePickers = function() {
