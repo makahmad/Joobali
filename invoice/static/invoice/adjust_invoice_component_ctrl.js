@@ -1,11 +1,11 @@
-AdjustInvoiceComponentController = function($location, $http) {
+AdjustInvoiceComponentController = function($uibModalInstance, $location, $http) {
     console.log('AdjustInvoiceComponentController running');
     this.location_ = $location;
     this.http_ = $http;
 
     self = this
     self.closeModal = function() {
-        self.dismiss({$value: 'cancel'});
+        $uibModalInstance.close();
     }
 }
 

@@ -146,6 +146,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .controller('EnrollmentEditorController', EnrollmentEditorController)
     .controller('AddInvoiceController', AddInvoiceController)
     .controller('InvoiceSettingsController', InvoiceSettingsController)
+    .controller('AdjustInvoiceComponentController', AdjustInvoiceComponentController)
     .controller('AddPaymentController', AddPaymentController)
     .component('initSetupComponent', {
     templateUrl: '/static/home/init_setup_component_tmpl.html',
