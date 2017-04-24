@@ -6,8 +6,10 @@ from django.http import HttpResponseRedirect
 
 from common.json_encoder import JEncoder
 from common.session import check_session
+from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
+from google.appengine.ext import ndb
 
 
 logger = logging.getLogger(__name__)
@@ -80,7 +82,8 @@ def updateProfile(request):
         provider.schoolName = profile['schoolName']
         provider.firstName = profile['firstName']
         provider.lastName = profile['lastName']
-        # todo for Rongjian update transactions tied to this email address and Unique object
+
+        unique_util.update_provider(provider.email, profile['email'], provider.key)
         provider.email = profile['email']
         provider.phone = profile['phone']
         provider.website = profile['website']

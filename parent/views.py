@@ -15,6 +15,8 @@ import json
 from jose import jwt
 from datetime import datetime
 import random
+from login import unique_util
+from google.appengine.ext import ndb
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +91,8 @@ def updateProfile(request):
                 return HttpResponseServerError('current password is incorrect')
         parent.first_name = profile['first_name']
         parent.last_name = profile['last_name']
-        # todo for Rongjian update transactions tied to this email address and Unique object
+
+        unique_util.update_parent(parent.email, profile['email'], parent.key)
         parent.email = profile['email']
         parent.phone = profile['phone']
         parent.put()
