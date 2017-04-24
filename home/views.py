@@ -38,7 +38,7 @@ def dashboard(request):
 		schoolName = provider.schoolName
 
 	payload = {
-		'name': request.session.get('user_id'),
+		'name': request.session.get('name'),
 		'email': request.session.get('email'),
 		'iat': datetime.now(),
 		'jti': request.session.get('email')+str(random.getrandbits(64))

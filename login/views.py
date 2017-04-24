@@ -22,7 +22,10 @@ from passlib.apps import custom_app_context as pwd_context
 from os import environ
 
 import logging
-
+from jose import jwt
+from datetime import datetime
+import random
+import urllib
 from verification.verification_util import get_parent_signup_verification_token
 
 account_token = create_account_token('sandbox')
@@ -368,6 +371,14 @@ def reset(request):
 
 def login(request):
     form = LoginForm()
+    return_to = request.GET.get('return_to')
+    zendesk = request.GET.get('zendesk')
+
+    if return_to == 'None':
+        return_to = None
+
+    if zendesk == 'None':
+        zendesk = None
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
@@ -378,10 +389,13 @@ def login(request):
             is_provider = True
             query = models.Provider.query().filter(models.Provider.email == email)
             result = query.get()
+            name = result.firstName+' '+result.lastName
             if not result:
                 is_provider = False
                 query = Parent.query().filter(Parent.email == email)
                 result = query.get()
+                name = result.first_name + ' ' + result.last_name
+
                 if not result:
                     logger.info('Error: wrong combination of credential');
                     form.email.errors = 'Error: wrong combination of credential'
@@ -402,20 +416,47 @@ def login(request):
                 # authentication succeeded.
                 logger.info('login successful')
                 request.session['email'] = email
+                request.session['name'] = name
                 request.session['user_id'] = result.key.id()
                 request.session['is_provider'] = is_provider
                 request.session['dwolla_customer_url'] = getCustomerUrl(email)
                 logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
             else:
                 form.email.errors = 'Error: wrong combination of credential'
-    if check_session(request):
+
+
+    if check_session(request) and not zendesk:
         if request.session.get('is_provider') is True:
             return HttpResponseRedirect("/home/dashboard")
         else:
             return HttpResponseRedirect("/parent")
+    elif check_session(request) and zendesk:
+        payload = {
+            'name': request.session.get('name'),
+            'email': request.session.get('email'),
+            'iat': datetime.now(),
+            'jti': request.session.get('email') + str(random.getrandbits(64))
+        }
+        if request.session.get('is_provider') is True:
+            payload['user_fields'] = {'is_provider_': True}
+        else:
+            payload['user_fields'] = {'is_parent_': True}
+
+        shared_key = 'YnmwhNazqOXXVAdEgWwpa7HiVa01Ud7kzuLIUHoySPgklwAp'
+        jwt_string = jwt.encode(payload, shared_key)
+        location = "https://joobali.zendesk.com/access/jwt?jwt=" + jwt_string
+
+        if return_to is not None:
+            location += "&return_to=" + urllib.quote(return_to)
+
+        return HttpResponseRedirect(location)
+
+
     return render_to_response(
         'login/login.html',
-        {'form': form},
+        {'form': form,
+         'return_to': return_to,
+         'zendesk': zendesk},
         template.RequestContext(request))
 
 

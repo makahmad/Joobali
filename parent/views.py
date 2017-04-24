@@ -12,7 +12,9 @@ from funding import funding_util
 from django.http import HttpResponse
 import logging
 import json
-
+from jose import jwt
+from datetime import datetime
+import random
 
 logger = logging.getLogger(__name__)
 
@@ -20,11 +22,21 @@ logger = logging.getLogger(__name__)
 def index(request):
     if not check_session(request) or request.session['is_provider'] is True:
         return HttpResponseRedirect('/login')
+
+    payload = {
+        'name': request.session.get('name'),
+        'email': request.session.get('email'),
+        'iat': datetime.now(),
+        'jti': request.session.get('email') + str(random.getrandbits(64))
+    }
+    zendesk_token = jwt.encode(payload, '142f1e0db16dae59354211d49d1962cd')
+
     return render_to_response(
         'parent/index.html',
         {
             'loggedIn': True,
-            'email': request.session.get('email')
+            'email': request.session.get('email'),
+			'zendesk_token': zendesk_token
         },
         template.RequestContext(request)
     )
