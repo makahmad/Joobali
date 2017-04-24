@@ -16,19 +16,16 @@ PaymentComponentController = function($uibModal) {
     };
 
 
-      self.confirmAddComponentModal = function (newPayment) {
+    self.confirmAddComponentModal = function (newPayment) {
         console.log("Opening confirmAddComponentModal");
-
-
-      console.log(newPayment);
         var modalInstance = $uibModal.open({
-          animation: true,
-          component: 'confirmAddPaymentComponent',
-           resolve: {
+            animation: true,
+            component: 'confirmAddPaymentComponent',
+            resolve: {
             newPayment: function () {
               return newPayment;
             }
-          }
+            }
         });
-  };
+    };
 };

@@ -11,20 +11,22 @@
             <select class="form-control" id="child" ng-required="true"
                     ng-options="child.id + '-' + child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
                     ng-model="$ctrl.newPayment.child"
-                    ng-change="$ctrl.updateProgramOptions($ctrl.newPayment.child.id)"></select>
+                    ng-change="$ctrl.updateProgramOptions($ctrl.newPayment.child.id)"
+                    ng-disabled="$ctrl.resolve.invoice"></select>
         </div>
         <div class="form-group">
-            <label class="control-label" for="invoice">Invoice (optional)</label>
+            <label class="control-label" for="invoice">Invoice <span>(optional)</span></label>
             <select class="form-control" id="invoice"
                     ng-options="invoice.id + '($' + invoice.amount + ')' for invoice in $ctrl.invoices track by invoice.id "
-                    ng-model="$ctrl.newPayment.invoice"><option value="aa" selected></option></select>
+                    ng-model="$ctrl.newPayment.invoice"
+                    ng-disabled="$ctrl.resolve.invoice"><option ng-if="!$ctrl.resolve.invoice" value="" selected></option></select>
         </div>
         <div class="form-group">
             <label class="control-label" for="amount">Amount:</label>
             <div class="input-group">
                 <span class="input-group-addon">$</span>
                 <input type="number" min="0" ng-max="$ctrl.newPayment.invoice.amount" step="0.01" class="form-control" id="amount" name="amount"
-                         ng-required="true"  ng-model="$ctrl.newPayment.amount">
+                         ng-required="true"  ng-model="$ctrl.newPayment.amount" ng-disabled="$ctrl.resolve.invoice">
             </div>
         </div>
         <div class="form-group">
@@ -41,7 +43,7 @@
                 <input name="payment_date"
                        type="text" class="form-control"
                        uib-datepicker-popup="MM/dd/yyyy"
-                       datepicker-options="{minDate: $ctrl.todayDate}"
+                       datepicker-options="{maxDate: $ctrl.todayDate}"
                        ng-model="$ctrl.newPayment.payment_date"
                        is-open="$ctrl.paymentDatePickerOpened"
                        ng-required="true"

@@ -9,6 +9,7 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
     self.createButton = {};
     self.createSuccessLabel = {};
     self.createFailLabel = {};
+    this.todayDate = new Date();
 
 
     $scope.paymentTypes = [{
@@ -30,24 +31,31 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
 
 
     self.updateProgramOptions = function(child_id) {
-        $http({
-            method: 'GET',
-            url: '/invoice/listinvoicebychild',
-            params: {'child_id': child_id}
-        }).then(angular.bind(this, function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
+        if (!self.resolve.invoice) {
+            $http({
+                method: 'GET',
+                url: '/invoice/listinvoicebychild',
+                params: {'child_id': child_id}
+            }).then(angular.bind(this, function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                this.invoices = [];
+                angular.forEach(response.data, angular.bind(this, function(invoice) {
+                    inv = JSON.parse(invoice);
+                    if (inv.amount > 0) {
+                        this.invoices.push(inv);
+                    }
+                }));
+                //this.newPayment.program = this.programs[0];
+            }), function errorCallback(response) {
+                alert('Something is wrong here. Please refresh the page and try again');
+            });
+        } else {
             this.invoices = [];
-            angular.forEach(response.data, angular.bind(this, function(invoice) {
-                inv = JSON.parse(invoice);
-                if (inv.amount > 0) {
-                    this.invoices.push(inv);
-                }
-            }));
-            //this.newPayment.program = this.programs[0];
-        }), function errorCallback(response) {
-            alert('Something is wrong here. Please refresh the page and try again');
-        });
+            this.invoices.push(self.resolve.invoice);
+            this.newPayment.invoice = self.resolve.invoice;
+            this.newPayment.amount = self.resolve.invoice.amount;
+        }
     }
 
     self.openPaymentDatePicker = function() {
@@ -76,9 +84,15 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
         // when the response is available
         this.children = [];
         angular.forEach(response.data, angular.bind(this, function(child) {
-            this.children.push(JSON.parse(child));
+            child_obj = JSON.parse(child);
+            if (self.resolve.invoice) {
+                if (self.resolve.invoice.child_id == child_obj.id) {
+                    this.children.push(child_obj);
+                }
+            } else {
+                this.children.push(child_obj);
+            }
         }));
-        console.log(this.children);
         this.newPayment.child = this.children[0];
         this.updateProgramOptions(this.newPayment.child['id'])
     }), function errorCallback(response) {

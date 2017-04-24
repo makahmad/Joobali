@@ -16,6 +16,35 @@ InvoicesComponentController = function($window, $http, $uibModal) {
               }
             });
     };
+    self.openAddPaymentModal = function(clicked_invoice) {
+        console.log("Opening Add Payment Modal for 'Mark as Paid'");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            component: 'addPaymentComponent',
+                resolve: {
+                    confirmAddComponentModal: function () {
+                       return self.confirmAddComponentModal;
+                    },
+                    invoice: function() {
+                       return clicked_invoice;
+                    }
+              }
+            });
+    };
+
+
+    self.confirmAddComponentModal = function (newPayment) {
+        console.log("Opening confirmAddComponentModal");
+        var modalInstance = $uibModal.open({
+            animation: true,
+            component: 'confirmAddPaymentComponent',
+            resolve: {
+            newPayment: function () {
+              return newPayment;
+            }
+            }
+        });
+    };
     this.window_ = $window;
     this.http_ = $http;
 }
@@ -26,28 +55,29 @@ InvoicesComponentController.prototype.viewInvoice = function(clicked_invoice) {
 
 InvoicesComponentController.prototype.buttonClicked = function(clicked_invoice) {
     if (this.isProvider == 'true') {
-        var data = {
-            'invoice_id': clicked_invoice.invoice_id
-        }
-        this.http_({
-          method: 'POST',
-          url: '/invoice/markpaid',
-          data: JSON.stringify(data)
-        })
-        .then(
-            function(response){
-                console.log('post suceeded');
-                if (response.data !== 'success') {
-                    alert(response.data);
-                } else {
-                    alert('Marking invoice paid succeeded.')
-                    clicked_invoice.paid = true;
-                }
-            },
-            function(response){
-                alert('Something is wrong. Please try again.');
-            }
-         );
+        this.openAddPaymentModal(clicked_invoice);
+//        var data = {
+//            'invoice_id': clicked_invoice.invoice_id
+//        }
+//        this.http_({
+//          method: 'POST',
+//          url: '/invoice/markpaid',
+//          data: JSON.stringify(data)
+//        })
+//        .then(
+//            function(response){
+//                console.log('post suceeded');
+//                if (response.data !== 'success') {
+//                    alert(response.data);
+//                } else {
+//                    alert('Marking invoice paid succeeded.')
+//                    clicked_invoice.paid = true;
+//                }
+//            },
+//            function(response){
+//                alert('Something is wrong. Please try again.');
+//            }
+//         );
     } else {
         if (this.fundings.length == 0) {
             $('#paymentSetupModal').modal('show');
