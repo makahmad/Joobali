@@ -156,8 +156,10 @@ def addProgram(request):
     program.lateFee = newProgram['lateFee']
     program.billingFrequency = newProgram['billingFrequency']
 
-    program.monthlyBillDay = str(newProgram['monthlyBillDay'])
-    program.weeklyBillDay = newProgram['weeklyBillDay']
+    try:
+        program.monthlyBillDay = str(newProgram['monthlyBillDay'])
+    except KeyError:
+        program.weeklyBillDay = newProgram['weeklyBillDay']
 
     program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 
