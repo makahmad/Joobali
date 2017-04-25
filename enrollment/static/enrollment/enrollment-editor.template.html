@@ -5,30 +5,24 @@
 <div class="modal-body">
     <div class="enrollmentEditor">
         <p>You're editing Enrollment for <b>{{$ctrl.child.first_name + " " + $ctrl.child.last_name}}</b>
-            in program <b>{{$ctrl.enrollment.program_key[1][1]}}</b></p>
-        <form name="enrollmentEditForm" role="form" class="well">
-            <!--
-            <div class="active">
-                <div class="form-group" ng-class="{'has-error': enrollmentEditForm.startDate.$invalid && enrollmentEditForm.startDate.$touched}">
-                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
-                    <p class="input-group">
-                        <input name="startDate" type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" datepicker-options="{minDate: $ctrl.todayDate}" ng-model="$ctrl.enrollment.start_date" is-open="$ctrl.startDatePickerOpened" ng-required="true" close-text="Close"
-                        />
-                        <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default"
-                                            ng-click="$ctrl.openStartDatePicker()">
-                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
-                    </p>
-                </div>
-            </div>
-            -->
-        </form>
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.reactivateEnrollment()"
-                ng-show="$ctrl.enrollment.status == 'inactive'">Reactive Enrollment
-        </button>
-        <button type="button" class="btn btn-danger" ng-click="$ctrl.cancelEnrollment()"
-                ng-show="$ctrl.isEnrollmentActive()">Cancel Enrollment
-        </button>
+            in program <b>{{$ctrl.program.programName}}</b></p>
+        <div>
+            <p>
+                <span class="label label-danger" ng-show="$ctrl.showWarning">Incorrect billing start date</span>
+            </p>
+            <label>Enter enrollment billing start date (MM/DD/YYYY) for further operation</label>
+            <input type="text" required ng-model="$ctrl.billing_start_date">
+        </div>
+        <div ng-show="$ctrl.enrollment.status == 'inactive'">
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.reactivateEnrollment()">
+                Reactive Enrollment
+            </button>
+        </div>
+        <div ng-show="$ctrl.isEnrollmentActive()">
+            <button type="button" class="btn btn-danger" ng-click="$ctrl.cancelEnrollment()">
+                Cancel Enrollment
+            </button>
+        </div>
     </div>
 </div>
 <div class="modal-footer"></div>

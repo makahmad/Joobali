@@ -1,61 +1,87 @@
 EnrollmentEditorController = function EnrollmentEditorController($uibModalInstance, $http, enrollment) {
-    var self = this;
-    self.enrollment = enrollment;
-    self.startDatePickerOpened = false;
-    self.child = {};
+    this.uibModalInstance_ = $uibModalInstance;
+    this.http_ = $http;
+
+    this.enrollment = enrollment;
+    this.startDatePickerOpened = false;
+    this.child = {};
+    this.program = {};
     // Functions
-    self.renderEnrollmentEditor = function(enrollment) {
-      var child_key = enrollment.child_key;
-      var child_id = child_key.Child;
-      var get_child_request = {'child_id' : child_id};
-      $http.post('/child/get', get_child_request)
-      .then(function successCallback(response) {
-        self.child = response.data;
-        console.log(self.child)
-      }, function errorCallback(response) {
-        console.log("Error when trying to get child info: " + response);
-      });
-      var get_program_request = {'program_id': enrollment.program_key.Program};
-    };
+}
 
-    self.cancelEnrollment = function() {
-        var enrollment_id = enrollment.id;
-        $http.post('/enrollment/cancelEnrollment', {'enrollment_id' : enrollment_id})
-        .then(function successCallback(response) {
-            console.log(response.data);
-            self.closeModal(true);
-        }, function errorCallback(response) {
-            console.log(response);
-        });
+EnrollmentEditorController.prototype.renderEnrollmentEditor = function(enrollment) {
+  var child_key = enrollment.child_key;
+  var child_id = child_key.Child;
+  var get_child_request = {'child_id' : child_id};
+  this.http_.post('/child/get', get_child_request)
+  .then(angular.bind(this, function successCallback(response) {
+    this.child = response.data;
+    console.log(this.child)
+  }), angular.bind(this, function errorCallback(response) {
+    console.log("Error when trying to get child info: " + response);
+  }));
+
+  this.http_.get('/manageprogram/getprogram', {
+    params:
+        {'id': enrollment.program_key.Program}
+  }).then(angular.bind(this, function successCallback(response) {
+    console.log(response);
+    console.log(response.data);
+    console.log(response.data[0]);
+    console.log(JSON.parse(response.data[0]).programName);
+    this.program = JSON.parse(response.data[0]);
+  }), angular.bind(this, function() {}));
+};
+
+EnrollmentEditorController.prototype.cancelEnrollment = function() {
+    console.log(this.enrollment.start_date);
+    console.log(this.billing_start_date);
+    if (!(this.enrollment.start_date == this.billing_start_date)) {
+        console.log("Invalid Start Date check");
+        this.showWarning = true;
+        return ;
     }
+    var enrollment_id = this.enrollment.id;
+    this.http_.post('/enrollment/cancelEnrollment', {'enrollment_id' : enrollment_id})
+    .then(angular.bind(this, function successCallback(response) {
+        console.log(response.data);
+        this.closeModal(true);
+    }), angular.bind(this, function errorCallback(response) {
+        console.log(response);
+    }));
+}
 
-    self.reactivateEnrollment = function() {
-        var enrollment_id = enrollment.id;
-        $http.post('/enrollment/reactivateEnrollment', {'enrollment_id' : enrollment_id})
-        .then(function successCallback(response) {
-            console.log(response.data);
-            self.closeModal(true);
-        }, function errorCallback(response) {
-            console.log(response);
-        });
+EnrollmentEditorController.prototype.reactivateEnrollment = function() {
+    var enrollment_id = this.enrollment.id;
+    if (!(this.enrollment.start_date == this.billing_start_date)) {
+        console.log("Invalid Start Date check");
+        this.showWarning = true;
+        return ;
     }
+    this.http_.post('/enrollment/reactivateEnrollment', {'enrollment_id' : enrollment_id})
+    .then(angular.bind(this, function successCallback(response) {
+        console.log(response.data);
+        this.closeModal(true);
+    }), angular.bind(this, function errorCallback(response) {
+        console.log(response);
+    }));
+}
 
-    self.isEnrollmentActive = function() {
-        return (self.enrollment.status == 'initialized'
-            || self.enrollment.status == 'invited'
-            || self.enrollment.status == 'active');
-    }
+EnrollmentEditorController.prototype.isEnrollmentActive = function() {
+    return (this.enrollment.status == 'initialized'
+        || this.enrollment.status == 'invited'
+        || this.enrollment.status == 'active');
+}
 
-    self.$onInit = function() {
-        self.renderEnrollmentEditor(self.enrollment);
-        self.startDatePickerOpened = false;
-    };
+EnrollmentEditorController.prototype.$onInit = function() {
+    this.renderEnrollmentEditor(this.enrollment);
+    this.startDatePickerOpened = false;
+};
 
-    self.openStartDatePicker = function() {
-      self.startDatePickerOpened = true;
-    };
+EnrollmentEditorController.prototype.openStartDatePicker = function() {
+  this.startDatePickerOpened = true;
+};
 
-    self.closeModal = function(refresh) {
-      $uibModalInstance.close({'refresh' : refresh});
-    }
+EnrollmentEditorController.prototype.closeModal = function(refresh) {
+  this.uibModalInstance_.close({'refresh' : refresh});
 }
