@@ -389,12 +389,11 @@ def login(request):
             is_provider = True
             query = models.Provider.query().filter(models.Provider.email == email)
             result = query.get()
-            name = result.firstName+' '+result.lastName
+
             if not result:
                 is_provider = False
                 query = Parent.query().filter(Parent.email == email)
                 result = query.get()
-                name = result.first_name + ' ' + result.last_name
 
                 if not result:
                     logger.info('Error: wrong combination of credential');
@@ -403,6 +402,11 @@ def login(request):
                         'login/login.html',
                         {'form': form},
                         template.RequestContext(request))
+                else:
+                    name = result.first_name + ' ' + result.last_name
+            else:
+                name = result.firstName + ' ' + result.lastName
+
             if isinstance(result, Provider):
                 if result.status.status != 'active':
                     logger.info('Error: user has not yet verify email');
