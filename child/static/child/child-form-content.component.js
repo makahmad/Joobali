@@ -6,6 +6,37 @@ ChildFormContentController = function ChildFormContentController($http) {
     this.todayDate = new Date();
     this.dateFormat = 'MM/DD/YYYY';
     this.showSaveButton = true;
+    this.newChildEnrollmentInfo = {};
+    this.enrollmentDatePickerOptions = {
+        minDate: this.todayDate,
+        dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
+    }
+
+    this.days = {
+        'Sunday': 0,
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+    }
+}
+
+ChildFormContentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
+    var result = false;
+    if (dateAndMode.mode === 'day') {
+        if (this.newChildEnrollmentInfo != null &&
+                this.newChildEnrollmentInfo.program != null &&
+                this.newChildEnrollmentInfo.program.billingFrequency != null) {
+            if (this.newChildEnrollmentInfo.program.billingFrequency === 'Weekly') {
+                result =  (dateAndMode.date.getDay() != this.days[this.newChildEnrollmentInfo.program.weeklyBillDay]);
+            } else if (this.newChildEnrollmentInfo.program.billingFrequency === 'Monthly') {
+                result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
+            }
+        }
+    }
+    return result;
 }
 
 ChildFormContentController.prototype.openDateOfBirthPicker = function() {

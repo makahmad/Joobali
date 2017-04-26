@@ -14,6 +14,21 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.saveSuccessLabel = {};
     self.saveFailLabel = {};
 
+    this.days = {
+        'Sunday': 0,
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+    }
+
+    this.enrollmentDatePickerOptions = {
+        minDate: this.todayDate,
+        dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
+    }
+
     self.saveButton.click = function() {
         console.log("saveButton is clicked");
         var submittingForm = {
@@ -94,4 +109,20 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.closeModal = function() {
         $uibModalInstance.close();
     }
+}
+
+ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
+    var result = false;
+    if (dateAndMode.mode === 'day') {
+        if (this.newEnrollment != null &&
+                this.newEnrollment.program != null &&
+                this.newEnrollment.program.billingFrequency != null) {
+            if (this.newEnrollment.program.billingFrequency === 'Weekly') {
+                result =  (dateAndMode.date.getDay() != this.days[this.newEnrollment.program.weeklyBillDay]);
+            } else if (this.newEnrollment.program.billingFrequency === 'Monthly') {
+                result = (dateAndMode.date.getDate() != this.newEnrollment.program.monthlyBillDay);
+            }
+        }
+    }
+    return result;
 }

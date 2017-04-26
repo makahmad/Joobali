@@ -41,8 +41,9 @@
                     <p class="input-group">
                         <input name="startDate"
                                type="text" class="form-control"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
                                uib-datepicker-popup="MM/dd/yyyy"
-                               datepicker-options="{minDate: $ctrl.todayDate}"
+                               datepicker-options="$ctrl.enrollmentDatePickerOptions"
                                ng-model="$ctrl.newEnrollment.start_date"
                                is-open="$ctrl.startDatePickerOpened"
                                ng-required="true"
