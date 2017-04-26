@@ -73,9 +73,11 @@ def get_funding_source(funding_source_url):
     source = account_token.get(funding_source_url).body
     result = {}
     result['name'] = source['name']
+    result['bank_name'] = source['bankName']
     result['status'] = source['status']
     result['type'] = source['type']
     result['removed'] = source['removed']
+    result['created_date'] = source['created'][0:10]
     result['customer_url'] = source['_links']['customer']['href']
     return result
 
@@ -198,9 +200,10 @@ def get_funding_transfer(transfer_url):
     result['currency'] = transfer['amount']['currency']
     #result['destination_customer_url'] = transfer['_links']['destination']['href']
     #result['failure_url'] = '%s/failure' % transfer['_links']['self']['href']
-    #result['funding_source_url'] = transfer['_links']['source']['href']
+    result['source_funding_url'] = transfer['_links']['source']['href']
     result['funded_transfer_url'] = transfer['_links']['funded-transfer']['href']
     result['status'] = transfer['status']
+    result['created_date'] = transfer['created'][0:10]
     return result
 
 def get_funded_transfer(transfer_url):
@@ -255,6 +258,7 @@ def get_funded_transfer(transfer_url):
     result = {}
     result['amount'] = transfer['amount']['value']
     result['currency'] = transfer['amount']['currency']
+    result['source_funding_url'] = transfer['_links']['source-funding-source']['href']
     result['source_customer_url'] = transfer['_links']['source']['href']
     result['destination_customer_url'] = transfer['_links']['destination']['href']
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href']
@@ -302,5 +306,5 @@ def parse_webhook_data(webhook_json):
     result['event_url'] = webhook_json['_links']['self']['href']
     result['resource_url'] = webhook_json['_links']['resource']['href']
     result['account_url'] = webhook_json['_links']['account']['href']
-    result['timestamp'] = webhook_json['timestamp'] # TODO(rongjian): parse into datetime object
+    result['event_date'] = webhook_json['timestamp'][0:10]
     return result

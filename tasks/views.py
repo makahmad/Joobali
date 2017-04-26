@@ -13,7 +13,7 @@ from common.dwolla import parse_webhook_data
 from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding_source
 from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
-from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_processing_email
+from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_cancelled_email
 from common.dwolla import start_webhook
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
@@ -198,6 +198,14 @@ def dwolla_webhook(request):
     logger.info("DWOLLA_WEBHOOK")
     webhook_content = json.loads(request.body)
 
+    # webhook_content = {u'created': u'2017-04-26T04:04:27.831Z', u'resourceId': u'553c6c1f-0941-45dd-9038-2c9a32ce46ce',
+    #                    u'topic': u'customer_funding_source_added', u'_links': {
+    #         u'customer': {u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'},
+    #         u'self': {u'href': u'https://api-uat.dwolla.com/events/88e0c745-0c2d-4441-a56b-b1c08382781c'},
+    #         u'resource': {
+    #             u'href': u'https://api-uat.dwolla.com/funding-sources/553c6c1f-0941-45dd-9038-2c9a32ce46ce'},
+    #         u'account': {u'href': u'https://api-uat.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'}},
+    #                    u'timestamp': u'2017-04-26T04:04:27.831Z', u'id': u'88e0c745-0c2d-4441-a56b-b1c08382781c'}
     logger.info(webhook_content)
     webhook_data = parse_webhook_data(webhook_content)
     if DwollaEvent.get_by_id(webhook_data['id']) != None:
@@ -210,12 +218,21 @@ def dwolla_webhook(request):
         destination_customer_url = funded_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
+        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(webhook_data['resource_url'])
         if invoice.status != Invoice._POSSIBLE_STATUS['PROCESSING']:
             invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
             invoice.put()
 
-        send_payment_processing_email(parent.email, parent.first_name, provider.schoolName, amount)
+        template = loader.get_template('funding/joobali-to-customer-transfer-created.html')
+        data = {
+            'transfer_type': 'Online',
+            'amount': '$' + str(amount),
+            'account_name': source_funding_source['name'],
+            'recipient': provider.schoolName,
+            'created_date': funded_transfer['created_date'],
+        }
+        send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
@@ -237,6 +254,35 @@ def dwolla_webhook(request):
         send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount)
 
         event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = str(webhook_content)
+        event.put()
+
+    elif ('customer_bank_transfer_cancelled' in webhook_data['topic']):
+        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
+        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
+        amount = funded_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
+        destination_customer_url = funded_transfer['destination_customer_url']
+        provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+
+        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
+        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        if invoice.status != Invoice._POSSIBLE_STATUS['FAILED']:
+            invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
+            invoice.put()
+
+        template = loader.get_template('funding/joobali-to-customer-transfer-cancelled.html')
+        data = {
+            'transfer_type': 'Online',
+            'amount': '$' + str(amount),
+            'account_name': source_funding_source['name'],
+            'recipient': provider.schoolName,
+            'cancelled_date': webhook_data['event_date'],
+        }
+        send_payment_cancelled_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
+
+        event = DwollaEvent(id=webhook_data['id'])
         event.event_id = webhook_data['id']
         event.event_content = str(webhook_content)
         event.put()
@@ -274,7 +320,14 @@ def dwolla_webhook(request):
             first_name = parent.first_name
             last_name = parent.last_name
             email = parent.email
-        send_funding_source_addition_email(email, first_name, funding_source['name'])
+
+        template = loader.get_template('funding/joobali-to-customer-funding-source-added.html')
+        data = {
+            'bank_name': funding_source['bank_name'],
+            'account_name': funding_source['name'],
+            'created_date': funding_source['created_date'],
+        }
+        send_funding_source_addition_email(email, first_name, funding_source['name'], template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
@@ -296,7 +349,14 @@ def dwolla_webhook(request):
             first_name = parent.first_name
             last_name = parent.last_name
             email = parent.email
-        send_funding_source_removal_email(email, first_name, funding_source['name'])
+
+        template = loader.get_template('funding/joobali-to-customer-funding-source-removed.html')
+        data = {
+            'bank_name': funding_source['bank_name'],
+            'account_name': funding_source['name'],
+            'removed_date': webhook_data['event_date'],
+        }
+        send_funding_source_removal_email(email, first_name, funding_source['name'], template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
