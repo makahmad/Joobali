@@ -25,7 +25,7 @@ import logging
 from jose import jwt
 from datetime import datetime
 import random
-import urllib
+import urllib, urllib2, json
 from verification.verification_util import get_parent_signup_verification_token
 
 account_token = create_account_token('sandbox')
@@ -38,8 +38,9 @@ def home(request):
         logger.info("Customer info: %s" % customers.body['_embedded']['customers'])
         return HttpResponse(customers.body['_embedded']['customers'])
 
-stripFilter = lambda x: x.strip()  if x else ''
-ProviderForm = model_form(models.Provider, exclude=['logo'],field_args={
+
+stripFilter = lambda x: x.strip() if x else ''
+ProviderForm = model_form(models.Provider, exclude=['logo'], field_args={
     'firstName': {
         'filters': [stripFilter],
     },
@@ -88,13 +89,35 @@ LoginForm = model_form(models.Provider, only={
 })
 
 
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+
 def provider_signup(request):
     logger.info("request.POST %s" % request.POST)
     form = ProviderForm()
+    captcha_results = {}
+    captcha_results['success'] = False
+
     if request.method == 'POST':
         form = ProviderForm(request.POST)
-        print form.validate()
-        if form.validate():
+
+        captcha_rs = request.POST.get('g-recaptcha-response')
+        if captcha_rs:
+            url = "https://www.google.com/recaptcha/api/siteverify"
+            params = [('secret', '6Lf6Gh8UAAAAANJcx3uuFdc_1a4pEtr-bdqO0Hs3'), ('response', captcha_rs),
+                      ('remoteip', get_client_ip(request))]
+            result = urllib2.urlopen(url, urllib.urlencode(params))
+            captcha_results = json.load(result)
+        else:
+            captcha_results['success'] = True
+
+        if form.validate() and captcha_results['success']:
             email = request.POST.get('email')
 
             (provider, created) = get_or_insert(models.Provider, email, form)
@@ -120,7 +143,8 @@ def provider_signup(request):
                     # If dwolla customer for this email already exists, reuse it, only in DEV environment.
                     # This shouldn't happen in Prod.
                     if environ.get('IS_DEV') == 'True':
-                        if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0]['code']:
+                        if 'Validation' in err.body['code'] and 'Duplicate' in err.body['_embedded']['errors'][0][
+                            'code']:
                             provider.customerId = err.body['_embedded']['errors'][0]['_links']['about']['href']
                             request.session['dwolla_customer_url'] = provider.customerId
                             provider.put()
@@ -133,8 +157,8 @@ def provider_signup(request):
                 token.put()
                 send_provider_email_address_verification(token, host=request.get_host())
                 return render_to_response('login/provider_signup_confirmation.html',
-                                  {'form': form},
-                                  template.RequestContext(request))
+                                          {'form': form},
+                                          template.RequestContext(request))
                 # return HttpResponseRedirect('/login')
             else:
                 form.email.errors.append('error: user exists')
@@ -142,7 +166,8 @@ def provider_signup(request):
     return render_to_response(
         'login/provider_signup.html',
         {'form': form,
-         'host': request.get_host()},
+         'host': request.get_host(),
+         'captcha': captcha_results['success']},
         template.RequestContext(request)
     )
 
@@ -160,7 +185,7 @@ def parent_signup(request):
                 {'parent_email': parent.email,
                  'invitation_token': token_id,
                  'child_first_name': child_first_name,
-                 'provider_school_name' : provider_school_name},
+                 'provider_school_name': provider_school_name},
                 template.RequestContext(request)
             )
         else:
@@ -305,8 +330,8 @@ def forgot(request):
 
             if provider_result or parent_result:
                 return render_to_response('login/forgot_sent.html',
-                                  {'form': form},
-                                  template.RequestContext(request))
+                                          {'form': form},
+                                          template.RequestContext(request))
 
     if check_session(request):
         if request.session.get('is_provider') is True:
@@ -428,7 +453,6 @@ def login(request):
             else:
                 form.email.errors = 'Error: wrong combination of credential'
 
-
     if check_session(request) and not zendesk:
         if request.session.get('is_provider') is True:
             return HttpResponseRedirect("/home/dashboard")
@@ -454,7 +478,6 @@ def login(request):
             location += "&return_to=" + urllib.quote(return_to)
 
         return HttpResponseRedirect(location)
-
 
     return render_to_response(
         'login/login.html',
@@ -484,9 +507,11 @@ def logout(request):
         request.session.terminate()
     return HttpResponseRedirect('/login')
 
+
 def terms_of_service(request):
     return render_to_response(
         'login/docs/terms_of_service.html')
+
 
 def privacy_policy(request):
     return render_to_response(
