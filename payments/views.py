@@ -94,7 +94,7 @@ def listPayments(request):
     for payment in payments:
         results.append({
             'child': '%s %s' % (payment.child_key.get().first_name, payment.child_key.get().last_name),
-            'amount': payment.amount,
+            'amount': float(payment.amount),
             'date': payment.date.strftime('%m/%d/%Y'),
             'type': payment.type,
             'payer': payment.payer,
@@ -127,12 +127,13 @@ def list_dwolla_payments(email):
             amount = transfer['amount']
             source_customer_url = transfer['source_customer_url']
             status = transfer['status']
-            date = transfer['created_date']
+            list = transfer['created_date'].split('-') # 2017-04-01
+            date = '%s/%s/%s' % (list[1], list[2], list[0])
             parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
             if parent:
                 results.append({
                     'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-                    'amount': amount,
+                    'amount': float(amount),
                     'date': date,
                     'type': 'Online Transfer',
                     'payer': '%s %s' % (parent.first_name, parent.last_name),
