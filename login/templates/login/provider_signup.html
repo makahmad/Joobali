@@ -19,6 +19,20 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
     <script src="{{ STATIC_URL }}login/password_module.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script type="text/javascript" language="javascript">
+
+        function validateform(){
+        var captcha_response = grecaptcha.getResponse();
+            if(captcha_response.length == 0 && '{{captcha}}'=='False')
+            {
+                // Captcha is not Passed
+                alert("Please check the I'm not a robot box");
+                return false;
+            }
+        }
+        // ]]></script>
+
 </head>
 
 <body id="signUp">
@@ -66,7 +80,7 @@
             </div>
             <div class="profileFormBody">
                 <div class="col-sm-6">
-                    <form name="loginForm" role="form" class="well" action="/login/signup/" method="POST">
+                    <form name="loginForm" role="form" class="well" action="/login/signup/" method="POST"  onsubmit="return validateform();">
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="control-label" for="firstName">First Name:</label>
@@ -147,7 +161,8 @@
                         </div>
 
                         <div class="formActions">
-                            <div ng-show="'{{captcha}}'=='False'" class="g-recaptcha" data-sitekey="6Lf6Gh8UAAAAAEff-o-4cpwWabGi4JKvMSVqEQPK"></div>
+                            <div ng-show="'{{captcha}}'=='False'"
+                                 data-sitekey="6Lf6Gh8UAAAAAEff-o-4cpwWabGi4JKvMSVqEQPK"></div>
                             <button type="submit" ng-disabled="!tos_pp_accepted"
                                     class="btn btn-default btn-lg pull-right joobali">Sign Up
                             </button>
