@@ -131,7 +131,7 @@ html,body { height:100%;
 }
 .nav-side-menu li a {
   text-decoration: none;
-  color: #4F5152;
+  color: #6E6E6E;
 }
 .nav-side-menu li a:hover {
 	color:#F2F2F2;
@@ -142,7 +142,7 @@ html,body { height:100%;
   width: 20px;
   padding-right: 40px;
   position: relative;
-  top: 5px;
+  top: 3px;
 }
 .nav-side-menu li:hover {
   border-left: 3px solid #2a9d90;
