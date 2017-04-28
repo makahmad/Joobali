@@ -86,6 +86,7 @@ def listInvoices(request):
             'amount' : invoice.amount,
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
+            'status' : "Paid" if invoice.is_paid() else 'Unpaid',
         })
 	return HttpResponse(json.dumps(results))
 

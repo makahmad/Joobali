@@ -1,7 +1,9 @@
 InvoicesComponentController = function($window, $http, $uibModal) {
     console.log('InvoicesComponentController running');
     var self = this;
-
+    self.sortType = 'child'; // set the default sort type
+    self.sortReverse = false;  // set the default sort order
+    self.searchTerm = '';     // set the default search/filter term
     self.openAdjustInvoiceModal = function(clicked_invoice) {
         console.log("Opening Adjust Invoice Modal");
         var modalInstance = $uibModal.open({
