@@ -6,13 +6,14 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.programs = [];
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
-	this.scope_.module = '#'; //module is used to highlight active left hand nav selection
+	this.scope_.module = '/child/list'; //module is used to highlight active left hand nav selection
 	this.initialize();
     this.animationsEnabled = true;
 
     //IF URL = http://joobali.com/home/dashboard#!/programs GET /programs
     //used for left hand nav menu highlighting
-    this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
+    if ($location.absUrl().split('?')[0].split('!')[1]!=undefined)
+        this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
 
     this.scope_.changeView = function(view) {
         console.log("changeView(" + view + ")");
