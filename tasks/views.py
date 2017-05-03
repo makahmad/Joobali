@@ -246,12 +246,21 @@ def dwolla_webhook(request):
         destination_customer_url = funded_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
+        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
         if invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']:
             invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
             invoice.put()
 
-        send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount)
+        template = loader.get_template('funding/joobali-to-customer-transfer-completed.html')
+        data = {
+            'transfer_type': 'Online',
+            'amount': '$' + str(amount),
+            'account_name': source_funding_source['name'],
+            'recipient': provider.schoolName,
+            'created_date': funded_transfer['created_date'],
+        }
+        send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
@@ -299,7 +308,16 @@ def dwolla_webhook(request):
             invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
             invoice.put()
 
-        send_payment_failure_email(parent.email, parent.first_name, provider.schoolName, amount)
+        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
+        template = loader.get_template('funding/joobali-to-customer-transfer-failed.html')
+        data = {
+            'transfer_type': 'Online',
+            'amount': '$' + str(amount),
+            'account_name': source_funding_source['name'],
+            'recipient': provider.schoolName,
+            'created_date': funded_transfer['created_date'],
+        }
+        send_payment_failure_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']

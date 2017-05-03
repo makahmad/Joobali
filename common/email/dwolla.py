@@ -24,7 +24,7 @@ def send_payment_success_email(parent_address, parent_name, school_name, amount,
 
     message.to = "%s" % parent_address
     message.body = """Hi, %s
-    You've successfully paid <%s> $%s.""" % (parent_name, school_name, amount)
+    You've successfully paid <%s> with $%s.""" % (parent_name, school_name, amount)
 
     message.html = template
     message.send()
