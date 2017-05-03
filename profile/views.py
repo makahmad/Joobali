@@ -88,6 +88,7 @@ def updateProfile(request):
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
+        provider.tin = profile['tin']
 
         if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'],
                                                                                             provider.password):

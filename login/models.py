@@ -22,6 +22,7 @@ class Provider(ndb.Model):
     phone = ndb.StringProperty()
     website = ndb.StringProperty()
     license = ndb.StringProperty()
+    tin = ndb.StringProperty()
     logo = ndb.BlobProperty()
     showLogo = ndb.BooleanProperty(default=False) # used to decide whether to show logo on the profile page
 
