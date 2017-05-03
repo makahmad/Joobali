@@ -111,7 +111,7 @@ a.logoLink:hover {
     font-size: 50px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 500px) {
     .col-sm-4 {
         text-align: center;
         margin: 25px 0;
@@ -657,6 +657,31 @@ a.delete:hover {
 		width:63% !important;
 		margin:auto !important;
 	}
+	.providerName {
+    color: white;
+    height: 50px;
+    float: left;
+    margin: 24px 0 0px 60px;
+    line-height: 3.1px;
+    font-size: 17px;
+    position: absolute;
+    top: 0;
+    left: 111px;
+	}
+}
+
+@media (min-width: 768px) {
+	.providerName {
+    color: white;
+    height: 50px;
+    float: left;
+    margin: 24px 0 0px 60px;
+    line-height: 3.1px;
+    font-size: 17px;
+    position: absolute;
+    top: 0;
+    left: 111px;
+	}	
 }
 .tooltip-inner {
     background-color: #ff5b35;
@@ -700,4 +725,9 @@ a.delete:hover {
 /*----------------- General bootstrap overrides ------------------*/
 label {
 	font-weight:200;
+}
+
+.searchFilter {
+  width: 63%;
+  margin: -10px auto;
 }
