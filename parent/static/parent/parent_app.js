@@ -7,7 +7,7 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
-	this.scope_.module = '/child/list'; //module is used to highlight active left hand nav selection
+	this.scope_.module = '/due'; //module is used to highlight active left hand nav selection
 	this.initialize();
     this.animationsEnabled = true;
 

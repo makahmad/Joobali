@@ -38,7 +38,8 @@ def index(request):
         {
             'loggedIn': True,
             'email': request.session.get('email'),
-			'zendesk_token': zendesk_token
+			'zendesk_token': zendesk_token,
+			'name': request.session.get('name')
         },
         template.RequestContext(request)
     )
