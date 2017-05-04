@@ -84,6 +84,11 @@ def updateProfile(request):
         provider.lastName = profile['lastName']
 
         unique_util.update_provider(provider.email, profile['email'], provider.key)
+        provider.addressLine1 = profile['addressLine1']
+        provider.addressLine2 = profile['addressLine2']
+        provider.city = profile['city']
+        provider.state = profile['state']
+        provider.zipcode = profile['zipcode']
         provider.email = profile['email']
         provider.phone = profile['phone']
         provider.website = profile['website']

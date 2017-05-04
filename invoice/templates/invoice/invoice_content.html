@@ -127,22 +127,21 @@
             <td class="s2"></td>
             <td class="s9" colspan="3" dir="ltr">Invoice No.: <strong>{{ invoice_id }}</strong></td>
             <td class="s2"></td>
-            <td class="s9" colspan="2" dir="ltr">Provider Street</td>
+            <td class="s9" colspan="2" dir="ltr">{{ provider_street }}</td>
             <td class="s7"></td>
         </tr>
         <tr style="height:17px;">
             <td class="s8" dir="ltr"></td>
-            <td class="s9" dir="ltr" colspan="3">Parent: <strong>{{ parent_name }}, {{ parent_id }}</strong></td>
+            <td class="s9" dir="ltr" colspan="3">Parent: <strong>{{ parent_name }}</strong></td>
             <td class="s2" dir="ltr"></td>
-            <td class="s9" colspan="2">City, State Zip</td>
+            <td class="s9" colspan="2">{{ provider_city_state_postcode }}</td>
             <td class="s2"></td>
         </tr>
-        <tr style="height:25px;">
             <td class="s8" dir="ltr"></td>
-            <td class="s12" dir="ltr" colspan="3"></td>
+            <td class="s9" dir="ltr" colspan="3"></td>
+            <td class="s2" dir="ltr"></td>
+            <td class="s9" colspan="2">TIN: {{ tin }}</td>
             <td class="s2"></td>
-            <td class="s2" colspan="2"></td>
-            <td class="s8" dir="ltr"></td>
         </tr>
         <tr style="height:23px;">
             <td class="s8"></td>
@@ -159,13 +158,12 @@
             <td class="s7" dir="ltr" colspan="2">Account #</td>
             <td class="s8"></td>
         </tr>
-        <tr style="height:23px;">
-            <td class="s14"></td>
-            <td class="s9" dir="ltr" colspan="2"></td>
-            <td class="s7" dir="ltr"></td>
-            <td class="s7" dir="ltr"></td>
-            <td class="s9" dir="ltr" colspan="2"></td>
-            <td class="s14"></td>
+        <tr style="height:20px;">
+            <td class="s8"></td>
+            <td class="s7" dir="ltr" colspan="2"></td>
+            <td class="s2" colspan="2"></td>
+            <td class="s7" dir="ltr" colspan="2">{{ parent_id }}</td>
+            <td class="s8"></td>
         </tr>
         <tr style="height:23px;">
             <td class="s14"></td>

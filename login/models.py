@@ -27,10 +27,11 @@ class Provider(ndb.Model):
     showLogo = ndb.BooleanProperty(default=False) # used to decide whether to show logo on the profile page
 
     # Additional fields for Dwolla verified customer.
-    address = ndb.StringProperty()
+    addressLine1 = ndb.StringProperty()
+    addressLine2 = ndb.StringProperty() # address line 2 (optional)
     city = ndb.StringProperty()
     state = ndb.StringProperty()
-    postalCode = ndb.StringProperty()
+    zipcode = ndb.IntegerProperty()
     dateOfBirth = ndb.DateProperty()
     # Only last four digits is required
     ssn = ndb.StringProperty()

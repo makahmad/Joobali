@@ -132,8 +132,8 @@ def viewInvoice(request):
 		data = {
 			'invoice_id': invoice.key.id(),
 			'invoice_date': invoice.date_created.strftime('%m/%d/%Y'),
-            # 'provider_street': provider.address,
-			# 'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.postalCode),
+            'provider_street': provider.addressLine1 + (", %s" % provider.addressLine2) if provider.addressLine2 else provider.addressLine1,
+			'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.zipcode),
 			'provider_name': provider.schoolName,
             'provider_phone_number': provider.phone,
             'child_name': '%s %s' % (child.first_name, child.last_name),
@@ -146,6 +146,7 @@ def viewInvoice(request):
 			'items': items,
 			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()),
 			'note': note,
+			'tin': provider.tin,
         }
 		print data
 		return render_to_pdf(
