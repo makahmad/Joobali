@@ -54,6 +54,11 @@
     <!-- Profile Related JS -->
     <script src="{{ STATIC_URL }}parent/profile_component_ctrl.js"></script>
 
+    <!-- Payment Related JS -->
+    <script src="{{ STATIC_URL }}home/payment_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}payments/payments_component_ctrl.js"></script>
+
+
     <!-- Child Related JS -->
     <script src="{{ STATIC_URL }}child/child-list-parent-view.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-card-parent-view.component.js"></script>
@@ -105,7 +110,7 @@
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
-                <li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
+                <!--<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>-->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}
@@ -145,34 +150,34 @@
 
                 <li data-target="#children" ng-click="changeView('/child/list')"
                     ng-class="{active: module=='/child/list'}">
-                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children </a>
+                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-2x"></i> &nbsp; Children </a>
                 </li>
 
                 <li ng-click="changeView('/due')" ng-class="{active: module=='/due'}">
                     <a href="#!/due">
-                        <i class="fa fa-list-alt fa-lg"></i> Invoices
+                        <i class="fa fa-paper-plane-o fa-2x"></i> &nbsp; Invoices
                     </a>
                 </li>
-                <li ng-click="changeView('/due')" ng-class="{active: module=='/payments'}">
+                <li ng-click="changeView('/payments')" ng-class="{active: module=='/payments'}">
                     <a href="#!/payments">
-                        <i class="fa fa-list-alt fa-lg"></i> Payment
+                        <i class="fa fa-money fa-2x"></i> &nbsp; Payments
                     </a>
                 </li>
                 <li ng-click="changeView('/funding')" ng-class="{active: module=='/funding'}">
                     <a href="#!/funding">
-                        <i class="fa fa-university fa-lg"></i> Funds
+                        <i class="fa fa-university fa-2x"></i> &nbsp; Funds
                     </a>
                 </li>
 
 
                 <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
                     <a href="#!/profile">
-                        <i class="fa fa-user fa-lg"></i> Profile
+                        <i class="fa fa-user fa-2x"></i> &nbsp; Profile
                     </a>
                 </li>
                 <li >
                     <a ng-href="/login/?zendesk=1" target="_blank">
-                        <i class="fa fa-life-ring fa-lg"></i> &nbsp; Help Center
+                        <i class="fa fa-life-ring fa-2x"></i> &nbsp; Help Center
                     </a>
                 </li>
 

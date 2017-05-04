@@ -6,6 +6,7 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.programs = [];
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
+	this.scope_.payments = [];
 	this.scope_.module = '/child/list'; //module is used to highlight active left hand nav selection
 	this.initialize();
     this.animationsEnabled = true;
@@ -63,6 +64,24 @@ ParentController.prototype.initialize = function() {
 	    // or server returns response with an error status.
 	    console.log(response);
 	  });
+	this.http_({
+	  method: 'GET',
+	  url: '/payments/listpayments'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.payments = [];
+	    console.log(response.data);
+	    angular.forEach(response.data, angular.bind(this, function(payment) {
+	    	this.scope_.payments.push(payment);
+	    }));
+	    console.log(this.scope_.payments);
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
 }
 
 app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute'])
@@ -77,6 +96,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
              $routeProvider
                  .when('/funding', {templateUrl: '/static/parent/funding_component_tmpl.html'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
+                 .when('/payments', {templateUrl: '/static/parent/payment_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
                  .when('/child/list', {template: '<child-list-parent-view></child-list-parent-view>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
@@ -135,6 +155,23 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
         bindings: {
           fundings: '<',
           invoices: '<'
+        }
+    })
+    // The Payments page in dashboard
+    .component('paymentComponent', {
+        templateUrl: '/static/home/payment_component_tmpl.html',
+        controller: PaymentComponentController,
+        bindings: {
+          payments: '<'
+        }
+    })
+    // The list of payments inside payments page
+    .component('paymentsComponent', {
+        templateUrl: '/static/payments/payments_component_tmpl.html',
+        controller: PaymentsComponentController,
+        bindings: {
+          payments: '<',
+          isProvider: '@'
         }
     })
     .component('addFundingIavComponent', {
