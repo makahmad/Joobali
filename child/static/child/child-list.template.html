@@ -18,15 +18,21 @@
                 </select>
             </div>
             <div class="child-list-filter-options pull-right">
-                <span class="label label-default">Filter by Age (TODO)</span>
-                <select class="form-control">
-                </select>
+                <span class="label label-default">Max Age</span>
+                <input class="form-control" ng-model="$ctrl.maxAge" placeholder="Try '9 months'">
+                </input>
             </div>
+            <div class="child-list-filter-options pull-right">
+                <span class="label label-default">Min Age</span>
+                <input class="form-control" ng-model="$ctrl.minAge" placeholder="Try '1 years'">
+                </input>
+            </div>
+            <div>{{$ctrl.minAge}}, {{$ctrl.maxAge}}</div>
         </div>
         <div>
             <ol class="childrenList">
-                <child-card data-ng-repeat="child in $ctrl.children track by $index" child="child"
-                            programs="$ctrl.programs" index="$index" flex></child-card>
+                <child-card data-ng-repeat="child in $ctrl.children | childAgeFilter: $ctrl.minAge:$ctrl.maxAge " child="child"
+                            programs="$ctrl.programs" flex></child-card>
             </ol>
         </div>
     </div>

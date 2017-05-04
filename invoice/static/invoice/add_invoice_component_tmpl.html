@@ -43,6 +43,7 @@
                 <input name="dueDate"
                        type="text" class="form-control"
                        uib-datepicker-popup="MM/dd/yyyy"
+                       datepicker-popup-template-url="/static/home/datepicker.template.html"
                        datepicker-options="{minDate: $ctrl.todayDate}"
                        ng-model="$ctrl.newInvoice.due_date"
                        is-open="$ctrl.dueDatePickerOpened"

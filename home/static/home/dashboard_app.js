@@ -141,6 +141,49 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/programs'); //.otherwise('/dashboard');
           }])
+    .filter('childAgeFilter', function() {
+        return function(children, minAge, maxAge) {
+            if (!children) {
+                return [];
+            }
+            console.log(children);
+            var minDuration = null;
+            var maxDuration = null;
+            if (minAge) {
+                tokens = minAge.split(" ");
+                if (tokens.length == 2) {
+                    minDuration = moment.duration(parseInt(tokens[0]), tokens[1])
+                    console.log(minDuration);
+                }
+            }
+            if (maxAge) {
+                tokens = maxAge.split(" ");
+                if (tokens.length == 2) {
+                    maxDuration = moment.duration(parseInt(tokens[0]), tokens[1]);
+                    console.log(maxDuration);
+                }
+            }
+            var currentDate = moment(new Date());
+            var result = [];
+            for (var i = 0; i < children.length; i++) {
+                var child = children[i];
+                var child_age = moment.duration(currentDate.diff(moment(child.date_of_birth, "MM/DD/YYYY")));
+                if (minDuration) {
+                    if (child_age <= minDuration) {
+                        continue;
+                    }
+                }
+
+                if (maxDuration) {
+                    if (child_age > maxDuration) {
+                        continue;
+                    }
+                }
+                result.push(child);
+            }
+            return result;
+        }
+    })
     .controller('DashboardCtrl', DashboardController)
     // to support enrollment modal in child-card
     // need child/child-enrollment.component.js
