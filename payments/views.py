@@ -14,6 +14,7 @@ from invoice.models import InvoiceLineItem
 from invoice.invoice_util import get_invoice_enrollments
 from manageprogram.models import Program
 from child.models import Child
+from child import child_util
 from payments.models import Payment
 
 from django.template import loader
@@ -86,7 +87,11 @@ def listPayments(request):
     payments = None
     provider = Provider.query().filter(Provider.email == email).fetch(1)
     if not provider:
+        parent = Parent.query().filter(Parent.email == email).fetch(1)
         payments = []
+        if parent:
+            for child in child_util.list_child_by_parent(parent[0].key):
+                payments.extend(Payment.query(Payment.child_key == child.key))
     else:
         payments = Payment.query(Payment.provider_email == email)
 
