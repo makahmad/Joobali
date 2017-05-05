@@ -6,18 +6,17 @@
         </thead>
         <tbody>
         <tr data-ng-repeat="enrollment in $ctrl.enrollments">
-            <td>{{ enrollment.program.id}}</td>
+            <td style="max-width:40px;text-overflow:ellipsis; overflow:hidden;">{{ enrollment.program.id}}</td>
             <td>{{ enrollment.program.programName}}</td>
             <td>{{ enrollment.enrollment.status }}</td>
             <td>{{ enrollment.enrollment.start_date}}</td>
             <td>
-                <button type="button" class="btn btn-info btn-default joobali"
-                        ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)" alt="Edit Enrollment"><i class="fa fa-pencil fa-lg"></i>
-                </button>
-                <button type="button" class="btn btn-info btn-default joobali"
-                        ng-click="$ctrl.resendEnrollmentInvitation(enrollment.enrollment)"
-                        ng-show="$ctrl.canResendEnrollmentInvitation(enrollment.enrollment)" alt="Resend Email Invitation"><i class="fa fa-refresh fa-lg"></i>
-                </button>
+                <a class="" ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)" alt="Edit Enrollment"><i class="fa fa-pencil fa-1x"></i>
+								</a>
+							</td>
+							<td>
+                <a class="" ng-click="$ctrl.resendEnrollmentInvitation(enrollment.enrollment)" ng-show="$ctrl.canResendEnrollmentInvitation(enrollment.enrollment)" alt="Resend Email Invitation"><i class="fa fa-refresh fa-1x"></i>
+                </a>
             </td>
         </tr>
         </tbody>

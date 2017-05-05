@@ -1,8 +1,17 @@
-<div>
-    <div>
-        <div class="child-card-group" layout="column">
-            <child-card-parent-view data-ng-repeat="child in $ctrl.children track by $index" child="child"
-                        index="$index" flex></child-card-parent-view>
-        </div>
-    </div>
+<div class="programHeader"><b>Children</b></div>
+	<!-- <span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Your children are listed below.</span> -->
+<div class="programsContainer">	
+  <div class="programsDiv">
+	  <!-- <div class="child-card-group" layout="column">
+
+		</div> -->
+		
+		<div class="childrenListContainer">
+			<ol class="childrenList">
+				<child-card-parent-view data-ng-repeat="child in $ctrl.children track by $index" child="child" index="$index" flex></child-card-parent-view>
+			</ol>
+		</div>
+		
+		
+	</div>
 </div>

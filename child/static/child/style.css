@@ -17,6 +17,7 @@
   transition: 0.1s;
   background: white;
   box-shadow: 0 0px 67px 0 rgba(0,0,0,0.1);
+	display: flex;
 }
 
 .child-card:hover {
@@ -29,16 +30,16 @@
     display: table
 }
 
-
-
-/* Add some padding inside the card container */
 .child-card-container {
     padding: 2px 16px;
+    float: left;
+    display: inline-block;
+		width:35%;
 }
 
 .child-list-filter-options {
     padding: 2px 16px;
-    box-shadow:0 0px 27px 0 rgba(0,0,0,0.2);
+    /*box-shadow:0 0px 27px 0 rgba(0,0,0,0.2);*/
 }
 
 .stepsDiv {
@@ -220,6 +221,22 @@
 		width:380px;
 	}
 }
+
+@media (max-width: 925px) {
+	.child-card {
+		display:grid;
+	}
+	.child-card-container, .child-enrollment-container {
+		display: flex;
+    font-size: small;
+	}
+	.enrollmentList th {
+		max-width:40px;
+		text-overflow:ellipsis;
+		overflow:hidden;
+	}
+}
+	
 
 /* Override Datepicker z-index in order to pop out before modal window. */
 .datepicker{z-index:1151 !important;}

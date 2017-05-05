@@ -421,8 +421,8 @@ def login(request):
                 result = query.get()
 
                 if not result:
-                    logger.info('Error: wrong combination of credential');
-                    form.email.errors = 'Error: wrong combination of credential'
+                    logger.info("Oops, those credentials don't match.");
+                    form.email.errors = "Oops, those credentials don't match."
                     return render_to_response(
                         'login/login.html',
                         {'form': form},

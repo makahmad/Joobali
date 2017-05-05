@@ -1,16 +1,15 @@
 body {
 	background-color: #f1f1f1 !important;
 	font-family: 'Roboto', sans-serif !important;
+	letter-spacing:.05em;
 }
 
 .jumbotron {
-    background: #fa5d26 url("./pics/img_homegbg.png") no-repeat top center;
+    background: #fa5d26 url("./pics/img_headerbg2.jpg") no-repeat top center;
 		background-size:100%;
     color: #ffffff;
     padding: 100px 25px;
 }
-
-a.menu_links { cursor: pointer; }
 
 .jumbotron .btn, .homePitch2 .btn {
   -webkit-border-radius: 3;
@@ -34,6 +33,10 @@ a.menu_links { cursor: pointer; }
 
 .elevPitch {
 	margin: 75px auto 70px auto;
+}
+
+.whyJoobali {
+	margin-bottom:-10px;
 }
 
 .whyJoobali p {
@@ -77,9 +80,9 @@ a.menu_links { cursor: pointer; }
 }
 
 .homePitch2 {
-	background: #a2a2a2 url("./pics/img_home2bg.png") no-repeat top center;
+	background: #a2a2a2 url("./pics/img_homebtbg.jpg") no-repeat center;
 	background-size: 100%;
-	padding:0 0 120px 0;
+	padding:10px 0 120px 0;
 }
 
 .homePitch2 h2 {
@@ -108,11 +111,47 @@ a.logoLink:hover {
     font-size: 50px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 500px) {
+	.btn-group {
+	    margin: 8px auto;
+	}
     .col-sm-4 {
         text-align: center;
         margin: 25px 0;
     }
+		.logo {
+	    width: 80%;
+	    height: auto;
+		}
+		.elevPitch {
+			margin:0 auto;
+		}
+		.jumbotron, .homePitch2 {
+			padding:55px 10px 0 10px;
+		}
+		.jumbotron .btn, .homePitch2 .btn {
+	    margin: 0 auto 30px;
+		}
+		.homePitch2 h2 {
+	    margin: 0px auto 25px auto;
+		}
+		.h1, h1 {
+	    font-size: 32px;
+		}
+		.navbar-nav {
+	    margin: 0 -15px;
+	    background: #363B3F;
+		}
+		.navbar-default .navbar-nav>li>a {
+	    color: white;
+	    padding-top: 30px !important;
+	    padding-bottom: 30px !important;
+	    font-size: 1.2em;
+		}
+		.navbar-nav li a:hover, .navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
+	    color: white !important;
+	    background-color: #737E86 !important;
+		}
 }
 
 @media screen and (max-width: 950px) {
@@ -187,9 +226,10 @@ a.logoLink:hover {
 	background: rgba(255, 91, 53, 1) !important;
 }
 
-#myNavbar {
+/*#myNavbar {
 	display:none;
 }
+*/
 
 .navbar li a, .navbar .navbar-brand {
     color: #fff !important;
@@ -226,23 +266,29 @@ a.logoLink:hover {
 footer {
 	background: #363B3F;
 	color: white;
+  margin-top: -30px;
 }
 
 footer h4 {
 	color:white;
+	text-align:left;
 }
 
 footer ul {
 	list-style: none;
-	text-align:center;
+	text-align:left;
+  color: #222222;
+  font-weight: 100;
 }
 
 footer a {
-	text-decoration: underline;
+	text-decoration: none;
+	color:#339999 !important;
 }
 
 footer a:hover {
 	cursor:pointer;
+	text-decoration:underline;
 }
 
 footer .glyphicon {
@@ -257,7 +303,7 @@ footer .glyphicon {
     height: 100%;
     margin: 10px 0;
     padding: 10px;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0px 67px 0 rgba(0,0,0,0.01);
     display: block;
 }
 
@@ -278,8 +324,35 @@ footer .glyphicon {
 
 .programHeader {
     color: #2a9d90;
-    font-size: 14px;
+    font-size: 18px;
+		/*border:1px solid black;*/
+		width:33.333333333333333333%;
+		display:inline-block;
 }
+
+.pageInstructions {
+	text-align:left;
+	display:inline-block;
+	background:#FFEAAD;
+	padding: 10px 20px;
+	margin:5px auto 0;
+	min-width: 80%
+}
+
+.fa-question-circle-o:hover {
+	cursor:pointer;
+}
+
+/*.pageInstructions::before {
+	content:" ";
+  width: 0;
+  height: 0;
+  border-top: 10px solid gray;
+  border-bottom: 10px solid purple;
+  border-right: 8.666px solid blue;
+	border-left: 8.6666px solid green;
+}
+*/
 
 /* programs grid/list css */
 
@@ -297,6 +370,7 @@ footer .glyphicon {
 
 .btn-group {
 	float:right !important;
+	text-align:center;
 }
 
 .glyphicon { margin-right:5px; }
@@ -449,6 +523,21 @@ program-component {
     margin: 0 0 11px;
 }
 
+/* ----------------- Invoice Styles ------------------ */
+tr.invoiceRow.ng-scope td {
+	padding:20px 2px;
+}
+
+tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
+	background:#ccc;
+	cursor:pointer;
+}
+
+/* ----------------- Children Styles ------------------ */
+.childrenList{
+	width:100%;
+}
+
 /* ----------------- Modals Override ----------------- */
 .modal-title {
 	font-size:30px;
@@ -513,6 +602,90 @@ a.delete:hover {
 	border-top:1px solid #e5e5e5;
 	padding: 24px 49px 0 49px;
 }
+
+/*------------- Init Setup Modal -------------*/
+/* see init_setup_component_style.css */
+
+/* ------------ Profile Page Styling ------------------ */
+#profileForm .formActions {
+  display: table;
+  width: 100%;
+  /*margin: 24px auto;
+  border-top: 1px solid #e5e5e5;*/
+  padding: 24px 0;
+	margin: 24px auto;
+}
+
+.profileFormContainer{
+	position: relative;
+  /*background-color: #fff;*/
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+	/*border: 1px solid #999;
+  border: 1px solid rgba(0,0,0,.2);*/
+  border-radius: 6px;
+  outline: 0;
+	width:90%;
+	min-width:525px;
+  /*-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.15);
+  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.15);
+	box-shadow: 0 3px 9px rgba(0,0,0,.15);*/
+	margin:auto;
+}
+
+.profileFormHeader {
+  padding: 15px;
+  /*border-bottom: 1px solid #e5e5e5;*/
+}
+
+.profileFormBody {
+	background: #F5F5F5;
+  /*margin: 24px;*/
+  border-top: 1px solid #e3e3e3;
+  border-radius: 4px;
+  padding: 15px;
+  position: relative;
+}
+
+.profile-title {
+  font-size: 30px;
+  padding: 26px 0 5px 0;
+  text-align: center;
+	margin: 0;
+  line-height: 1.42857143;
+}
+
+@media (min-width: 840px) {
+	.modal-dialog {
+		width:63% !important;
+		margin:auto !important;
+	}
+	.providerName {
+    color: white;
+    height: 50px;
+    float: left;
+    margin: 24px 0 0px 60px;
+    line-height: 3.1px;
+    font-size: 17px;
+    position: absolute;
+    top: 0;
+    left: 111px;
+	}
+}
+
+@media (min-width: 768px) {
+	.providerName {
+    color: white;
+    height: 50px;
+    float: left;
+    margin: 24px 0 0px 60px;
+    line-height: 3.1px;
+    font-size: 17px;
+    position: absolute;
+    top: 0;
+    left: 111px;
+	}	
+}
 .tooltip-inner {
     background-color: #ff5b35;
     color: #fff;
@@ -522,6 +695,13 @@ a.delete:hover {
 .tooltip.top .tooltip-arrow {
     border-top-color: #ff5b35;
 }
+
+/*------------ Profile pw change --------------*/
+.pwChange {
+	outline:1px solid #339999;
+	padding:10px 24px;
+}
+
 /*------------ PW Progress Bar CSS Fixes ----------------*/
 .progress {
     height: 5px !important;
@@ -543,4 +723,14 @@ a.delete:hover {
 	background: -webkit-linear-gradient(left,  #f0ad4e 0%,#5cb850 12%); /* Chrome10-25,Safari5.1-6 */
 	background: linear-gradient(to right,  #f0ad4e 0%,#5cb850 12%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f0ad4e', endColorstr='#5cb850',GradientType=1 ); /* IE6-9 */
+}
+
+/*----------------- General bootstrap overrides ------------------*/
+label {
+	font-weight:200;
+}
+
+.searchFilter {
+  width: 63%;
+  margin: -10px auto;
 }

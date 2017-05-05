@@ -1,5 +1,5 @@
 body {
-	background:#ff5b35;
+	background: #E44D26;;
 	letter-spacing:.05em;
 }
 
@@ -57,11 +57,12 @@ center {
 
 .btn-default.joobali {
   background: #339999;
-	color: #ffffff;
-	width: 100% !important;
+  color: #ffffff;
   margin-top: 10px;
   border-radius: 3px !important;
-	}
+  padding: 15px 40px;
+	text-decoration:none;
+}
 
 .btn-default.joobali:hover , .btn-default.joobali.hover {
   background: #2e8f8f;
@@ -77,7 +78,7 @@ center {
 
 a {
   color: #339999;
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 /* ----------------- Modals Override ----------------- */
@@ -90,6 +91,7 @@ a {
 .modal-content {
 		width:50%;
 		margin: 0 auto !important;
+		box-shadow: 0 0 200px rgba(255,255,255,.25);
 }
 
 .modal-body {
@@ -101,6 +103,7 @@ a {
 
 .modal-footer {
 	border:none !important;
+	text-align:center;
 }
 
 .form-group {
@@ -226,7 +229,7 @@ a.delete:hover {
 		
 #signUp .featureList li {
 	list-style:none;
-	color: #adafb0;
+	color: #666;
 	border-bottom:1px solid #adafb0;
   padding: 10px 0px;
   font-size: 14px;

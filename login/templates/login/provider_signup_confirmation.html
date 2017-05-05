@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" />
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	
 	<style type="text/css">
 		body{
 			background: #E44D26; /* fallback for old browsers */
@@ -24,18 +26,21 @@
 		<!-- Modal content-->
 		<div class="modal-content">
 		  <div class="modal-header">
-		    <h4 class="modal-title">Verification Email Sent to {{form.email}}</h4>
+		    <h4 class="modal-title">Thank You!</h4>
+				<img src="{{ STATIC_URL }}home/pics/icon_complete.png" class="img-responsive logo col-centered" alt="Joobali Website Logo">
 		  </div> <!-- end modal-header -->
 		  <div class="modal-body">
 				<div class="col-centered programOverviewForm">
 					  <div class="form-group">
-						  Look for the verification email in your inbox and click the link in the email.
+						  Your invitation has been emailed to {{form.email}}. Please check your email to confirm.
 					  </div>
 
 				</div><!-- end col-centered programOerviewForm -->
 			</div> <!-- end modal body -->
 
-				<div class="modal-footer">&nbsp;</div>
+				<div class="modal-footer">
+					<a href="/" class="btn btn-info btn-default joobali">OK&nbsp;<i class="fa fa-check-circle" aria-hidden="true"></i></a>
+				</div>
 
 		</div> <!-- end modal-content -->
 		</div>

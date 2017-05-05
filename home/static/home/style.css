@@ -68,6 +68,9 @@ body {
 .homeIcons.money {
 	background: url("./pics/img_getpaid.png") no-repeat top;
 }
+.homeIcons.help {
+	background: url("./pics/img_help.png") no-repeat top;
+}
 
 .featureDescription {
   background: white;
@@ -112,6 +115,9 @@ a.logoLink:hover {
 }
 
 @media screen and (max-width: 500px) {
+	.btn-group {
+	    margin: 8px auto;
+	}
     .col-sm-4 {
         text-align: center;
         margin: 25px 0;
@@ -531,9 +537,35 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 }
 
 /* ----------------- Children Styles ------------------ */
+.addToProgram {
+	margin:0;
+}
+
+.enrollProgram {
+	float:right;
+	position:relative;
+	top:-15px;
+	right:0px;
+}
+
+.child-enrollment-container{
+	width:62%;
+	margin:10px 10px 0 0;
+  display: inline-block;
+  float: left;
+}
+
+.childrenListContainer {
+	width:100%;
+}
+
 .childrenList{
 	width:100%;
 }
+
+.childrenList td, .childrenList th {
+    padding: 5px 12px;
+	}
 
 /* ----------------- Modals Override ----------------- */
 .modal-title {

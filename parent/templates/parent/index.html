@@ -11,11 +11,11 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}parent/style.css"/>
-    <link rel="stylesheet" href="{{ STATIC_URL }}parent/sidebar.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}parent/init_setup_component_style.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}parent/autopay_setup_form_component_style.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}parent/payment_setup_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/init_setup_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/autopay_setup_form_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/payment_setup_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}invoice/invoices_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
@@ -103,6 +103,7 @@
 
 </head>
 <body ng-app="parentApp" ng-controller="ParentCtrl as parentCtrl">
+		
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-container">
         <div class="navbar-header">
@@ -111,14 +112,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_infinitylogo.png" alt="Logo"
-                                              width="61" height="50"></a>
+            <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
         </div>
 
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
                 <!--<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>-->
+                <!-- <li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li> -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}
