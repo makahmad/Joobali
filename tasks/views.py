@@ -14,7 +14,7 @@ from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding
 from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
 from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_cancelled_email
-from common.dwolla import start_webhook
+from common.dwolla import start_webhook, clear_webhook
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from funding import funding_util
@@ -169,6 +169,7 @@ def invoice_notification(request):
 
 def autopay(request):
     logger.info("INVOICE AUTOPAY")
+    #clear_webhook()
     #start_webhook()
 
     today = date.today()
