@@ -31,7 +31,7 @@ class Provider(ndb.Model):
     addressLine2 = ndb.StringProperty() # address line 2 (optional)
     city = ndb.StringProperty()
     state = ndb.StringProperty()
-    zipcode = ndb.IntegerProperty()
+    zipcode = ndb.StringProperty()
     dateOfBirth = ndb.DateProperty()
     # Only last four digits is required
     ssn = ndb.StringProperty()
