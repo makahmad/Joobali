@@ -10,6 +10,7 @@ from common.session import is_parent
 from common.session import get_provider_id
 from common.session import get_parent_id
 from common.json_encoder import JEncoder
+from exception.JoobaliRpcException import JoobaliRpcException
 from models import Enrollment
 from child import child_util
 from child.models import Child, ProviderChildView
@@ -42,6 +43,7 @@ def render_enrollment_home(request):
 def add_enrollment(request):
     """Handles HttpRequest about adding a new enrollment"""
     status = "failure"
+    message = ""
     if not check_session(request):
         return
     logger.info(request)
@@ -71,9 +73,13 @@ def add_enrollment(request):
             'start_date': request_body_dict['start_date']
         }
         logger.info("request.get_host() is %s", request.get_host())
-        enrollment_util.upsert_enrollment(enrollment)
-        status = "success"
-    return HttpResponse(json.dumps({'status': status}), content_type="application/json")
+        try:
+            enrollment_util.upsert_enrollment(enrollment)
+            status = "success"
+        except JoobaliRpcException as e:
+            status = 'failure'
+            message = e.get_client_messasge()
+    return HttpResponse(json.dumps({'status': status, 'message': message}), content_type="application/json")
 
 
 def list_enrollment(request):

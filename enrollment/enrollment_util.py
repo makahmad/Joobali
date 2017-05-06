@@ -1,6 +1,7 @@
 from google.appengine.ext import ndb
 
 from common.email.enrollment import send_unenroll_email, send_parent_enrollment_notify_email
+from exception.JoobaliRpcException import JoobaliRpcException
 from models import Enrollment
 from datetime import datetime
 from parent.models import Parent
@@ -13,9 +14,17 @@ logger = logging.getLogger(__name__)
 
 def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
-    enrollment = Enrollment(parent=enrollment_input['provider_key'])
-    enrollment.child_key = enrollment_input['child_key']
-    enrollment.program_key = enrollment_input['program_key']
+    provider_key = enrollment_input['provider_key']
+    child_key = enrollment_input['child_key']
+    program_key = enrollment_input['program_key']
+    existing_enrollments = list_enrollment_by_provider_and_child_and_program(provider_key, child_key, program_key)
+    if len(existing_enrollments) > 0:
+        raise JoobaliRpcException(
+            error_message="Existing enrollment between this child_key %s and program_key %s" % (child_key, program_key),
+            client_viewable_message="There is already an similar existing enrollment")
+    enrollment = Enrollment(parent=provider_key)
+    enrollment.child_key = child_key
+    enrollment.program_key = program_key
     enrollment.status = enrollment_input['status']
     if enrollment.status not in Enrollment.get_possible_status():
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
@@ -87,9 +96,9 @@ def list_enrollment_by_provider_and_child(provider_key, child_key):
     return enrollments
 
 
-def list_enrollment_by_provider_and_child_and_program(provider_id, child_key, program_key):
-    provider_key = ndb.Key('Provider', provider_id)
-    enrollment_query = Enrollment.query(Enrollment.child_key == child_key, Enrollment.program_key == program_key, ancestor=provider_key)
+def list_enrollment_by_provider_and_child_and_program(provider_key, child_key, program_key):
+    enrollment_query = Enrollment.query(Enrollment.child_key == child_key, Enrollment.program_key == program_key,
+                                        ancestor=provider_key)
 
     if enrollment_query is None:
         logger.info("enrollment_query is none")

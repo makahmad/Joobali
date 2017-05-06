@@ -52,6 +52,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             } else {
                 self.saveSuccessLabel.show = false;
                 self.saveFailLabel.show = true;
+                self.failMessage = response.data.message;
             }
         }, function errorCallback(response) {
             self.saveSuccessLabel.show = false;

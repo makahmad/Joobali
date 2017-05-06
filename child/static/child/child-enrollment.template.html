@@ -89,8 +89,8 @@
                     <label class="control-label">Start Date</label>
                     <div>{{$ctrl.newEnrollment.start_date}}</div>
                 </div>
-                <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Save Success!</div>
-                <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Save Fail!</div>
+                <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Enroll Success!</div>
+                <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Enroll Fail! {{$ctrl.failMessage}}</div>
             </div>
         </form>
     </div>
@@ -100,7 +100,7 @@
             ng-click="$ctrl.nextButton.click()" ng-show="$ctrl.nextButton.show">Next
     </button>
     <button type="button" class="btn btn-primary"
-            ng-click="$ctrl.saveButton.click()" ng-show="$ctrl.saveButton.show">Save
+            ng-click="$ctrl.saveButton.click()" ng-show="$ctrl.saveButton.show">Enroll
     </button>
     <button type="button" class="btn btn-primary"
             ng-click="$ctrl.doneButton.click()" ng-show="$ctrl.doneButton.show">Done
