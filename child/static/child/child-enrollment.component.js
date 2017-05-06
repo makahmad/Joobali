@@ -114,6 +114,11 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
 ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
     var result = false;
     if (dateAndMode.mode === 'day') {
+        var today = moment(new Date());
+        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
+        if (currentDate.diff(today, 'days') < 5) {
+            return true;
+        }
         if (this.newEnrollment != null &&
                 this.newEnrollment.program != null &&
                 this.newEnrollment.program.billingFrequency != null) {

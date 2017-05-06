@@ -146,7 +146,6 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
             if (!children) {
                 return [];
             }
-            console.log(children);
             var minDuration = null;
             var maxDuration = null;
             if (minAge) {

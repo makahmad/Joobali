@@ -26,6 +26,11 @@ ChildFormContentController = function ChildFormContentController($http) {
 ChildFormContentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
     var result = false;
     if (dateAndMode.mode === 'day') {
+        var today = moment(new Date());
+        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
+        if (currentDate.diff(today, 'days') < 5) {
+            return true;
+        }
         if (this.newChildEnrollmentInfo != null &&
                 this.newChildEnrollmentInfo.program != null &&
                 this.newChildEnrollmentInfo.program.billingFrequency != null) {

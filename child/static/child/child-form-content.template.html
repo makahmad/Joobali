@@ -46,10 +46,27 @@
                 ng-readonly="$ctrl.readOnly"
                 ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                 ng-model="$ctrl.newChildEnrollmentInfo.program"></select>
+        <div class="panel panel-body" ng-show="$ctrl.newChildEnrollmentInfo.program">
+            <div>
+                <label>Registration fee:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.registrationFee}}</b>
+            </div>
+            <div>
+                <label>Fee: </label> <b>{{$ctrl.newChildEnrollmentInfo.program.fee}}</b>
+            </div>
+            <div>
+                <label>Latefee: </label> <b>{{$ctrl.newChildEnrollmentInfo.program.lateFee}}</b>
+            </div>
+            <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Weekly'">
+                <label> Weekly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.weeklyBillDay}}</b>
+            </div>
+            <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Monthly'">
+                <label> Monthly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.monthlyBillDay}}</b>
+            </div>
+        </div>
     </div>
     <div class="form-group"
          ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
-        <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
+        <label class="control-label">Billing Start Date (MM/DD/YYYY)</label>
         <p class="input-group">
             <input name="startDate"
                    type="text" class="form-control"
@@ -68,6 +85,6 @@
         </p>
     </div>
     <div class="form-group">
-        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Save</button>
+        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Enroll</button>
     </div>
 </form>
