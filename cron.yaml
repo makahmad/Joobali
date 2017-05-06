@@ -1,10 +1,10 @@
 cron:
 - description: invoice calculation
-  url: /tasks/invoicecalc
+  url: /tasks/invoicecalc/
   schedule: every 24 hours
 - description: invoice notification
-  url: /tasks/invoicenoti
+  url: /tasks/invoicenoti/
   schedule: every 24 hours
 - description: invoice automatic payment
-  url: /tasks/autopay
+  url: /tasks/autopay/
   schedule: every 24 hours
