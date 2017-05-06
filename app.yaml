@@ -1,4 +1,4 @@
-application: joobali-1310
+application: joobali-uat
 version: 1
 runtime: python27
 api_version: 1
@@ -20,6 +20,11 @@ libraries:
   version: "0.15"
 - name: ssl
   version: latest
+- name: pycrypto
+  version: latest
 
 builtins:
 - django_wsgi: on
+
+env_variables:
+  IS_DEV: "True"

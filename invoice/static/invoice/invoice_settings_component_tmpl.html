@@ -1,0 +1,48 @@
+
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.cancel()">&times;</button>
+<h4 class="modal-title">General Invoice Settings:</h4>
+</div>
+<div class="modal-body">
+  <div class="generalBillingFormContainer" >
+
+        <form id="generalBillingForm" name="generalBillingForm" role="form" class="well">
+            <div class="" >
+
+            <div class="form-group">
+                    <label class="control-label" for="generalInvoiceNote">General Invoice Note (automatically sent with all invoices):</label>
+                        <textarea rows="5" cols="70" class="form-control"  id="generalInvoiceNote" name="generalInvoiceNote" ng-required="false"
+                           ng-model="$ctrl.generalBilling.generalInvoiceNote" ></textarea>
+                </div>
+            <div class="form-group">
+                    <label class="control-label" for="lateFeeInvoiceNote">Late Fee Invoice Note (automatically added to general invoice note in case of late fees):</label>
+                        <textarea rows="5" cols="70" class="form-control"  id="lateFeeInvoiceNote" name="lateFeeInvoiceNote" ng-required="false"
+                           ng-model="$ctrl.generalBilling.lateFeeInvoiceNote" ></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="lateFee">Late Fee:</label>
+                        <input type="text" class="form-control"  ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="lateFee" name="lateFee" ng-required="false"
+                           ng-model="$ctrl.generalBilling.lateFee">
+                </div>
+                        <div class="form-group">
+                    <label class="control-label" for="graceDays">Late Fee Grace Period (days):</label>
+
+                        <input type="text" class="form-control" ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="graceDays" name="graceDays" ng-required="false"
+                           ng-model="$ctrl.generalBilling.graceDays">
+
+                </div>
+            </div>
+		        </form>
+    </div>
+
+<div class="modal-footer">
+        <div class="formActions">
+            <center>
+                <button type="button" class="btn btn-default btn-lg pull-right joobali"
+                 ng-click="$ctrl.saveGeneralBilling()" ng-disabled="generalBillingForm.$invalid">Update &raquo;</button>
+                <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
+            </center>
+        </div> <!-- end formActions -->
+
+</div>
+</div>

@@ -1,20 +1,64 @@
 <div class="invoiceTable">
   <div class="invoiceList">
+    <form>
+      <div class="form-group">
+        <div class="input-group searchFilter">
+          <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+          <input type="text" class="form-control" placeholder="Search Invoice" ng-model="$ctrl.searchTerm">
+
+        </div>
+      </div>
+    </form>
     <table class="table">
       <thead>
-        <th>Provider</th>
-        <th>Child</th>
-        <th>Due Date</th>
-        <th>Amount</th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'child'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Child
+            <i ng-show="$ctrl.sortType == 'child' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'child' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'due_date'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Due Date
+            <i ng-show="$ctrl.sortType == 'due_date' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'due_date' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'original_amount'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Amount
+            <i ng-show="$ctrl.sortType == 'original_amount' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'original_amount' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'amount'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Balance Due
+            <i ng-show="$ctrl.sortType == 'amount' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'amount' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'status'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Status
+            <i ng-show="$ctrl.sortType == 'status' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'status' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false" ng-hide="invoice.paid">
-          <td>{{ invoice.provider }}</td>
+        <!-- <tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-class="{invoiceMouseOver: invoice.hover}" ng-click="$ctrl.viewInvoice(invoice)" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false"> -->
+				<tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm track by $index" ng-click="$ctrl.viewInvoice(invoice)">
           <td>{{ invoice.child }}</td>
-          <td>{{ invoice.due_date }}</td>
-          <td>{{ invoice.amount }}</td>
+          <td>{{ invoice.due_date | date:'MM/dd/yyyy'}}</td>
+          <td>${{ invoice.original_amount }}</td>
+          <td>${{ invoice.amount }}</td>
+          <td>{{ invoice.status }}</td>
           <td>
-            <button class="PayBillButton btn btn-primary btn-sm" ng-click="$ctrl.showModal(invoice)" ng-show="invoice.hover">Pay Bill</button>
+            <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid"><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText() }}</button>
+            <button class="AdjustButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid"><i class="fa fa-pencil fa-lg"></i> &nbsp;Adjust</button>
           </td>
         </tr>
       </tbody>

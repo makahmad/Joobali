@@ -14,6 +14,21 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.saveSuccessLabel = {};
     self.saveFailLabel = {};
 
+    this.days = {
+        'Sunday': 0,
+        'Monday': 1,
+        'Tuesday': 2,
+        'Wednesday': 3,
+        'Thursday': 4,
+        'Friday': 5,
+        'Saturday': 6
+    }
+
+    this.enrollmentDatePickerOptions = {
+        minDate: this.todayDate,
+        dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
+    }
+
     self.saveButton.click = function() {
         console.log("saveButton is clicked");
         var submittingForm = {
@@ -37,6 +52,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             } else {
                 self.saveSuccessLabel.show = false;
                 self.saveFailLabel.show = true;
+                self.failMessage = response.data.message;
             }
         }, function errorCallback(response) {
             self.saveSuccessLabel.show = false;
@@ -51,13 +67,6 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
 
     self.nextButton.click = function() {
         var isValid = true;
-        // TODO(zilong): Think of a way to avoid using index here
-//        angular.forEach(addEnrollmentForm[self.index], function(value, key) {
-//            console.log("value: " + value + ",key: " + key)
-//            if(value.validity.valid != true) {
-//                isValid = false;
-//            }
-//        })
 
         console.log(isValid);
         self.currentStep += 1;
@@ -101,4 +110,25 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.closeModal = function() {
         $uibModalInstance.close();
     }
+}
+
+ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
+    var result = false;
+    if (dateAndMode.mode === 'day') {
+        var today = moment(new Date());
+        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
+        if (currentDate.diff(today, 'days') < 5) {
+            return true;
+        }
+        if (this.newEnrollment != null &&
+                this.newEnrollment.program != null &&
+                this.newEnrollment.program.billingFrequency != null) {
+            if (this.newEnrollment.program.billingFrequency === 'Weekly') {
+                result =  (dateAndMode.date.getDay() != this.days[this.newEnrollment.program.weeklyBillDay]);
+            } else if (this.newEnrollment.program.billingFrequency === 'Monthly') {
+                result = (dateAndMode.date.getDate() != this.newEnrollment.program.monthlyBillDay);
+            }
+        }
+    }
+    return result;
 }

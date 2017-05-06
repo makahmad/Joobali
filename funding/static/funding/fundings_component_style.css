@@ -1,6 +1,6 @@
 .fundingTable {
-    width: 80%;
-    min-height: 400px;
+/*    width: 80%;
+    min-height: 400px;*/
     padding: 100px 25px;
     margin: 0 auto;
 }
@@ -22,4 +22,13 @@
 
 label {
   white-space: nowrap;
+}
+
+tr:nth-child(even).fundingRow {
+    background-color: #F1F1F1;
+}
+
+.fundingMouseOver {
+	background-color: #E7E7E7 !important;
+	cursor: pointer;
 }

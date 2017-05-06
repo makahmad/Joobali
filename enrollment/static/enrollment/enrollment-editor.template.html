@@ -1,38 +1,28 @@
 <div class="modal-header">
-    <button type="button" class="close" ng-click="$ctrl.closeModal()">&times;</button>
+    <button type="button" class="close" ng-click="$ctrl.closeModal(false)">&times;</button>
     <h4 class="modal-title">Edit Enrollment</h4>
 </div>
 <div class="modal-body">
     <div class="enrollmentEditor">
-        <label>You're editing {{$ctrl.enrollmentId}}</label>
-        <form name="enrollmentEditForm" role="form" class="well">
-            <div class="active">
-                <div class="form-group">
-                    <label class="control-label" for="childFirstName">Child First Name</label>
-                    <input type="text" class="form-control" id="childFirstName" required="true" ng-model="$ctrl.child.first_name" readonly>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="childLastName">Child Last Name</label>
-                    <input type="text" class="form-control" id="childLastName" required="true" ng-model="$ctrl.child.last_name" readonly>
-                </div>
-                <div class="form-group" ng-class="{'has-error': enrollmentEditForm.startDate.$invalid && enrollmentEditForm.startDate.$touched}">
-                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
-                    <p class="input-group">
-                        <input name="startDate" type="text" class="form-control" uib-datepicker-popup="MM/dd/yyyy" datepicker-options="{minDate: $ctrl.todayDate}" ng-model="$ctrl.enrollment.start_date" is-open="$ctrl.startDatePickerOpened" ng-required="true" close-text="Close"
-                        />
-                        <span class="input-group-btn">
-                                    <button type="button" class="btn btn-default"
-                                            ng-click="$ctrl.openStartDatePicker()">
-                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
-                    </p>
-                </div>
-            </div>
-        </form>
-        <div id="saveSuccessLabel" class="control-label hide">Save Success!</div>
-        <div id="saveFailureLabel" class="control-label hide">Save Fail!</div>
-        <button type="button" class="btn btn-primary">update</button>
-        <button type="button" class="btn btn-danger">delete</button>
-        <button type="button" class="btn btn-default">back to list</button>
+        <p>You're editing Enrollment for <b>{{$ctrl.child.first_name + " " + $ctrl.child.last_name}}</b>
+            in program <b>{{$ctrl.program.programName}}</b></p>
+        <div>
+            <p>
+                <span class="label label-danger" ng-show="$ctrl.showWarning">Incorrect billing start date</span>
+            </p>
+            <label>Enter enrollment billing start date (MM/DD/YYYY) for further operation</label>
+            <input type="text" required ng-model="$ctrl.billing_start_date">
+        </div>
+        <div ng-show="$ctrl.enrollment.status == 'inactive'">
+            <button type="button" class="btn btn-primary" ng-click="$ctrl.reactivateEnrollment()">
+                Reactive Enrollment
+            </button>
+        </div>
+        <div ng-show="$ctrl.isEnrollmentActive()">
+            <button type="button" class="btn btn-danger" ng-click="$ctrl.cancelEnrollment()">
+                Cancel Enrollment
+            </button>
+        </div>
     </div>
 </div>
 <div class="modal-footer"></div>

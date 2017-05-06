@@ -1,0 +1,90 @@
+<form name="addChildForm" role="form" class="well">
+    <div class="form-group"
+         ng-class="{'has-error': addChildForm.childFirstName.$invalid && addChildForm.childFirstName.$touched}">
+        <label class="control-label">Child First Name</label>
+        <input ng-readonly="$ctrl.readOnly" type="text" class="form-control" name="childFirstName"
+               required="true"
+               ng-model="$ctrl.newChildEnrollmentInfo.child_first_name">
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': addChildForm.childLastName.$invalid && addChildForm.childLastName.$touched}">
+        <label class="control-label">Child Last Name</label>
+        <input ng-readonly="$ctrl.readOnly" type="text" class="form-control" name="childLastName" required="true"
+               ng-model="$ctrl.newChildEnrollmentInfo.child_last_name">
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': addChildForm.dateOfBirth.$invalid && addChildForm.dateOfBirth.$touched}">
+        <label class="control-label">Date of Birth (Month/Day/Year)</label>
+        <p class="input-group">
+            <input name="dateOfBirth"
+                   type="text" class="form-control"
+                   uib-datepicker-popup="MM/dd/yyyy"
+                   datepicker-options="{maxDate: $ctrl.todayDate}"
+                   ng-model="$ctrl.newChildEnrollmentInfo.child_date_of_birth"
+                   is-open="$ctrl.dateOfBirthPickerOpened"
+                   ng-required="true"
+                   ng-readonly="$ctrl.readOnly"
+                   close-text="Close"/>
+            <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openDateOfBirthPicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+        </p>
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}">
+        <label class="control-label">Parent's Email</label>
+        <input name="email" type="email"
+               class="form-control" required="true"
+               ng-readonly="$ctrl.readOnly"
+               ng-model="$ctrl.newChildEnrollmentInfo.child_parent_email">
+    </div>
+
+    <div class="form-group">
+        <label class="control-label" for="program">Program</label>
+        <select class="form-control" id="program" required="true"
+                ng-readonly="$ctrl.readOnly"
+                ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
+                ng-model="$ctrl.newChildEnrollmentInfo.program"></select>
+        <div class="panel panel-body" ng-show="$ctrl.newChildEnrollmentInfo.program">
+            <div>
+                <label>Registration fee:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.registrationFee}}</b>
+            </div>
+            <div>
+                <label>Fee: </label> <b>{{$ctrl.newChildEnrollmentInfo.program.fee}}</b>
+            </div>
+            <div>
+                <label>Latefee: </label> <b>{{$ctrl.newChildEnrollmentInfo.program.lateFee}}</b>
+            </div>
+            <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Weekly'">
+                <label> Weekly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.weeklyBillDay}}</b>
+            </div>
+            <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Monthly'">
+                <label> Monthly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.monthlyBillDay}}</b>
+            </div>
+        </div>
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
+        <label class="control-label">Billing Start Date (MM/DD/YYYY)</label>
+        <p class="input-group">
+            <input name="startDate"
+                   type="text" class="form-control"
+                   uib-datepicker-popup="MM/dd/yyyy"
+                   datepicker-popup-template-url="/static/home/datepicker.template.html"
+                   datepicker-options="$ctrl.enrollmentDatePickerOptions"
+                   ng-model="$ctrl.newChildEnrollmentInfo.start_date"
+                   ng-readonly="$ctrl.readOnly"
+                   is-open="$ctrl.startDatePickerOpened"
+                   ng-required="true"
+                   close-text="Close"/>
+            <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openStartDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+        </p>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Enroll</button>
+    </div>
+</form>

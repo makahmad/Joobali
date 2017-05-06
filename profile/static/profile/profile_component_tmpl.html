@@ -1,63 +1,144 @@
-<div>
+<div class="profileFormContainer" >
+	<div class="profileFormHeader">
+		<h2 class="profile-title">Edit Your Profile</h2>
+	</div>
+	<div class="profileFormBody">
     <div class="col-centered">
-        <form id="profileForm" role="form" class="well">
-            <h2>Edit Profile:</h2>
+        <form id="profileForm" name="profileForm" role="form" class="well" enctype="multipart/form-data">
             <div class="">
                 <div class="form-group">
                     <label class="control-label" for="schoolName">School Name:</label>
-                    <input type="text" class="form-control" id="schoolName" name="schoolName" required="true"
-                           ng-model="$ctrl.profile.schoolName">
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span><input type="text" class="form-control" id="schoolName" name="schoolName" ng-required="true"
+	                           ng-model="$ctrl.profile.schoolName">
+										 </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="firstName">First Name:</label>
-                    <input type="text" class="form-control" id="firstName" name="firstName" required="true"
+										<label class="control-label" for="firstName">First Name:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="firstName" name="firstName" ng-required="true"
                            ng-model="$ctrl.profile.firstName">
+										 </div>
+									 </div>
+									 <div class="form-group">
+	                  <label class="control-label" for="lastName">Last Name:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
+										</div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label" for="lastName">Last Name:</label>
-                    <input type="text" class="form-control" id="lastName" name="lastName" required="true"
-                           ng-model="$ctrl.profile.lastName">
-                </div>
-                <div class="form-group">
+                <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
-                    <input type="text" class="form-control" id="email" name="email" required="true"
-                           ng-model="$ctrl.profile.email">
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control" id="email" name="email" ng-required="true"
+                           ng-model="$ctrl.profile.email"  ng-change="$ctrl.validateEmail()">
+										 </div>
+                    <span style="color:red" ng-show="(profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError">
+                        <span ng-show="profileForm.email.$error.required">Email is ng-required.</span>
+                        <span ng-show="profileForm.email.$error.email">Invalid email address.</span>
+                        <span ng-show="$ctrl.emailError">Email address already used.</span>
+                    </span>
                 </div>
+                <div class="form-group" >
+                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="!showChangePassword">Change Password?</a>
+                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="showChangePassword">Nevermind, don't change password</a>
+                </div>
+                <div class="form-group pwChange"  ng-class="{ 'has-error' : profileForm.currentPassword.$error.required}" ng-show="showChangePassword">
+                    <label class="control-label" for="currentPassword">Current Password:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                           ng-model="$ctrl.profile.currentPassword" ng-required='$ctrl.profile.newPassword.length>0 && showChangePassword'>
+										 </div>
+                      <span style="color:red" ng-show="$ctrl.currentPasswordError">
+                            Current password is incorrect.
+                    </span>
 
-		    <!--{% if form.email.errors %}-->
-	  	      <!--<div class="form-group">-->
-		        <!--<span class="label label-warning">Email already registered...</span>-->
-		      <!--</div>-->
-		    <!--{% endif %}-->
+                    <span style="color:red" ng-show="profileForm.currentPassword.$error.required">
+                        <span ng-show="profileForm.currentPassword.$error.required">Current password is ng-required if entering new password.</span>
+                    </span>
+                </div>
+                <div class="form-group pwChange" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
+                    <label class="control-label" for="newPassword">New Password:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" class="form-control" id="newPassword" name="newPassword"
+                           ng-model="$ctrl.profile.newPassword"  ng-required='$ctrl.profile.currentPassword.length>0 && showChangePassword' ng-model-options="{allowInvalid: true}" pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})">
 
-                <div class="form-group">
-                    <label class="control-label" for="password">Password:</label>
-                    <input type="password" class="form-control" id="password" name="password" required="true"
-                           ng-model="$ctrl.profile.password">
+                    </div>
+                    <password-strength ng-model="$ctrl.profile.newPassword"></password-strength>
+                     <span style="color:red" ng-show="profileForm.newPassword.$error.required">
+                        <span ng-show="profileForm.newPassword.$error.required">New password is ng-required if entering current password.</span>
+                    </span>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="phone">Phone:</label>
-                    <input type="text" class="form-control" id="phone" name="phone" required="false"
-                           ng-model="$ctrl.profile.phone">
+                    <label class="control-label" for="addressLine1">Address Line 1:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="addressLine1" name="addressLine1" ng-required="false" ng-model="$ctrl.profile.addressLine1">
+										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="addressLine2">Address Line 2 (optinoal):</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="addressLine2" name="addressLine2" ng-required="false" ng-model="$ctrl.profile.addressLine2">
+										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="city">City:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
+										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="state">state:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="state" name="state" ng-required="false" ng-model="$ctrl.profile.state">
+										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="zipcode">Zipcode:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="number" class="form-control" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
+										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="website">Website:</label>
-                    <input type="text" class="form-control" id="website" name="website" required="false"
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-globe fa-lg"></i></span><input type="text" class="form-control" id="website" name="website" ng-required="false"
                            ng-model="$ctrl.profile.website">
+										 </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="license">License:</label>
-                    <input type="text" class="form-control" id="license" name="license" required="false"
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="license" name="license" ng-required="false"
                            ng-model="$ctrl.profile.license">
+                    </div>
+
+
                 </div>
-            </div>
-            <div class="buttonDiv">
-                <button type="button" class="btn btn-primary btn-lg"
-                        ng-click="$ctrl.saveProfile()">Save
-                </button>
-            </div>
+                <div class="form-group">
+                    <label class="control-label" for="license">TIN (visible on invoice):</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-percent fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="tin" name="tin" ng-required="false"
+                           ng-model="$ctrl.profile.tin">
+                    </div>
 
-        </form>
 
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="logo">Logo (shown on invoice):</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.logo"  class="form-control" name="logo" id="logo">
+										 </div>
+                     <div ng-show="$ctrl.profile.showLogo">
+                         <a href="../profile/getproviderlogo" target="_blank"><img  ng-show="$ctrl.profile.showLogo" src='../profile/getproviderlogo' alt='your logo' width="40%" height="40%"/></a>
+                         <a ng-click="$ctrl.deleteLogo()">Delete Logo</a>
+                     </div>
+                </div>
+
+            </div>
+		        </form>
+						<div class="formActions">
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave||profileForm.$invalid">Update &raquo;</button>
+						</div> <!-- end formActions -->
     </div>
+	</div>
 </div>

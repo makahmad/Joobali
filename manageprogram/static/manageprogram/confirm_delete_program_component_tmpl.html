@@ -1,0 +1,41 @@
+<!-- Modal content-->
+<div class="modal-content">
+  <div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&times;</a>
+    <h4 class="modal-title">Are you sure you want to delete this program?</h4>
+  </div> <!-- end modal-header -->
+  <div class="modal-body">
+		<div class="col-centered programOverviewForm">
+		            <div class="form-group">
+		                <label class="control-label" >Program Name:</label>
+
+		                       {{$ctrl.program.programName}}
+		            </div>
+								<div class="form-group">
+			            <div class="col-1">
+			                <label class="control-label" >Start Date:</label>
+			                <div class="input-group date">
+			                    {{$ctrl.program.startDate}}
+			                </div>
+			            </div>
+			            <div class="col-1">
+			                <label class="control-label">End Date:</label>
+			                <div class="input-group date">
+			                    {{$ctrl.program.endDate}}
+
+			                </div>
+			            </div>
+							</div>
+						<div class="formActions">
+							<center>
+								<a class="delete pull-left" ng-click="$ctrl.cancel()">&laquo; Nevermind</a>
+								<a class="pull-right btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.deleteProgram()">Delete &raquo;</a>
+							</center>
+						</div> <!-- end formActions -->
+		</div><!-- end col-centered programOerviewForm -->
+	</div> <!-- end modal body -->
+
+		<div class="modal-footer">&nbsp;</div>
+
+</div> <!-- end modal-content -->
+</div>

@@ -10,7 +10,7 @@ AddProgramComponentController = function($scope, $http, $window, $filter) {
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
-	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly"};
+	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly","weeklyBillDay": "Monday","monthlyBillDay": 1,"indefinite": false};
 	this.newProgram.startDate = this.filter_('date')(new Date(), 'MM/dd/yyyy')
 
   this.scope_.showConflictLabel = false;

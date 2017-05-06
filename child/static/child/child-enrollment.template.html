@@ -32,17 +32,38 @@
                 <div class="form-group">
                     <label class="control-label" for="program">Program</label>
                     <select class="form-control" id="program" required="true"
-                            ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                            ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                             ng-model="$ctrl.newEnrollment.program"></select>
+                    <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
+                        <div>
+                            <label>Registration fee:</label>
+                            <b>{{$ctrl.newEnrollment.program.registrationFee}}</b>
+                        </div>
+                        <div>
+                            <label>Fee: </label> <b>{{$ctrl.newEnrollment.program.fee}}</b>
+                        </div>
+                        <div>
+                            <label>Latefee: </label> <b>{{$ctrl.newEnrollment.program.lateFee}}</b>
+                        </div>
+                        <div ng-show="$ctrl.newEnrollment.program.billingFrequency == 'Weekly'">
+                            <label> Weekly bill day:</label>
+                            <b>{{$ctrl.newEnrollment.program.weeklyBillDay}}</b>
+                        </div>
+                        <div ng-show="$ctrl.newEnrollment.program.billingFrequency == 'Monthly'">
+                            <label> Monthly bill day:</label>
+                            <b>{{$ctrl.newEnrollment.program.monthlyBillDay}}</b>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group"
                      ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
-                    <label class="control-label">Enrollment Start Date (MM/DD/YYYY)</label>
+                    <label class="control-label">Billing Start Date (MM/DD/YYYY)</label>
                     <p class="input-group">
                         <input name="startDate"
                                type="text" class="form-control"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
                                uib-datepicker-popup="MM/dd/yyyy"
-                               datepicker-options="{minDate: $ctrl.todayDate}"
+                               datepicker-options="$ctrl.enrollmentDatePickerOptions"
                                ng-model="$ctrl.newEnrollment.start_date"
                                is-open="$ctrl.startDatePickerOpened"
                                ng-required="true"
@@ -63,13 +84,13 @@
                     <div>{{$ctrl.child.last_name}}</div>
                     <label class="control-label">Program</label>
                     <div>
-                        {{$ctrl.newEnrollment.program.id}}-{{$ctrl.newEnrollment.program.programName}}
+                        {{$ctrl.newEnrollment.program.programName}} - {{$ctrl.newEnrollment.program.billingFrequency}}
                     </div>
                     <label class="control-label">Start Date</label>
                     <div>{{$ctrl.newEnrollment.start_date}}</div>
                 </div>
-                <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Save Success!</div>
-                <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Save Fail!</div>
+                <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Enroll Success!</div>
+                <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Enroll Fail! {{$ctrl.failMessage}}</div>
             </div>
         </form>
     </div>
@@ -79,7 +100,7 @@
             ng-click="$ctrl.nextButton.click()" ng-show="$ctrl.nextButton.show">Next
     </button>
     <button type="button" class="btn btn-primary"
-            ng-click="$ctrl.saveButton.click()" ng-show="$ctrl.saveButton.show">Save
+            ng-click="$ctrl.saveButton.click()" ng-show="$ctrl.saveButton.show">Enroll
     </button>
     <button type="button" class="btn btn-primary"
             ng-click="$ctrl.doneButton.click()" ng-show="$ctrl.doneButton.show">Done

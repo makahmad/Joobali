@@ -7,10 +7,12 @@
         <th>Status</th>
       </thead>
       <tbody>
-        <tr data-ng-repeat="funding in $ctrl.fundings track by $index">
-          <td>{{ funding.name }}</td>
-          <td>{{ funding.type }}</td>
-          <td>{{ funding.status }}</td>
+        <tr class='fundingRow'  ng-class="{fundingMouseOver: funding.hover}"  data-ng-repeat="funding in $ctrl.fundings track by $index" ng-mouseover="funding.hover = true" ng-mouseleave="funding.hover = false">
+          <td class="name">{{ funding.name }}</td>
+          <td class="type">{{ funding.type }}</td>
+          <td class="status">{{ funding.status }}</td>
+          <td>&nbsp;<button class="RemoveFundingButton btn btn-primary btn-sm" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" ng-show="funding.hover">Remove</button>
+          </td>
         </tr>
       </tbody>
     </table>

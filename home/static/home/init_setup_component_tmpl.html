@@ -16,53 +16,27 @@
       </div>
       <div class="modal-body">
         <div class="col-centered">
-          <form id="programForm" role="form" class="well">
-            <div id="step1" class="init-setup form-content current">
-              <div id="initSetupIavContainer"></div>
-            </div>
-            <div id="step2" class="init-setup form-content">
+          <div id="step1" class="init-setup form-content current">
+						<span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; The ability to link your bank account is a key benefit of Joobali. Here's where you'll securely add your account so that you can begin accepting payments online.</span>
+            <div id="initSetupIavContainer"></div>
+          </div>
+          <div id="step2" class="init-setup form-content">
+						<span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; A program is a set dollar amount to bill parents on a weekly or monthly basis. Some common program names include <i>Full-time</i>, <i>Part-time</i>, and <i>Extended care</i>.</span>
+            <form id="programForm" role="form" class="well">
+
               <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
-            </div>
-            <div id="step3" class="init-setup form-content">
-              <div>
-                <div class="form-group" ng-class="{'has-error': programForm.childFirstName.$invalid && programForm.childFirstName.$touched}">
-                  <label class="control-label">Child First Name</label>
-                  <input type="text" class="form-control" name="childFirstName"
-                  required="true"
-                  ng-model="$ctrl.childInfo.first_name">
-                </div>
-                <div class="form-group" ng-class="{'has-error': programForm.childLastName.$invalid && programForm.childLastName.$touched}">
-                  <label class="control-label">Child Last Name</label>
-                  <input type="text" class="form-control" name="childLastName" required="true" ng-model="$ctrl.childInfo.last_name">
-                </div>
-                <div class="form-group" ng-class="{'has-error': programForm.dateOfBirth.$invalid && programForm.dateOfBirth.$touched}">
-                  <label class="control-label">Date of Birth (Month/Day/Year)</label>
-                  <p class="input-group">
-                    <input name="dateOfBirth"
-                    type="text" class="form-control"
-                    uib-datepicker-popup="MM/dd/yyyy"
-                    ng-model="$ctrl.childInfo.date_of_birth"
-                    is-open="$ctrl.dateOfBirthPickerOpened"
-                    ng-required="true"
-                    close-text="Close"/>
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default"
-                      ng-click="$ctrl.openDateOfBirthPicker()">
-                      <i class="glyphicon glyphicon-calendar"></i></button></span>
-                    </p>
-                  </div>
-                  <div class="form-group" ng-class="{'has-error': programForm.email.$invalid && programForm.email.$touched}">
-                    <label class="control-label">Parent's Email</label>
-                    <input name="email" type="email" class="form-control" required="true" ng-model="$ctrl.childInfo.email">
-                  </div>
-                </div>
-              </div>
+
             </form>
           </div>
+          <div id="step3" class="init-setup form-content">
+            <child-form-content programs="$ctrl.programs"
+                                on-save="$ctrl.onSaveChildEnrollmentInfo(isSaved)"></child-form-content>
+          </div>
+        </div>
         </div>
         <div class="modal-footer">
           <button id="initSetupNextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext()">Next</button>
-          <button id="initSetupDoneButton" type="button" class="btn btn-default" ng-click="$ctrl.handleDone()">Done</button>
+          <button id="initSetupDoneButton" ng-show="$ctrl.isDone" type="button" class="btn btn-default" ng-click="$ctrl.handleDone()">Done</button>
         </div>
       </div>
     </div>

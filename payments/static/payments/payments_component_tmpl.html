@@ -1,0 +1,78 @@
+<div class="paymentTable">
+  <div class="paymentList">
+    <form>
+      <div class="form-group">
+        <div class="input-group searchFilter">
+          <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+          <input type="text" class="form-control" placeholder="Search Payment" ng-model="$ctrl.searchTerm">
+
+        </div>
+      </div>
+    </form>
+    <table class="table">
+      <thead>
+        <th>
+          <a ng-click="$ctrl.sortType = 'child'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Child
+            <i ng-show="$ctrl.sortType == 'child' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'child' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'payer'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Payer
+            <i ng-show="$ctrl.sortType == 'payer' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'payer' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'date'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Date
+            <i ng-show="$ctrl.sortType == 'date' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'date' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'amount'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Amount
+            <i ng-show="$ctrl.sortType == 'amount' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'amount' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'type'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Type
+            <i ng-show="$ctrl.sortType == 'type' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'type' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'invoice'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Invoice Id
+            <i ng-show="$ctrl.sortType == 'invoice' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'invoice' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
+          <a ng-click="$ctrl.sortType = 'note'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Note
+            <i ng-show="$ctrl.sortType == 'note' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'note' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+      </thead>
+      <tbody>
+        <tr class='invoiceRow' data-ng-repeat="payment in $ctrl.payments | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm  track by $index" >
+          <td>{{ payment.child }}</td>
+          <td>{{ payment.payer }}</td>
+          <td>{{ payment.date }}</td>
+          <td>${{ payment.amount }}</td>
+          <td>{{ payment.type }}</td>
+          <td>{{ payment.invoice }}</td>
+          <td>{{ payment.note }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

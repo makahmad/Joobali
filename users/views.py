@@ -20,7 +20,7 @@ def home(request):
 	return HttpResponse('place holder')
 
 stripFilter = lambda x: x.strip()  if x else ''
-ProviderForm = model_form(models.Provider, field_args={
+ProviderForm = model_form(models.Provider, exclude=['logo'],field_args={
 	'firstName': {
 		'filters': [stripFilter],
 	},

@@ -1,0 +1,47 @@
+<!-- Modal content-->
+<div class="modal-content">
+  <div class="modal-header">
+    <a type="button" class="close" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&times;</a>
+    <h4 class="modal-title">Refer someone you care about to Joobali:</h4>
+		<span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Know someone who could benefit from Joobali? Let other Child Care providers know about Joobali by entering their contact information below.</span>
+  </div> <!-- end modal-header -->
+  <div class="modal-body">
+		<div class="col-centered" ng-show="!$ctrl.sent">
+		    <form id="referralForm" name="referralForm" role="form" class="well">
+		            <div class="form-group">
+		                <label class="control-label" for="schoolName">Business Name:</label>
+		                <input type="text" class="form-control" id="schoolName" name="schoolName" required="true"
+		                       ng-model="$ctrl.referral.schoolName">
+		            </div>
+		            <div class="form-group">
+		                <label class="control-label" for="email">Send email to:</label>
+		                <input type="email" class="form-control" id="email" name="email" required="true"
+		                       ng-model="$ctrl.referral.email">
+                        <span style="color:red" ng-show="referralForm.email.$invalid">
+                            <span ng-show="referralForm.email.$error.email">Invalid email address.</span>
+                         </span>
+		            </div>
+                   <div class="form-group">
+		                <label class="control-label" for="phone">Business Phone:</label>
+		                <input type="text" class="form-control" id="phone" name="phone" required="true"
+		                       ng-model="$ctrl.referral.phone">
+		            </div>
+
+		    </form>
+						<div class="formActions">
+							<center>
+								<button type="button" class="btn btn-default btn-lg pull-right joobali"
+                                        ng-disabled="referralForm.$invalid"
+                                        ng-click="$ctrl.refer()">Refer &raquo;</button>
+							</center>
+						</div> <!-- end formActions -->
+		</div><!-- end col-centered  -->
+        <div class="col-centered" ng-show="$ctrl.sent">
+            Thank you, referral sent!
+        </div>
+	</div> <!-- end modal body -->
+
+		<div class="modal-footer">&nbsp;</div>
+
+</div> <!-- end modal-content -->
+</div>

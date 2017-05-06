@@ -7,26 +7,30 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title>Joobali Main Dashboard</title>
+    <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
+    <!-- <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" /> -->
     <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}home/init_setup_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/edit_program_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}invoice/invoices_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}child/style.css">
+		<link rel="stylesheet" href="{{ STATIC_URL }}enrollment/style.css">
 
-    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" />
-	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
     <!-- JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script>
@@ -43,30 +47,51 @@
     <script src="{{ STATIC_URL }}manageprogram/add_program_form_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/add_program_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}manageprogram/edit_program_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}manageprogram/confirm_delete_program_component_ctrl.js"></script>
 
     <!-- Profile Related JS -->
     <script src="{{ STATIC_URL }}profile/profile_component_ctrl.js"></script>
 
+    <!-- Help Center Related JS -->
+    <script src="{{ STATIC_URL }}helpcenter/helpcenter_component_ctrl.js"></script>
+
     <!-- Invoice Related JS -->
+    <script src="{{ STATIC_URL }}invoice/invoice_settings_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}invoice/add_invoice_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}home/invoice_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}invoice/adjust_invoice_component_ctrl.js"></script>
+
+    <!-- Payment Related JS -->
+    <script src="{{ STATIC_URL }}payments/add_payment_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}home/payment_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}payments/payments_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}payments/confirm_add_payment_component_ctrl.js"></script>
 
     <!-- Funding Related JS -->
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/transfer_component_ctrl.js"></script>
 
+
     <!-- Child Related JS -->
     <script src="{{ STATIC_URL }}child/child-list.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-form.component.js"></script>
+    <script src="{{ STATIC_URL }}child/child-form-content.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-card.component.js"></script>
     <script src="{{ STATIC_URL }}child/child-enrollment.component.js"></script>
 
     <!-- Enrollment Related JS-->
     <script src="{{ STATIC_URL}}enrollment/enrollment-list.component.js"></script>
     <script src="{{ STATIC_URL}}enrollment/enrollment-editor.component.js"></script>
+
+   <!-- Referral Related JS-->
+    <script src="{{ STATIC_URL }}referral/referral_component_ctrl.js"></script>
+
     <!-- Dashboard Related JS -->
     <script src="{{ STATIC_URL }}home/init_setup_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}home/dashboard_app.js"></script>
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -74,8 +99,31 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <!-- Start of joobali Zendesk Widget script -->
+    <script>
+        window.zESettings = {
+         authenticate: { jwt: '{{ zendesk_token }}'  }
+        };
+
+        /*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="joobali.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+        /*]]>*/
+
+      zE(function() {
+        zE.identify({
+          name: '{{name}}',
+          email: '{{ email }}',
+          organization: '{{ schoolName }}'
+        });
+      });
+
+    </script>
+    <!-- End of joobali Zendesk Widget script -->
+
+
 </head>
 <body ng-app="dashboardApp" ng-controller="DashboardCtrl as dashboardCtrl">
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-container">
         <div class="navbar-header">
@@ -95,14 +143,15 @@
 		<div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
-				<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>
+				<!-- <li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li> -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
+                        <li ng-click="changeView('/profile')"><a href="#!/profile">Profile</a></li>
+                        <li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a>Refer</a></li>
                         <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
                     </ul>
                 </li>
@@ -120,47 +169,62 @@
 
  {% verbatim %}
     <div class="nav-side-menu">
-        <div class="brand">Joobali</div>
+        <div class="brand">Joobali </div>
 
         <div class="menu-list">
 
             <ul id="menu-content" class="menu-content collapse out">
-                <li>
-                    <a href="#">
-                        <i class="fa fa-home fa-lg"></i> Dashboard
-                    </a>
+                <!--<li ng-click="changeView('/programs')"  ng-class="{active: module=='#'}">-->
+                    <!--<a>-->
+                        <!--<i class="fa fa-home fa-2x"></i> &nbsp; Dashboard-->
+                    <!--</a>-->
+                <!--</li>-->
+                <li ng-click="changeView('/programs')" ng-class="{active: module=='/programs'}">
+                    <a>
+						<i class="fa fa-list-alt fa-2x"></i> &nbsp; Programs
+					</a>
+                </li>
+               <!-- <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                    <a href="#!/programs"><i class="fa fa-heart fa-2x"></i> Programs <span class="arrow"></span></a>
+                </li>
+                <ul class="sub-menu collapse" id="products">-->
+                    <!--<li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)"  data-toggle="modal" data-target="#editProgramModal">{{ program.programName }}</li>-->
+                <!--</ul>-->
+
+                <li data-toggle="collapse" data-target="#children" class="collapsed" ng-click="changeView('/child/list')" ng-class="{active: module=='/child/list'}">
+                    <a><i class="fa fa-child fa-2x"></i> &nbsp; Children</a>
                 </li>
 
-                <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                    <a href="#!/programs"><i class="fa fa-heart fa-lg"></i> Programs <span class="arrow"></span></a>
-                </li>
-                <ul class="sub-menu collapse" id="products">
-                    <li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)"  data-toggle="modal" data-target="#editProgramModal">{{ program.programName }}</li>
-                </ul>
-
-                <li data-toggle="collapse" data-target="#children" class="collapsed active">
-                    <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-lg"></i> Children <span class="arrow"></span></a>
-                </li>
-
-                <li>
-                    <a href="#!/invoice">
-						<i class="fa fa-list-alt fa-lg"></i> Invoices
+                <li ng-click="changeView('/invoice')" ng-class="{active: module=='/invoice'}">
+                    <a>
+						<i class="fa fa-paper-plane-o fa-2x"></i> &nbsp; Invoices
 					</a>
                 </li>
 
-                <li>
-                    <a href="#!/billing">
-						<i class="fa fa-money fa-lg"></i> Billing
+                <li ng-click="changeView('/payments')" ng-class="{active: module=='/payments'}">
+                    <a>
+						<i class="fa fa-money fa-2x"></i> &nbsp; Payments
+					</a>
+                </li>
+
+                <li ng-click="changeView('/billing')" ng-class="{active: module=='/billing'}">
+                    <a>
+						<i class="fa fa-university fa-2x"></i> &nbsp; Funds
 					</a>
                 </li>
 
 
-                <li>
-                    <a href="#!/profile">
-                        <i class="fa fa-user fa-lg"></i> Profile
+                <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
+                    <a>
+                        <i class="fa fa-user fa-2x"></i> &nbsp; Profile
                     </a>
                 </li>
 
+                <li >
+                    <a ng-href="/login/?zendesk=1" target="_blank">
+                        <i class="fa fa-life-ring fa-2x"></i> &nbsp; Help Center
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

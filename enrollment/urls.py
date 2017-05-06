@@ -6,7 +6,10 @@ urlpatterns = [
     url(r'^$', views.render_enrollment_home, name='enrollmentHome'),
     url(r'^listByChild', views.list_enrollment_by_child, name='listEnrollmentByChild'),
     url(r'^add', views.add_enrollment, name='addEnrollment'),
-    url(r'^addEnrollmentFromChildView', views.add_enrollment_from_child_view, name='addEnrollmentFromChildView'),
     url(r'^get', views.get_enrollment, name='getEnrollment'),
-    url(r'^update', views.update_enrollment, name='updateEnrollment')
+    url(r'^cancel', views.cancel_enrollment, name='cancelEnrollment'),
+    url(r'^accept', views.accept_enrollment, name='acceptEnrollment'),
+    url(r'^reactivate', views.reactivate_enrollment, name='reactivateEnrollment'),
+    url(r'^resendInvitation', views.resent_enrollment_invitation, name='resendInvitation'),
+    url(r'^setupautopay', views.setupAutopay, name='setupAutopay'),
 ]

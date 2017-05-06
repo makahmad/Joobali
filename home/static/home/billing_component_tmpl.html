@@ -1,8 +1,11 @@
-<span class="fundingHeader"><b>Available Fundings:</b></span>
-<fundings-component fundings="fundings"></fundings-component>
-<div class="fundingTableButtonDiv">
-    <button class="makeTransferButton btn btn-primary btn-lg" data-toggle="modal" data-target="#makeTransferModal">Make Transfer</button>
-    <button class="fundingTableButton btn btn-primary btn-lg" data-toggle="modal" data-target="#iavModal">Add Funding (IAV)</button>
+<span class="programHeader"><b>Available Fundings:</b></span>
+<div class="programsContainer">	
+  <div class="programsDiv">
+	  <div class="well well-sm">
+			<div class=""><a class="btn btn-default btn-lg pull-left programHeader joobali" data-toggle="modal" data-target="#iavModal">ADD FUNDING SOURCE <i class="fa fa-plus-circle fa-lg"></i></a> </div>
+			<fundings-component fundings="fundings"></fundings-component>
+			<transfer-component fundings="fundings"></transfer-component>
+			<add-funding-iav-component></add-funding-iav-component>
+		</div>
+	</div>
 </div>
-<transfer-component fundings="fundings"></transfer-component>
-<add-funding-iav-component></add-funding-iav-component>

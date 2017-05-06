@@ -8,16 +8,19 @@ urlpatterns = [
     url(r'^home/', include('home.urls')),
     url(r'^manageprogram/', include('manageprogram.urls')),
     url(r'^funding/', include('funding.urls')),
-    url(r'^$', include('login.urls')),
+    url(r'^$', include('home.urls')),
     url(r'^login/', include('login.urls')),
+    url(r'^payments/', include('payments.urls')),
     url(r'^profile/', include('profile.urls')),
     url(r'^invoice/', include('invoice.urls')),
-    url(r'^referal/', include('referal.urls')),
+    url(r'^referral/', include('referral.urls')),
     url(r'^users/', include('users.urls')),
     url(r'^enrollment/', include('enrollment.urls')),
     url(r'^parent/', include('parent.urls')),
     url(r'^child/', include('child.urls')),
-    url(r'^tasks/', include('tasks.urls'))
+    url(r'^tasks/', include('tasks.urls')),
+    url(r'^verification/', include('verification.urls')),
+    url(r'^helpcenter/', include('helpcenter.urls'))
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),

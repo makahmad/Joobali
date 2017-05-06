@@ -1,59 +1,262 @@
-<<!DOCTYPE html>
+﻿<!DOCTYPE html>
 {% load staticfiles %}
 <html>
 <head>
-  <title>Provider Registration</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <title>Joobali - Provider Registration</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" /> -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
+    <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css"/>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
+    <script src="{{ STATIC_URL }}login/password_module.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+
+    <script type="text/javascript" language="javascript">
+
+        function validateform(){
+        var captcha_response = grecaptcha.getResponse();
+            if(captcha_response.length == 0 && '{{captcha}}'=='False')
+            {
+                // Captcha is not Passed
+                alert("Please check the I'm not a robot box");
+                return false;
+            }
+        }
+        // ]]></script>
+
 </head>
-<body>
-  <div class="container">
-  <div class="col-centered login-form">
-  	<img src="{{ STATIC_URL }}home/pics/logo/logo.png" class="img-responsive logo col-centered">
-	<br />
-    <!-- <p class="text-center">Welcome to Joobali. The first step is to register a account with us.</p> -->
-	  <form role="form" class="well" action="/login/signup/" method="POST">
-	  	{% csrf_token %}
-		  <div class="form-group">
-		    <label class="control-label" for="firstName">First Name:</label>
-		    <input type="text" class="form-control" id="firstName" name="firstName" required="true" value="{{ form.firstName.data|safe }}">
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label" for="lastName">Last Name:</label>
-		    <input type="text" class="form-control" id="lastName" name="lastName" required="true" value="{{ form.lastName.data|safe }}">
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label" for="schoolName">School Name:</label>
-		    <input type="text" class="form-control" id="schoolName" name="schoolName" required="true" value="{{ form.schoolName.data|safe }}">
-		  </div>
-	  	  <div class="form-group">
-		    <label class="control-label" for="email">Email:</label>
-		    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.data|safe }}">
-		  </div>
-		    {% if form.email.errors %}
-	  	      <div class="form-group">
-		        <span class="label label-warning">Email already registered...</span>
-		      </div>
-		    {% endif %}
-		  <div class="form-group">
-		    <label class="control-label" for="password">Password:</label>
-		    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.data|safe }}">
-		  </div>
-	  	  <div class="form-group">
-		    <label class="control-label" for="phone">Phone:</label>
-		    <input type="text" class="form-control" id="phone" name="phone" value="{{ form.phone.data|safe }}">
-		  </div>
-		  <div class="form-group">
-		    <label class="control-label" for="license">License:</label>
-		    <input type="text" class="form-control" id="license" name="license" value="{{ form.license.data|safe }}">
-		  </div>
-      	  <button type="submit" class="btn btn-primary btn-block btn-lg">Sign Up</button>
-	  </form>
-  </div>
-  </div>
+
+<body id="signUp">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button> -->
+            <a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png"
+                                                  class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
+            &nbsp;
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav navbar-right">
+                {% if loggedIn %}
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        {{ email }}
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Profile</a></li>
+                        <li><a href="/home/dashboard">Dashboard</a></li>
+                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                    </ul>
+                </li>
+                {% else %}
+                <li>
+                    <a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="jumbotron">
+    <div class="row">
+        <div ng-app="password_module" ng-controller="credentialsController" class="profileFormContainer container">
+            <div class="profileFormHeader">
+                <h2 class="profile-title">Sign up</h2>
+            </div>
+            <div class="profileFormBody">
+                <div class="col-sm-6">
+                    <form name="loginForm" role="form" class="well" action="/login/signup/" method="POST"  onsubmit="return validateform();">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label" for="firstName">First Name:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
+                                <input type="text" class="form-control" id="firstName" name="firstName"
+                                        required="true" value="{{ form.firstName.data|safe }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="lastName">Last Name:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
+                                <input type="text" class="form-control" id="lastName" name="lastName"
+                                      required="true" value="{{ form.lastName.data|safe }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="schoolName">Business Name:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span>
+                                <input type="text" class="form-control" id="schoolName"
+                                       name="schoolName" required="true" value="{{ form.schoolName.data|safe }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" for="email">Email:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span>
+                                <input type="email" class="form-control" id="email"  name="email"
+                                       required="true" value="{{ form.email.data|safe }}">
+                            </div>
+                        </div>
+                        {% if form.email.errors %}
+                        <div class="form-group">
+                            <span class="label label-warning">Email already registered...</span>
+                        </div>
+                        {% endif %}
+                        <div class="form-group">
+                            <label class="control-label" for="password">Password: <sup><i
+                                    class="fa fa-question-circle-o" uib-tooltip-html="htmlTooltip"></i></sup> </label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
+                                <input type="password" class="form-control" ng-model="password"
+                                       pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})" id="password"
+                                       name="password" required="true" value="{{ loginForm.password.data|safe }}">
+                            </div>
+                            <password-strength ng-model="password"></password-strength>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="phone">Phone:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span>
+                                <input type="text" class="form-control" id="phone" name="phone"
+                                       value="{{ form.phone.data|safe }}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" for="license">Child Care License Number (if applicable):</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-id-card fa-lg"></i></span>
+                                <input type="text" class="form-control" id="license" name="license"
+                                       value="{{ form.license.data|safe }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label><input id="tos_pp_accepted" name="tos_pp_accepted" type="checkbox" ng-model="tos_pp_accepted">
+                                        By clicking this box you accept the Joobali <a href="http://{{host}}/login/termsofservice">Terms of Service</a> and <a href="http://{{host}}/login/privacypolicy">Privacy Policy</a>.</label>
+                            </div>
+                        </div>
+
+                        <div class="formActions">
+                            <div ng-show="'{{captcha}}'=='False'"
+                                 class="g-recaptcha" data-sitekey="6Lf6Gh8UAAAAAEff-o-4cpwWabGi4JKvMSVqEQPK"></div>
+                            <button type="submit" ng-disabled="!tos_pp_accepted"
+                                    class="btn btn-default btn-lg pull-right joobali">Sign Up
+                            </button>
+                        </div> <!-- end formActions -->
+                    </form>
+                    <div class="row text-center">
+                        Already a member? <a href="/login">Login</a> here.
+                    </div>
+                </div>
+                <div class="col-sm-6 signUpFeatures text-center">
+                    <div class="row">
+                        <h1>First month Free!</h1>
+                    </div>
+                    <div class="row">
+                        <h3 style="padding-left:30px;">1<sup>%</sup></h3>
+                        <label>per transaction</label>
+                    </div>
+                    <div class="row featureList">
+                        <ul>
+                            <li>Get paid on time, every time with automated invoicing and payments.</li>
+                            <li>Budget-friendly Business tools - transaction fee gives you access to all features.</li>
+                            <li>Customer support powered by real people who care about your business.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container-fluid text-center">
+    <br/>
+    <div class
+    "row text-center">
+    <div class="col-sm-12 text-center">
+        <a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
+    </div>
+    </div>
+    <div class
+    "row text-center">
+    <div class="col-sm-3 text-center">
+        <h4>Providers </h4>
+        <ul>
+            <li><a href="/login/signup">Sign Up &amp; Pricing</a></li>
+            <li>Resources</li>
+            <li>Terms and Conditions</li>
+            <li>Provider Care</li>
+            <li>Request a Feature/Optimization</li>
+            <!-- <li><a href="#">ONE</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>Parents </h4>
+        <ul>
+            <li>Sign Up</li>
+            <li>Refer your Provider</li>
+            <li>Terms of Use</li>
+            <li>Parent Care</li>
+            <!-- <li><a href="#">ONE</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>About </h4>
+        <ul>
+            <li>About Joobali</li>
+            <li>Contact</li>
+            <!-- <li><a href="#">Legal</a></li>
+            <li><a href="#">TWO</a></li>
+            <li><a href="#">THREE</a></li> -->
+        </ul>
+    </div>
+    <div class="col-sm-3 text-center">
+        <h4>Find Us On</h4>
+        <ul>
+            <li><a href="https://twitter.com/joobalicare"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
+            </li>
+            <li><a href="https://www.facebook.com/joobalicare"><i class="fa fa-facebook" aria-hidden="true"></i>
+                Facebook</a></li>
+            <li><a href="https://www.instagram.com/joobalicare/"><i class="fa fa-instagram" aria-hidden="true"></i>
+                Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/joobali"><i class="fa fa-linkedin-square"
+                                                                      aria-hidden="true"></i> LinkedIn</a></li>
+        </ul>
+    </div>
+    </div>
+    <br/>
+    <br/>
+    <div class
+    "row text-center" style="clear:both;">
+    <p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p>
+    </div>
+</footer>
+
 </body>
 </html>

@@ -1,0 +1,7 @@
+tr:nth-child(even).invoiceRow {
+    background-color: #F1F1F1;
+}
+.invoiceMouseOver {
+	background-color: #1E988A !important;
+	cursor: pointer;
+}

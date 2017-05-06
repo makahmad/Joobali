@@ -1,2 +1,11 @@
-<span class="invoiceHeader"><b>Invoices:</b></span>
-<invoices-component invoices="invoices"></invoices-component>
+<div class="programHeader"><b>Invoices</b> <sup><i class="fa fa-question-circle-o fa-lg"></i></sup></div>
+	<span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; An invoice is a customizable one-time charge for a specific child.</span>
+<div class="programsContainer">
+	<div class="programsDiv">
+		<div class="well well-sm">
+			<div class="InvoiceTableButtonDiv"><a class="btn btn-default btn-lg pull-left programHeader joobali" ng-click="$ctrl.openAddInvoiceModal()">CREATE AN INVOICE <i class="fa fa-plus-circle fa-lg"></i></a></div>
+			<div class="InvoiceTableButtonDiv"><a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openInvoiceSettingsModal()"><i class="fa fa-cog fa-lg"></i></a></div>
+			<invoices-component invoices="$ctrl.invoices" is-provider="true"></invoices-component>
+		</div>
+	</div>
+</div>

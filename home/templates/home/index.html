@@ -1,60 +1,65 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Bootstrap Theme Company</title>
+  <title>Joobali - Care for You</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css" />
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="{{ STATIC_URL }}home/script.js"></script>
 
 </head>
 <body id="myPage">
-<nav class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button> -->
-					 <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>					 
-&nbsp;    </div>
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="nav navbar-nav navbar-right">
-        <!-- <li><a href="#about">ABOUT</a></li> -->
-        <!-- <li><a href="/manageprogram">PROGRAMS</a></li>
-        <li><a href="#contact">CONTACT</a></li> -->
-          {% if loggedIn %}
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown">
-                    {{ email }}
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Profile</a></li>
-									<li><a href="/home/dashboard">Dashboard</a></li>									
-                  <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-                </ul>
-            </li>
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+						 <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>					 
+	&nbsp; 
+			</div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav navbar-right">
+	        <!-- <li><a href="#about">ABOUT</a></li> -->
+	        <!-- <li><a href="/manageprogram">PROGRAMS</a></li>
+	        <li><a href="#contact">CONTACT</a></li> -->
+	          {% if loggedIn %}
+	            <li class="dropdown">
+	                <a class="dropdown-toggle" data-toggle="dropdown">
+	                    {{ email }}
+	                    <span class="caret"></span>
+	                </a>
+	                <ul class="dropdown-menu">
+						<li><a href="/home/dashboard">Dashboard</a></li>
+	                    <li><a href="/home/dashboard#!/profile">Profile</a></li>
+
+	                  <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+	                </ul>
+	            </li>
 
 
-          {% else %}
-            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
-            <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-          {% endif %}
-      </ul>
-    </div>
-  </div>
-</nav>
+	          {% else %}
+	            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+	            <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+	          {% endif %}
+	      </ul>
+	    </div> <!-- end .#myNavbar -->
+		</div> <!-- end .container -->
+	</nav>
 
-<div class="jumbotron text-center">
+	<div class="jumbotron text-center">
         <div class="row">
 					<div class="col-sm-1 text-center">&nbsp;</div>
 					<div class="col-sm-10 text-center">
-						<img src="{{ STATIC_URL }}home/pics/logo/img_joobalilogo.png" alt="Logo" width="509" height="166">
+						<img src="{{ STATIC_URL }}home/pics/logo/img_joobalilogo.png" alt="Logo" width="509" height="166" class="logo">
 					</div>
 					<div class="col-sm-1 text-center">&nbsp;</div>
 				</div>
@@ -62,7 +67,7 @@
 				<div class="row">
 					<div class="col-sm-1 text-center">&nbsp;</div>
 					<div class="col-sm-10 text-center">
-						<a class="btn">Pricing &amp; Sign Up </a>
+						<a href="/login/signup" class="btn">Pricing &amp; Sign Up </a>
 					</div>
 					<div class="col-sm-1 text-center">&nbsp;</div>
   <!-- <form class="form-inline">
@@ -72,11 +77,11 @@
 				</div>
 </div>
 
-<div class="container-fluid elevPitch">
+	<div class="container-fluid elevPitch">
   <div class="row">
     <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
-      <h1>Child care management technology - thoughtfully designed and streamlined for you.</h1>
+      <h1>Childcare payments made delightfully easy.</h1>
     </div>
 		<div class="col-sm-2 text-center">&nbsp;</div>
   </div>
@@ -84,54 +89,55 @@
 
 <br />
 
-<div class="container-fluid text-center whyJoobali">
-  <h4>Why Joobali?</h4>
-  <br>
+	<div class="container-fluid text-center whyJoobali">
+  <!-- <h4>Why Joobali?</h4>
+  <br> -->
   <div class="row">
-    <div class="col-sm-4 text-center">
-      <div class="homeIcons lock"></div>
-      <div class="featureDescription">
-				<h4>Safe and Secure</h4>
-				<p>Your personal information is stored securely and banking information is fully encrypted [whatever technical info].</p>
-		</div>
-    </div>
     <div class="col-sm-4">
+      <!-- <span class="glyphicon glyphicon-certificate logo-small"></span> -->
       <div class="homeIcons clock"></div>
-      <div class="featureDescription">
-				<h4>Save Time</h4>
-      	<p>Streamline administrative work with automated billing and payments directly to/from your bank account.</p>
+			<div class="featureDescription">
+				<h4>Get Paid On Time, Every Time</h4>
+      	<p>Automated invoicing and payments.</p>
 			</div>
     </div>
     <div class="col-sm-4">
-      <!-- <span class="glyphicon glyphicon-certificate logo-small"></span> -->
       <div class="homeIcons money"></div>
-			<div class="featureDescription">
-				<h4>Payments Made On Time, Every Time</h4>
-      	<p>Parents can set up automatic payments. Providers can make custom billing adjustments as needed.</p>
-		</div>
+      <div class="featureDescription">
+				<h4>Budget-friendly Business tools</h4>
+      	<p>Transaction fee gives you access to all features.</p>
+			</div>
+    </div>
+    <div class="col-sm-4 text-center">
+      <div class="homeIcons help"></div>
+      <div class="featureDescription">
+				<h4>Customer Centered Support</h4>
+				<p>Real people helping your business succeed.</p>
+			</div>
     </div>
   </div>
 </div>
 
-<div class="container-fluid text-center homePitch2">
+	<div class="container-fluid text-center homePitch2">
   <div class="row text-center">
 		<div class="col-sm-2">&nbsp;</div>
     <div class="col-sm-8">
-			<h2>Spend less time on administrative tasks and more time on what you do best - caring for your children.</h2>
+			<h2>We deliver thoughtful, friendly, and trustworthy solutions.</h2>
+			<!-- <h2>Spend less time on administrative tasks and more time on what you do best - caring for your children.</h2> -->
     </div>
 		<div class="col-sm-2">&nbsp;</div>
 	</div>
 	<div class="row text-center">
 		<div class="col-sm-1 text-center">&nbsp;</div>
 		<div class="col-sm-10 text-center">
-			<a class="btn">Pricing &amp; Sign Up </a>
+			<a href="/login/signup" class="btn">Pricing &amp; Sign Up </a>
 		</div>
 		<div class="col-sm-1 text-center">&nbsp;</div>
 	</div>
 </div>
 
 
-<footer class="container-fluid text-center">
+<footer id="footer" class="container-fluid text-center">
 		<br />
 	<div class"row text-center">
 		<div class="col-sm-12 text-center">
@@ -140,42 +146,55 @@
 	</div>
 	<div class"row text-center">
 		<div class="col-sm-3 text-center">
-			<h4>TEST</h4>
+			<h4>Providers </h4>
 			<ul>
-				<li><a href="#">ONE</a></li>
+				<li><a href="/login/signup">Sign Up &amp; Pricing</a></li>
+				<li>Resources</li>
+				<li>Terms and Conditions</li>
+				<li>Provider Care</li>
+				<li>Request a Feature/Optimization</li>
+				<!-- <li><a href="#">ONE</a></li>
 				<li><a href="#">TWO</a></li>
-				<li><a href="#">THREE</a></li>
+				<li><a href="#">THREE</a></li> -->
 			</ul>
 		</div>
 		<div class="col-sm-3 text-center">
-			<h4>Contact</h4>
+			<h4>Parents </h4>
 			<ul>
-				<li><a href="#">ONE</a></li>
+				<li>Sign Up</li>
+				<li>Refer your Provider</li>
+				<li>Terms of Use</li>
+				<li>Parent Care</li>
+				<!-- <li><a href="#">ONE</a></li>
 				<li><a href="#">TWO</a></li>
-				<li><a href="#">THREE</a></li>
+				<li><a href="#">THREE</a></li> -->
 			</ul>
 		</div>
 		<div class="col-sm-3 text-center">
-			<h4>Legal</h4>
+			<h4>About </h4>
 			<ul>
-				<li><a href="#">ONE</a></li>
+				<li>About Joobali</li>
+				<li>Contact</li>
+				<!-- <li><a href="#">Legal</a></li>
 				<li><a href="#">TWO</a></li>
-				<li><a href="#">THREE</a></li>
+				<li><a href="#">THREE</a></li> -->
 			</ul>
 		</div>
 		<div class="col-sm-3 text-center">
-			<h4>Help</h4>
+			<h4>Find Us On</h4>
 			<ul>
-				<li><a href="#">ONE</a></li>
-				<li><a href="#">TWO</a></li>
-				<li><a href="#">THREE</a></li>
+				<li><a href="https://twitter.com/joobalicare"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a></li>
+				<li><a href="https://www.facebook.com/joobalicare"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a></li>
+				<li><a href="https://www.instagram.com/joobalicare/"><i class="fa fa-instagram" aria-hidden="true"></i> Instagram</a></li>
+				<li><a href="https://www.linkedin.com/company/joobali"><i class="fa fa-linkedin-square" aria-hidden="true"></i> LinkedIn</a></li>
 			</ul>
 		</div>
 	</div>
-	<div class"row text-center">	
+	<br />
+	<br />
+	<div class"row text-center" style="clear:both;">	
 		<p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p> 
 	</div>
 </footer>
-
-</body>
+</body> 
 </html>

@@ -93,6 +93,8 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    # SSL
+    'sslify.middleware.SSLifyMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -129,17 +131,20 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     # 'rest_framework',
     'login',
-    'referal',
+    'referral',
     'home',
     'manageprogram',
     'invoice',
+    'payments',
     'profile',
     'funding',
+    'helpcenter',
     'users',
     'enrollment',
     'child',
     'parent',
     'tasks',
+    'verification',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -178,3 +183,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# Joobali Settings
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = False # turn to True when deploying to PROD.
+
+# Comment this line before deploy to PROD.
+SSLIFY_DISABLE = True

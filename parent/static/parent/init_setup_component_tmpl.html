@@ -1,0 +1,41 @@
+<div id="initSetupModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title current">Welcome to Joobali.<br/> Let's set up your bank account:</h4>
+        <h4 class="modal-title">Set up your automatic payment plan</h4>
+        <h4 class="modal-title">Everything is Done!</h4>
+        <div class="stepsDiv">
+          <ul class="nav nav-pills nav-wizard">
+            <li id="navStep1" class="init-setup form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Link a Bank Account</a><div class="nav-arrow"></div></li>
+            <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Setup Autopay</a><div class="nav-arrow"></div></li>
+            <li id="navStep3" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Complete</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="col-centered">
+          <form id="initSetupForm" role="form" class="well">
+            <div id="step1" class="init-setup form-content current">
+              <div id="initSetupIavContainer"></div>
+            </div>
+            <div id="step2" class="init-setup form-content">
+              <autopay-setup-form-component data="$ctrl.data"></autopay-setup-form-component>
+            </div>
+            <div id="step3" class="init-setup form-content">
+              <init-setup-confirm-form-component data="$ctrl.data"></init-setup-confirm-form-component>
+            </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="initSetupSkipButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext(true)">Skip</button>
+          <button id="initSetupNextButton" type="button" class="btn btn-default" ng-click="$ctrl.handleNext(false)">Next</button>
+          <button id="initSetupDoneButton" type="button" class="btn btn-default" ng-click="$ctrl.handleDone()">Done</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,6 +1,6 @@
 var TIME_FORMAT =  'hh:mm A';
 
-EditProgramComponentController = function($http, $window, $location) {
+EditProgramComponentController = function($uibModal,$http, $window, $location) {
     console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -33,8 +33,15 @@ EditProgramComponentController = function($http, $window, $location) {
 //	});
 	this.initializeTimePickers();
 
+    var $ctrl = this;
 
-        var $ctrl = this;
+    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+
+    $ctrl.monthlyBillDays = [];
+    for(var i=1;i<=28;i++)
+        $ctrl.monthlyBillDays.push(i);
+     $ctrl.monthlyBillDays.push("Last Day");
+
 
     $ctrl.$onInit = function () {
 
@@ -48,6 +55,9 @@ EditProgramComponentController = function($http, $window, $location) {
 
             this.program = JSON.parse(response.data[0]);
 
+            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
+                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
+
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -59,6 +69,11 @@ EditProgramComponentController = function($http, $window, $location) {
         $ctrl.cancel = function () {
           $ctrl.dismiss({$value: 'cancel'});
         };
+
+    $ctrl.deleteProgram = function () {
+      $ctrl.resolve.confirmDeleteComponentModal();
+    };
+
 
 };
 
@@ -135,7 +150,7 @@ EditProgramComponentController.prototype.saveProgram = function() {
 	}).then(
 		angular.bind(this, function (response) {
 			console.log('post suceeded');
-
+            this.program.css = 1;
             this.close({$value : this.program});
 
 		}),

@@ -1,22 +1,17 @@
 # External Libraries
-from datetime import datetime
 from google.appengine.ext import ndb
 import logging
 # Internal Libraries
 from models import Child
 from models import ProviderChildView
-from parent import parent_util
+from enrollment import enrollment_util
 
 logger = logging.getLogger(__name__)
 
 
-def add_child(child_input, parent_key):
+def add_child(to_be_added_child, parent_key):
     """Input should be a dict containing all the Child Model's data"""
-    child = Child()
-    child.first_name = child_input['first_name']
-    child.last_name = child_input['last_name']
-    child.date_of_birth = datetime.strptime(child_input['date_of_birth'], "%m/%d/%Y").date()
-    child.parent_email = child_input['parent_email']
+    child = to_be_added_child
     child.parent_key = parent_key
     child.put()
     return child
@@ -63,12 +58,16 @@ def get_child_key(child_id):
     return ndb.Key('Child', child_id)
 
 
-# TODO(zilong): Implement this
-def get_existing_child(child_input, parent_id):
+# TODO(zilong): Make this transactional
+def get_existing_child(child, parent_key):
+    children = list_child_by_parent(parent_key=parent_key)
+    for existing_child in children:
+        if match_child(child, existing_child):
+            return existing_child
     return None
 
 
-def list_child(provider_key):
+def list_child_by_provider(provider_key):
     provider_children_views = get_provider_child_view(provider_key=provider_key)
     children = list()
     for view in provider_children_views:
@@ -76,6 +75,36 @@ def list_child(provider_key):
     return children
 
 
+def list_child_by_provider_program(provider_id, program_id):
+    provider_id = int(provider_id)
+    program_id = int(program_id)
+    logger.info("listing child by provider %d and program %d" % (provider_id, program_id))
+    enrollments = enrollment_util.list_enrollment_by_provider_program(provider_id=provider_id, program_id=program_id)
+    children = list()
+    for enrollment in enrollments:
+        children.append(enrollment.child_key.get())
+    return children
+
+
+# TODO(zilong): Implement this for parent page
+def list_child_by_parent(parent_key):
+    query = Child.query(Child.parent_key == parent_key)
+    children = list()
+    for child in query:
+        children.append(child)
+    return children
+
+
 def update_child(child_input, parent_id, child_id):
     child = None
     return child
+
+
+def match_child(child1, child2):
+    if child1.first_name == child2.first_name:
+        if child1.last_name == child2.last_name:
+            if child1.date_of_birth == child2.date_of_birth:
+                if child1.parent_email == child2.parent_email:
+                    return True
+    return False
+
