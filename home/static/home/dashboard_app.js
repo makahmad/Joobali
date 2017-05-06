@@ -20,6 +20,8 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         console.log("changeView(" + view + ")");
         $location.path(view);
         this.module = view;
+        ga('set', 'page', '/dashboard#!'+view);
+        ga('send', 'pageview');
     }
 
     this.scope_.openReferralComponentModal = function () {
