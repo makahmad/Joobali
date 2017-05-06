@@ -25,11 +25,16 @@ account_token = create_account_token('sandbox')
 def start_webhook():
     # Setup webhook to receive transfer status events
     request_body = {
-        'url': 'http://joobali-1310.appspot.com/tasks/dwollawebhook',
+        'url': 'https://joobali-uat.appspot.com/tasks/dwollawebhook',
         'secret': 'joobali_webhook_secret_fb2onpb23nb'
     }
     retries = account_token.post('webhook-subscriptions', request_body)
     logger.info(retries.body)
+
+def clear_webhook():
+    webhook_subscriptions = account_token.get("webhook-subscriptions").body
+    print webhook_subscriptions
+    account_token.delete('https://api-uat.dwolla.com/webhook-subscriptions/a0ca5a12-35ca-4b68-ac64-2c2101539bdb')
 
 def get_general(url):
     return account_token.get(url)
