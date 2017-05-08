@@ -42,7 +42,11 @@ def get_first_bill_due_date(program):
             return start_date.replace(day=monthrange(start_date.year, start_date.month)[1])
         else:
             bill_day = int(program.monthlyBillDay)
+            start_day = start_date.day
             if bill_day > 0 and bill_day <= 28:
-                return start_date.replace(day=bill_day)
+                if bill_day >= start_day:
+                    return start_date.replace(day=bill_day)
+                else:
+                    return start_date.replace(day=bill_day) + timedelta(days=monthrange(start_date.year, start_date.month)[1])
     # if everything fall through, just return progrma start date.
     return start_date

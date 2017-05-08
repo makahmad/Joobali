@@ -36,9 +36,9 @@ def invoice_calculation(request):
             program = invoice_util.get_invoice_program(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             provider = provider_util.get_provider_by_email(invoice.provider_email)
-            lateFee = program.lateFee if program.lateFee else provider.lateFee
+            lateFee = program.lateFee if program and program.lateFee else provider.lateFee
             if lateFee != 0:
-                invoice_util.create_invoice_line_item(enrollment.key, invoice, program, None, None, "Late Fee", lateFee)
+                invoice_util.create_invoice_line_item(enrollment.key if enrollment else None, invoice, program, None, None, "Late Fee", lateFee)
 
             invoice.amount = invoice_util.sum_up_amount_due(invoice)
             invoice.put()
@@ -80,7 +80,7 @@ def invoice_calculation(request):
 
             should_proceed = False # whether we should generate a invoice for this enrollment now
             program_cycle_time = None # either a weekly cycle or a monthly cycle
-            if program.billingFrequency != 'Weekly' or program.billingFrequency != 'Monthly':
+            if program.billingFrequency != 'Weekly' and  program.billingFrequency != 'Monthly':
                 logger.info("Skipping invoice calculation. Unexpected program cycle: %s" % program)
                 should_proceed = False
 
