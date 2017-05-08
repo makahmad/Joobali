@@ -85,6 +85,13 @@
         </p>
     </div>
     <div class="form-group">
+        <label class="control-label">Waive registration fee?</label>
+        <input name="waive_registration" type="checkbox"
+               class="form-control" required="false" ng-required="false" ng-readonly="$ctrl.readOnly"
+               ng-model="$ctrl.newChildEnrollmentInfo.waive_registration">
+    </div>
+
+    <div class="form-group">
         <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Enroll</button>
     </div>
 </form>

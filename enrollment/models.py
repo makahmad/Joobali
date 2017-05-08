@@ -22,6 +22,8 @@ class Enrollment(ndb.Model):
     autopay_source_id = ndb.StringProperty()
     # Autopay # of days before the due date
     pay_days_before = ndb.IntegerProperty()
+    # Whether to waive or not waive registration fee for the first invoice
+    waive_registration = ndb.BooleanProperty()
     # All possible status for an enrollment
     _POSSIBLE_STATUS = {'initialized', 'invited', 'active', 'payment_resolve_pending', 'inactive', 'expired'}
 

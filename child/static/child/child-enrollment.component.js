@@ -35,7 +35,8 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             'child_id': self.child.id,
             'parent_email': self.child.parent_email,
             'program_id': self.newEnrollment.program.id,
-            'start_date': self.newEnrollment.start_date
+            'start_date': self.newEnrollment.start_date,
+            'waive_registration': self.newEnrollment.waive_registration
         };
         console.log(submittingForm);
         $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {

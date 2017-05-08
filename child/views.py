@@ -56,6 +56,11 @@ def add_child(request):
         program = request_content['program']
         billing_start_date = request_content['start_date']
 
+        try:
+            waive_registration = request_content['waive_registration']
+        except KeyError:
+            waive_registration = False
+
         # Setup Parent entity for child
         provider_key = Provider.generate_key(session.get_provider_id(request))
         (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
@@ -78,7 +83,8 @@ def add_child(request):
             'provider_key': provider_key,
             'program_key': program_key,
             'status': 'initialized',
-            'start_date': billing_start_date
+            'start_date': billing_start_date,
+            'waive_registration': waive_registration
         }
         enrollment = enrollment_util.upsert_enrollment(enrollment_input)
         if parent.status is 'active':

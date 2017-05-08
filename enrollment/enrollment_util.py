@@ -26,6 +26,7 @@ def upsert_enrollment(enrollment_input):
     enrollment.child_key = child_key
     enrollment.program_key = program_key
     enrollment.status = enrollment_input['status']
+    enrollment.waive_registration = enrollment_input['waive_registration']
     if enrollment.status not in Enrollment.get_possible_status():
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()

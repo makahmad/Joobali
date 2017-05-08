@@ -58,6 +58,13 @@ def add_enrollment(request):
     program_key = ndb.Key('Provider', provider_id, 'Program', request_body_dict['program_id'])
     child = child_key.get()
     program = program_key.get()
+
+    try:
+        waive_registration = request_body_dict['waive_registration']
+    except KeyError:
+        waive_registration = False
+
+
     if child is None:
         logger.info("child does not exist")
     elif program is None:
@@ -70,7 +77,8 @@ def add_enrollment(request):
             'child_key': child_key,
             'program_key': program_key,
             'status': 'initialized',
-            'start_date': request_body_dict['start_date']
+            'start_date': request_body_dict['start_date'],
+            'waive_registration': waive_registration
         }
         logger.info("request.get_host() is %s", request.get_host())
         try:

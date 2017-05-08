@@ -74,6 +74,12 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
                 </div>
+                <div class="form-group">
+                    <label class="control-label">Waive registration fee?</label>
+                    <input name="waive_registration" type="checkbox"
+                           class="form-control" required="false" ng-required="false" ng-readonly="$ctrl.readOnly"
+                           ng-model="$ctrl.newEnrollment.waive_registration">
+                 </div>
             </div>
             <div class="enrollment-form-content" ng-show="$ctrl.currentStep==1"
                  ng-class="{active: $ctrl.currentStep==1}">
@@ -88,6 +94,10 @@
                     </div>
                     <label class="control-label">Start Date</label>
                     <div>{{$ctrl.newEnrollment.start_date}}</div>
+                    <!--<label class="control-label">Waive registration fee?</label>-->
+                    <!--<div>{{$ctrl.newEnrollment.waive_registration_disp}}</div>-->
+                    <div ng-show="$ctrl.newEnrollment.waive_registration==true">Waive registration fee</div>
+                    <div ng-show="$ctrl.newEnrollment.waive_registration==undefined">Include registration fee</div>
                 </div>
                 <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Enroll Success!</div>
                 <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Enroll Fail! {{$ctrl.failMessage}}</div>
