@@ -22,8 +22,11 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         this.module = view;
 
         //Google Analytics code to detect view changes
-        ga('set', 'page', '/dashboard#!'+view);
-        ga('send', 'pageview');
+        if (typeof ga != 'undefined')
+        {
+            ga('set', 'page', '/dashboard#!'+view);
+            ga('send', 'pageview');
+        }
     }
 
     this.scope_.openReferralComponentModal = function () {

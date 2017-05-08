@@ -22,8 +22,11 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
         this.module=view;
 
         //Google Analytics code to detect view changes
-        ga('set', 'page', '/parent/#!'+view);
-        ga('send', 'pageview');
+        if (typeof ga != 'undefined')
+        {
+            ga('set', 'page', '/parent/#!'+view);
+            ga('send', 'pageview');
+        }
     }
 
     this.scope_.openReferralComponentModal = function () {
