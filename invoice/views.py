@@ -144,7 +144,7 @@ def viewInvoice(request):
 			'parent_id': parent.key.id(),
 			'total': invoice.amount,
 			'items': items,
-			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()),
+			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()) if provider.logo else None,
 			'note': note,
 			'tin': provider.tin,
         }
