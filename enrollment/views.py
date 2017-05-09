@@ -59,11 +59,8 @@ def add_enrollment(request):
     child = child_key.get()
     program = program_key.get()
 
-    try:
-        waive_registration = request_body_dict['waive_registration']
-    except KeyError:
-        waive_registration = False
-
+    waive_registration = False if 'waive_registration' not in request_body_dict else request_body_dict[
+        'waive_registration']
 
     if child is None:
         logger.info("child does not exist")

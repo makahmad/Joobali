@@ -56,10 +56,8 @@ def add_child(request):
         program = request_content['program']
         billing_start_date = request_content['start_date']
 
-        try:
-            waive_registration = request_content['waive_registration']
-        except KeyError:
-            waive_registration = False
+        waive_registration = False if 'waive_registration' not in request_content else request_content[
+            'waive_registration']
 
         # Setup Parent entity for child
         provider_key = Provider.generate_key(session.get_provider_id(request))
