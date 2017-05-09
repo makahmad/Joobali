@@ -29,14 +29,14 @@
   flex-basis: 300px;
 }
 .programs {
-  box-shadow: 0 0px 67px 0 rgba(0,0,0,0.1);
+  box-shadow: 0 0px 67px 0 rgba(0,0,0,0.03);
 	border-radius:4px /*4px 0 0*/;
 }
 
 .programs, .programActions {
   width: 240px;
   /* height: 212px; */
-  margin: 12px;
+  margin: 12px 12px 12px 0;
   border-left: 5px solid none;
   padding: 5px 10px !important;
   z-index: +1;

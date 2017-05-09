@@ -154,9 +154,9 @@ html,body { height:100%;
   transition: all .25s ease;
 }
 .page-content-wrapper {
-  background-color: #f1f1f1;
+  background-color: #fff;
   height: 100%;
-  padding-left: 205px;
+  padding-left: 225px;
   padding-top: 50px;
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
@@ -165,8 +165,8 @@ html,body { height:100%;
 }
 
 .page-content-container {
-    background-color: #f1f1f1;
-    padding: 13px 26px 13px 0;
+    /*background-color: #f1f1f1;*/
+    padding: 13px 10px 13px 0;
 }
 
 @media (max-width: 500px) {
