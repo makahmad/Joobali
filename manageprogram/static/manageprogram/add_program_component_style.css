@@ -1,21 +1,3 @@
-.btn-default.joobali {
-  background: #339999;
-	color: #ffffff;
-  width: auto;
-}
-
-.btn-default.joobali:hover , .btn-default.joobali.hover {
-  background: #2e8f8f;
-    color: #ffffff;
-    width: auto;
-}
-
-.btn-default.joobali:focus, .btn-default.joobali.focus, .btn-default.joobali:active, .btn-default.joobali.active, .btn-default.joobali:active:focus, .btn-default.joobali.active:focus {
-   background: #2e8f8f;
-    color: #ffffff;
-    width: auto;
-    }
-
 @media screen and (max-width: 768px) {
 	.nav {
 	  width: 480px;

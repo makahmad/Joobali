@@ -155,6 +155,17 @@ a.logoLink:hover {
 	    color: white !important;
 	    background-color: #737E86 !important;
 		}
+		.providerName {
+	    color: white;
+	    height: 50px;
+	    float: left;
+	    margin: 24px 0 0px 60px;
+	    line-height: 3.1px;
+	    font-size: 12px;
+	    position: absolute;
+	    top: 0;
+	    left: 111px;
+		}
 }
 
 @media screen and (max-width: 950px) {
@@ -254,12 +265,15 @@ a.logoLink:hover {
 }
 
 .providerName {
-	color:white;
-    height: 50px;
-    float: left;
-    margin: 24px 0 0px 60px;
-    line-height: 3.1px;
-	font-size:17px;
+  color: white;
+  height: 50px;
+  float: left;
+  margin: 24px 0 0px 60px;
+  line-height: 3.1px;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 111px;
 }
 
 .dropdown, .dropdown-toggle {
@@ -361,8 +375,33 @@ footer .glyphicon {
 }
 */
 
-/* programs grid/list css */
+.label-default {
+     background-color:transparent !important;
+    color: #777;
+}
 
+.btn-default.joobali {
+	background: none;
+  color: #339999;
+  width: auto;
+  border: 1px solid #339999;
+  border-radius: 3px;
+	text-transform:lowercase;
+}
+
+.btn-default.joobali:hover , .btn-default.joobali.hover {
+  background: #2e8f8f;
+    color: #ffffff;
+    width: auto;
+}
+
+.btn-default.joobali:focus, .btn-default.joobali.focus, .btn-default.joobali:active, .btn-default.joobali.active, .btn-default.joobali:active:focus, .btn-default.joobali.active:focus {
+	background: #2e8f8f;
+	color: #ffffff;
+	width: auto;
+}
+
+/* programs grid/list css */
 .well .buttonDiv {
 	display:inline-block;
   margin: auto;
