@@ -32,7 +32,8 @@ def invoice_calculation(request):
     logger.info("LATE FEE CALCULATION")
     # loop over invoices...
     for invoice in Invoice.query().fetch():
-        if not invoice.is_paid() and invoice.due_date < today and not invoice_util.get_invoice_late_fee_added(invoice):
+        provider = invoice.provider_key.get()
+        if not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < today and not invoice_util.get_invoice_late_fee_added(invoice):
             program = invoice_util.get_invoice_program(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             provider = provider_util.get_provider_by_email(invoice.provider_email)
