@@ -333,6 +333,10 @@ footer .glyphicon {
 		display:inline-block;
 }
 
+.programHeader:hover {
+	cursor:pointer;
+}
+
 .pageInstructions {
 	text-align:left;
 	display:inline-block;
@@ -562,7 +566,13 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 .childrenList{
 	width:100%;
 	list-style:none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0;
 }
+
 .childrenList ol {
 	-webkit-margin-before: 0;
 	-webkit-margin-after: 0;
