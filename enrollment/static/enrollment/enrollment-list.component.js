@@ -1,23 +1,15 @@
 EnrollmentListController = function EnrollmentListController($uibModal, $log, $http) {
+    this.uibModal_ = $uibModal;
     var self = this;
     self.headers = [
-        'Program Id',
         'Program Name',
         'Status',
         'Start Date',
-        ''
+        'Billing Frequency'
     ];
 
-    self.resendEnrollmentInvitation = function(enrollment) {
-        $http.post('/enrollment/resendInvitation', enrollment).then(function successCallback(response) {
-            console.log("new invitation email sent!");
-        }, function errorCallback(response) {
-        });
-    }
-
     self.openEnrollmentEditorModal = function(enrollment) {
-        console.log("Opening Add Enrollment Modal");
-        console.log("Enrollment is " + JSON.stringify(enrollment));
+
         var modalInstance = $uibModal.open({
             animation: true,
             templateUrl: '/static/enrollment/enrollment-editor.template.html',
@@ -51,6 +43,29 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         }), angular.bind(this, function errorCallback(response){
         }));
     }
+}
+
+EnrollmentListController.prototype.openEnrollmentResendInvitationModal = function(enrollment) {
+    var modalInstance = this.uibModal_.open({
+        animation: true,
+        templateUrl: '/static/enrollment/enrollment-resend-invitation-dialog.template.html',
+        controller: 'EnrollmentResendInvitationDialogController',
+        controllerAs: '$ctrl',
+        resolve: {
+            enrollment: function() {
+                return enrollment;
+            },
+        }
+    });
+
+    modalInstance.result.then(function (data) {
+        $log.info(data);
+        if (data.refresh == true) {
+            self.refreshEnrollment();
+        }
+    }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+    });
 }
 
 EnrollmentListController.prototype.canResendEnrollmentInvitation = function(enrollment) {

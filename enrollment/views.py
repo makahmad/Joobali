@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django import template
-from google.appengine.ext import ndb
-from common.email.enrollment import send_parent_enrollment_notify_email
-from common.session import check_session
-from common.session import is_provider
-from common.session import is_parent
-from common.session import get_provider_id
-from common.session import get_parent_id
-from common.json_encoder import JEncoder
-from exception.JoobaliRpcException import JoobaliRpcException
-from models import Enrollment
-from child import child_util
-from child.models import Child, ProviderChildView
-from parent.models import Parent
-from login.models import Provider
-import enrollment_util
 import json
 import logging
+
+from django import template
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from google.appengine.ext import ndb
+
+import enrollment_util
+from child import child_util
+from child.models import Child, ProviderChildView
+from common.email.enrollment import send_parent_enrollment_notify_email
+from common.exception import JoobaliRpcException
+from common.json_encoder import JEncoder
+from common.session import check_session
+from common.session import get_parent_id
+from common.session import get_provider_id
+from common.session import is_parent
+from common.session import is_provider
+from login.models import Provider
+from models import Enrollment
+from parent.models import Parent
 
 logger = logging.getLogger(__name__)
 

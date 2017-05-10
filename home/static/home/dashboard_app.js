@@ -199,6 +199,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .controller('ChildFormController', ChildFormController)
     // to support EnrollmentEditorModal
     // need enrollment/enrollment-editor.component.js
+    .controller('EnrollmentResendInvitationDialogController', EnrollmentResendInvitationDialogController)
     .controller('EnrollmentEditorController', EnrollmentEditorController)
     .controller('AddInvoiceController', AddInvoiceController)
     .controller('InvoiceSettingsController', InvoiceSettingsController)
