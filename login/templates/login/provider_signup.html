@@ -114,7 +114,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span>
                                 <input type="email" class="form-control" id="email"  name="email"
-                                       required="true" value="{{ form.email.data|safe }}">
+                                       required="true" value="{{ form.email.value|safe }}">
                             </div>
                         </div>
                         {% if form.email.errors %}

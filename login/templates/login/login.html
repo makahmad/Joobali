@@ -37,11 +37,11 @@
 					    {% endif %}
 				  	  <div class="form-group">
 					    <label class="control-label" for="email">Email:</label>
-					    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.data|safe }}">
+					    <input type="email" class="form-control" id="email" name="email" required="true" value="{{ form.email.value|safe }}">
 					  </div>
 					  <div class="form-group">
 					    <label class="control-label" for="password">Password:</label>
-					    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.data|safe }}">
+					    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.value|safe }}">
 					  </div>
 							<center>
 			      	  <button type="submit" class="btn btn-default btn-lg joobali">Log In</button>
