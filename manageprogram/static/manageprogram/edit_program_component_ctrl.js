@@ -35,12 +35,12 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 
     var $ctrl = this;
 
-    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-
-    $ctrl.monthlyBillDays = [];
-    for(var i=1;i<=28;i++)
-        $ctrl.monthlyBillDays.push(i);
-     $ctrl.monthlyBillDays.push("Last Day");
+//    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+//
+//    $ctrl.monthlyBillDays = [];
+//    for(var i=1;i<=28;i++)
+//        $ctrl.monthlyBillDays.push(i);
+//     $ctrl.monthlyBillDays.push("Last Day");
 
 
     $ctrl.$onInit = function () {
@@ -55,8 +55,8 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 
             this.program = JSON.parse(response.data[0]);
 
-            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
-                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
+//            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
+//                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
 
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
