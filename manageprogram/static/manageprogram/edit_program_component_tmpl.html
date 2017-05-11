@@ -32,7 +32,7 @@
 	                <label class="control-label" for="startDate">When is the first (or next) fee due? (MM/DD/YYYY)</label>
 	                <div class="input-group date">
 	                    <input type="text" id="startDate" ng-required="true" class="form-control" name="startDate"
-	                           ng-model="$ctrl.program.startDate">
+	                           ng-model="$ctrl.program.startDate"  ng-disabled="true">
 	                    <span class="input-group-addon">
 	                        <span class="glyphicon glyphicon-calendar"></span>
 	                    </span>
@@ -42,11 +42,12 @@
 				<div class="form-group">
 						<label class="control-label" for="endDate">When is the last fee due? (MM/DD/YYYY)</label>
 						<div class="input-group date">
-						  <input type="text" id="endDate" ng-required="!$ctrl.program.indefinite" class="form-control" name="endDate" ng-model="$ctrl.program.endDate" ng-disabled="$ctrl.program.indefinite">
+						  <input type="text" id="endDate" ng-required="!$ctrl.program.indefinite" class="form-control" name="endDate"
+                                 ng-model="$ctrl.program.endDate"  ng-disabled="true">
 						  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 							<span class="input-group-addon">
 								<label class="checkbox-inline">
-									<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.program.indefinite" value="True" >Indefinite</label>
+									<input type="checkbox" name="indefinite"  ng-disabled="true" id="indefinite" ng-model="$ctrl.program.indefinite" value="True" >Indefinite</label>
 						  </span>
 						</div>
 		            </div>
