@@ -31,6 +31,8 @@ def upsert_enrollment(enrollment_input):
     if enrollment.status not in Enrollment.get_possible_status():
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
+    enrollment.end_date = datetime.strptime(enrollment_input['end_date'], "%m/%d/%Y").date() if enrollment_input[
+        'end_date'] else None
     enrollment.put()
     return enrollment
 

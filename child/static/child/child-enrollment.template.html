@@ -33,7 +33,7 @@
                     <label class="control-label" for="program">Program</label>
                     <select class="form-control" id="program" required="true"
                             ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
-                            ng-model="$ctrl.newEnrollment.program"></select>
+                            ng-model="$ctrl.newEnrollment.program" ng-change="$ctrl.whenSelectedProgramChange()"></select>
                     <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
                         <div>
                             <label>Registration fee:</label>
@@ -56,7 +56,8 @@
                     </div>
                 </div>
                 <div class="form-group"
-                     ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}">
+                     ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}"
+                     ng-show="$ctrl.newEnrollment.program">
                     <label class="control-label">When is the first (or next) fee due? (MM/DD/YYYY)</label>
                     <p class="input-group">
                         <input name="startDate"
@@ -67,12 +68,38 @@
                                ng-model="$ctrl.newEnrollment.start_date"
                                is-open="$ctrl.startDatePickerOpened"
                                ng-required="true"
+                               ng-change="$ctrl.whenChangeStartDate()"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openStartDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': addEnrollmentForm.endDate.$invalid && addEnrollmentForm.endDate.$touched}"
+                     ng-show="$ctrl.newEnrollment.program">
+                    <label class="control-label">When is the last fee due? (MM/DD/YYYY)</label>
+                    <p class="input-group">
+                        <input name="endDate"
+                               type="text" class="form-control"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
+                               ng-model="$ctrl.newEnrollment.end_date"
+                               is-open="$ctrl.endDatePickerOpened"
+                               ng-required="!$ctrl.newEnrollment.no_end_date"
+                               ng-readonly="$ctrl.newEnrollment.no_end_date"
+                               close-text="Close"/>
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openEndDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                    </p>
+                    <label> No specific end date
+                        <input type="checkbox" ng-model="$ctrl.newEnrollment.no_end_date"
+                               ng-change="$ctrl.whenChangeNoEndDate()">
+                    </label>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Waive registration fee?</label>
@@ -94,8 +121,13 @@
                     </div>
                     <label class="control-label">Start Date</label>
                     <div>{{$ctrl.newEnrollment.start_date}}</div>
-                    <!--<label class="control-label">Waive registration fee?</label>-->
-                    <!--<div>{{$ctrl.newEnrollment.waive_registration_disp}}</div>-->
+                    <div ng-show="$ctrl.newEnrollment.no_end_date">No end date</div>
+                    <div ng-show="!$ctrl.newEnrollment.no_end_date">
+                        <label class="control-label">End Date</label>
+                        <div>
+                            {{$ctrl.newEnrollment.end_date}}
+                        </div>
+                    </div>
                     <div ng-show="$ctrl.newEnrollment.waive_registration==true">Waive registration fee</div>
                     <div ng-show="$ctrl.newEnrollment.waive_registration==undefined">Include registration fee</div>
                 </div>

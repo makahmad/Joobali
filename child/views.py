@@ -55,6 +55,7 @@ def add_child(request):
         parent_email = request_content['child_parent_email']
         program = request_content['program']
         billing_start_date = request_content['start_date']
+        billing_end_date = request_content['end_date']
 
         waive_registration = False if 'waive_registration' not in request_content else request_content[
             'waive_registration']
@@ -82,6 +83,7 @@ def add_child(request):
             'program_key': program_key,
             'status': 'initialized',
             'start_date': billing_start_date,
+            'end_date': billing_end_date,
             'waive_registration': waive_registration
         }
         enrollment = enrollment_util.upsert_enrollment(enrollment_input)

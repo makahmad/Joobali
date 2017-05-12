@@ -29,13 +29,19 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
         dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
     }
 
+    this.enrollmentEndDatePickerOptions = {
+        minDate: this.todayDate,
+        dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
+    }
+
     self.saveButton.click = function() {
-        console.log("saveButton is clicked");
+        console.log("enroll button is clicked");
         var submittingForm = {
             'child_id': self.child.id,
             'parent_email': self.child.parent_email,
             'program_id': self.newEnrollment.program.id,
             'start_date': self.newEnrollment.start_date,
+            'end_date' : self.newEnrollment.end_date ? self.newEnrollment.end_date : "",
             'waive_registration': self.newEnrollment.waive_registration
         };
         console.log(submittingForm);
@@ -75,7 +81,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             if (self.currentStep == 1) {
                 self.newEnrollment.child_id = self.child.id;
                 self.newEnrollment.start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
-                console.log("self.newEnrollment.start_date: " + self.newEnrollment.start_date);
+                self.newEnrollment.end_date = self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "";
                 self.nextButton.show = false;
                 self.saveButton.show = true;
             } else {
@@ -84,10 +90,6 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             }
         }
     };
-
-    self.openStartDatePicker = function() {
-        self.startDatePickerOpened = true;
-    }
 
     self.resetButton = function() {
         self.nextButton.show = true;
@@ -113,6 +115,53 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     }
 }
 
+ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
+    console.log("when selected program changed")
+    this.newEnrollment.start_date = null;
+    this.whenChangeStartDate();
+}
+
+ChildEnrollmentController.prototype.whenChangeStartDate = function() {
+    this.newEnrollment.no_end_date = false;
+    this.whenChangeNoEndDate();
+}
+
+ChildEnrollmentController.prototype.whenChangeNoEndDate = function() {
+    this.newEnrollment.end_date = null;
+}
+ChildEnrollmentController.prototype.getMinEndDate = function() {
+    var minDate = null;
+    if (this.newEnrollment.start_date) {
+        minDate = moment(this.newEnrollment.start_date).add(1, 'day');
+    } else {
+        minDate = this.todayDate;
+    }
+    console.log(minDate);
+    return minDate;
+}
+
+ChildEnrollmentController.prototype.openStartDatePicker = function() {
+        this.startDatePickerOpened = true;
+}
+
+ChildEnrollmentController.prototype.openEndDatePicker = function() {
+        this.endDatePickerOpened = true;
+}
+
+// Disable invalid choices for billing end date
+ChildEnrollmentController.prototype.enrollmentDisabledEndDate = function(dateAndMode) {
+    if (dateAndMode.mode === 'day') {
+        if (this.newEnrollment.start_date) {
+            var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
+            if (currentDate <= this.newEnrollment.start_date) {
+                return true;
+            }
+        }
+    }
+    return this.enrollmentDisabledDate(dateAndMode);
+}
+
+// Disable invalid choices for billing start date
 ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
     var result = false;
     if (dateAndMode.mode === 'day') {

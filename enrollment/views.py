@@ -77,9 +77,10 @@ def add_enrollment(request):
             'program_key': program_key,
             'status': 'initialized',
             'start_date': request_body_dict['start_date'],
+            'end_date': request_body_dict['end_date'],
             'waive_registration': waive_registration
         }
-        logger.info("request.get_host() is %s", request.get_host())
+        logger.info("enrollment is %s", enrollment);
         try:
             enrollment_util.upsert_enrollment(enrollment)
             status = "success"
