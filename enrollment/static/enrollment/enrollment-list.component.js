@@ -5,7 +5,7 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         'Program Name',
         'Status',
         'Start Date',
-        'End Date',child/
+        'End Date',
         'Billing Frequency'
     ];
 

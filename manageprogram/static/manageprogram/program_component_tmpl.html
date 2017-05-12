@@ -38,7 +38,9 @@
 								<tr class="programActions">
 										<td ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal"><a><i class="fa fa-pencil fa-lg"></i></a></td>
 										<td><a href="/home/dashboard#!/child/list/{{ $ctrl.program.id }}" ><i class="fa fa-child fa-lg"></i></a></td>
-										<td ng-click="$ctrl.confirmDeleteComponentModal()" data-toggle="modal" data-target="#confirmDeleteModal"><a><i class="fa fa-trash fa-lg"></i></a></td>
+										<td ng-show="{{ $ctrl.program.has_enrollment }}" ng-click="$ctrl.confirmDeleteComponentModal()" data-toggle="modal" data-target="#confirmDeleteModal"><a title="Delete a program"><i class="fa fa-trash fa-lg"></i></a></td>
+										<td ng-hide="{{ $ctrl.program.has_enrollment }}"><a title="Program cannot be deleted as there are children enrolled."><i class="fa fa-trash-o fa-lg"></i></a></td>
+
 								</tr>
 							</table>
 							
