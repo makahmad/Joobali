@@ -5,6 +5,7 @@ from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from datetime import datetime
+from calendar import day_name
 from child import child_util
 from child.models import Child
 from enrollment import enrollment_util
@@ -159,10 +160,17 @@ def addProgram(request):
     program.fee = newProgram['fee']
     program.lateFee = newProgram['lateFee']
     program.billingFrequency = newProgram['billingFrequency']
-    program.monthlyBillDay = str(newProgram['monthlyBillDay'])
-    program.weeklyBillDay = newProgram['weeklyBillDay']
-
     program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
+
+    if program.billingFrequency == 'Monthly':
+        #if program is monthly and billed after 28th of the month, then we bill on the last day of the month
+        if program.startDate.day > 28:
+            program.monthlyBillDay = "Last Day"
+        else:
+            program.monthlyBillDay = str(program.startDate.day)
+    else:
+        program.weeklyBillDay = day_name[program.startDate.weekday()]
+
 
     if newProgram['indefinite']:
         program.indefinite = newProgram['indefinite']

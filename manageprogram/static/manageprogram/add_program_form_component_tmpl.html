@@ -28,6 +28,11 @@
 				<span class="glyphicon glyphicon-calendar"></span>
 			</span>
     </div>
+     <div class="input-group" ng-show="$ctrl.newProgram.lastDay">
+          <span class="input-group-addon">
+            If billing monthly and first fee is due between 29-31 of the month, <br>we'll automatically bill on last day of the month.
+     </span>
+     </div>
 </div>
 
 <div class="form-group">
@@ -43,7 +48,7 @@
         <span class="input-group-addon">
 				<label class="checkbox-inline">
 					<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.newProgram.indefinite"
-                           value="True">Indefinite</label>
+                           value="True" ng-click="$ctrl.indefiniteClicked()">Indefinite</label>
 			  </span>
     </div>
 </div>

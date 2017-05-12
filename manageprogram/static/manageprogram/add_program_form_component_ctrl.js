@@ -4,7 +4,7 @@ AddProgramFormComponentController = function($scope,$http) {
     console.log('AddProgramFormComponentController running');
 
 	this.initializeTimePickers();
-
+    this._scope = $scope;
     var $ctrl = this;
 
 //    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
@@ -13,6 +13,12 @@ AddProgramFormComponentController = function($scope,$http) {
 //    for(var i=1;i<=28;i++)
 //        $ctrl.monthlyBillDays.push(i);
 //     $ctrl.monthlyBillDays.push("Last Day");
+
+    $ctrl.indefiniteClicked = function () {
+        if (this.newProgram.indefinite)
+            this.newProgram.endDate = "";
+    };
+
 
     $ctrl.$onInit = function () {
           	$http({
@@ -42,6 +48,16 @@ AddProgramFormComponentController.prototype.initializeTimePickers = function() {
         console.log('fired1');
         $('#endDate').data('DateTimePicker').minDate(e.date);
         this.newProgram.startDate = $('#startDate').val();
+
+        var startDate = new Date( Date.parse(this.newProgram.startDate) );
+
+        if (startDate.getDate() > 28)
+            this.newProgram.lastDay = true;
+        else
+            this.newProgram.lastDay = false;
+
+         this._scope.$apply();
+
     }));
 ;
 
