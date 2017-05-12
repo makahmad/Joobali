@@ -134,3 +134,14 @@ def list_enrollment_by_provider_program(provider_id, program_id):
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
     return enrollments
+
+def list_active_enrollment_by_provider_program(provider_id, program_id):
+    program = Program.generate_key(provider_id, program_id).get()
+    if program is None:
+        return []
+    provider_key = Provider.generate_key(provider_id)
+    enrollment_query = Enrollment.query(Enrollment.program_key == program.key, Enrollment.status == 'active', ancestor=provider_key)
+    enrollments = list()
+    for enrollment in enrollment_query:
+        enrollments.append(enrollment)
+    return enrollments

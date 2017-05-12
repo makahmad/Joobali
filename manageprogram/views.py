@@ -56,7 +56,7 @@ def listPrograms(request):
         logger.info("JEncoder().encode(program) %s" % JEncoder().encode(program))
         program_dict = program.to_dict()
         program_dict['id'] = program.key.id()
-        program_dict['has_enrollment'] = True if enrollment_util.list_enrollment_by_provider_program(user_id, program_dict['id']) else False
+        program_dict['has_enrollment'] = True if enrollment_util.list_active_enrollment_by_provider_program(user_id, program_dict['id']) else False
 
         output.append(program_dict)
     return HttpResponse(json.dumps([JEncoder().encode(program) for program in output]),
