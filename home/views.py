@@ -57,22 +57,6 @@ def dashboard(request):
 		template.RequestContext(request)
 	)
 
-
-def listPrograms(request):
-	"""Handles program listing request. Returns programs and corresponding sessions associated with the logged in user"""
-	user_id = request.session.get('user_id')
-	if not check_session(request):
-		return HttpResponseRedirect('/login')
-	provider = Provider.get_by_id(user_id)
-	programs = Program.query(ancestor=provider.key)
-
-	dictPrograms = []
-	for program in programs:
-		dictProgram = program.to_dict()
-		dictProgram['id'] = program.key.id()
-		dictPrograms.append(dictProgram)
-	return HttpResponse(json.dumps([JEncoder().encode(dictProgram) for dictProgram in dictPrograms]))
-
 # Deprecated
 # def listSessions(program):
 # 	"""Returns a list of sessions associated with provided program"""

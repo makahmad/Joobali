@@ -259,7 +259,7 @@ def get_funded_transfer(transfer_url):
     #     u'created': u'2017-03-17T03:55:03.267   Z'
     # }
     transfer = account_token.get(transfer_url).body
-    logger.info(transfer)
+    #logger.info(transfer)
     result = {}
     result['amount'] = transfer['amount']['value']
     result['currency'] = transfer['amount']['currency']

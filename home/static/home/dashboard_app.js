@@ -43,7 +43,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 DashboardController.prototype.initialize = function() {
 	this.http_({
 		method: 'GET',
-		url: '/home/listprograms'
+		url: '/manageprogram/listprograms'
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
