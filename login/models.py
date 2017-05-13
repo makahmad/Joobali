@@ -8,6 +8,17 @@ class ProviderStatus(ndb.Model):
     status = ndb.StringProperty()
 
 
+class FailedBetaLogins(ndb.Model):
+    firstName = ndb.StringProperty()
+    lastName = ndb.StringProperty()
+    schoolName = ndb.StringProperty()
+    email = ndb.StringProperty()
+    phone = ndb.StringProperty()
+    license = ndb.StringProperty()
+    date = ndb.DateProperty()
+    IP = ndb.StringProperty()
+    beta_code = ndb.StringProperty()
+
 class Provider(ndb.Model):
     firstName = ndb.StringProperty(required=True)
     lastName = ndb.StringProperty(required=True)

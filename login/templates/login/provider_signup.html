@@ -151,12 +151,28 @@
                                        value="{{ form.license.data|safe }}">
                             </div>
                         </div>
+
+
+                        <div class="form-group">
+                            <label class="control-label" for="beta_code">Beta Code:</label>
+                            <div class="input-group">
+                                <input type="beta_code" class="form-control" id="beta_code"  name="beta_code">
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="'{{beta_error}}'=='True'"  >
+                            <span class="label label-warning">Wrong Beta Code</span>
+                        </div>
+
+
                         <div class="form-group">
                             <div class="checkbox">
                                 <label><input id="tos_pp_accepted" name="tos_pp_accepted" type="checkbox" ng-model="tos_pp_accepted">
                                         By clicking this box you accept the Joobali <a href="http://{{host}}/login/termsofservice">Terms of Service</a> and <a href="http://{{host}}/login/privacypolicy">Privacy Policy</a>.</label>
                             </div>
                         </div>
+
+
 
                         <div class="formActions">
                             <div ng-show="'{{captcha}}'=='False'"
