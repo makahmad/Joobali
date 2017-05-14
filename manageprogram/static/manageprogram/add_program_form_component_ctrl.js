@@ -7,9 +7,9 @@ AddProgramFormComponentController = function($scope,$http) {
     this._scope = $scope;
     var $ctrl = this;
 
-    this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-	this.dayOfWeekDisplayOnly = "";
     var startDate = new Date( Date.parse(this.newProgram.startDate) );
+    this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    this.dayOfWeekDisplayOnly = this.days[ startDate.getDay() ]; //change 0 to Sunday, 1 to Monday....
     this.dayOfMonthDisplayOnly = ordinal_suffix_of(startDate.getDate()); //change 1 to 1st, 2 to 2nd....
 
 //    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];

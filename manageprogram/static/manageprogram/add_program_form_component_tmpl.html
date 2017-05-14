@@ -31,19 +31,20 @@
      <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && $ctrl.newProgram.lastDay">
 
           <span class="input-group-addon">
-              We will automatically collect fees for this program on the last day<br>of each month
-              since the first fee is due between 29-31 of the month.
+              We will automatically collect fees for this program on the last day of each<br>month starting {{$ctrl.newProgram.startDate}}.
      </span>
      </div>
      <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && !$ctrl.newProgram.lastDay">
 
           <span class="input-group-addon">
-              We will automatically collect fees for this program on the<br>{{$ctrl.dayOfMonthDisplayOnly}} day of each month.
+              We will automatically collect fees for this program on the<br>{{$ctrl.dayOfMonthDisplayOnly}}
+              day of each month starting {{$ctrl.newProgram.startDate}}.
      </span>
      </div>
      <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">
           <span class="input-group-addon">
-              We will automatically collect fees for this program <b>weekly</b> on <b>{{$ctrl.dayOfWeekDisplayOnly}}s</b>.
+              We will automatically collect fees for this program <b>weekly</b> on <b>{{$ctrl.dayOfWeekDisplayOnly}}s</b>
+              <br>starting {{$ctrl.newProgram.startDate}}.
      </span>
      </div>
 
