@@ -7,6 +7,11 @@ AddProgramFormComponentController = function($scope,$http) {
     this._scope = $scope;
     var $ctrl = this;
 
+    this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+	this.dayOfWeekDisplayOnly = "";
+    var startDate = new Date( Date.parse(this.newProgram.startDate) );
+    this.dayOfMonthDisplayOnly = ordinal_suffix_of(startDate.getDate()); //change 1 to 1st, 2 to 2nd....
+
 //    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 //
 //    $ctrl.monthlyBillDays = [];
@@ -51,6 +56,9 @@ AddProgramFormComponentController.prototype.initializeTimePickers = function() {
 
         var startDate = new Date( Date.parse(this.newProgram.startDate) );
 
+        this.dayOfMonthDisplayOnly = ordinal_suffix_of(startDate.getDate()); //change 1 to 1st, 2 to 2nd....
+        this.dayOfWeekDisplayOnly = this.days[ startDate.getDay() ]; //change 0 to Sunday, 1 to Monday....
+
         if (startDate.getDate() > 28)
             this.newProgram.lastDay = true;
         else
@@ -76,3 +84,18 @@ AddProgramFormComponentController.prototype.initializeTimePickers = function() {
         this.newProgram.dueDate = $('#dueDate').val();
     }));*/
 };
+
+function ordinal_suffix_of(i) {
+    var j = i % 10,
+        k = i % 100;
+    if (j == 1 && k != 11) {
+        return i + "st";
+    }
+    if (j == 2 && k != 12) {
+        return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+        return i + "rd";
+    }
+    return i + "th";
+}

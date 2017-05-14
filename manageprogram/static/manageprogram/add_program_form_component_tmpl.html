@@ -28,11 +28,25 @@
 				<span class="glyphicon glyphicon-calendar"></span>
 			</span>
     </div>
-     <div class="input-group" ng-show="$ctrl.newProgram.lastDay">
+     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && $ctrl.newProgram.lastDay">
+
           <span class="input-group-addon">
-            If billing monthly and first fee is due between 29-31 of the month, <br>we'll automatically bill on last day of the month.
+              We will automatically collect fees for this program on the last day<br>of each month
+              since the first fee is due between 29-31 of the month.
      </span>
      </div>
+     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && !$ctrl.newProgram.lastDay">
+
+          <span class="input-group-addon">
+              We will automatically collect fees for this program on the<br>{{$ctrl.dayOfMonthDisplayOnly}} day of each month.
+     </span>
+     </div>
+     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">
+          <span class="input-group-addon">
+              We will automatically collect fees for this program <b>weekly</b> on <b>{{$ctrl.dayOfWeekDisplayOnly}}s</b>.
+     </span>
+     </div>
+
 </div>
 
 <div class="form-group">
