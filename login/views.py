@@ -422,7 +422,7 @@ def reset(request):
 def login(request):
     form = LoginForm()
     return_to = request.GET.get('return_to')
-    zendesk = request.GET.get('zendesk')
+    zendesk = request.GET.get('z')
 
     redirect = ''
     if request.POST.get('url') and '#!' in request.POST.get('url'):
@@ -512,7 +512,7 @@ def login(request):
         'login/login.html',
         {'form': form,
          'return_to': return_to,
-         'zendesk': zendesk},
+         'z': zendesk},
         template.RequestContext(request))
 
 
