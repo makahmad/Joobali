@@ -424,6 +424,10 @@ def login(request):
     return_to = request.GET.get('return_to')
     zendesk = request.GET.get('zendesk')
 
+    redirect = ''
+    if request.POST.get('url') and '#!' in request.POST.get('url'):
+        redirect = '/#!'+request.POST.get('url').split('#!')[1]
+
     if return_to == 'None':
         return_to = None
 
@@ -480,9 +484,9 @@ def login(request):
 
     if check_session(request) and not zendesk:
         if request.session.get('is_provider') is True:
-            return HttpResponseRedirect("/home/dashboard")
+            return HttpResponseRedirect("/home/dashboard"+redirect)
         else:
-            return HttpResponseRedirect("/parent")
+            return HttpResponseRedirect("/parent"+redirect)
     elif check_session(request) and zendesk:
         payload = {
             'name': request.session.get('name'),

@@ -43,6 +43,7 @@
 					    <label class="control-label" for="password">Password:</label>
 					    <input type="password" class="form-control" id="password" name="password" required="true" value="{{ form.password.value|safe }}">
 					  </div>
+						<input type="hidden" name="url" value="" id="url">
 							<center>
 			      	  <button type="submit" class="btn btn-default btn-lg joobali">Log In</button>
 							</center>
@@ -62,5 +63,10 @@
 		</div> <!-- end modal-content -->
 		</div>
 	</div>
+
+<script>
+
+	document.getElementById('url').value = window.location.href ;
+</script>
 </body>
 </html>
