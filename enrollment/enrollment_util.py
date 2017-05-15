@@ -68,6 +68,7 @@ def reactivate_enrollment(provider_id, enrollment_id, host):
 
 
 def accept_enrollment(provider_id, enrollment_id, parent_id):
+    # TODO(rongjian): parent accept enrollment here, please create a new invoice here.
     enrollment_key = Enrollment.generate_key(provider_id=int(provider_id), enrollment_id=int(enrollment_id))
     if enrollment_key.get() is None:
         logger.warning('invalid provider_id %s and enrollment_id %s pair' % (provider_id, enrollment_id))
