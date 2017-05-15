@@ -11,7 +11,7 @@ import enrollment_util
 from child import child_util
 from child.models import Child, ProviderChildView
 from common.email.enrollment import send_parent_enrollment_notify_email
-from common.exception import JoobaliRpcException
+from common.exception.JoobaliRpcException import JoobaliRpcException
 from common.json_encoder import JEncoder
 from common.session import check_session
 from common.session import get_parent_id

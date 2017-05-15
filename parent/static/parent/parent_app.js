@@ -191,7 +191,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     })
     .component('enrollmentParentView', {
         templateUrl: '/static/enrollment/enrollment-parent-view.template.html',
-        controller: ['$http', '$routeParams', EnrollmentParentViewController]
+        controller: ['$http', '$routeParams', '$location', '$timeout', EnrollmentParentViewController]
     })
     .component('childListParentView', {
         templateUrl: '/static/child/child-list-parent-view.template.html',

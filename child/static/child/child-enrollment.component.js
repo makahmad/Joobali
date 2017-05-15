@@ -11,8 +11,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.nextButton = {};
     self.saveButton = {};
     self.doneButton = {};
-    self.saveSuccessLabel = {};
-    self.saveFailLabel = {};
+    self.enrollmentStatus = '';
 
     this.days = {
         'Sunday': 0,
@@ -52,18 +51,15 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
                 isSaveSuccess = true;
             }
             if (isSaveSuccess) {
-                self.saveSuccessLabel.show = true;
-                self.saveFailLabel.show = false;
+                self.enrollmentStatus = 'success';
                 self.saveButton.show = false;
                 self.doneButton.show = true;
             } else {
-                self.saveSuccessLabel.show = false;
-                self.saveFailLabel.show = true;
+                self.enrollmentStatus = 'failure';
                 self.failMessage = response.data.message;
             }
         }, function errorCallback(response) {
-            self.saveSuccessLabel.show = false;
-            self.saveFailLabel.show = true;
+            self.enrollmentStatus = 'failure';
         });
     }
 
@@ -101,8 +97,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
         self.todayDate = new Date();
         self.resetButton();
         self.currentStep = 0;
-        self.saveSuccessLabel.show = false;
-        self.saveFailLabel.show = false;
+        self.enrollmentStatus = '';
     }
 
     self.$onInit = function() {

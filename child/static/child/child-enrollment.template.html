@@ -33,7 +33,8 @@
                     <label class="control-label" for="program">Program</label>
                     <select class="form-control" id="program" required="true"
                             ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
-                            ng-model="$ctrl.newEnrollment.program" ng-change="$ctrl.whenSelectedProgramChange()"></select>
+                            ng-model="$ctrl.newEnrollment.program"
+                            ng-change="$ctrl.whenSelectedProgramChange()"></select>
                     <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
                         <div>
                             <label>Registration fee:</label>
@@ -69,6 +70,7 @@
                                is-open="$ctrl.startDatePickerOpened"
                                ng-required="true"
                                ng-change="$ctrl.whenChangeStartDate()"
+                               ng-click="$ctrl.openStartDatePicker()"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -90,6 +92,7 @@
                                is-open="$ctrl.endDatePickerOpened"
                                ng-required="!$ctrl.newEnrollment.no_end_date"
                                ng-readonly="$ctrl.newEnrollment.no_end_date"
+                               ng-click="$ctrl.openEndDatePicker()"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -106,7 +109,7 @@
                     <input name="waive_registration" type="checkbox"
                            class="form-control" required="false" ng-required="false" ng-readonly="$ctrl.readOnly"
                            ng-model="$ctrl.newEnrollment.waive_registration">
-                 </div>
+                </div>
             </div>
             <div class="enrollment-form-content" ng-show="$ctrl.currentStep==1"
                  ng-class="{active: $ctrl.currentStep==1}">
@@ -131,10 +134,11 @@
                     <div ng-show="$ctrl.newEnrollment.waive_registration==true">Waive registration fee</div>
                     <div ng-show="$ctrl.newEnrollment.waive_registration==undefined">Include registration fee</div>
                 </div>
-                <div class="control-label" ng-show="$ctrl.saveSuccessLabel.show">Enroll Success!</div>
-                <div class="control-label" ng-show="$ctrl.saveFailLabel.show">Enroll Fail! {{$ctrl.failMessage}}</div>
             </div>
         </form>
+        <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enroll Success!</div>
+        <div class="alert alert-warning" ng-show="$ctrl.enrollmentStatus=='failure'">Enroll Fail! {{$ctrl.failMessage}}
+        </div>
     </div>
 </div>
 <div class="modal-footer">

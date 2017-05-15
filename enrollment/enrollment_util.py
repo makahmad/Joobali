@@ -4,7 +4,7 @@ from datetime import datetime
 from google.appengine.ext import ndb
 
 from common.email.enrollment import send_unenroll_email, send_parent_enrollment_notify_email
-from common.exception import JoobaliRpcException
+from common.exception.JoobaliRpcException import JoobaliRpcException
 from login.models import Provider
 from manageprogram.models import Program
 from models import Enrollment

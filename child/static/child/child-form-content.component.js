@@ -8,6 +8,8 @@ ChildFormContentController = function ChildFormContentController($http) {
     this.dateFormat = 'MM/DD/YYYY';
     this.showSaveButton = true;
     this.newChildEnrollmentInfo = {};
+
+    this.enrollmentStatus = '';
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
         dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
@@ -110,14 +112,17 @@ ChildFormContentController.prototype.save = function() {
 
     this.http_.post('/child/add', submittingForm).then(angular.bind(this, function successCallback(response) {
         if (response.data.status == 'success') {
+            this.enrollmentStatus = 'success';
             this.showSaveButton = false;
             this.onSave({'isSaved': true});
             this.readOnly = true;
         } else {
+            this.enrollmentStatus = 'failure';
             this.onSave({'isSaved': false});
             this.readOnly = false;
         }
     }), angular.bind(this, function errorCallback(response) {
+        this.enrollmentStatus = 'failure';
         // TODO(zilong): Handle RESTFul error properly
     }));
 }
