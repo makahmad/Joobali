@@ -141,7 +141,16 @@ def get_invoice_enrollments(invoice):
     lineItems = InvoiceLineItem.query(ancestor = invoice.key)
     results = []
     for lineItem in lineItems:
-        results.append(lineItem.enrollment_key.get())
+        if lineItem.enrollment_key and lineItem.enrollment_key.get():
+            results.append(lineItem.enrollment_key.get())
+    return results
+
+def get_enrollment_invoices(enrollment):
+    """ Gets all the invoices related to the given enrollments"""
+    lineItems = InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment.key)
+    results = []
+    for lineItem in lineItems:
+        results.append(lineItem.key.parent().get())
     return results
 
 def get_next_due_date(due_date, billing_freq):

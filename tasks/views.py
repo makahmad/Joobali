@@ -99,7 +99,7 @@ def invoice_calculation(request):
                 should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"])
-            if due_date - timedelta(days=5) <= today: # 5 days ahead billing before due date
+            if due_date - timedelta(days=35) <= today: # 5 days ahead billing before due date
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()
@@ -108,7 +108,8 @@ def invoice_calculation(request):
                         # only proceed if current enrollment haven't yield a invoice for current billing cycle
                         logger.info("Skipping...Invoice has already been calculated for this cycle for enrollment: %s" % enrollment)
                         should_proceed = False
-
+            else:
+                logger.info("Skipping, due date too far away: today - %s, due date - %s" % (today, due_date))
 
             # figure out the current cycle period, which is the program cycle period overlapping with current due date
             #while cycle_start_date + program_cycle_time <= due_date:

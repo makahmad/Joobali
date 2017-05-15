@@ -87,6 +87,7 @@ def listInvoices(request):
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
             'status' : "Paid" if invoice.is_paid() else 'Unpaid',
+			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
         })
 	return HttpResponse(json.dumps(results))
 
@@ -165,6 +166,23 @@ def setupAutopay(request):
 			enrollment.autopay_source_id = source
 			enrollment.pay_days_before = 5 # TODO(rongjian): allow users to set it
 			enrollment.put()
+
+	return HttpResponse("success")
+
+def cancelAutopay(request):
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		enrollments = get_invoice_enrollments(invoice)
+		for enrollment in enrollments:
+			enrollment.autopay_source_id = None
+			enrollment.pay_days_before = None
+			enrollment.put()
+			for invoice in invoice_util.get_enrollment_invoices(enrollment):
+				if not invoice.is_paid():
+					invoice.autopay_source_id = None
+					invoice.put()
 
 	return HttpResponse("success")
 

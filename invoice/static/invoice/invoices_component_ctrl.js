@@ -100,6 +100,32 @@ InvoicesComponentController.prototype.adjustButtonClicked = function(clicked_inv
     }
 }
 
+InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_invoice) {
+        var data = {
+            'invoice_id': clicked_invoice.invoice_id
+        }
+        this.http_({
+          method: 'POST',
+          url: '/invoice/cancelautopay',
+          data: JSON.stringify(data)
+        })
+        .then(
+            function(response){
+                console.log('post suceeded');
+                console.log(response);
+                if (response.data !== 'success') {
+                    alert(response.data);
+                } else {
+                    alert('Autopay canceled successfully.')
+                }
+            },
+            function(response){
+                console.log('post failed');
+                console.log(response);
+            }
+         );
+}
+
 InvoicesComponentController.prototype.getButtonText = function() {
     if (this.isProvider == 'true') {
         return "Mark Paid";
