@@ -3,6 +3,7 @@ from login.models import Provider
 
 
 class Program(ndb.Model):
+    ''' Parent (Provider) '''
     programName = ndb.StringProperty(required=True)
     startDate = ndb.DateProperty(required=True)
     endDate = ndb.DateProperty()

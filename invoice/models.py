@@ -17,6 +17,7 @@ class Invoice(ndb.Model):
     parent_email= ndb.StringProperty(required=True)
     # other
     date_created = ndb.DateProperty(required=True)
+    late_fee_enforced = ndb.BooleanProperty(default=True)
     status = ndb.StringProperty(required=True, default="NEW")
     # All possible status for a invoice
     _POSSIBLE_STATUS = {

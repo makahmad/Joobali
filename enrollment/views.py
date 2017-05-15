@@ -193,6 +193,7 @@ def reactivate_enrollment(request):
 
 
 def accept_enrollment(request):
+    logger.info("Accept Enrollment Called")
     status = "failure"
     if not check_session(request):
         return

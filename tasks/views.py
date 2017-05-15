@@ -33,7 +33,7 @@ def invoice_calculation(request):
     # loop over invoices...
     for invoice in Invoice.query().fetch():
         provider = invoice.provider_key.get()
-        if not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < today and not invoice_util.get_invoice_late_fee_added(invoice):
+        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < today and not invoice_util.get_invoice_late_fee_added(invoice):
             program = invoice_util.get_invoice_program(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             provider = provider_util.get_provider_by_email(invoice.provider_email)
@@ -129,8 +129,8 @@ def invoice_calculation(request):
                     invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'], 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
                 invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
-                if should_add_registration_fee:
-                    invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
+                # if should_add_registration_fee:
+                #     invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
 
     # Sum up total amount due
     for key in invoice_dict:

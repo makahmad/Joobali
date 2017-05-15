@@ -8,7 +8,10 @@ from common.exception.JoobaliRpcException import JoobaliRpcException
 from login.models import Provider
 from manageprogram.models import Program
 from models import Enrollment
+from invoice import invoice_util
 from parent.models import Parent
+from datetime import date
+from manageprogram import program_util
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +71,6 @@ def reactivate_enrollment(provider_id, enrollment_id, host):
 
 
 def accept_enrollment(provider_id, enrollment_id, parent_id):
-    # TODO(rongjian): parent accept enrollment here, please create a new invoice here.
     enrollment_key = Enrollment.generate_key(provider_id=int(provider_id), enrollment_id=int(enrollment_id))
     if enrollment_key.get() is None:
         logger.warning('invalid provider_id %s and enrollment_id %s pair' % (provider_id, enrollment_id))
@@ -79,6 +81,14 @@ def accept_enrollment(provider_id, enrollment_id, parent_id):
     if enrollment.status == 'invited' or enrollment.status == 'initialized':
         enrollment.status = 'active'
         enrollment.put()
+        program = enrollment.program_key.get()
+        if not enrollment.waive_registration and program.registrationFee > 0:
+            provider = enrollment.program_key.parent().get()
+            child = enrollment.child_key.get()
+            today = date.today()
+            due_date = program_util.get_first_bill_due_date(program)
+            invoice = invoice_util.create_invoice(provider, child, today, due_date, None, program.registrationFee, False)
+            invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
         return True
     else:
         return False
