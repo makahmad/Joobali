@@ -89,7 +89,6 @@ def add_child(request):
         enrollment = enrollment_util.upsert_enrollment(enrollment_input)
         if parent.status is 'active':
             # The parent already signup
-            parent_util.notify_parent_for_enrollment(parent, enrollment)
             send_parent_enrollment_notify_email(enrollment, host=request.get_host())
         else:
             # The parent has not yet signup

@@ -71,7 +71,7 @@ def add_enrollment(request):
         logger.info('program does not exist')
     else:
         request_body_dict['start_date']
-        enrollment = {
+        enrollment_input = {
             'provider_key': ndb.Key('Provider', provider_id),
             'child_key': child_key,
             'program_key': program_key,
@@ -80,9 +80,10 @@ def add_enrollment(request):
             'end_date': request_body_dict['end_date'],
             'waive_registration': waive_registration
         }
-        logger.info("enrollment is %s", enrollment);
+        logger.info("enrollment is %s", enrollment_input)
         try:
-            enrollment_util.upsert_enrollment(enrollment)
+            enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+            send_parent_enrollment_notify_email(enrollment=enrollment, host=request.get_host())
             status = "success"
         except JoobaliRpcException as e:
             status = 'failure'

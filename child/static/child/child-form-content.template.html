@@ -100,7 +100,7 @@
                    datepicker-popup-template-url="/static/home/datepicker.template.html"
                    datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
                    ng-model="$ctrl.newChildEnrollmentInfo.end_date"
-                   ng-readonly="$ctrl.readOnly"
+                   ng-readonly="$ctrl.newEnrollment.no_end_date"
                    is-open="$ctrl.endDatePickerOpened"
                    ng-required="!$ctrl.newEnrollment.no_end_date"
                    close-text="Close"
