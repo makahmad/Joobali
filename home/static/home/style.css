@@ -345,6 +345,7 @@ footer .glyphicon {
 		/*border:1px solid black;*/
 		width:33.333333333333333333%;
 		display:inline-block;
+		margin-left:10px;
 }
 
 .programHeader:hover {

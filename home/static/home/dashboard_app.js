@@ -21,6 +21,8 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         $location.path(view);
         this.module = view;
 
+        $( "#myNavbar" ).removeClass('in');  //collapse mobile menu when switching pages
+
         //Google Analytics code to detect view changes
         if (typeof ga != 'undefined')
         {
