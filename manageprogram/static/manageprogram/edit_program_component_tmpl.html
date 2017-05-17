@@ -93,7 +93,7 @@
 		    </form>
 						<div class="formActions">
 							<center>
-								<button type="button" ng-disabled="!programForm.$valid" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProgram()">Update &raquo;</button>
+								<button type="button" ng-disabled="!programForm.$valid || !programForm.$dirty" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProgram()">Update &raquo;</button>
 								<a class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
 								<!-- <a class="pull-left delete" ng-click="$ctrl.deleteProgram()" data-toggle="modal" data-target="#confirmDeleteModal">&laquo; Delete</a> -->
 							</center>
