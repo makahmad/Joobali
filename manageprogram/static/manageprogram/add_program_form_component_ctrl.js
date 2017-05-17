@@ -3,25 +3,34 @@ var TIME_FORMAT =  'hh:mm A';
 AddProgramFormComponentController = function($scope,$http) {
     console.log('AddProgramFormComponentController running');
 
-	this.initializeTimePickers();
     this._scope = $scope;
     var $ctrl = this;
 
-    var startDate = new Date( Date.parse(this.newProgram.startDate) );
-    this.days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
-    this.dayOfWeekDisplayOnly = this.days[ startDate.getDay() ]; //change 0 to Sunday, 1 to Monday....
-    this.dayOfMonthDisplayOnly = ordinal_suffix_of(startDate.getDate()); //change 1 to 1st, 2 to 2nd....
+    this.newProgram.startDate = moment().add(6, 'day').toDate();
 
-//    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
-//
-//    $ctrl.monthlyBillDays = [];
-//    for(var i=1;i<=28;i++)
-//        $ctrl.monthlyBillDays.push(i);
-//     $ctrl.monthlyBillDays.push("Last Day");
+    this.dayOfWeekDisplayOnly = moment(this.newProgram.startDate).format('dddd'); //change 0 to Sunday, 1 to Monday....
+    this.dayOfMonthDisplayOnly = moment(this.newProgram.startDate).format('Do'); //change 1 to 1st, 2 to 2nd....
+    this.startDateDisplayOnly = moment(this.newProgram.startDate).format('MM/DD/YYYY');
 
-    $ctrl.indefiniteClicked = function () {
-        if (this.newProgram.indefinite)
-            this.newProgram.endDate = "";
+    this.openStartDatePicker = false;
+    this.endDatePickerOpened = false;
+
+    this.startDatePickerOptions = {
+        minDate: moment().add(6, 'day')
+    }
+
+    this.endDatePickerOptions = {
+        minDate: moment(this.newProgram.startDate).add(1, 'day'),
+        dateDisabled: angular.bind(this, this.disabledEndDate)
+    }
+
+
+    $ctrl.openStartDatePicker = function () {
+        this.startDatePickerOpened = true;
+    };
+
+    $ctrl.openEndDatePicker = function () {
+        this.endDatePickerOpened = true;
     };
 
 
@@ -44,58 +53,59 @@ AddProgramFormComponentController = function($scope,$http) {
     };
 };
 
-AddProgramFormComponentController.prototype.initializeTimePickers = function() {
-    $('#startDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: moment().millisecond(0).second(0).minute(0).hour(0), // BUG source: https://github.com/Eonasdan/bootstrap-datetimepicker/issues/1302
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        console.log('fired1');
-        $('#endDate').data('DateTimePicker').minDate(e.date);
-        this.newProgram.startDate = $('#startDate').val();
 
-        var startDate = new Date( Date.parse(this.newProgram.startDate) );
+AddProgramFormComponentController.prototype.indefiniteClicked = function() {
+        if (this.newProgram.indefinite)
+            this.newProgram.endDate = "";
+}
 
-        this.dayOfMonthDisplayOnly = ordinal_suffix_of(startDate.getDate()); //change 1 to 1st, 2 to 2nd....
-        this.dayOfWeekDisplayOnly = this.days[ startDate.getDay() ]; //change 0 to Sunday, 1 to Monday....
+// Disable invalid choices for billing end date
+AddProgramFormComponentController.prototype.disabledEndDate = function(dateAndMode) {
 
-        if (startDate.getDate() > 28)
-            this.newProgram.lastDay = true;
-        else
-            this.newProgram.lastDay = false;
+    var result = false;
+    if (dateAndMode.mode === 'day') {
 
-         this._scope.$apply();
+        if (this.newProgram.billingFrequency != null) {
 
-    }));
-;
+            //if weekly billing then end date must fall on the same day of the week
+            if (this.newProgram.billingFrequency === 'Weekly') {
+                result =  (moment(dateAndMode.date).format('MM/DD/YYYY')<=moment(this.newProgram.startDate).format('MM/DD/YYYY')
+                || dateAndMode.date.getDay() != moment(this.newProgram.startDate).format('d'));
+            }
 
-    $('#endDate').datetimepicker({
-        format: 'MM/DD/YYYY'
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        $('#endDate').data('DateTimePicker').minDate(  moment($('#startDate').val(), "MM/DD/YYYY") );
-        this.newProgram.endDate = $('#endDate').val();
-    }));
-   /* $('#dueDate').datetimepicker({
-        format: 'MM/DD/YYYY',
-        minDate: moment().millisecond(0).second(0).minute(0).hour(0),
-    })
-    .on('dp.change', angular.bind(this, function(e) {
-        this.newProgram.dueDate = $('#dueDate').val();
-    }));*/
-};
+            //if start date is after the 28th of the month, then end date must be last day of the next month
+            else if (this.newProgram.billingFrequency === 'Monthly' && this.newProgram.lastDay) {
+                var daysInStartDateMonth = moment(this.newProgram.startDate).daysInMonth();
+                var lastDayInStartDateMonth = moment(this.newProgram.startDate).date(daysInStartDateMonth);
+                var daysInEndDateMonth = moment(dateAndMode.date).daysInMonth();
 
-function ordinal_suffix_of(i) {
-    var j = i % 10,
-        k = i % 100;
-    if (j == 1 && k != 11) {
-        return i + "st";
+                result = (moment(dateAndMode.date).format('MM/DD/YYYY')<=lastDayInStartDateMonth.format('MM/DD/YYYY')
+                            || dateAndMode.date.getDate() != daysInEndDateMonth);
+            }
+
+            //if monthly billing and not last day of the month, then end date must fall on the same day of the month
+            else if (this.newProgram.billingFrequency === 'Monthly') {
+                result = (moment(dateAndMode.date).format('MM/DD/YYYY')<=moment(this.newProgram.startDate).format('MM/DD/YYYY')
+                            || dateAndMode.date.getDate() != moment(this.newProgram.startDate).format('D'));
+            }
+        }
     }
-    if (j == 2 && k != 12) {
-        return i + "nd";
-    }
-    if (j == 3 && k != 13) {
-        return i + "rd";
-    }
-    return i + "th";
+    return result;
+
+}
+
+AddProgramFormComponentController.prototype.whenChangeStartDateOrFrequency = function() {
+    var startDate = moment(this.newProgram.startDate);
+
+    this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
+    this.dayOfMonthDisplayOnly = startDate.format('Do'); //change 1 to 1st, 2 to 2nd....
+    this.startDateDisplayOnly = startDate.format('MM/DD/YYYY');
+
+    if (startDate.format('D') > 28)
+        this.newProgram.lastDay = true;
+    else
+        this.newProgram.lastDay = false;
+
+    this.newProgram.endDate = null;
+
 }

@@ -10,44 +10,32 @@ AddProgramComponentController = function($scope, $http, $window, $filter) {
     this.scope_.programs = [];
 	this.scope_.sessions = [];
 	this.scope_.newSession = {};
-	this.today = new Date();
+	this.startDate = moment().add(6, 'day');
 
-	this.newProgram = {/*"feeType": "Hourly",*/ "billingFrequency": "Monthly",
-	                    "weeklyBillDay": "Monday","monthlyBillDay": 1,"indefinite": false,"lastDay": false};
-	this.newProgram.startDate = this.filter_('date')(this.today, 'MM/dd/yyyy')
+	this.newProgram = { "startDate": this.startDate,
+	                    "endDate": moment().add(7, 'day'),
+	                    "billingFrequency": "Monthly",
+	                    "weeklyBillDay": "Monday",
+	                    "monthlyBillDay": 1,
+	                    "indefinite": false,
+	                    "lastDay": false};
 
-    if ( this.today.getDate() > 28 )
+    if ( this.startDate.format('D') > 28 )
         this.newProgram.lastDay = true;
 
     this.scope_.showConflictLabel = false;
 
-	this.initializeTimePickers();
+//	this.initializeTimePickers();
 };
 
 AddProgramComponentController.prototype.initializeTimePickers = function() {
-    $('#startTime').datetimepicker({
-        format: 'hh:mm A',
-    })
-    .on('dp.hide', angular.bind(this, function(e) {
-		this.scope_.newSession.startTime = $('#startTime').val();
 
-		this.rollUpEndTime();
+    this.newProgram.startDate = moment().add(6, 'day').toDate();
 
-		this.scope_.showConflictLabel = false;
-		this.scope_.$apply();
-    }));
-    $('#endTime').datetimepicker({
-        format: 'hh:mm A',
-    })
-    .on('dp.hide', angular.bind(this, function(e) {
-		this.scope_.newSession.endTime = $('#endTime').val();
+    this.dayOfWeekDisplayOnly = moment(this.newProgram.startDate).format('dddd'); //change 0 to Sunday, 1 to Monday....
+    this.dayOfMonthDisplayOnly = moment(this.newProgram.startDate).format('Do'); //change 1 to 1st, 2 to 2nd....
+    this.startDateDisplayOnly = moment(this.newProgram.startDate).format('MM/DD/YYYY');
 
-		this.rollUpEndTime();
-
-		this.scope_.showConflictLabel = false;
-		this.scope_.$apply();
-    }));
-    $('[data-toggle="tooltip"]').tooltip();
 };
 
 
@@ -117,6 +105,10 @@ AddProgramComponentController.prototype.handleNext = function() {
 
 AddProgramComponentController.prototype.handleSave = function() {
     if (this.validateCurrentForm()) {
+
+        this.newProgram.startDate =  moment(this.newProgram.startDate).format('MM/DD/YYYY');
+        this.newProgram.endDate =  moment(this.newProgram.endDate).format('MM/DD/YYYY');
+
         var data = {
             'program': this.newProgram
         };

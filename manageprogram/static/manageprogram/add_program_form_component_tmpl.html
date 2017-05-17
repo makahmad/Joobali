@@ -3,7 +3,6 @@
     <input type="text" class="form-control" id="programName" name="programName" ng-required="true"
            ng-model="$ctrl.newProgram.programName">
 </div>
-
 <div class="form-group">
     <label class="control-label" for="fee">Fee:</label>
     <div class="input-group">
@@ -11,82 +10,84 @@
         <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee"
                ng-required="true" ng-model="$ctrl.newProgram.fee">
         <span class="input-group-addon">
-	<label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency"
+	<label class="radio-inline"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency"
                                        ng-required="true" value="Weekly" checked="checked">Weekly</label>
-	<label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency"
+	<label class="radio-inline"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.newProgram.billingFrequency"
                                        ng-required="true" value="Monthly">Monthly</label>
   </span>
     </div>
 </div>
 
-<div class="form-group">
-    <label class="control-label" for="startDate">When is the first (or next) fee due? (MM/DD/YYYY)</label>
-    <div class="input-group date">
-        <input type="text" id="startDate" ng-required="true" class="form-control" name="startDate"
-               ng-model="$ctrl.newProgram.startDate">
-        <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			</span>
-    </div>
-     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && $ctrl.newProgram.lastDay">
+                <div class="form-group">
+                    <label class="control-label">When is the first (or next) fee due? (MM/DD/YYYY)</label>
+                    <div class="input-group date">
+                        <input name="startDate"
+                               type="text" class="form-control"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-options="$ctrl.startDatePickerOptions"
+                               ng-model="$ctrl.newProgram.startDate"
+                               is-open="$ctrl.startDatePickerOpened"
+                               ng-required="true"
+                               ng-click="$ctrl.openStartDatePicker()"
+                               ng-change="$ctrl.whenChangeStartDateOrFrequency()"
+                               close-text="Close"/>
 
-          <span class="input-group-addon">
-              We will automatically collect fees for this program on the last day of each<br>month starting {{$ctrl.newProgram.startDate}}.
-     </span>
-     </div>
-     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && !$ctrl.newProgram.lastDay">
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openStartDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                    </div>
+                   <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && $ctrl.newProgram.lastDay">
 
-          <span class="input-group-addon">
-              We will automatically collect fees for this program on the<br>{{$ctrl.dayOfMonthDisplayOnly}}
-              day of each month starting {{$ctrl.newProgram.startDate}}.
-     </span>
-     </div>
-     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">
-          <span class="input-group-addon">
-              We will automatically collect fees for this program <b>weekly</b> on <b>{{$ctrl.dayOfWeekDisplayOnly}}s</b>
-              <br>starting {{$ctrl.newProgram.startDate}}.
-     </span>
-     </div>
+                      <span class="input-group-addon">
+                          We will automatically collect fees for this program on the last day of each<br>month starting {{$ctrl.startDateDisplayOnly}}.
+                     </span>
+                     </div>
+                     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && !$ctrl.newProgram.lastDay">
 
-</div>
-
-<div class="form-group">
-    <label class="control-label" for="endDate">When is the last fee due? (MM/DD/YYYY)</label>
-    <div class="input-group date">
-        <input type="text" id="endDate" class="form-control" name="endDate"
-               ng-model="$ctrl.newProgram.endDate" ng-required="!$ctrl.newProgram.indefinite"
-               ng-disabled="$ctrl.newProgram.indefinite">
-        <span class="input-group-addon">
-				<span class="glyphicon glyphicon-calendar"></span>
-			</span>
-
-        <span class="input-group-addon">
-				<label class="checkbox-inline">
-					<input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.newProgram.indefinite"
-                           value="True" ng-click="$ctrl.indefiniteClicked()">Indefinite</label>
-			  </span>
-    </div>
-</div>
+                          <span class="input-group-addon">
+                              We will automatically collect fees for this program on the<br>{{$ctrl.dayOfMonthDisplayOnly}}
+                              day of each month starting {{$ctrl.startDateDisplayOnly}}.
+                     </span>
+                     </div>
+                     <div class="input-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">
+                          <span class="input-group-addon">
+                              We will automatically collect fees for this program <b>weekly</b> on <b>{{$ctrl.dayOfWeekDisplayOnly}}s</b>
+                              <br>starting {{$ctrl.startDateDisplayOnly}}.
+                     </span>
+                     </div>
+                </div>
 
 
 
-<!--<div class="form-group" ng-show="$ctrl.newProgram.billingFrequency=='Weekly'">-->
-    <!--<label class="control-label" for="weeklyBillDay">What day of the week do you bill?</label>-->
-    <!--<div class="input-group">-->
-        <!--<select class="form-control" id="weeklyBillDay" required="true"-->
-                <!--ng-options="weeklyBillDay for weeklyBillDay in $ctrl.weeklyBillDays"-->
-                <!--ng-required="true" ng-model="$ctrl.newProgram.weeklyBillDay"></select>-->
-    <!--</div>-->
-<!--</div>-->
+                <div class="form-group">
+                    <label class="control-label">When is the last fee due? (MM/DD/YYYY)</label>
+                    <p class="input-group">
+                        <input name="endDate"
+                               type="text" class="form-control"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-options="$ctrl.endDatePickerOptions"
+                               ng-model="$ctrl.newProgram.endDate"
+                               is-open="$ctrl.endDatePickerOpened"
+                               ng-click="$ctrl.openEndDatePicker()"
+                               ng-required="!$ctrl.newProgram.indefinite"
+                               ng-disabled="$ctrl.newProgram.indefinite"
+                               close-text="Close"/>
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openEndDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                         <span class="input-group-addon">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.newProgram.indefinite"
+                                       value="True" ng-click="$ctrl.indefiniteClicked()">Indefinite</label>
+                          </span>
+                    </p>
 
-<!--<div class="form-group" ng-show="$ctrl.newProgram.billingFrequency=='Monthly'">-->
-    <!--<label class="control-label" for="monthlyBillDay">What day of the month do you bill?</label>-->
-    <!--<div class="input-group">-->
-        <!--<select class="form-control" id="monthlyBillDay" required="true"-->
-                <!--ng-options="monthlyBillDay for monthlyBillDay in $ctrl.monthlyBillDays"-->
-                <!--ng-required="true" ng-model="$ctrl.newProgram.monthlyBillDay"></select>-->
-    <!--</div>-->
-<!--</div>-->
+                </div>
+
 
 <div class="form-group">
     <div class="col-1">
