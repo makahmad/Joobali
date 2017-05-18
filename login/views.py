@@ -119,7 +119,7 @@ def provider_signup(request):
 
         # Remove below snippet once we are out of Beta
         beta_code = request.POST.get('beta_code')
-        if beta_code != 'joobali4fun':
+        if beta_code != 'joobali143':
             failedBetaLogins = FailedBetaLogins()
             failedBetaLogins.IP = get_client_ip(request)
             failedBetaLogins.email = request.POST.get('email')
