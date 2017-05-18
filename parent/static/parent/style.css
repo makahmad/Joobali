@@ -68,6 +68,9 @@ body {
 .homeIcons.money {
 	background: url("./pics/img_getpaid.png") no-repeat top;
 }
+.homeIcons.help {
+	background: url("./pics/img_help.png") no-repeat top;
+}
 
 .featureDescription {
   background: white;
@@ -111,6 +114,25 @@ a.logoLink:hover {
     font-size: 50px;
 }
 
+/*@media only screen and (max-width: 760px), (max-device-width:1024px) and (min-device-width: 768px) {
+	td{
+		border:none;
+		border-bottom:1px solid #777;
+		position:relative;
+		padding-left:50%;
+	}
+
+	table, thead, tbody, th, td, tr {
+		display:block;
+	}
+
+	td, th {
+		padding:6px;
+		border: 1px solid #777;
+		text-align:left;
+	}
+}
+*/
 @media screen and (max-width: 500px) {
 	.btn-group {
 	    margin: 8px auto;
@@ -151,6 +173,17 @@ a.logoLink:hover {
 		.navbar-nav li a:hover, .navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
 	    color: white !important;
 	    background-color: #737E86 !important;
+		}
+		.providerName {
+	    color: white;
+	    height: 50px;
+	    float: left;
+	    margin: 24px 0 0px 60px;
+	    line-height: 3.1px;
+	    font-size: 12px;
+	    position: absolute;
+	    top: 0;
+	    left: 111px;
 		}
 }
 
@@ -251,12 +284,15 @@ a.logoLink:hover {
 }
 
 .providerName {
-	color:white;
-    height: 50px;
-    float: left;
-    margin: 24px 0 0px 60px;
-    line-height: 3.1px;
-	font-size:17px;
+  color: white;
+  height: 50px;
+  float: left;
+  margin: 24px 0 0px 60px;
+  line-height: 3.1px;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 111px;
 }
 
 .dropdown, .dropdown-toggle {
@@ -328,6 +364,11 @@ footer .glyphicon {
 		/*border:1px solid black;*/
 		width:33.333333333333333333%;
 		display:inline-block;
+		margin-left:10px;
+}
+
+.programHeader:hover {
+	cursor:pointer;
 }
 
 .pageInstructions {
@@ -354,8 +395,32 @@ footer .glyphicon {
 }
 */
 
-/* programs grid/list css */
+.label-default {
+     background-color:transparent !important;
+    color: #777;
+}
 
+.btn-default.joobali {
+	background: none;
+  color: #339999;
+  width: auto;
+  border: 1px solid #339999;
+  border-radius: 3px;
+}
+
+.btn-default.joobali:hover , .btn-default.joobali.hover {
+  background: #2e8f8f;
+    color: #ffffff;
+    width: auto;
+}
+
+.btn-default.joobali:focus, .btn-default.joobali.focus, .btn-default.joobali:active, .btn-default.joobali.active, .btn-default.joobali:active:focus, .btn-default.joobali.active:focus {
+	background: #2e8f8f;
+	color: #ffffff;
+	width: auto;
+}
+
+/* programs grid/list css */
 .well .buttonDiv {
 	display:inline-block;
   margin: auto;
@@ -534,9 +599,49 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 }
 
 /* ----------------- Children Styles ------------------ */
-.childrenList{
+.addToProgram {
+	margin:0;
+}
+
+.enrollProgram {
+	float:right;
+	position:relative;
+	top:-15px;
+	right:0px;
+}
+
+.child-enrollment-container{
+	width:62%;
+	margin:10px 10px 0 0;
+  display: inline-block;
+  float: left;
+}
+
+.childrenListContainer {
 	width:100%;
 }
+
+.childrenList{
+	width:100%;
+	list-style:none;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 0;
+}
+
+.childrenList ol {
+	-webkit-margin-before: 0;
+	-webkit-margin-after: 0;
+	-webkit-margin-start: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-padding-start: 0;
+}
+
+.childrenList td, .childrenList th {
+    padding: 5px 12px;
+	}
 
 /* ----------------- Modals Override ----------------- */
 .modal-title {

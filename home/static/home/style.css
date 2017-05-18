@@ -839,3 +839,7 @@ label {
   width: 63%;
   margin: -10px auto;
 }
+
+payments-component .table tr a, invoices-component .table tr a {
+    color: #333;
+}
