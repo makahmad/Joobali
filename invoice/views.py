@@ -40,24 +40,42 @@ def add_invoice(request):
 	due_date = datetime.strptime(data['due_date'], DATE_FORMAT).date()
 	created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
 	if 'all_children' in data:
-		print data['all_children']
-		for child_id in data['all_children']:
-			provider = Provider.get_by_id(request.session.get('user_id'))
-			child = Child.get_by_id(child_id)
-			invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None, amount)
-			invoice_util.create_invoice_line_item(None, invoice, None, None, None,
-				description, amount)
+		if 'program_id' in data:
+			for child in child_util.list_child_by_provider_program(request.session.get('user_id'), long(data['program_id'])):
+				provider = Provider.get_by_id(request.session.get('user_id'))
+				invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None, amount)
+				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
+													  description, amount)
+		else:
+			for child_id in data['all_children']:
+				provider = Provider.get_by_id(request.session.get('user_id'))
+				child = Child.get_by_id(child_id)
+				invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None, amount)
+				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
+					description, amount)
 	else:
 		child_id = long(data['child_id'])
-		program_id = long(data['program_id'])
+		if 'program_id' in data:
+			program_id = long(data['program_id'])
 
-		provider = Provider.get_by_id(request.session.get('user_id'))
-		child = Child.get_by_id(child_id)
-		program = ndb.Key('Provider', provider.key.id(), 'Program', program_id).get()
-		enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
-			provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
-		invoice = invoice_util.create_invoice(provider, child, created_date, due_date, enrollment.autopay_source_id, amount, False)
-		invoice_util.create_invoice_line_item(ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None, description, amount)
+			provider = Provider.get_by_id(request.session.get('user_id'))
+			child = Child.get_by_id(child_id)
+			program = ndb.Key('Provider', provider.key.id(), 'Program', program_id).get()
+			enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
+				provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
+			invoice = invoice_util.create_invoice(provider, child, created_date, due_date, enrollment.autopay_source_id,
+												  amount, False)
+			invoice_util.create_invoice_line_item(
+				ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None,
+				description, amount)
+		else:
+			provider = Provider.get_by_id(request.session.get('user_id'))
+			child = Child.get_by_id(child_id)
+			invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None,
+												  amount, False)
+			invoice_util.create_invoice_line_item(None, invoice, None, None, None,
+				description, amount)
+
 
 	return HttpResponse('success')
 

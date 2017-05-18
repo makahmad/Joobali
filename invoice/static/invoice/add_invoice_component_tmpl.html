@@ -17,8 +17,7 @@
             <label class="control-label" for="program">Program</label>
             <select class="form-control" id="program"
                     ng-options="program.programName + ' (' + program.billingFrequency + ')' for program in $ctrl.programs track by program.id"
-                    ng-model="$ctrl.newInvoice.program"
-                    ng-disabled="!$ctrl.newInvoice.child"></select>
+                    ng-model="$ctrl.newInvoice.program"><option value="" selected>No Program</option></select>
         </div>
         <div class="form-group">
             <label class="control-label" for="amount">Amount:</label>

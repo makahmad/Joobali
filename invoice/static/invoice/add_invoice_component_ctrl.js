@@ -14,26 +14,47 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
         console.log("createButton is clicked");
         var data = {};
         if (self.newInvoice.child) {
-            data = {
-                'child_id': self.newInvoice.child.id,
-                'program_id': self.newInvoice.program.id,
-                'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
-                'description': self.newInvoice.description,
-                'amount': self.newInvoice.amount,
-                'created_date': moment().format('MM/DD/YYYY'),
-            };
+            if (self.newInvoice.program) {
+                data = {
+                    'program_id': self.newInvoice.program.id,
+                    'child_id': self.newInvoice.child.id,
+                    'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                    'description': self.newInvoice.description,
+                    'amount': self.newInvoice.amount,
+                    'created_date': moment().format('MM/DD/YYYY'),
+                };
+            } else {
+                data = {
+                    'child_id': self.newInvoice.child.id,
+                    'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                    'description': self.newInvoice.description,
+                    'amount': self.newInvoice.amount,
+                    'created_date': moment().format('MM/DD/YYYY'),
+                };
+            }
         } else {
             all_ids = [];
             for (i in self.children) {
                 all_ids.push(self.children[i].id);
             }
-            data = {
-                'all_children': all_ids,
-                'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
-                'description': self.newInvoice.description,
-                'amount': self.newInvoice.amount,
-                'created_date': moment().format('MM/DD/YYYY'),
-            };
+            if (self.newInvoice.program) {
+                data = {
+                    'program_id': self.newInvoice.program.id,
+                    'all_children': null,
+                    'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                    'description': self.newInvoice.description,
+                    'amount': self.newInvoice.amount,
+                    'created_date': moment().format('MM/DD/YYYY'),
+                };
+            } else {
+                data = {
+                    'all_children': all_ids,
+                    'due_date': moment(self.newInvoice.due_date).format('MM/DD/YYYY'),
+                    'description': self.newInvoice.description,
+                    'amount': self.newInvoice.amount,
+                    'created_date': moment().format('MM/DD/YYYY'),
+                };
+            }
         }
         console.log(data);
         $http.post('/invoice/addinvoice', data).then(function successCallback(response) {
@@ -67,6 +88,22 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
             });
         } else {
             this.programs = [];
+            $http({
+                method: 'GET',
+                url: '/manageprogram/listprograms',
+            }).then(angular.bind(this, function successCallback(response) {
+                // this callback will be called asynchronously
+                // when the response is available
+                this.programs = [];
+                angular.forEach(response.data, angular.bind(this, function(program) {
+                    program = JSON.parse(program);
+                    if(program.indefinite)
+                        program.endDate = "Indefinite";
+                    this.programs.push(program);
+                }));
+            }), function errorCallback(response) {
+                alert('Something is wrong here. Please refresh the page and try again');
+            });
         }
     }
 
