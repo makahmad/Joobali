@@ -7,6 +7,7 @@ import logging
 
 # Internal Libraries
 from common import session
+from common.exception.JoobaliRpcException import JoobaliRpcException
 from common.json_encoder import JEncoder
 from common.email.enrollment import send_parent_enrollment_notify_email
 from manageprogram.models import Program
@@ -44,59 +45,63 @@ def add_child(request):
     if not session.check_session(request) or not session.is_provider(request):
         return HttpResponseRedirect('/login')
     response = dict()
-    if request.method != 'POST':
-        logger.info('request.method is %s', request.method)
-        response['status'] = 'failure'
-    else:
-        request_content = json.loads(request.body)
-        child_first_name = request_content['child_first_name']
-        child_last_name = request_content['child_last_name']
-        date_of_birth = request_content['child_date_of_birth']
-        parent_email = request_content['child_parent_email']
-        program = request_content['program']
-        billing_start_date = request_content['start_date']
-        billing_end_date = request_content['end_date']
-
-        waive_registration = False if 'waive_registration' not in request_content else request_content[
-            'waive_registration']
-
-        # Setup Parent entity for child
-        provider_key = Provider.generate_key(session.get_provider_id(request))
-        (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
-                                                                          provider_key=provider_key,
-                                                                          child_first_name=child_first_name)
-
-        # Setup Child entity
-        to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
-        existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
-        if existing_child is not None:
-            return HttpResponse(json.dumps(response), content_type="application/json")
-        existing_child = child_util.add_child(to_be_added_child, parent.key)
-        provider_key = ndb.Key('Provider', session.get_provider_id(request))
-        child_util.add_provider_child_view(child_key=existing_child.key, provider_key=provider_key)
-
-        # Setup first enrollment for child
-        program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
-        enrollment_input = {
-            'child_key': existing_child.key,
-            'provider_key': provider_key,
-            'program_key': program_key,
-            'status': 'initialized',
-            'start_date': billing_start_date,
-            'end_date': billing_end_date,
-            'waive_registration': waive_registration
-        }
-        enrollment = enrollment_util.upsert_enrollment(enrollment_input)
-        if parent.status is 'active':
-            # The parent already signup
-            send_parent_enrollment_notify_email(enrollment, host=request.get_host())
+    try:
+        if request.method != 'POST':
+            logger.info('request.method is %s', request.method)
+            raise JoobaliRpcException(client_viewable_message="only post method is allowed")
         else:
-            # The parent has not yet signup
-            parent.invitation.enrollment_key = enrollment.key
-            parent.put()
-            send_parent_enrollment_notify_email(enrollment, host=request.get_host(),
-                                                verification_token=verification_token)
-        response['status'] = 'success'
+            request_content = json.loads(request.body)
+            child_first_name = request_content['child_first_name']
+            child_last_name = request_content['child_last_name']
+            date_of_birth = request_content['child_date_of_birth']
+            parent_email = request_content['child_parent_email']
+            program = request_content['program']
+            billing_start_date = request_content['start_date']
+            billing_end_date = request_content['end_date']
+
+            waive_registration = False if 'waive_registration' not in request_content else request_content[
+                'waive_registration']
+
+            # Setup Parent entity for child
+            provider_key = Provider.generate_key(session.get_provider_id(request))
+            (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
+                                                                              provider_key=provider_key,
+                                                                              child_first_name=child_first_name)
+
+            # Setup Child entity
+            to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
+            existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
+            if existing_child is not None:
+                return HttpResponse(json.dumps(response), content_type="application/json")
+            existing_child = child_util.add_child(to_be_added_child, parent.key)
+            provider_key = ndb.Key('Provider', session.get_provider_id(request))
+            child_util.add_provider_child_view(child_key=existing_child.key, provider_key=provider_key)
+
+            # Setup first enrollment for child
+            program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
+            enrollment_input = {
+                'child_key': existing_child.key,
+                'provider_key': provider_key,
+                'program_key': program_key,
+                'status': 'initialized',
+                'start_date': billing_start_date,
+                'end_date': billing_end_date,
+                'waive_registration': waive_registration
+            }
+            enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+            if parent.status is 'active':
+                # The parent already signup
+                send_parent_enrollment_notify_email(enrollment, host=request.get_host())
+            else:
+                # The parent has not yet signup
+                parent.invitation.enrollment_key = enrollment.key
+                parent.put()
+                send_parent_enrollment_notify_email(enrollment, host=request.get_host(),
+                                                    verification_token=verification_token)
+            response['status'] = 'success'
+    except JoobaliRpcException as e:
+        return HttpResponse(status=e.get_http_error_code(), content=e.get_client_messasge())
+
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 

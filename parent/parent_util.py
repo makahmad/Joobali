@@ -1,6 +1,8 @@
 import time
 import logging
 
+from common.exception.JoobaliRpcException import JoobaliRpcException
+from login.provider_util import get_provider_by_email
 from models import Parent, ParentInvitation, ParentStatus
 from passlib.apps import custom_app_context as pwd_context
 from login.models import Unique
@@ -23,9 +25,10 @@ def setup_parent_for_child(email, provider_key, child_first_name):
             'child_first_name' : child_name
         }
     """
-    parent = Parent(id=Parent.get_next_available_id())
     existing_parent = get_parents_by_email(email)
-    if existing_parent is None:
+    existing_provider = get_provider_by_email(email)
+    if (existing_parent is None) and (existing_provider is None):
+        parent = Parent(id=Parent.get_next_available_id())
         parent.email = email
 
         # Generate invitation information
@@ -48,7 +51,9 @@ def setup_parent_for_child(email, provider_key, child_first_name):
         verification_token = VerificationToken.create_new_parent_signup_token(parent)
         verification_token.put()
         return parent, verification_token
-    else:
+    elif existing_provider is not None:
+        raise JoobaliRpcException(client_viewable_message=("There is already a provider with email %s" % email))
+    elif existing_parent is not None:
         return existing_parent, None
 
 

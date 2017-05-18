@@ -122,7 +122,9 @@
                ng-model="$ctrl.newChildEnrollmentInfo.waive_registration">
     </div>
     <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enrollment success</div>
-    <div class="alert alert-warning" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed</div>
+    <div class="alert alert-warning" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed.
+        {{$ctrl.enrollmentFailureReason}}
+    </div>
     <div class="form-group">
         <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Enroll</button>
     </div>

@@ -101,7 +101,7 @@ def get_client_ip(request):
 def provider_signup(request):
     logger.info("request.POST %s" % request.POST)
     form = ProviderForm()
-    captcha_results = {}
+    captcha_results = dict()
     captcha_results['success'] = False
 
     if request.method == 'POST':

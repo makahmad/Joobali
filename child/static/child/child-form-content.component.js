@@ -123,6 +123,8 @@ ChildFormContentController.prototype.save = function() {
         }
     }), angular.bind(this, function errorCallback(response) {
         this.enrollmentStatus = 'failure';
-        // TODO(zilong): Handle RESTFul error properly
+        this.onSave({'isSaved': false});
+        this.readOnly = false;
+        this.enrollmentFailureReason = response.data;
     }));
 }
