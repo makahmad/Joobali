@@ -1,8 +1,15 @@
-<div class="profileFormContainer">
-	<div class="profileFormHeader">
+<div class="programHeader" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"><b>Your Profile</b> <sup><i class="fa fa-question-circle fa-lg"></i></sup></div>
+	<span class="pageInstructions" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Edit your profile to update your contact and account information.</span>
+<div class="programsContainer">	
+    <div class="programsDiv">
+		  <div class="well well-sm">
+
+
+<!-- <div class="profileFormContainer">
+	<div class="profileFormHeader"> -->
 		<h2 class="profile-title">Edit Your Profile</h2>
 	</div>
-	<div class="profileFormBody">
+	<!-- <div class="profileFormBody"> -->
     <div class="col-centered">
         <form id="profileForm" name="profileForm" role="form" class="well">
             <div class="">
@@ -74,5 +81,4 @@
 								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave||profileForm.$invalid">Update &raquo;</button>
 						</div> <!-- end formActions -->
     </div>
-	</div>
-</div>
+<!-- </div></div> --></div></div>
