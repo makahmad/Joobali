@@ -9,14 +9,14 @@
         <div class="form-group">
             <label class="control-label" for="child">Child</label>
             <select class="form-control" id="child"
-                    ng-options="child.id + '-' + child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
+                    ng-options="child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
                     ng-model="$ctrl.newInvoice.child"
                     ng-change="$ctrl.updateProgramOptions($ctrl.newInvoice.child.id)"><option value="" selected>All Children</option></select>
         </div>
         <div class="form-group">
             <label class="control-label" for="program">Program</label>
             <select class="form-control" id="program"
-                    ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+                    ng-options="program.programName + ' (' + program.billingFrequency + ')' for program in $ctrl.programs track by program.id"
                     ng-model="$ctrl.newInvoice.program"
                     ng-disabled="!$ctrl.newInvoice.child"></select>
         </div>

@@ -9,7 +9,7 @@
         <div class="form-group">
             <label class="control-label" for="child">Child</label>
             <select class="form-control" id="child" ng-required="true"
-                    ng-options="child.id + '-' + child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
+                    ng-options="child.first_name + ' ' + child.last_name for child in $ctrl.children track by child.id"
                     ng-model="$ctrl.newPayment.child"
                     ng-change="$ctrl.updateProgramOptions($ctrl.newPayment.child.id)"
                     ng-disabled="$ctrl.resolve.invoice"></select>
