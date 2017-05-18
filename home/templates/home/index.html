@@ -28,30 +28,24 @@
 			</div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 	      <ul class="nav navbar-nav navbar-right">
-	          {% if loggedIn %}
+					{% if loggedIn %}
 					<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
-	        <!-- <li><a href="#about">ABOUT</a></li> -->
-	        <!-- <li><a href="/manageprogram">PROGRAMS</a></li>
-	        <li><a href="#contact">CONTACT</a></li> -->
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                  {{ email }}
+                  <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+				<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
+                  <li><a href="/home/dashboard#!/profile">Profile</a></li>
 
-	            <li class="dropdown">
-	                <a class="dropdown-toggle" data-toggle="dropdown">
-	                    {{ email }}
-	                    <span class="caret"></span>
-	                </a>
-	                <ul class="dropdown-menu">
-						<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
-	                    <li><a href="/home/dashboard#!/profile">Profile</a></li>
-
-	                  <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-	                </ul>
-	            </li>
-
-
-	          {% else %}
-	            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
-	            <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-	          {% endif %}
+                <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+              </ul>
+          </li>
+        {% else %}
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+          <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        {% endif %}
 	      </ul>
 	    </div> <!-- end .#myNavbar -->
 		</div> <!-- end .container -->

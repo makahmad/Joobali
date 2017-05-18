@@ -19,6 +19,10 @@
 	}*/
 }
 
+i.fa.fa-trash-o.fa-lg {
+	color:lightgray;
+}
+
 .programs {
 	font-family:"Roboto", sans-serif;
 	display:inline-block;

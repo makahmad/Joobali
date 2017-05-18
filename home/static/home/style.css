@@ -114,6 +114,25 @@ a.logoLink:hover {
     font-size: 50px;
 }
 
+/*@media only screen and (max-width: 760px), (max-device-width:1024px) and (min-device-width: 768px) {
+	td{
+		border:none;
+		border-bottom:1px solid #777;
+		position:relative;
+		padding-left:50%;
+	}
+
+	table, thead, tbody, th, td, tr {
+		display:block;
+	}
+
+	td, th {
+		padding:6px;
+		border: 1px solid #777;
+		text-align:left;
+	}
+}
+*/
 @media screen and (max-width: 500px) {
 	.btn-group {
 	    margin: 8px auto;
