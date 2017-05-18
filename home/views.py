@@ -28,7 +28,7 @@ def index(request):
 
 
 def dashboard(request):
-	if not check_session(request):
+	if not check_session(request) or request.session['is_provider'] is False:
 		return HttpResponseRedirect('/login')
 
 	#get school name for provider only
