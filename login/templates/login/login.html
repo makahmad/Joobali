@@ -23,7 +23,7 @@
 		  </div> <!-- end modal-header -->
 		  <div class="modal-body">
 				<div class="col-centered programOverviewForm">
-				  	<form role="form" class="well" action="/login/?return_to={{ return_to }}&z={{ zendesk }}" method="POST">
+				  	<form role="form" class="well" action="/login/?return_to={{ return_to }}&z={{ z }}" method="POST">
 				  	  {% csrf_token %}
 					    {% if form.email.errors %}
 						<div class="form-group">
