@@ -72,18 +72,11 @@
                                ng-model="$ctrl.newProgram.endDate"
                                is-open="$ctrl.endDatePickerOpened"
                                ng-click="$ctrl.openEndDatePicker()"
-                               ng-required="!$ctrl.newProgram.indefinite"
-                               ng-disabled="$ctrl.newProgram.indefinite"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openEndDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
-                         <span class="input-group-addon">
-                            <label class="checkbox-inline">
-                                <input type="checkbox" name="indefinite" id="indefinite" ng-model="$ctrl.newProgram.indefinite"
-                                       value="True" ng-click="$ctrl.indefiniteClicked()">Indefinite</label>
-                          </span>
                     </p>
 
                 </div>

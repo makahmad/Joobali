@@ -111,13 +111,13 @@ def updateProgram(request):
     # program.lateFee = newProgram['lateFee']
     # program.billingFrequency = newProgram['billingFrequency']
 
-    program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
-
-    if newProgram['indefinite']:
-        program.indefinite = newProgram['indefinite']
-        program.endDate = None
-    else:
-        program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+    # program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
+    #
+    # if newProgram['indefinite']:
+    #     program.indefinite = newProgram['indefinite']
+    #     program.endDate = None
+    # else:
+    #     program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
 
     # program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
     program.put()
@@ -171,14 +171,11 @@ def addProgram(request):
     else:
         program.weeklyBillDay = day_name[program.startDate.weekday()]
 
-
-    if newProgram['indefinite']:
-        program.indefinite = newProgram['indefinite']
-        program.endDate = None
-    else:
+    if newProgram['endDate']:
         program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-
-    # program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
+    else:
+        program.indefinite = True
+        program.endDate = None
 
     program.put()
 

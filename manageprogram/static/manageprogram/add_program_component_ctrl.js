@@ -107,7 +107,9 @@ AddProgramComponentController.prototype.handleSave = function() {
     if (this.validateCurrentForm()) {
 
         this.newProgram.startDate =  moment(this.newProgram.startDate).format('MM/DD/YYYY');
-        this.newProgram.endDate =  moment(this.newProgram.endDate).format('MM/DD/YYYY');
+
+        if (this.newProgram.endDate!=null)
+            this.newProgram.endDate =  moment(this.newProgram.endDate).format('MM/DD/YYYY');
 
         var data = {
             'program': this.newProgram
