@@ -116,7 +116,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
          function($locationProvider, $routeProvider) {
              $locationProvider.hashPrefix('!');
              $routeProvider
-                 .when('/funding', {template: '<funding-component></funding-component>'})
+                 .when('/funding', {template: '<funding-component fundings="fundings"></funding-component>'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/payments', {templateUrl: '/static/parent/payment_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
@@ -137,7 +137,10 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     })
     .component('fundingComponent', {
         templateUrl: '/static/parent/funding_component_tmpl.html',
-        controller: FundingComponentController
+        controller: FundingComponentController,
+        bindings: {
+          fundings: '<',
+        }
     })
     .component('autopaySetupFormComponent', {
         templateUrl: '/static/parent/autopay_setup_form_component_tmpl.html',

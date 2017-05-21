@@ -142,7 +142,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
-                 .when('/billing', {template: '<billing-component></billing-component>'})
+                 .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
@@ -210,7 +210,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('billingComponent', {
         templateUrl: '/static/home/billing_component_tmpl.html',
-        controller: BillingComponentController
+        controller: BillingComponentController,
+        bindings: {
+          fundings: '<'
+        }
     })
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',
@@ -347,6 +350,11 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('addFundingIavComponent', {
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
+        bindings: {
+          resolve: '<',
+          close: '&',
+          dismiss: '&'
+        }
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
