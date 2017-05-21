@@ -8,7 +8,7 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
 	this.scope_.module = '/due'; //module is used to highlight active left hand nav selection
-	this.initialize();
+	this.initialize($uibModal);
     this.animationsEnabled = true;
 
     //IF URL = http://joobali.com/home/dashboard#!/programs GET /programs
@@ -39,7 +39,20 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
       };
 };
 
-ParentController.prototype.initialize = function() {
+ParentController.prototype.initialize = function($uibModal) {
+    this.http_({
+	  method: 'GET',
+	  url: '/login/isinitsetupfinished'
+	}).then(angular.bind(this, function successCallback(response) {
+	    if (response.data == 'false') {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'initSetupComponent',
+            });
+	    }
+	}), function errorCallback(response) {
+	    // Do nothing
+	});
 	this.http_({
 	  method: 'GET',
 	  url: '/invoice/listinvoices'
@@ -103,7 +116,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
          function($locationProvider, $routeProvider) {
              $locationProvider.hashPrefix('!');
              $routeProvider
-                 .when('/funding', {templateUrl: '/static/parent/funding_component_tmpl.html'})
+                 .when('/funding', {template: '<funding-component></funding-component>'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/payments', {templateUrl: '/static/parent/payment_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
@@ -115,7 +128,16 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     .controller('ParentCtrl', ParentController)
 	.component('initSetupComponent', {
         templateUrl: '/static/parent/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController
+        controller: InitSetupComponentController,
+        bindings: {
+            resolve: '<',
+            close: '&',
+            dismiss: '&'
+        }
+    })
+    .component('fundingComponent', {
+        templateUrl: '/static/parent/funding_component_tmpl.html',
+        controller: FundingComponentController
     })
     .component('autopaySetupFormComponent', {
         templateUrl: '/static/parent/autopay_setup_form_component_tmpl.html',
@@ -132,7 +154,12 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     })
     .component('paymentSetupComponent', {
         templateUrl: '/static/parent/payment_setup_component_tmpl.html',
-        controller: PaymentSetupComponentController
+        controller: PaymentSetupComponentController,
+        bindings: {
+            resolve: '<',
+            close: '&',
+            dismiss: '&'
+        }
     })
     .component('invoicesComponent', {
         templateUrl: '/static/invoice/invoices_component_tmpl.html',
@@ -186,6 +213,10 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     .component('addFundingIavComponent', {
         templateUrl: '/static/funding/add_funding_iav_component_tmpl.html',
         controller: AddFundingIavComponentController,
+        bindings: {
+            close: '&',
+            dismiss: '&'
+        }
     })
     .component('profile', {
         templateUrl: '/static/parent/profile_component_tmpl.html',

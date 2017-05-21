@@ -1,20 +1,12 @@
-.form-content.current {
+.init-setup .modal-title.current {
 	display: block;
 }
 
-.form-content {
+.init-setup .modal-title {
 	display: none;
 }
 
-.modal-title.current {
-	display: block;
-}
-
-.modal-title {
-	display: none;
-}
-
-.modal-body {
+.init-setup .modal-body {
     min-height: 300px;
 }
 

@@ -1,7 +1,7 @@
 AddFundingIavComponentController = function($location, $http) {
     console.log('AddFundingIavComponentController running');
     this.location_ = $location;
-
+    self = this
 
     $http({
 	  method: 'GET',
@@ -12,16 +12,21 @@ AddFundingIavComponentController = function($location, $http) {
 	    this.iavToken = response.data;
 	    console.log('IAV token fetched: ' + this.iavToken);
 	    dwolla.configure('uat');
-	    if (angular.element('#iavContainer').length) {
 	        // If element exists. Sometime if the user move to another tab before this callback is called, the iavContainer element will be absent.
-            dwolla.iav.start(this.iavToken, {container: 'iavContainer'}, function(err, res) {
-                console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
-            });
-	    }
+        dwolla.iav.start(this.iavToken, {container: 'addFundingIavContainer'}, function(err, res) {
+            console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
+            if (!err) {
+                location.reload();
+            }
+        });
 
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.
 	    console.log(response);
 	});
+
+    self.cancel = function() {
+        self.dismiss({$value: 'cancel'});
+    }
 }

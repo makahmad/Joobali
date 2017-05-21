@@ -22,6 +22,7 @@ FundingsComponentController.prototype.removeFunding = function(funding) {
                     alert(response.data);
                 } else {
                     alert('Removal succeeded.')
+                    location.reload();
                 }
             },
             function(response){

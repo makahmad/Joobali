@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}home/init_setup_component_style.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}home/autopay_setup_form_component_style.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}home/payment_setup_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}parent/init_setup_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}parent/autopay_setup_form_component_style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}parent/payment_setup_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}manageprogram/add_program_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}invoice/invoices_component_style.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}funding/fundings_component_style.css">
@@ -48,6 +48,7 @@
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
 
     <!-- Funding Related JS -->
+    <script src="{{ STATIC_URL }}parent/funding_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/fundings_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/add_funding_iav_component_ctrl.js"></script>
     <script src="{{ STATIC_URL }}funding/make_payment_component_ctrl.js"></script>
@@ -207,9 +208,6 @@
             <!--<a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>-->
         </div>
     </div>
-    <!-- /#page-content-wrapper -->
-    <init-setup-component></init-setup-component>
-    <payment-setup-component></payment-setup-component>
     {% endverbatim %}
 </div>
 <!-- /#wrapper -->

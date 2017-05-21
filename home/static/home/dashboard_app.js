@@ -39,7 +39,6 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
       };
 
 
-
 };
 
 DashboardController.prototype.initialize = function() {
@@ -143,7 +142,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
-                 .when('/billing', {templateUrl: '/static/home/billing_component_tmpl.html'})
+                 .when('/billing', {template: '<billing-component></billing-component>'})
                  .when('/child/list', {template: '<child-list></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
@@ -208,6 +207,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('initSetupComponent', {
         templateUrl: '/static/home/init_setup_component_tmpl.html',
         controller: InitSetupComponentController
+    })
+    .component('billingComponent', {
+        templateUrl: '/static/home/billing_component_tmpl.html',
+        controller: BillingComponentController
     })
     .component('programComponent', {
         templateUrl: '/static/manageprogram/program_component_tmpl.html',

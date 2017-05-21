@@ -1,11 +1,10 @@
-<span class="programHeader"><b>Available Fundings:</b></span>
-<div class="programsContainer">
-	<div class="programsDiv">
+<span class="fundingHeader"><b>Available Fundings:</b></span>
+<div class="fundingContainer">
+	<div class="fundingDiv">
 		<div class="well well-sm">
-			<div class="buttonDiv"><a class="btn btn-default btn-lg pull-right programHeader joobali" data-toggle="modal" data-target="#iavModal"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Add funding</a>
+			<div class="buttonDiv"><a class="btn btn-default btn-lg pull-right fundingHeader joobali" ng-click="$ctrl.openAddFundingModal()"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Add funding</a>
 			</div>
 			<fundings-component fundings="fundings"></fundings-component>
-			<add-funding-iav-component></add-funding-iav-component>
 		</div>
 	</div>
 </div>

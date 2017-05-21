@@ -99,7 +99,7 @@ def invoice_calculation(request):
                 should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"])
-            if due_date - timedelta(days=35) <= today: # 5 days ahead billing before due date
+            if due_date - timedelta(days=5) <= today: # 5 days ahead billing before due date
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()

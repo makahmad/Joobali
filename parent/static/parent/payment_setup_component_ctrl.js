@@ -1,6 +1,7 @@
 PaymentSetupComponentController = function($http) {
     console.log('PaymentSetupComponentController running');
     this.http_ = $http;
+    self = this
     $http({
           method: 'GET',
           url: '/funding/getiavtoken'
@@ -15,6 +16,7 @@ PaymentSetupComponentController = function($http) {
                 if (!err) {
                     // Funding IAV successful
                     //$('#initSetupNextButton').show();
+                    location.reload();
                 }
             }));
         }), function errorCallback(response) {
@@ -22,9 +24,8 @@ PaymentSetupComponentController = function($http) {
             // or server returns response with an error status.
             console.log(response);
         });
-};
 
-
-PaymentSetupComponentController.prototype.handleDone = function() {
-    $('#paymentSetupModal').modal('hide');
+    self.cancel = function() {
+        self.dismiss({$value: 'cancel'});
+    }
 };
