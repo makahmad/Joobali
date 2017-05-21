@@ -7,7 +7,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
-	this.initialize();
+	this.initialize($uibModal);
 	this.scope_.module = '/programs'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
 
@@ -41,7 +41,20 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 
 };
 
-DashboardController.prototype.initialize = function() {
+DashboardController.prototype.initialize = function($uibModal) {
+    this.http_({
+	  method: 'GET',
+	  url: '/login/isinitsetupfinished'
+	}).then(angular.bind(this, function successCallback(response) {
+	    if (response.data == 'false') {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                component: 'initSetupComponent',
+            });
+	    }
+	}), function errorCallback(response) {
+	    // Do nothing
+	});
 	this.http_({
 		method: 'GET',
 		url: '/manageprogram/listprograms'
@@ -206,7 +219,11 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .controller('AddPaymentController', AddPaymentController)
     .component('initSetupComponent', {
         templateUrl: '/static/home/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController
+        controller: InitSetupComponentController,
+        bindings: {
+            close: '&',
+            dismiss: '&'
+        }
     })
     .component('billingComponent', {
         templateUrl: '/static/home/billing_component_tmpl.html',

@@ -1,7 +1,7 @@
 InitSetupComponentController = function($http) {
     console.log('InitSetupComponentController running');
     this.dateOfBirthPickerOpened = false;
-
+    self = this
     this.openDateOfBirthPicker = function() {
         console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
         this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
@@ -30,6 +30,9 @@ InitSetupComponentController = function($http) {
         // or server returns response with an error status.
         console.log(response);
     });
+    self.cancel = function() {
+        self.dismiss({$value: 'cancel'});
+    }
 };
 
 

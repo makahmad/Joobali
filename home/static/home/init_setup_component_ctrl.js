@@ -2,7 +2,7 @@ InitSetupComponentController = function($http) {
     console.log('InitSetupComponentController running');
     this.dateOfBirthPickerOpened = false;
     this.isDone = false;
-
+    self = this
     this.openDateOfBirthPicker = function() {
         console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
         this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
@@ -36,6 +36,7 @@ InitSetupComponentController = function($http) {
                     if (!err) {
                         // Funding IAV successful
                         $('#initSetupNextButton').show();
+                        $('#initSetupSkipButton').show();
                     }
                 }));
             }), function errorCallback(response) {
@@ -62,19 +63,33 @@ InitSetupComponentController = function($http) {
 	    console.log(response);
 	});
 
+    self.cancel = function() {
+        self.dismiss({$value: 'cancel'});
+    }
     this.$onInit = function() {
         this.dateOfBirthPickerOpened = false;
     };
 };
 
 
-InitSetupComponentController.prototype.handleNext = function() {
+InitSetupComponentController.prototype.handleNext = function(skip) {
     console.log('next');
 	var curContent = $(".init-setup.form-content.current");
 	var curNav = $(".init-setup.form-nav.current");
-    if (curNav.attr('id') === "navStep1" || this.validateCurrentForm()) {
+	if (skip) {
+	    if (curNav.attr('id') === "navStep3") {
+		    this.cancel();
+	    } else {
+            this.moveToNext(curContent, curNav);
+	    }
+	} else if (curNav.attr('id') === "navStep1" || this.validateCurrentForm()) {
         if (curNav.attr('id') === "navStep2") {
-            console.log(this.newProgram);
+
+            this.newProgram.startDate =  moment(this.newProgram.startDate).format('MM/DD/YYYY');
+
+            if (this.newProgram.endDate!=null)
+                this.newProgram.endDate =  moment(this.newProgram.endDate).format('MM/DD/YYYY');
+
             var data = {
                 'program': this.newProgram
             };
@@ -140,7 +155,6 @@ InitSetupComponentController.prototype.handleDone = function() {
 	  method: 'POST',
 	  url: '/login/setinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
-        $('#initSetupModal').modal('hide');
 		location.reload();
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
