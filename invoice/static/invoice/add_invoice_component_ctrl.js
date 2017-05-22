@@ -10,10 +10,12 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
     self.createSuccessLabel = {};
     self.createFailLabel = {};
     self.isDisabled = false;
+    self.submitButton = "Create";
 
     self.createButton.click = function() {
         console.log("createButton is clicked");
         self.isDisabled = true;
+        self.submitButton = 'Creating';
 
         var data = {};
         if (self.newInvoice.child) {
@@ -67,10 +69,12 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
             } else {
                 alert('something is wrong');
                 self.isDisabled = false;
+                self.submitButton = "Create";
             }
         }, function errorCallback(response) {
             alert('something is wrong');
             self.isDisabled = false;
+            self.submitButton = "Create";
         });
     }
 

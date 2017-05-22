@@ -59,7 +59,7 @@
 <div class="modal-footer">
         <div class="formActions">
             <center>
-                <button ng-disabled="!addInvoiceForm.$valid || $ctrl.isDisabled" type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.createButton.click()">Create &raquo;</button>
+                <button ng-disabled="!addInvoiceForm.$valid || $ctrl.isDisabled" type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.createButton.click()">{{$ctrl.submitButton}} &raquo;</button>
                 <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->
