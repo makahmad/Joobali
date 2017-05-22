@@ -37,7 +37,7 @@ def referralForm(request):
                 'referrer_name': referral.referrerName
             }
             send_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
-                                emailTemplate.render(data), "howdy@joobali.com")
+                                emailTemplate.render(data), "Joobali <howdy@joobali.com>")
             logger.info("INFO: successfully sent referral email:" + str(referral))
             return HttpResponseRedirect('/referral')
 
@@ -79,6 +79,6 @@ def providerReferral(request):
             'referrer_name': referral.referrerName
         }
         send_provider_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
-                            emailTemplate.render(data), "howdy@joobali.com")
+                            emailTemplate.render(data), "Joobali <howdy@joobali.com>")
         response['status'] = 'success'
     return HttpResponse(json.dumps(response), content_type="application/json")

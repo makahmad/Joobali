@@ -14,7 +14,7 @@ _enrollment_notification_template = loader.get_template('enrollment/enrollment_n
 _signup_notification_template = loader.get_template('enrollment/signup_invitation_template.html')
 
 
-def send_unenroll_email(enrollment, host, sender_address="howdy@joobali.com"):
+def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali.com>"):
     child = enrollment.child_key.get()
     parent = child.parent_key.get()
     program = enrollment.program_key.get()
@@ -50,7 +50,7 @@ def send_unenroll_email(enrollment, host, sender_address="howdy@joobali.com"):
         return False
 
 
-def send_parent_enrollment_notify_email(enrollment, host, sender_address="howdy@joobali.com", verification_token=None):
+def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobali <howdy@joobali.com>", verification_token=None):
     provider = enrollment.key.parent().get()
     parent = enrollment.child_key.get().parent_key.get()
     program = enrollment.program_key.get()

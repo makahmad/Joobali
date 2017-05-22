@@ -5,7 +5,7 @@ from google.appengine.api import mail
 logger = logging.getLogger(__name__)
 
 
-def send_invoice_email(parent_address, invoice, start_date, end_date, template, sender_address="howdy@joobali.com"):
+def send_invoice_email(parent_address, invoice, start_date, end_date, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,

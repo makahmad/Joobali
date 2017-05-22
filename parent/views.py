@@ -188,6 +188,6 @@ def parentReferral(request):
             'referrer_name': referral.referrerName
         }
         send_parent_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
-                            emailTemplate.render(data), "howdy@joobali.com")
+                            emailTemplate.render(data), "Joobali <howdy@joobali.com>")
         response['status'] = 'success'
     return HttpResponse(json.dumps(response), content_type="application/json")

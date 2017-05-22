@@ -3,7 +3,7 @@ from google.appengine.api import mail
 
 logger = logging.getLogger(__name__)
 
-def send_payment_created_email(parent_address, parent_name, school_name, amount, template, sender_address="howdy@joobali.com"):
+def send_payment_created_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -16,7 +16,7 @@ def send_payment_created_email(parent_address, parent_name, school_name, amount,
     message.html = template
     message.send()
 
-def send_payment_success_email(parent_address, parent_name, school_name, amount, template, sender_address="howdy@joobali.com"):
+def send_payment_success_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -31,7 +31,7 @@ def send_payment_success_email(parent_address, parent_name, school_name, amount,
 
 
 
-def send_payment_failure_email(parent_address, parent_name, school_name, amount, template, sender_address="howdy@joobali.com"):
+def send_payment_failure_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -44,7 +44,7 @@ def send_payment_failure_email(parent_address, parent_name, school_name, amount,
     message.html = template
     message.send()
 
-def send_payment_cancelled_email(parent_address, parent_name, school_name, amount, template, sender_address="howdy@joobali.com"):
+def send_payment_cancelled_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -57,7 +57,7 @@ def send_payment_cancelled_email(parent_address, parent_name, school_name, amoun
     message.html = template
     message.send()
 
-def send_funding_source_removal_email(email_address, name, funding_source_name, template, sender_address="howdy@joobali.com"):
+def send_funding_source_removal_email(email_address, name, funding_source_name, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -71,7 +71,7 @@ def send_funding_source_removal_email(email_address, name, funding_source_name, 
     message.send()
 
 def send_funding_source_addition_email(email_address, name, funding_source_name, template,
-                                      sender_address="howdy@joobali.com"):
+                                      sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
