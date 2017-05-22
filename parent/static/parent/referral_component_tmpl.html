@@ -30,8 +30,8 @@
 						<div class="formActions">
 							<center>
 								<button type="button" class="btn btn-default btn-lg pull-right joobali"
-                                        ng-disabled="referralForm.$invalid"
-                                        ng-click="$ctrl.refer()">Refer &raquo;</button>
+                                        ng-disabled="referralForm.$invalid || $ctrl.isDisabled"
+                                        ng-click="$ctrl.refer()">{{$ctrl.submitButton}} &raquo;</button>
 							</center>
 						</div> <!-- end formActions -->
 		</div><!-- end col-centered  -->

@@ -4,6 +4,8 @@ ReferralComponentController = function($http, $window, $location) {
 	this.window_ = $window;
 	this.referral = {};
     this.sent = false;
+    this.isDisabled = false;
+    this.submitButton = 'Refer';
 
     this.cancel = function () {
       this.dismiss({$value: 'cancel'});
@@ -12,6 +14,9 @@ ReferralComponentController = function($http, $window, $location) {
 
 
 ReferralComponentController.prototype.refer = function() {
+    this.isDisabled = true;
+    this.submitButton = 'Sending';
+
 	this.http_({
 		method: 'POST',
 		url: '/referral/providerreferral',
@@ -26,6 +31,8 @@ ReferralComponentController.prototype.refer = function() {
 		function (response) {
 			console.log('post failed');
 			alert("Something is wrong with the saving. Please try again later");
+			this.isDisabled = false;
+			this.submitButton = 'Refer';
 		}
 	);
 };
