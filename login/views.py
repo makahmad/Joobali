@@ -182,7 +182,8 @@ def provider_signup(request):
                 token.put()
                 send_provider_email_address_verification(token, host=request.get_host())
                 return render_to_response('login/provider_signup_confirmation.html',
-                                          {'form': form},
+                                          {'form': form,
+                                           'email': email},
                                           template.RequestContext(request))
                 # return HttpResponseRedirect('/login')
             else:
