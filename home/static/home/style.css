@@ -843,3 +843,9 @@ label {
 payments-component .table tr a, invoices-component .table tr a {
     color: #333;
 }
+
+
+/* in the css file or in a style block */
+.angular-with-newlines {
+    white-space: pre-line;
+}

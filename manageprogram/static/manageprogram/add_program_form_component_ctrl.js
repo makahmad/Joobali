@@ -15,6 +15,9 @@ AddProgramFormComponentController = function($scope,$http) {
     this.openStartDatePicker = false;
     this.endDatePickerOpened = false;
 
+    this.programInfoDisplay = 'TEST1';
+    this.whenChangeStartDateOrFrequency();
+
     this.startDatePickerOptions = {
         minDate: moment().add(6, 'day')
     }
@@ -109,4 +112,23 @@ AddProgramFormComponentController.prototype.whenChangeStartDateOrFrequency = fun
 
     this.newProgram.endDate = null;
 
+    this.whenChangeEndDate();
+}
+
+AddProgramFormComponentController.prototype.whenChangeEndDate = function() {
+
+    if(this.newProgram.billingFrequency=='Monthly' && this.newProgram.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the last day of '+
+        'each month starting '+this.startDateDisplayOnly;
+    else if(this.newProgram.billingFrequency=='Monthly' && !this.newProgram.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the '+this.dayOfMonthDisplayOnly+
+                              +' day of each month starting '+this.startDateDisplayOnly;
+    else if(this.newProgram.billingFrequency=='Weekly')
+        this.programInfoDisplay = 'We will automatically collect fees for this program weekly on '+this.dayOfWeekDisplayOnly+'s'+
+                              ' starting '+this.startDateDisplayOnly;
+
+    if(this.newProgram.endDate)
+        this.programInfoDisplay += ' and ending on '+moment(this.newProgram.endDate).format('MM/DD/YYYY')+'.';
+    else
+        this.programInfoDisplay += ' indefinitely.'
 }
