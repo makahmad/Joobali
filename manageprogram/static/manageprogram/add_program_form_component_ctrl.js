@@ -122,7 +122,7 @@ AddProgramFormComponentController.prototype.whenChangeEndDate = function() {
         'each month starting '+this.startDateDisplayOnly;
     else if(this.newProgram.billingFrequency=='Monthly' && !this.newProgram.lastDay)
         this.programInfoDisplay = 'We will automatically collect fees for this program on the '+this.dayOfMonthDisplayOnly+
-                              +' day of each month starting '+this.startDateDisplayOnly;
+                              ' day of each month starting '+this.startDateDisplayOnly;
     else if(this.newProgram.billingFrequency=='Weekly')
         this.programInfoDisplay = 'We will automatically collect fees for this program weekly on '+this.dayOfWeekDisplayOnly+'s'+
                               ' starting '+this.startDateDisplayOnly;
