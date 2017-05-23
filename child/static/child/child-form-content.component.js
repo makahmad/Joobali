@@ -32,27 +32,49 @@ ChildFormContentController = function ChildFormContentController($http) {
 }
 
 ChildFormContentController.prototype.whenSelectedProgramChange = function () {
-    console.log("when selected program changed")
-    this.newChildEnrollmentInfo.start_date = null;
-    this.whenChangeStartDate();
+    if (this.newChildEnrollmentInfo.program) {
+        this.newChildEnrollmentInfo.start_date = moment(this.newChildEnrollmentInfo.program.startDate, this.dateFormat).toDate();
+        if (this.newChildEnrollmentInfo.program.endDate) {
+            this.newChildEnrollmentInfo.end_date = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat).toDate();
+            this.newChildEnrollmentInfo.no_end_date = false;
+        } else {
+            this.newChildEnrollmentInfo.no_end_date = true;
+        }
+    } else {
+        this.newChildEnrollmentInfo.start_date = null;
+    }
+    this.whenChangeStartDate(false);
 }
 
-ChildFormContentController.prototype.whenChangeStartDate = function() {
-    this.newChildEnrollmentInfo.no_end_date = false;
+ChildFormContentController.prototype.whenChangeStartDate = function(isManualChange) {
+    if (isManualChange) {
+        this.newChildEnrollmentInfo.no_end_date = false;
+    }
     this.whenChangeNoEndDate();
 }
 
 ChildFormContentController.prototype.whenChangeNoEndDate = function() {
-    this.newChildEnrollmentInfo.end_date = null;
+    if (this.newChildEnrollmentInfo.no_end_date) {
+        this.newChildEnrollmentInfo.end_date = null;
+    }
 }
 
 // Disable invalid choices for billing end date
 ChildFormContentController.prototype.enrollmentDisabledEndDate = function(dateAndMode) {
     if (dateAndMode.mode === 'day') {
+        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
         if (this.newChildEnrollmentInfo.start_date) {
-            var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
             if (currentDate <= this.newChildEnrollmentInfo.start_date) {
                 return true;
+            }
+        }
+
+        if (this.newChildEnrollmentInfo.program) {
+            if (this.newChildEnrollmentInfo.program.endDate) {
+                var programEndDate = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat);
+                if (currentDate > programEndDate) {
+                    return true;
+                }
             }
         }
     }
@@ -76,6 +98,14 @@ ChildFormContentController.prototype.enrollmentDisabledDate = function(dateAndMo
                 result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
             }
         }
+
+        if (this.newChildEnrollmentInfo.program) {
+            var programStartDate = moment(this.newChildEnrollmentInfo.program.startDate, this.dateFormat);
+            if (currentDate < programStartDate) {
+                return true;
+            }
+        }
+
     }
     return result;
 }

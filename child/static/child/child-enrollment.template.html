@@ -54,6 +54,12 @@
                             <label> Monthly bill day:</label>
                             <b>{{$ctrl.newEnrollment.program.monthlyBillDay}}</b>
                         </div>
+                        <div>
+                            <label>Start date:</label> <b>{{$ctrl.newEnrollment.program.startDate}}</b>
+                        </div>
+                        <div ng-show="$ctrl.newEnrollment.program.indefinite != true">
+                            <label>End date:</label> <b>{{$ctrl.newEnrollment.program.endDate}}</b>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group"

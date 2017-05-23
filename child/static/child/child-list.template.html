@@ -10,7 +10,7 @@
 		<div class="child-list-filter-options pull-right">
 			<span class="label label-default">Filter by Program</span>
 			<select class="form-control"
-					ng-options="program.id + '-' + program.programName for program in $ctrl.programs track by program.id"
+					ng-options="program.programName for program in $ctrl.programs track by program.id"
 					ng-model="$ctrl.selectedFilteringProgram"
 					ng-change="$ctrl.updateFilteringProgram()">
 				<option value="">All Programs</option>

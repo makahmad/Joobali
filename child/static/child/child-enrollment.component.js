@@ -12,6 +12,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.saveButton = {};
     self.doneButton = {};
     self.enrollmentStatus = '';
+    this.dateFormat = 'MM/DD/YYYY';
 
     this.days = {
         'Sunday': 0,
@@ -111,18 +112,31 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
 }
 
 ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
-    console.log("when selected program changed")
-    this.newEnrollment.start_date = null;
+    if (this.newEnrollment.program) {
+        this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate, this.dateFormat).toDate();
+        if (this.newEnrollment.program.endDate) {
+            this.newEnrollment.end_date = moment(this.newEnrollment.program.endDate, this.dateFormat).toDate();
+            this.newEnrollment.no_end_date = false;
+        } else {
+            this.newEnrollment.no_end_date = true;
+        }
+    } else {
+        this.newEnrollment.start_date = null;
+    }
     this.whenChangeStartDate();
 }
 
-ChildEnrollmentController.prototype.whenChangeStartDate = function() {
-    this.newEnrollment.no_end_date = false;
+ChildEnrollmentController.prototype.whenChangeStartDate = function(isManualChange) {
+    if (isManualChange) {
+        this.newEnrollment.no_end_date = false;
+    }
     this.whenChangeNoEndDate();
 }
 
 ChildEnrollmentController.prototype.whenChangeNoEndDate = function() {
-    this.newEnrollment.end_date = null;
+    if (this.newEnrollment.no_end_date) {
+        this.newEnrollment.end_date = null;
+    }
 }
 ChildEnrollmentController.prototype.getMinEndDate = function() {
     var minDate = null;
@@ -152,6 +166,15 @@ ChildEnrollmentController.prototype.enrollmentDisabledEndDate = function(dateAnd
                 return true;
             }
         }
+
+        if (this.newEnrollment.program) {
+            if (this.newEnrollment.program.endDate) {
+                var programEndDate = moment(this.newEnrollment.program.endDate, this.dateFormat);
+                if (currentDate > programEndDate) {
+                    return true;
+                }
+            }
+        }
     }
     return this.enrollmentDisabledDate(dateAndMode);
 }
@@ -165,6 +188,7 @@ ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMod
         if (currentDate.diff(today, 'days') < 5) {
             return true;
         }
+
         if (this.newEnrollment != null &&
                 this.newEnrollment.program != null &&
                 this.newEnrollment.program.billingFrequency != null) {
@@ -172,6 +196,13 @@ ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMod
                 result =  (dateAndMode.date.getDay() != this.days[this.newEnrollment.program.weeklyBillDay]);
             } else if (this.newEnrollment.program.billingFrequency === 'Monthly') {
                 result = (dateAndMode.date.getDate() != this.newEnrollment.program.monthlyBillDay);
+            }
+        }
+
+        if (this.newEnrollment.program) {
+            var programStartDate = moment(this.newEnrollment.program.startDate, this.dateFormat);
+            if (currentDate < programStartDate) {
+                return true;
             }
         }
     }

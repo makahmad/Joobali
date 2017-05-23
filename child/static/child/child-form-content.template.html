@@ -59,10 +59,16 @@
                 <label>Latefee: </label> <b>{{$ctrl.newChildEnrollmentInfo.program.lateFee}}</b>
             </div>
             <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Weekly'">
-                <label> Weekly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.weeklyBillDay}}</b>
+                <label>Weekly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.weeklyBillDay}}</b>
             </div>
             <div ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency == 'Monthly'">
-                <label> Monthly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.monthlyBillDay}}</b>
+                <label>Monthly bill day:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.monthlyBillDay}}</b>
+            </div>
+            <div>
+                <label>Start date:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.startDate}}</b>
+            </div>
+            <div ng-show="$ctrl.newChildEnrollmentInfo.program.indefinite != true">
+                <label>End date:</label> <b>{{$ctrl.newChildEnrollmentInfo.program.endDate}}</b>
             </div>
         </div>
     </div>
@@ -80,7 +86,7 @@
                    ng-readonly="$ctrl.readOnly"
                    is-open="$ctrl.startDatePickerOpened"
                    ng-required="true"
-                   ng-change="$ctrl.whenChangeStartDate()"
+                   ng-change="$ctrl.whenChangeStartDate(true)"
                    ng-click="$ctrl.openStartDatePicker()"
                    close-text="Close"/>
             <span class="input-group-btn">
@@ -100,9 +106,9 @@
                    datepicker-popup-template-url="/static/home/datepicker.template.html"
                    datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
                    ng-model="$ctrl.newChildEnrollmentInfo.end_date"
-                   ng-readonly="$ctrl.newEnrollment.no_end_date"
+                   ng-readonly="$ctrl.newChildEnrollmentInfo.no_end_date"
                    is-open="$ctrl.endDatePickerOpened"
-                   ng-required="!$ctrl.newEnrollment.no_end_date"
+                   ng-required="!$ctrl.newChildEnrollmentInfo.no_end_date"
                    close-text="Close"
                    ng-click="$ctrl.openEndDatePicker()"/>
             <span class="input-group-btn">
@@ -110,8 +116,8 @@
                                             ng-click="$ctrl.openEndDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
         </p>
-        <label> No specific end date
-            <input ng-readonly="$ctrl.readOnly" type="checkbox" ng-model="$ctrl.newEnrollment.no_end_date"
+        <label>No specific end date
+            <input ng-readonly="$ctrl.readOnly" type="checkbox" ng-model="$ctrl.newChildEnrollmentInfo.no_end_date"
                    ng-change="$ctrl.whenChangeNoEndDate()">
         </label>
     </div>
