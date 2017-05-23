@@ -82,6 +82,9 @@ def makeTransfer(request):
             return HttpResponse("failure: payment amount must be equal to invoice amount")
         if invoice.is_paid():
             return HttpResponse("failure: the invoice has already been paid")
+        if invoice.dwolla_transfer_id:
+            return HttpResponse("failure: payment for this invoice is in process")
+
     try:
         funding_util.make_transfer(data['destination'], data['source'], data['amount'], invoice)
     except ValidationError as err:

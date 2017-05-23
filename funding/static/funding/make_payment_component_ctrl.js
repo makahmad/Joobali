@@ -2,7 +2,10 @@ MakePaymentComponentController = function($location, $http) {
     console.log('MakePaymentComponentController running');
     this.location_ = $location;
     this.http_ = $http;
-
+    self = this;
+    $('#makePaymentModal').on('hidden.bs.modal', function () {
+        self.autopayOptIn = false;
+    })
 }
 
 
@@ -19,6 +22,7 @@ MakePaymentComponentController.prototype.getSelectedInvoice = function() {
 MakePaymentComponentController.prototype.makePayment = function() {
 
       if (this.validate()) {
+        var paymentSuccess = false;
         var source = $('#source :selected').val();
         var selected_invoice = this.getSelectedInvoice();
         var destination = selected_invoice.provider_customer_id;
@@ -29,6 +33,8 @@ MakePaymentComponentController.prototype.makePayment = function() {
             'amount': amount,
             'invoice_id': selected_invoice.invoice_id
         }
+        self = this;
+
         this.http_({
           method: 'POST',
           url: '/funding/maketransfer',
@@ -41,7 +47,10 @@ MakePaymentComponentController.prototype.makePayment = function() {
                 if (response.data !== 'success') {
                     alert(response.data);
                 } else {
-                    alert('Transfer succeeded.')
+                    paymentSuccess = true;
+                    if (!self.autopayOptIn) {
+                        alert('Payment succeeded.')
+                    }
                 }
             },
             function(response){
@@ -49,6 +58,10 @@ MakePaymentComponentController.prototype.makePayment = function() {
                 alert(response);
             }
          );
+
+         if (this.autopayOptIn && paymentSuccess) {
+            this.setupAutopay();
+         }
       }
 }
 
@@ -72,7 +85,7 @@ MakePaymentComponentController.prototype.setupAutopay = function() {
                 if (response.data !== 'success') {
                     alert(response.data);
                 } else {
-                    alert('Autopay setup succeeded.')
+                    alert('Payment and autopay setup succeeded.')
                 }
             },
             function(response){

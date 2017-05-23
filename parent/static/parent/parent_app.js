@@ -45,13 +45,20 @@ ParentController.prototype.initialize = function($uibModal) {
 	  url: '/login/isinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
 	    if (response.data == 'false') {
+	        $('#initSetupModal').modal('show');
+            $('#initSetupModal').on('hidden.bs.modal', function (e) {
+                $('#initSetupModal').modal('hide');
+                console.log('closed');
+            })
             var modalInstance = $uibModal.open({
-                animation: true,
-                component: 'initSetupComponent',
-            });
+                    animation: true,
+                    component: 'paymentSetupComponent',
+                });
 	    }
 	}), function errorCallback(response) {
-	    // Do nothing
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
 	});
 	this.http_({
 	  method: 'GET',
@@ -116,7 +123,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
          function($locationProvider, $routeProvider) {
              $locationProvider.hashPrefix('!');
              $routeProvider
-                 .when('/funding', {template: '<funding-component fundings="fundings"></funding-component>'})
+                 .when('/funding', {template: '<funding-component></funding-component>'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/payments', {templateUrl: '/static/parent/payment_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
@@ -128,19 +135,11 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     .controller('ParentCtrl', ParentController)
 	.component('initSetupComponent', {
         templateUrl: '/static/parent/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController,
-        bindings: {
-            resolve: '<',
-            close: '&',
-            dismiss: '&'
-        }
+        controller: InitSetupComponentController
     })
     .component('fundingComponent', {
         templateUrl: '/static/parent/funding_component_tmpl.html',
-        controller: FundingComponentController,
-        bindings: {
-          fundings: '<',
-        }
+        controller: FundingComponentController
     })
     .component('autopaySetupFormComponent', {
         templateUrl: '/static/parent/autopay_setup_form_component_tmpl.html',
