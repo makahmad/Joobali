@@ -184,6 +184,10 @@ def setupAutopay(request):
 			enrollment.autopay_source_id = source
 			enrollment.pay_days_before = 5 # TODO(rongjian): allow users to set it
 			enrollment.put()
+			for invoice in invoice_util.get_enrollment_invoices(enrollment):
+				if not invoice.is_paid():
+					invoice.autopay_source_id = source
+					invoice.put()
 
 	return HttpResponse("success")
 

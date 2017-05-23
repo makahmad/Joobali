@@ -59,7 +59,7 @@ MakePaymentComponentController.prototype.makePayment = function() {
             }
          );
 
-         if (this.autopayOptIn && paymentSuccess) {
+         if (this.autopayOptIn) {
             this.setupAutopay();
          }
       }
