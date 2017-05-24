@@ -36,7 +36,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
                     }
                 },
                 'amount': {
-                    'value': round(amount * 0.029, 2),
+                    'value': round(amount * 0.01, 2),
                     'currency': 'USD'
                 }
             }
