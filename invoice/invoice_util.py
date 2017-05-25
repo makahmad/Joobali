@@ -158,7 +158,14 @@ def get_next_due_date(due_date, billing_freq):
     if billing_freq == 'Weekly':
         return due_date + timedelta(days=7)
     elif billing_freq == 'Monthly':
-        return due_date + timedelta(days=monthrange(due_date.year, due_date.month)[1])
+        next_month_day = due_date.day
+        current_month_days_left = monthrange(due_date.year, due_date.month)[1] - due_date.day
+        if due_date.day > 28: # last day of the month
+            month = 1 if due_date.month == 12 else due_date.month + 1
+            year = due_date.year + 1 if due_date.month == 12 else due_date.year
+            next_month_day = monthrange(year, month)[1]
+
+        return due_date + timedelta(days=current_month_days_left) + timedelta(days=next_month_day)
 
 def list_invoice_by_provider_and_child(provider_key, child_key):
     invoice_query = Invoice.query(Invoice.child_key == child_key, Invoice.provider_key == provider_key)

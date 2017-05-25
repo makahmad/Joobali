@@ -64,20 +64,19 @@ def invoice_calculation(request):
     for provider in providers:
         logger.info("Calculating invoices for provider: %s" % provider)
 
-        enrollments = enrollment_util.list_enrollment_by_provider(provider.key.id())
+        enrollments = enrollment_util.list_enrollment_object_by_provider(provider.key.id())
         for enrollment in enrollments:
-            if enrollment['status'] != 'active':
+            if enrollment.status != 'active':
                 logger.info("Enrollment not active. Skipping invoice calc: %s" % enrollment)
                 continue
             logger.info("Calculating invoice for enrollment: %s" % enrollment)
 
-            child_key = enrollment["child_key"]
-            program_key = enrollment["program_key"]
+            child_key = enrollment.child_key
+            program_key = enrollment.program_key
             child = child_key.get()
             program = program_key.get()
 
-            #cycle_start_date = program.startDate
-            due_date = program_util.get_first_bill_due_date(program)
+            due_date = enrollment.start_date
 
             should_proceed = False # whether we should generate a invoice for this enrollment now
             program_cycle_time = None # either a weekly cycle or a monthly cycle
@@ -85,20 +84,27 @@ def invoice_calculation(request):
                 logger.info("Skipping invoice calculation. Unexpected program cycle: %s" % program)
                 should_proceed = False
 
+            # Enrollment first billing date must be after program start date. This should be enforced by UI.
+            while due_date < program.startDate:
+                due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
             # find the upcomming due date in adding bill cycles to the enrollment start date until it passes today
             while due_date < today:
                 due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
 
-            if not program.indefinite:
-                if due_date > program.endDate:
-                    logger.info("Program already ended for this cycle. Skipping invoice calc: %s" % program)
+            if enrollment.end_date:
+                if due_date > enrollment.end_date:
+                    logger.info("Enrollment already ended (current due date: %s, enrollment end date: %s). Skipping invoice calc for enrollment: %s" % (due_date, enrollment.end_date, enrollment))
                     continue
+            elif program.endDate:
+                logger.info(
+                    "Error: enrollment doesn't have end date while program has end date of (%s): enrollment is %s" % (
+                        program.endDate, enrollment))
+                continue
+            # should_add_registration_fee = False # if it's first invoice, we should add registration fee
+            # if due_date == program_util.get_first_bill_due_date(program):
+            #     should_add_registration_fee = True
 
-            should_add_registration_fee = False # if it's first invoice, we should add registration fee
-            if due_date == program_util.get_first_bill_due_date(program):
-                should_add_registration_fee = True
-
-            enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment["enrollment_id"])
+            enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id())
             if due_date - timedelta(days=5) <= today: # 5 days ahead billing before due date
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
@@ -126,7 +132,7 @@ def invoice_calculation(request):
                 if provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
-                    invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment['autopay_source_id'], 0) # put a placeholder amount (0) for now, will calculate total amount after
+                    invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
                 invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
                 # if should_add_registration_fee:

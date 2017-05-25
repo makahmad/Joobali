@@ -134,6 +134,14 @@ def list_enrollment_by_provider(provider_id):
         enrollments.append(enrollment_dict)
     return enrollments
 
+def list_enrollment_object_by_provider(provider_id):
+    """List all enrollment ndb object given a provider id"""
+    provider_key = ndb.Key('Provider', provider_id)
+    enrollment_query = Enrollment.query(ancestor=provider_key)
+    enrollments = []
+    for enrollment in enrollment_query:
+        enrollments.append(enrollment)
+    return enrollments
 
 def list_enrollment_by_provider_program(provider_id, program_id):
     program = Program.generate_key(provider_id, program_id).get()
