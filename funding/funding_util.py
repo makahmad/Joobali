@@ -51,6 +51,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
 def list_fundings(customer_url):
     fundings = []
     funding_sources = account_token.get('%s/funding-sources' % customer_url)
+    logger.info("Funding sources: %s" % funding_sources.body['_embedded']['funding-sources'])
     for funding in funding_sources.body['_embedded']['funding-sources']:
         # Example funding:
         # {u'id': u'31245d2d-7ac4-46c5-8b97-731be8ce7bd2', u'channels': [u'ach'], u'created': u'2016-10-12T23:26:11.000Z',

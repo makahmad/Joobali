@@ -45,15 +45,10 @@ ParentController.prototype.initialize = function($uibModal) {
 	  url: '/login/isinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
 	    if (response.data == 'false') {
-	        $('#initSetupModal').modal('show');
-            $('#initSetupModal').on('hidden.bs.modal', function (e) {
-                $('#initSetupModal').modal('hide');
-                console.log('closed');
-            })
             var modalInstance = $uibModal.open({
-                    animation: true,
-                    component: 'paymentSetupComponent',
-                });
+                animation: true,
+                component: 'initSetupComponent',
+            });
 	    }
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
@@ -84,6 +79,7 @@ ParentController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.fundings = [];
+	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(funding) {
 	    	this.scope_.fundings.push(JSON.parse(funding));
 	    }));
@@ -104,7 +100,6 @@ ParentController.prototype.initialize = function($uibModal) {
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
 	    	this.scope_.payments.push(payment);
 	    }));
-	    console.log(this.scope_.payments);
 
 	  }), function errorCallback(response) {
 	    // called asynchronously if an error occurs
@@ -123,7 +118,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
          function($locationProvider, $routeProvider) {
              $locationProvider.hashPrefix('!');
              $routeProvider
-                 .when('/funding', {template: '<funding-component></funding-component>'})
+                 .when('/funding', {template: '<funding-component fundings="fundings"></funding-component>'})
                  .when('/due', {templateUrl: '/static/parent/pay_bill_component_tmpl.html'})
                  .when('/payments', {templateUrl: '/static/parent/payment_component_tmpl.html'})
                  .when('/profile', {template: '<profile></profile>'})
@@ -135,11 +130,19 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     .controller('ParentCtrl', ParentController)
 	.component('initSetupComponent', {
         templateUrl: '/static/parent/init_setup_component_tmpl.html',
-        controller: InitSetupComponentController
+        controller: InitSetupComponentController,
+        bindings: {
+            resolve: '<',
+            close: '&',
+            dismiss: '&'
+        }
     })
     .component('fundingComponent', {
         templateUrl: '/static/parent/funding_component_tmpl.html',
-        controller: FundingComponentController
+        controller: FundingComponentController,
+        bindings: {
+          fundings: '<',
+        }
     })
     .component('autopaySetupFormComponent', {
         templateUrl: '/static/parent/autopay_setup_form_component_tmpl.html',
