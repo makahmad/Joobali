@@ -163,15 +163,15 @@ def invoice_notification(request):
             data = {
                 'pay_invoice_url': request.get_host() + '/static/logo/img_headerbg.png',
                 'invoice_id': invoice.key.id(),
-                'start_date': start_date.strftime('%m/%d/%Y'),
-                'end_date': end_date.strftime('%m/%d/%Y'),
+                'start_date': start_date.strftime('%m/%d/%Y') if start_date else '',
+                'end_date': end_date.strftime('%m/%d/%Y') if end_date else '',
                 'due_date': invoice.due_date.strftime('%m/%d/%Y'),
                 'school_name': invoice.provider_key.get().schoolName,
             }
             send_invoice_email(invoice.parent_email, invoice, start_date, end_date, template.render(data))
             invoice.email_sent = True
             invoice.put()
-            break # temporary only sent out one email as our quota is limited
+            # break # temporary only sent out one email as our quota is limited
 
     return HttpResponse(status=200)
 
