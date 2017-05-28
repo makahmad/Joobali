@@ -15,7 +15,9 @@ AddProgramFormComponentController = function($scope,$http) {
     this.openStartDatePicker = false;
     this.endDatePickerOpened = false;
 
-    this.programInfoDisplay = 'TEST1';
+    this.showLastDayCheckbox = false;
+    this.disableLastDayCheckbox = false;
+
     this.whenChangeStartDateOrFrequency();
 
     this.startDatePickerOptions = {
@@ -104,11 +106,22 @@ AddProgramFormComponentController.prototype.whenChangeStartDateOrFrequency = fun
     this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
     this.dayOfMonthDisplayOnly = startDate.format('Do'); //change 1 to 1st, 2 to 2nd....
     this.startDateDisplayOnly = startDate.format('MM/DD/YYYY');
+    this.disableLastDayCheckbox = false;
 
-    if (startDate.format('D') > 28)
-        this.newProgram.lastDay = true;
+    //if day of start date is the last day of the month, show Last Day checkbox
+    if (startDate.format('D') == startDate.daysInMonth())
+    {
+       this.newProgram.showLastDayCheckbox = true;
+
+        //if day of last day is the 31st, then check the Last Day checbkox and make it read only
+       if (startDate.format('D') == 31)
+       {
+            this.newProgram.lastDay = true;
+            this.disableLastDayCheckbox = true;
+       }
+    }
     else
-        this.newProgram.lastDay = false;
+        this.newProgram.showLastDayCheckbox = false;
 
     this.newProgram.endDate = null;
 
@@ -131,4 +144,26 @@ AddProgramFormComponentController.prototype.whenChangeEndDate = function() {
         this.programInfoDisplay += ' and ending on '+moment(this.newProgram.endDate).format('MM/DD/YYYY')+'.';
     else
         this.programInfoDisplay += ' indefinitely.'
+}
+
+AddProgramFormComponentController.prototype.whenChangeLastDay = function() {
+
+    if (this.newProgram.startDate && this.newProgram.endDate)
+    {
+        var endDate = moment(this.newProgram.endDate);
+        var startDate = moment(this.newProgram.startDate);
+
+
+        //if last day is checked, and end date is not last day of a month, clear end date
+        if (this.newProgram.lastDay && endDate.format('D') != endDate.daysInMonth())
+            this.newProgram.endDate = null;
+
+        //if last day is unchecked, and end date is not the same day of a start month, clear end date
+        if (!this.newProgram.lastDay && startDate.format('D')!=endDate.format('D'))
+            this.newProgram.endDate = null;
+
+    }
+
+    this.whenChangeEndDate();
+
 }

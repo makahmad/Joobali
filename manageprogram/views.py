@@ -163,8 +163,8 @@ def addProgram(request):
     program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
 
     if program.billingFrequency == 'Monthly':
-        #if program is monthly and billed after 28th of the month, then we bill on the last day of the month
-        if program.startDate.day > 28:
+        #if program is monthly and last day of month is checked
+        if newProgram['lastDay']:
             program.monthlyBillDay = "Last Day"
         else:
             program.monthlyBillDay = str(program.startDate.day)

@@ -19,7 +19,7 @@
 </div>
 
                 <div class="form-group">
-                    <label class="control-label">When does this program start? (MM/DD/YYYY)</label>
+                    <label class="control-label">When is the first (or next) fee due? (MM/DD/YYYY)</label>
                     <div class="input-group date">
                         <input name="startDate"
                                type="text" class="form-control"
@@ -32,12 +32,24 @@
                                ng-click="$ctrl.openStartDatePicker()"
                                ng-change="$ctrl.whenChangeStartDateOrFrequency()"
                                close-text="Close"/>
+                        <span class="input-group-addon" style="padding:0px">
 
-                        <span class="input-group-btn">
+
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openStartDatePicker()">
-                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                                                <i class="glyphicon glyphicon-calendar"></i></button>
+                                </span>
+                         <span class="input-group-addon" style="padding:1px"
+                               ng-show="$ctrl.newProgram.billingFrequency=='Monthly' && $ctrl.newProgram.showLastDayCheckbox">
+                                                                Last day? <input name="last_day" type="checkbox"
+                                                required="false" ng-required="false"  ng-change="$ctrl.whenChangeLastDay()"
+                                                 ng-disabled="$ctrl.disableLastDayCheckbox"
+                                             ng-model="$ctrl.newProgram.lastDay">
+
+                        </span>
+
                     </div>
+
                    <div class="input-group" >
                       <span class="input-group-addon angular-with-newlines">{{$ctrl.programInfoDisplay}}</span>
                    </div>
@@ -47,7 +59,7 @@
 
 
                 <div class="form-group">
-                    <label class="control-label">When does this program end? (MM/DD/YYYY)</label>
+                    <label class="control-label">When is the last fee due? (MM/DD/YYYY)</label>
                     <p class="input-group">
                         <input name="endDate"
                                type="text" class="form-control"

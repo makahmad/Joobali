@@ -34,6 +34,7 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 	this.initializeTimePickers();
 
     var $ctrl = this;
+    this.program.showLastDayCheckbox = false;
 
 //    $ctrl.weeklyBillDays = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 //
@@ -54,6 +55,21 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
             // when the response is available
 
             this.program = JSON.parse(response.data[0]);
+
+            var startDate = moment(new Date(this.program.startDate));
+
+            //if day of start date is the last day of the month, show Last Day checkbox
+            if (startDate.format('D') == startDate.daysInMonth())
+            {
+                this.program.showLastDayCheckbox = true;
+
+                //monthly bill day is "Last Day" check Last Day checkbox
+               if (this.program.monthlyBillDay=="Last Day")
+                    this.program.lastDay = true;
+            }
+            else
+                this.program.showLastDayCheckbox = false;
+
 
 //            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
 //                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
