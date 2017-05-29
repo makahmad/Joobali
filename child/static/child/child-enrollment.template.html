@@ -111,12 +111,15 @@
                     </label>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Waive registration fee?</label>
-                    <input name="waive_registration" type="checkbox"
-                           class="form-control" required="false" ng-required="false" ng-readonly="$ctrl.readOnly"
-                           ng-model="$ctrl.newEnrollment.waive_registration">
+                    <label class="control-label">Waive registration fee?
+                        <input name="waive_registration" type="checkbox"
+                               ng-required="false" ng-readonly="$ctrl.readOnly"
+                               ng-model="$ctrl.newEnrollment.waive_registration">
+                    </label>
+
                 </div>
             </div>
+
             <div class="enrollment-form-content" ng-show="$ctrl.currentStep==1"
                  ng-class="{active: $ctrl.currentStep==1}">
                 <div class="form-group">

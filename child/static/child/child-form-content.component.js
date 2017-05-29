@@ -71,9 +71,15 @@ ChildFormContentController.prototype.enrollmentDisabledEndDate = function(dateAn
 
         if (this.newChildEnrollmentInfo.program) {
             if (this.newChildEnrollmentInfo.program.endDate) {
-                var programEndDate = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat);
-                if (currentDate > programEndDate) {
-                    return true;
+                if (this.newChildEnrollmentInfo.program.monthlyBillDay === 'Last Day') {
+                    if (currentDate.date() != currentDate.daysInMonth()) {
+                        return true;
+                    }
+                } else {
+                    var programEndDate = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat);
+                    if (currentDate > programEndDate) {
+                        return true;
+                    }
                 }
             }
         }
@@ -95,7 +101,11 @@ ChildFormContentController.prototype.enrollmentDisabledDate = function(dateAndMo
             if (this.newChildEnrollmentInfo.program.billingFrequency === 'Weekly') {
                 result =  (dateAndMode.date.getDay() != this.days[this.newChildEnrollmentInfo.program.weeklyBillDay]);
             } else if (this.newChildEnrollmentInfo.program.billingFrequency === 'Monthly') {
-                result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
+                if (this.newChildEnrollmentInfo.program.monthlyBillDay === 'Last Day') {
+                    result = (dateAndMode.date.getDate() != currentDate.daysInMonth());
+                } else {
+                    result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
+                }
             }
         }
 
