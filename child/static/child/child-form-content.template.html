@@ -14,7 +14,7 @@
     </div>
     <div class="form-group"
          ng-class="{'has-error': addChildForm.dateOfBirth.$invalid && addChildForm.dateOfBirth.$touched}">
-        <label class="control-label">Date of Birth (Month/Day/Year)</label>
+        <label class="control-label">Date of Birth (Month/Day/Year) - Optional</label>
         <p class="input-group">
             <input name="dateOfBirth"
                    type="text" class="form-control"
@@ -23,7 +23,6 @@
                    datepicker-popup-template-url="/static/home/datepicker.template.html"
                    ng-model="$ctrl.newChildEnrollmentInfo.child_date_of_birth"
                    is-open="$ctrl.dateOfBirthPickerOpened"
-                   ng-required="true"
                    ng-readonly="$ctrl.readOnly"
                    ng-click="$ctrl.openDateOfBirthPicker()"
                    close-text="Close"/>
