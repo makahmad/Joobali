@@ -103,6 +103,8 @@ def listPayments(request):
             'date': payment.date.strftime('%m/%d/%Y'),
             'type': payment.type,
             'payer': payment.payer,
+            'provider_amount': float(payment.amount),
+            'fee': 0,
             'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
             'note': payment.note,
         })
@@ -115,7 +117,7 @@ def list_dwolla_payments(email):
     invoices = []
 
     unique_customer = Unique.get_by_id(email)
-    print unique_customer
+    logger.info("Retrieving Dwolla Payments...")
     if unique_customer:
         if unique_customer.provider_key:
             for invoice in Invoice.query(Invoice.provider_key == unique_customer.provider_key).fetch():
@@ -125,6 +127,7 @@ def list_dwolla_payments(email):
                 invoices.append(invoice)
 
 
+    logger.info("Retrieving Dwolla Payments... Invoices: %s" % invoices)
     results = []
     for invoice in invoices:
         if invoice.dwolla_transfer_id:
@@ -135,10 +138,14 @@ def list_dwolla_payments(email):
             list = transfer['created_date'].split('-') # 2017-04-01
             date = '%s/%s/%s' % (list[1], list[2], list[0])
             parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
+            fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
+            fee_amount = fee_transfer['amount']
             if parent:
                 results.append({
                     'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
                     'amount': float(amount),
+                    'provider_amount': float(amount) - float(fee_amount),
+                    'fee': fee_amount,
                     'date': date,
                     'type': 'Online Transfer',
                     'payer': '%s %s' % (parent.first_name, parent.last_name),

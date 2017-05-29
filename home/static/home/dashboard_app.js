@@ -331,7 +331,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/home/payment_component_tmpl.html',
         controller: PaymentComponentController,
         bindings: {
-          payments: '<'
+          payments: '<',
+          isProvider: '@'
         }
     })
     // The list of payments inside payments page

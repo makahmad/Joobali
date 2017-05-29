@@ -47,6 +47,20 @@
             <i ng-show="$ctrl.sortType == 'type' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
           </a>
         </th>
+        <th ng-show="$ctrl.isProvider == 'true'">
+          <a ng-click="$ctrl.sortType = 'provider_amount'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Paid to You
+            <i ng-show="$ctrl.sortType == 'provider_amount' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'provider_amount' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th ng-show="$ctrl.isProvider == 'true'">
+          <a ng-click="$ctrl.sortType = 'fee'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Joobali Fee
+            <i ng-show="$ctrl.sortType == 'fee' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'fee' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
         <th>
           <a ng-click="$ctrl.sortType = 'invoice'; $ctrl.sortReverse = !$ctrl.sortReverse">
             Invoice Id
@@ -69,6 +83,8 @@
           <td>{{ payment.date }}</td>
           <td>${{ payment.amount }}</td>
           <td>{{ payment.type }}</td>
+          <td ng-show="$ctrl.isProvider == 'true'">${{ payment.provider_amount }}</td>
+          <td ng-show="$ctrl.isProvider == 'true'">${{ payment.fee }}</td>
           <td>{{ payment.invoice }}</td>
           <td>{{ payment.note }}</td>
         </tr>

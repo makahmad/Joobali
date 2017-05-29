@@ -244,6 +244,11 @@ def get_funded_transfer(transfer_url):
     #             u'href': u'https://api-uat.dwolla.com/funding-sources/4b683935-4fdf-479e-af0f-13e3911d1799',
     #             u'type': u'application/vnd.dwolla.v1.hal+json'
     #         },
+    #         u'fees':{
+    #            u'resource-type': u'fee',
+    #            u'href': u'https://api-sandbox.dwolla.com/transfers/d1f0a192-9544-e711-80f2-0aa34a9b2388/fees',
+    #            u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
     #         u'funding-transfer': {
     #             u'resource-type': u'transfer',
     #             u'href': u'https://api-uat.dwolla.com/transfers/47d9977f-c50a-e711-80ef-0aa34a9b2388',
@@ -259,7 +264,7 @@ def get_funded_transfer(transfer_url):
     #     u'created': u'2017-03-17T03:55:03.267   Z'
     # }
     transfer = account_token.get(transfer_url).body
-    #logger.info(transfer)
+    logger.info(transfer)
     result = {}
     result['amount'] = transfer['amount']['value']
     result['currency'] = transfer['amount']['currency']
@@ -267,8 +272,100 @@ def get_funded_transfer(transfer_url):
     result['source_customer_url'] = transfer['_links']['source']['href']
     result['destination_customer_url'] = transfer['_links']['destination']['href']
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href']
+    result['fee_transfer_url'] = transfer['_links']['fees']['href']
     result['status'] = transfer['status']
     result['created_date'] = transfer['created'][0:10]
+    return result
+
+def get_fee_transfer(fee_transfer_url):
+    """ Fee transfer is the transfer incurred from charging fees for normal dwolla transfer. """
+    # {
+    #     u'_links': {
+    #         u'self': {
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'resource-type': u'fee',
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers/d1f0a192-9544-e711-80f2-0aa34a9b2388/fees'
+    #         }
+    #     },
+    #     u'total': 1,
+    #     u'_embedded': {
+    #         u'fees': [
+    #             {
+    #                 u'_links': {
+    #                     u'created-from-transfer': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'transfer',
+    #                         u'href': u'https://api-sandbox.dwolla.com/transfers/d1f0a192-9544-e711-80f2-0aa34a9b2388'
+    #                     },
+    #                     u'self': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'transfer',
+    #                         u'href': u'https://api-sandbox.dwolla.com/transfers/811bf85d-5f52-4855-b1cf-54413e309a22'
+    #                     },
+    #                     u'source': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'customer',
+    #                         u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
+    #                     },
+    #                     u'destination': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'account',
+    #                         u'href': u'https://api-sandbox.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'
+    #                     }
+    #                 },
+    #                 u'id': u'811bf85d-5f52-4855-b1cf-54413e309a22',
+    #                 u'amount': {
+    #                     u'value': u'5.99',
+    #                     u'currency': u'usd'
+    #                 },
+    #                 u'status': u'pending',
+    #                 u'created': u'2017-05-29T17:38:06.873            Z'
+    #             }
+    #         ]
+    #     },
+    #     u'transactions': [
+    #         {
+    #             u'_links': {
+    #                 u'created-from-transfer': {
+    #                     u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                     u'resource-type': u'transfer',
+    #                     u'href': u'https://api-sandbox.dwolla.com/transfers/d1f0a192-9544-e711-80f2-0aa34a9b2388'
+    #                 },
+    #                 u'self': {
+    #                     u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                     u'resource-type': u'transfer',
+    #                     u'href': u'https://api-sandbox.dwolla.com/transfers/811bf85d-5f52-4855-b1cf-54413e309a22'
+    #                 },
+    #                 u'source': {
+    #                     u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                     u'resource-type': u'customer',
+    #                     u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
+    #                 },
+    #                 u'destination': {
+    #                     u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                     u'resource-type': u'account',
+    #                     u'href': u'https://api-sandbox.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'
+    #                 }
+    #             },
+    #             u'id': u'811bf85d-5f52-4855-b1cf-54413e309a22',
+    #             u'amount': {
+    #                 u'value': u'5.99',
+    #                 u'currency': u'usd'
+    #             },
+    #             u'status': u'pending',
+    #             u'created': u'2017-05-29T17:38:06.873         Z'
+    #         }
+    #     ]
+    # }
+    fee_transfer = account_token.get(fee_transfer_url).body
+    logger.info(fee_transfer)
+    result = {}
+    if fee_transfer['total'] > 1:
+        logger.warning('More than one fee transfer exists for transfer: %s' % fee_transfer_url)
+    result['amount'] = fee_transfer['_embedded']['fees'][0]['amount']['value']
+    result['currency'] = fee_transfer['_embedded']['fees'][0]['amount']['currency']
+    result['status'] = fee_transfer['_embedded']['fees'][0]['status']
+    result['created_date'] = fee_transfer['_embedded']['fees'][0]['created'][0:10]
     return result
 
 def parse_webhook_data(webhook_json):

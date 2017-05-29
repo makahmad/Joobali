@@ -50,6 +50,7 @@ MakePaymentComponentController.prototype.makePayment = function() {
                     paymentSuccess = true;
                     if (!self.autopayOptIn) {
                         alert('Payment succeeded.')
+                        location.reload();
                     }
                 }
             },
