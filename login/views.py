@@ -28,6 +28,8 @@ import random
 import urllib, urllib2, json
 from verification.verification_util import get_parent_signup_verification_token
 
+DATE_FORMAT = '%m/%d/%Y'
+
 account_token = create_account_token('sandbox')
 logger = logging.getLogger(__name__)
 
@@ -206,11 +208,19 @@ def parent_signup(request):
             parent = verification_token.parent_key.get()
             provider_school_name = parent.invitation.provider_key.get().schoolName
             child_first_name = parent.invitation.child_first_name
+
+            child_dob = parent.invitation.enrollment_key.get().child_key.get().date_of_birth
+            if child_dob:
+                child_dob = child_dob.strftime('%m/%d/%Y')
+            else:
+                child_dob = ''
+
             return render_to_response(
                 'login/parent_signup.html',
                 {'parent_email': parent.email,
                  'invitation_token': token_id,
                  'child_first_name': child_first_name,
+                 'child_dob': child_dob,
                  'provider_school_name': provider_school_name},
                 template.RequestContext(request)
             )
@@ -218,6 +228,7 @@ def parent_signup(request):
             return HttpResponse("Need a valid token id for parent to signup")
     if request.method == 'POST':
         form = ParentForm(request.POST)
+
         if form.validate():
             email = request.POST.get('email')
             password = request.POST.get('password')
@@ -225,6 +236,8 @@ def parent_signup(request):
             last_name = request.POST.get('last_name')
             phone = request.POST.get('phone')
             token_id = request.POST.get('invitation_token')
+            child_date_of_birth = request.POST.get('child_date_of_birth')
+
             verification_token = get_parent_signup_verification_token(token_id)
 
             if verification_token is None:
@@ -237,6 +250,11 @@ def parent_signup(request):
                 parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
                                                            phone=phone,
                                                            first_name=first_name, last_name=last_name)
+
+                child = parent.invitation.enrollment_key.get().child_key.get()
+                child.date_of_birth = datetime.strptime(child_date_of_birth, DATE_FORMAT).date()
+                child.put()
+
                 request.session['email'] = parent.email
                 request.session['user_id'] = parent.key.id()
                 request.session['is_provider'] = False

@@ -12,7 +12,7 @@ class Child(ndb.Model):
     first_name = ndb.StringProperty(required=True)
     last_name = ndb.StringProperty(required=True)
     parent_email = ndb.StringProperty(required=True)
-    date_of_birth = ndb.DateProperty(required=True)
+    date_of_birth = ndb.DateProperty(required=False)
     parent_key = ndb.KeyProperty(kind=Parent, required=True)
 
     @classmethod
