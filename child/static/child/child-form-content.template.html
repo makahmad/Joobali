@@ -132,6 +132,6 @@
         {{$ctrl.enrollmentFailureReason}}
     </div>
     <div class="form-group">
-        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton">Enroll</button>
+        <button class="btn btn-primary" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" ng-disabled="$ctrl.disableSaveButton">Enroll</button>
     </div>
 </form>

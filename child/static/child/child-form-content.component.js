@@ -7,6 +7,7 @@ ChildFormContentController = function ChildFormContentController($http) {
     this.todayDate = new Date();
     this.dateFormat = 'MM/DD/YYYY';
     this.showSaveButton = true;
+    this.disableSaveButton = false;
     this.newChildEnrollmentInfo = {};
 
     this.enrollmentStatus = '';
@@ -134,6 +135,7 @@ ChildFormContentController.prototype.openEndDatePicker = function() {
 
 ChildFormContentController.prototype.save = function() {
     isValid = true;
+    this.disableSaveButton = true;
     angular.forEach(addChildForm, function(value, key) {
         if (value.tagName == 'INPUT' || value.tagName == 'SELECT'){
             if(angular.element(value).hasClass('ng-invalid')) {
@@ -161,11 +163,13 @@ ChildFormContentController.prototype.save = function() {
             this.enrollmentStatus = 'failure';
             this.onSave({'isSaved': false});
             this.readOnly = false;
+            this.disableSaveButton = false;
         }
     }), angular.bind(this, function errorCallback(response) {
         this.enrollmentStatus = 'failure';
         this.onSave({'isSaved': false});
         this.readOnly = false;
         this.enrollmentFailureReason = response.data;
+        this.disableSaveButton = false;
     }));
 }

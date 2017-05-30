@@ -10,6 +10,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.newEnrollment = {};
     self.nextButton = {};
     self.saveButton = {};
+    self.saveButton.disable = false;
     self.doneButton = {};
     self.enrollmentStatus = '';
     this.dateFormat = 'MM/DD/YYYY';
@@ -36,6 +37,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
 
     self.saveButton.click = function() {
         console.log("enroll button is clicked");
+        self.saveButton.disable = true;
         var submittingForm = {
             'child_id': self.child.id,
             'parent_email': self.child.parent_email,
@@ -58,9 +60,11 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             } else {
                 self.enrollmentStatus = 'failure';
                 self.failMessage = response.data.message;
+                self.saveButton.disable = false;
             }
         }, function errorCallback(response) {
             self.enrollmentStatus = 'failure';
+            self.saveButton.disable = false;
         });
     }
 
