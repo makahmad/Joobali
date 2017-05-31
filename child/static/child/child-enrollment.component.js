@@ -8,9 +8,10 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.programs = programs;
     self.currentStep = 0;
     self.newEnrollment = {};
+    self.newEnrollment.error = {};
     self.nextButton = {};
     self.saveButton = {};
-    self.saveButton.disable = false;
+    self.saveButton.show = true;
     self.doneButton = {};
     self.enrollmentStatus = '';
     this.dateFormat = 'MM/DD/YYYY';
@@ -36,8 +37,24 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     }
 
     self.saveButton.click = function() {
-        console.log("enroll button is clicked");
-        self.saveButton.disable = true;
+
+        isValid = true;
+        angular.forEach(addEnrollmentForm, function(value, key) {
+            if (value.tagName == 'INPUT' || value.tagName == 'SELECT'){
+                if(angular.element(value).hasClass('ng-invalid')) {
+                    self.newEnrollment.error[value.id] = true;
+                    isValid = false;
+                } else {
+                    self.newEnrollment.error[value.id] = false;
+                }
+            }
+        });
+        if (!isValid) {
+            return;
+        }
+        self.newEnrollment.child_id = self.child.id;
+        self.newEnrollment.start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
+        self.newEnrollment.end_date = self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "";
         var submittingForm = {
             'child_id': self.child.id,
             'parent_email': self.child.parent_email,
@@ -60,11 +77,9 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
             } else {
                 self.enrollmentStatus = 'failure';
                 self.failMessage = response.data.message;
-                self.saveButton.disable = false;
             }
         }, function errorCallback(response) {
             self.enrollmentStatus = 'failure';
-            self.saveButton.disable = false;
         });
     }
 
@@ -73,28 +88,8 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
         self.closeModal();
     }
 
-    self.nextButton.click = function() {
-        var isValid = true;
-
-        console.log(isValid);
-        self.currentStep += 1;
-        if (isValid) {
-            if (self.currentStep == 1) {
-                self.newEnrollment.child_id = self.child.id;
-                self.newEnrollment.start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
-                self.newEnrollment.end_date = self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "";
-                self.nextButton.show = false;
-                self.saveButton.show = true;
-            } else {
-                console.log(this.resetButton);
-                self.resetButton();
-            }
-        }
-    };
-
     self.resetButton = function() {
-        self.nextButton.show = true;
-        self.saveButton.show = false;
+        self.saveButton.show = true;
         self.doneButton.show = false;
     };
 

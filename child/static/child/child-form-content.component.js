@@ -135,11 +135,13 @@ ChildFormContentController.prototype.openEndDatePicker = function() {
 
 ChildFormContentController.prototype.save = function() {
     isValid = true;
-    this.disableSaveButton = true;
     angular.forEach(addChildForm, function(value, key) {
         if (value.tagName == 'INPUT' || value.tagName == 'SELECT'){
             if(angular.element(value).hasClass('ng-invalid')) {
+                this.newChildEnrollmentInfo.error[value.id] = true;
                 isValid = false;
+            } else {
+                this.newChildEnrollmentInfo.error[value.id] = false;
             }
         }
     });
@@ -153,6 +155,7 @@ ChildFormContentController.prototype.save = function() {
     submittingForm.start_date = moment(submittingForm.start_date).format("MM/DD/YYYY");
     submittingForm.end_date = submittingForm.end_date ? moment(submittingForm.end_date).format("MM/DD/YYYY") : "";
 
+    this.disableSaveButton = true;
     this.http_.post('/child/add', submittingForm).then(angular.bind(this, function successCallback(response) {
         if (response.data.status == 'success') {
             this.enrollmentStatus = 'success';

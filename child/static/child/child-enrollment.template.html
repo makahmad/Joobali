@@ -1,26 +1,13 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$ctrl.closeModal()">&times;</button>
     <h4 class="modal-title">Add a New Enrollment: </h4>
-    <div class="stepsDiv">
-        <ul class="nav nav-pills nav-wizard">
-            <li class="form-nav" ng-class="{active: $ctrl.currentStep==0}">
-                <a href="#">Enter Enrollment Information</a>
-                <div class="nav-arrow"></div>
-            </li>
-            <li class="form-nav" ng-class="{active: $ctrl.currentStep==1}">
-                <div class="nav-wedge"></div>
-                <a href="#">Review</a>
-                <div class="nav-arrow"></div>
-            </li>
-        </ul>
-    </div>
 </div>
 <div class="modal-body">
     <div class="col-centered">
         <form name="addEnrollmentForm" role="form" class="well">
 
-            <div class="enrollment-form-content" ng-show="$ctrl.currentStep==0"
-                 ng-class="{active: $ctrl.currentStep==0}">
+            <div class="enrollment-form-content" ng-show="true"
+                 ng-class="{active: true}">
                 <div class="form-group">
                     <label class="control-label">Child First Name</label>
                     <p>{{$ctrl.child.first_name}}</p>
@@ -29,12 +16,15 @@
                     <label class="control-label">Child Last Name</label>
                     <p>{{$ctrl.child.last_name}}</p>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': $ctrl.newEnrollment.error['program']}">
                     <label class="control-label" for="program">Program</label>
-                    <select class="form-control" id="program" required="true"
+                    <select class="form-control" id="program"
+                            required
                             ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                             ng-model="$ctrl.newEnrollment.program"
-                            ng-change="$ctrl.whenSelectedProgramChange()"></select>
+                            ng-change="$ctrl.whenSelectedProgramChange()">
+                        <option value="">Select a program</option>
+                    </select>
                     <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
                         <div>
                             <label>Registration fee:</label>
@@ -119,31 +109,6 @@
 
                 </div>
             </div>
-
-            <div class="enrollment-form-content" ng-show="$ctrl.currentStep==1"
-                 ng-class="{active: $ctrl.currentStep==1}">
-                <div class="form-group">
-                    <label class="control-label">Child First Name</label>
-                    <div>{{$ctrl.child.first_name}}</div>
-                    <label class="control-label">Child Last Name</label>
-                    <div>{{$ctrl.child.last_name}}</div>
-                    <label class="control-label">Program</label>
-                    <div>
-                        {{$ctrl.newEnrollment.program.programName}} - {{$ctrl.newEnrollment.program.billingFrequency}}
-                    </div>
-                    <label class="control-label">Start Date</label>
-                    <div>{{$ctrl.newEnrollment.start_date}}</div>
-                    <div ng-show="$ctrl.newEnrollment.no_end_date">No end date</div>
-                    <div ng-show="!$ctrl.newEnrollment.no_end_date">
-                        <label class="control-label">End Date</label>
-                        <div>
-                            {{$ctrl.newEnrollment.end_date}}
-                        </div>
-                    </div>
-                    <div ng-show="$ctrl.newEnrollment.waive_registration==true">Waive registration fee</div>
-                    <div ng-show="$ctrl.newEnrollment.waive_registration==undefined">Include registration fee</div>
-                </div>
-            </div>
         </form>
         <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enroll Success!</div>
         <div class="alert alert-warning" ng-show="$ctrl.enrollmentStatus=='failure'">Enroll Fail! {{$ctrl.failMessage}}
@@ -151,10 +116,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default"
-            ng-click="$ctrl.nextButton.click()" ng-show="$ctrl.nextButton.show">Next
-    </button>
-    <button type="button" class="btn btn-primary" ng-disabled="$ctrl.saveButton.disable"
+    <button type="button" class="btn btn-primary"
             ng-click="$ctrl.saveButton.click()" ng-show="$ctrl.saveButton.show">Enroll
     </button>
     <button type="button" class="btn btn-primary"
