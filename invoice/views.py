@@ -19,6 +19,8 @@ from invoice import invoice_util
 from common.pdf import render_to_pdf
 from google.appengine.ext import ndb
 from os import environ
+from common.dwolla import get_funding_source
+from common.email.autopay import send_autopay_cancelled_email, send_autopay_scheduled_email
 
 import json
 import logging
@@ -175,6 +177,7 @@ def viewInvoice(request):
 
 def setupAutopay(request):
 	data = json.loads(request.body)
+	parent = Parent.get_by_id(request.session.get('user_id'))
 	invoice_id = data['invoice_id']
 	source = data['source']
 	if invoice_id:
@@ -184,6 +187,34 @@ def setupAutopay(request):
 			enrollment.autopay_source_id = source
 			enrollment.pay_days_before = 5 # TODO(rongjian): allow users to set it
 			enrollment.put()
+
+			## Send Confirm Email
+			program = enrollment.program_key.get()
+			amount = program.fee
+			schedule = None
+			if program.billingFrequency == 'Weekly':
+				schedule = program.weeklyBillDay + ' every week'
+			else:
+				if program.monthlyBillDay == 'Last Day':
+					schedule = ' the last day of every month'
+				else:
+					schedule = ' the ' + program.monthlyBillDay + 'th of every month'
+
+			provider = enrollment.key.parent().get()
+
+			source_funding_source = get_funding_source(source)
+
+			data = {
+				'transfer_type': 'Online',
+				'amount': '$' + str(amount),
+				'account_name': source_funding_source['name'],
+				'recipient': provider.schoolName,
+				'schedule': schedule,
+				'host': request.get_host(),
+			}
+			send_autopay_scheduled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)
+			## End Send Confirm Email
+
 			for invoice in invoice_util.get_enrollment_invoices(enrollment):
 				if not invoice.is_paid():
 					invoice.autopay_source_id = source
@@ -192,15 +223,45 @@ def setupAutopay(request):
 	return HttpResponse("success")
 
 def cancelAutopay(request):
+	parent = Parent.get_by_id(request.session.get('user_id'))
 	data = json.loads(request.body)
 	invoice_id = data['invoice_id']
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		enrollments = get_invoice_enrollments(invoice)
 		for enrollment in enrollments:
+			source = enrollment.autopay_source_id
 			enrollment.autopay_source_id = None
 			enrollment.pay_days_before = None
 			enrollment.put()
+
+			## Send Confirm Email
+			program = enrollment.program_key.get()
+			amount = program.fee
+			schedule = None
+			if program.billingFrequency == 'Weekly':
+				schedule = program.weeklyBillDay + ' every week'
+			else:
+				if program.monthlyBillDay == 'Last Day':
+					schedule = ' the last day of every month'
+				else:
+					schedule = ' the ' + program.monthlyBillDay + 'th of every month'
+
+			provider = enrollment.key.parent().get()
+
+			source_funding_source = get_funding_source(source)
+
+			data = {
+				'transfer_type': 'Online',
+				'amount': '$' + str(amount),
+				'account_name': source_funding_source['name'],
+				'recipient': provider.schoolName,
+				'schedule': schedule,
+				'host': request.get_host(),
+			}
+			send_autopay_cancelled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)
+			## End Send Confirm Email
+
 			for invoice in invoice_util.get_enrollment_invoices(enrollment):
 				if not invoice.is_paid():
 					invoice.autopay_source_id = None

@@ -16,7 +16,7 @@
 
                   <div class="col-sm-10">
                     <select class="form-control" id="source" name="source" required="true">
-                      <option ng-repeat="funding in $ctrl.fundings track by $index" value="{{funding.id}}">
+                      <option ng-repeat="funding in $ctrl.fundings track by $index" value="{{funding.url}}">
                         {{ funding.name }}
                       </option>
                     </select>

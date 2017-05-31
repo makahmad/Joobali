@@ -138,11 +138,13 @@ def get_autopay_info(invoice):
     return (None, None)
 
 def get_invoice_enrollments(invoice):
-    """ Gets all the enrollments contributing to the line items of this invoice"""
+    """ Gets all unique enrollments contributing to the line items of this invoice"""
     lineItems = InvoiceLineItem.query(ancestor = invoice.key)
     results = []
+    ids = dict()
     for lineItem in lineItems:
-        if lineItem.enrollment_key and lineItem.enrollment_key.get():
+        if lineItem.enrollment_key and lineItem.enrollment_key.get() and lineItem.enrollment_key.id not in ids:
+            ids[lineItem.enrollment_key.id] = True
             results.append(lineItem.enrollment_key.get())
     return results
 

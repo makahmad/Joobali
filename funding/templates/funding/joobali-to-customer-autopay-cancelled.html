@@ -574,7 +574,7 @@
 
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                                                                <h1>Notification of Transfer</h1></td>
+                                                                <h1>Autopay Cancelled!</h1></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -636,7 +636,7 @@
 
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                                                                <p>A transfer has been created. You are sending {{ amount }} from "{{ account_name }}" to {{ recipient }}. </p>
+                                                                <p>The autopay transfer of {{ amount }} from "{{ account_name }}" to {{ recipient }} on {{ schedule }} has been cancelled. </p>
                                                                 <p>This message is for informational purposes only.
                                                                     Please do not reply to this email. For
                                                                     account-specific inquiries, please sign on to your
@@ -704,7 +704,7 @@
                                                                 style="padding-top:0; padding-left:18px; padding-bottom:9px; padding-right:18px;">
                                                                 Type of transfer:<br>
                                                                 Amount of transfer:<br>
-                                                                Date of transfer:<br>
+                                                                Schedule:<br>
                                                                 Recipient of transfer<br>
                                                                 Transfer source:<br>
                                                                 <br></td>
@@ -728,7 +728,7 @@
                                                                 style="padding-top:0; padding-left:18px; padding-bottom:9px; padding-right:18px;">
                                                                 {{ transfer_type }}<br>
                                                                 {{ amount }}<br>
-                                                                {{ created_date }}<br>
+                                                                {{ schedule }}<br>
                                                                 {{ recipient }}<br>
                                                                 {{ account_name }}<br>
                                                                 <br></td>

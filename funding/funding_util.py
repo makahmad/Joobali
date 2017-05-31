@@ -68,6 +68,7 @@ def list_fundings(customer_url):
                 "status": funding['status'],
                 "type": funding['type'],
                 "name": funding['name'],
-                "id": funding['id']
+                "id": funding['id'],
+                "url": funding['_links']['self']['href'],
             })
     return fundings

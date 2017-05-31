@@ -75,7 +75,9 @@ def get_funding_source(funding_source_url):
     #     ],
     #     u'created': u'2017-01-23T05:31:33.000   Z'
     # }
+    logger.info("Get Funding Source: %s" % funding_source_url)
     source = account_token.get(funding_source_url).body
+    logger.info("Get Funding Source: %s" % funding_source_url)
     result = {}
     result['name'] = source['name']
     result['bank_name'] = source['bankName']
