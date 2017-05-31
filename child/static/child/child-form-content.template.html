@@ -107,7 +107,7 @@
                    datepicker-popup-template-url="/static/home/datepicker.template.html"
                    datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
                    ng-model="$ctrl.newChildEnrollmentInfo.end_date"
-                   ng-readonly="$ctrl.newChildEnrollmentInfo.no_end_date"
+                   ng-readonly="$ctrl.newChildEnrollmentInfo.no_end_date || $ctrl.readOnly"
                    is-open="$ctrl.endDatePickerOpened"
                    ng-required="!$ctrl.newChildEnrollmentInfo.no_end_date"
                    close-text="Close"
@@ -130,7 +130,7 @@
         </label>
     </div>
     <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enrollment success</div>
-    <div class="alert alert-warning" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed.
+    <div class="alert alert-danger" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed.
         {{$ctrl.enrollmentFailureReason}}
     </div>
     <div class="form-group">

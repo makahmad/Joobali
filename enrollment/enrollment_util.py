@@ -16,6 +16,17 @@ from manageprogram import program_util
 logger = logging.getLogger(__name__)
 
 
+def validate_enrollment_date(program, start_date, end_date):
+    # Check start date
+    start_date_delta = start_date - program.startDate
+    if start_date_delta.days < 0:
+        raise JoobaliRpcException(client_viewable_message="enrollment start date earlier than program start date")
+    if program.endDate is not None:
+        end_date_delta = program.endDate - end_date
+        if end_date_delta.days < 0:
+            raise JoobaliRpcException(client_viewable_message="enrollment end date later than program end date")
+
+
 def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
     provider_key = enrollment_input['provider_key']
@@ -36,6 +47,13 @@ def upsert_enrollment(enrollment_input):
     enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
     enrollment.end_date = datetime.strptime(enrollment_input['end_date'], "%m/%d/%Y").date() if enrollment_input[
         'end_date'] else None
+
+    program = program_key.get()
+    if enrollment.end_date is None and program.endDate is not None:
+        enrollment.end_date = program.endDate
+    # Validate enrollment start date and end date
+    validate_enrollment_date(program, enrollment.start_date, enrollment.end_date)
+
     enrollment.put()
     return enrollment
 
@@ -134,6 +152,7 @@ def list_enrollment_by_provider(provider_id):
         enrollments.append(enrollment_dict)
     return enrollments
 
+
 def list_enrollment_object_by_provider(provider_id):
     """List all enrollment ndb object given a provider id"""
     provider_key = ndb.Key('Provider', provider_id)
@@ -142,6 +161,7 @@ def list_enrollment_object_by_provider(provider_id):
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
     return enrollments
+
 
 def list_enrollment_by_provider_program(provider_id, program_id):
     program = Program.generate_key(provider_id, program_id).get()
@@ -153,6 +173,7 @@ def list_enrollment_by_provider_program(provider_id, program_id):
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
     return enrollments
+
 
 def list_active_enrollment_by_provider_program(provider_id, program_id):
     program = Program.generate_key(provider_id, program_id).get()

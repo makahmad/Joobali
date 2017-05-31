@@ -27,6 +27,12 @@ import os
 import sys
 import unittest
 
+# Customized flags to get rid of the following error:
+# ImproperlyConfigured: Requested setting TEMPLATES, but settings are not configured. You must either define the
+# environment variable DJANGO_SETTINGS_MODULE or call settings.configure() before accessing settings.
+os.environ['DJANGO_SETTINGS_MODULE'] = 'joobali.settings'
+import django
+django.setup()
 
 def fixup_paths(path):
     """Adds GAE SDK path to system path and appends it to the google path

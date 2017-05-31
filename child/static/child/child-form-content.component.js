@@ -9,6 +9,7 @@ ChildFormContentController = function ChildFormContentController($http) {
     this.showSaveButton = true;
     this.disableSaveButton = false;
     this.newChildEnrollmentInfo = {};
+    this.newChildEnrollmentInfo.error = {};
 
     this.enrollmentStatus = '';
     this.enrollmentDatePickerOptions = {
@@ -135,7 +136,7 @@ ChildFormContentController.prototype.openEndDatePicker = function() {
 
 ChildFormContentController.prototype.save = function() {
     isValid = true;
-    angular.forEach(addChildForm, function(value, key) {
+    angular.forEach(addChildForm, angular.bind(this, function(value, key) {
         if (value.tagName == 'INPUT' || value.tagName == 'SELECT'){
             if(angular.element(value).hasClass('ng-invalid')) {
                 this.newChildEnrollmentInfo.error[value.id] = true;
@@ -144,7 +145,7 @@ ChildFormContentController.prototype.save = function() {
                 this.newChildEnrollmentInfo.error[value.id] = false;
             }
         }
-    });
+    }));
     if (!isValid) {
         return;
     }
