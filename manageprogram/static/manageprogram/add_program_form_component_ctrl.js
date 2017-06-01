@@ -75,8 +75,9 @@ AddProgramFormComponentController.prototype.disabledEndDate = function(dateAndMo
 
             //if weekly billing then end date must fall on the same day of the week
             if (this.newProgram.billingFrequency === 'Weekly') {
-                result =  (moment(dateAndMode.date).format('MM/DD/YYYY')<=moment(this.newProgram.startDate).format('MM/DD/YYYY')
-                || dateAndMode.date.getDay() != moment(this.newProgram.startDate).format('d'));
+                result =  (dateAndMode.date<=this.newProgram.startDate
+                || dateAndMode.date.getDay() != moment(this.newProgram.startDate).format('d')
+                );
             }
 
             //if start date is after the 28th of the month, then end date must be last day of the next month
@@ -85,13 +86,13 @@ AddProgramFormComponentController.prototype.disabledEndDate = function(dateAndMo
                 var lastDayInStartDateMonth = moment(this.newProgram.startDate).date(daysInStartDateMonth);
                 var daysInEndDateMonth = moment(dateAndMode.date).daysInMonth();
 
-                result = (moment(dateAndMode.date).format('MM/DD/YYYY')<=lastDayInStartDateMonth.format('MM/DD/YYYY')
+                result = (dateAndMode.date<=lastDayInStartDateMonth
                             || dateAndMode.date.getDate() != daysInEndDateMonth);
             }
 
             //if monthly billing and not last day of the month, then end date must fall on the same day of the month
             else if (this.newProgram.billingFrequency === 'Monthly') {
-                result = (moment(dateAndMode.date).format('MM/DD/YYYY')<=moment(this.newProgram.startDate).format('MM/DD/YYYY')
+                result = (dateAndMode.date<=this.newProgram.startDate
                             || dateAndMode.date.getDate() != moment(this.newProgram.startDate).format('D'));
             }
         }
