@@ -177,7 +177,7 @@
                         <div class="formActions">
                             <div ng-show="'{{captcha}}'=='False'"
                                  class="g-recaptcha" data-sitekey="6Lf6Gh8UAAAAAEff-o-4cpwWabGi4JKvMSVqEQPK"></div>
-                            <button type="submit" ng-disabled="!tos_pp_accepted"
+                            <button type="submit" ng-disabled="loginForm.$invalid || !tos_pp_accepted"
                                     class="btn btn-default btn-lg pull-right joobali">Sign Up
                             </button>
                         </div> <!-- end formActions -->
