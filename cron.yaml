@@ -8,3 +8,6 @@ cron:
 - description: invoice automatic payment
   url: /tasks/autopay/
   schedule: every 24 hours
+- description: setup or refresh dwolla webhook
+  url: /tasks/dwolla_webhook_setup/
+  schedule: every 168 hours

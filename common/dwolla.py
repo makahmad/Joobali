@@ -22,19 +22,72 @@ def create_account_token(environment):
     return client.Token(access_token=ACCESS_TOKEN, refresh_token=REFRESH_TOKEN)
 
 account_token = create_account_token('sandbox')
-def start_webhook():
+def start_webhook(host_url):
     # Setup webhook to receive transfer status events
+    logger.info('Starting webhook: %s' % (host_url + '/tasks/dwollawebhook/'))
     request_body = {
-        'url': 'https://joobali-uat.appspot.com/tasks/dwollawebhook',
+        'url': host_url + '/tasks/dwollawebhook/',
         'secret': 'joobali_webhook_secret_fb2onpb23nb'
     }
-    retries = account_token.post('webhook-subscriptions', request_body)
-    logger.info(retries.body)
+    account_token.post('webhook-subscriptions', request_body)
 
-def clear_webhook():
+def clear_webhook(host):
     webhook_subscriptions = account_token.get("webhook-subscriptions").body
-    print webhook_subscriptions
-    account_token.delete('https://api-uat.dwolla.com/webhook-subscriptions/a0ca5a12-35ca-4b68-ac64-2c2101539bdb')
+    logger.info(webhook_subscriptions)
+    # {
+    #     u'_links': {
+    #         u'self': {
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'resource-type': u'webhook-subscription',
+    #             u'href': u'https://api-sandbox.dwolla.com/webhook-subscriptions'
+    #         }
+    #     },
+    #     u'_embedded': {
+    #         u'webhook-subscriptions': [
+    #             {
+    #                 u'_links': {
+    #                     u'self': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'webhook-subscription',
+    #                         u'href': u'https://api-sandbox.dwolla.com/webhook-subscriptions/38d21522-5c9c-4b84-86f1-097d5b3bd614'
+    #                     },
+    #                     u'webhooks': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'webhook',
+    #                         u'href': u'https://api-sandbox.dwolla.com/webhook-subscriptions/38d21522-5c9c-4b84-86f1-097d5b3bd614/webhooks'
+    #                     }
+    #                 },
+    #                 u'id': u'38d21522-5c9c-4b84-86f1-097d5b3bd614',
+    #                 u'created': u'2017-03-16T05:19:42.000            Z',
+    #                 u'url': u'http://joobali-1310.appspot.com/tasks/dwollawebhook',
+    #                 u'paused': False
+    #             },
+    #             {
+    #                 u'_links': {
+    #                     u'self': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'webhook-subscription',
+    #                         u'href': u'https://api-sandbox.dwolla.com/webhook-subscriptions/562a1e16-60a8-4e38-a21d-699260bdba6b'
+    #                     },
+    #                     u'webhooks': {
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json',
+    #                         u'resource-type': u'webhook',
+    #                         u'href': u'https://api-sandbox.dwolla.com/webhook-subscriptions/562a1e16-60a8-4e38-a21d-699260bdba6b/webhooks'
+    #                     }
+    #                 },
+    #                 u'id': u'562a1e16-60a8-4e38-a21d-699260bdba6b',
+    #                 u'created': u'2017-05-06T05:57:21.000            Z',
+    #                 u'url': u'https://joobali-uat.appspot.com/tasks/dwollawebhook',
+    #                 u'paused': False
+    #             }
+    #         ]
+    #     },
+    #     u'total': 10
+    # }
+    for subscription in webhook_subscriptions['_embedded']['webhook-subscriptions']:
+        if host in subscription['url']:
+            logger.info("Remove webhook: url (%s), id (%s)" % (subscription['url'], subscription['_links']['self']['href']))
+            account_token.delete(subscription['_links']['self']['href'])
 
 def get_general(url):
     return account_token.get(url)

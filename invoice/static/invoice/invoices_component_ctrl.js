@@ -97,10 +97,11 @@ InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_in
                     if (response.data !== 'success') {
                         alert(response.data);
                     } else {
-                        alert('Autopay canceled successfully.')
+                        alert('Autopay cancelled successfully.')
                     }
                 },
                 function(response){
+                    alert('Autopay cancellation failed. Please contact us for this issue.');
                     console.log('post failed');
                     console.log(response);
                 }
