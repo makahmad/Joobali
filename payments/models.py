@@ -12,5 +12,5 @@ class Payment(ndb.Model):
     type = ndb.StringProperty(required=False)
     date = ndb.DateProperty(required=True)
     date_created = ndb.DateProperty(required=True)
-    note = ndb.StringProperty(required=False)
+    note = ndb.StringProperty(required=False) # Check number if payment = Check, Note if payment type = Other
     balance = ndb.FloatProperty(required=True)

@@ -61,8 +61,11 @@
             ng-options="paymentType as paymentType.label for paymentType in paymentTypes track by paymentType.id">
             </select>
         </div>
-      <div class="form-group" ng-show="$ctrl.newPayment.payment_type.id=='Other'">
-            <label class="control-label" for="note">Note (required if payment type is Other)</label>
+      <div class="form-group" ng-show="$ctrl.newPayment.payment_type.id=='Other' || $ctrl.newPayment.payment_type.id=='Check'">
+            <label  ng-show="$ctrl.newPayment.payment_type.id=='Other'"
+                    class="control-label" for="note">Note (required if payment type is Other)</label>
+            <label  ng-show="$ctrl.newPayment.payment_type.id=='Check'"
+                    class="control-label" for="note">Check #</label>
              <input class="form-control" type="text" id="note" name="note"
                  ng-required="$ctrl.newPayment.payment_type.id=='Other'"  ng-model="$ctrl.newPayment.note">
             </input>
