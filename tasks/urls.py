@@ -7,4 +7,5 @@ urlpatterns = [
 	url(r'^invoicenoti/', views.invoice_notification, name='invoiceNotification'),
 	url(r'^autopay/', views.autopay, name='autopay'),
 	url(r'^dwollawebhook/', views.dwolla_webhook, name='dwollaWebhook'),
+	url(r'^dwolla_webhook_setup/', views.dwolla_webhook_setup, name='dwollaWebhookSetup'),
 ]

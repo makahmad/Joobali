@@ -177,8 +177,6 @@ def invoice_notification(request):
 
 def autopay(request):
     logger.info("INVOICE AUTOPAY")
-    #clear_webhook()
-    #start_webhook()
 
     today = date.today()
     invoice_dict = dict()
@@ -202,6 +200,12 @@ def autopay(request):
 
     return HttpResponse(status=200)
 
+def dwolla_webhook_setup(request):
+    logger.info("DWOLLA WEBHOOK SETUP")
+    clear_webhook(request.get_host())
+    #start_webhook('%s://%s' % (request.scheme, request.get_host()))
+    return HttpResponse(status=200)
+
 @csrf_exempt
 def dwolla_webhook(request):
     logger.info("DWOLLA_WEBHOOK")
@@ -221,6 +225,7 @@ def dwolla_webhook(request):
         logger.info("Webhook already processed.")
         return HttpResponse(status=200)
     host = request.get_host()
+    support_phone = '301-538-6558'
     if ('customer_transfer_created' in webhook_content['topic']):
         funded_transfer = get_funded_transfer(webhook_data['resource_url'])
         amount = funded_transfer['amount']
@@ -242,6 +247,7 @@ def dwolla_webhook(request):
             'recipient': provider.schoolName,
             'created_date': funded_transfer['created_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
@@ -271,6 +277,7 @@ def dwolla_webhook(request):
             'recipient': provider.schoolName,
             'created_date': funded_transfer['created_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
@@ -301,6 +308,7 @@ def dwolla_webhook(request):
             'recipient': provider.schoolName,
             'cancelled_date': webhook_data['event_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_payment_cancelled_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
@@ -330,6 +338,7 @@ def dwolla_webhook(request):
             'recipient': provider.schoolName,
             'created_date': funded_transfer['created_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_payment_failure_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
@@ -359,6 +368,7 @@ def dwolla_webhook(request):
             'account_name': funding_source['name'],
             'created_date': funding_source['created_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_funding_source_addition_email(email, first_name, funding_source['name'], template.render(data))
 
@@ -389,6 +399,7 @@ def dwolla_webhook(request):
             'account_name': funding_source['name'],
             'removed_date': webhook_data['event_date'],
             'host': host,
+            'support_phone': support_phone
         }
         send_funding_source_removal_email(email, first_name, funding_source['name'], template.render(data))
 

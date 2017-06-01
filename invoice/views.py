@@ -28,6 +28,7 @@ import logging
 
 DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
+support_phone = '301-538-6558'
 
 def add_invoice(request):
 	"""Handles invoice listing request. Returns invoices associated with the logged in user (provider or parent)"""
@@ -211,6 +212,7 @@ def setupAutopay(request):
 				'recipient': provider.schoolName,
 				'schedule': schedule,
 				'host': request.get_host(),
+				'support_phone': support_phone,
 			}
 			send_autopay_scheduled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)
 			## End Send Confirm Email
@@ -258,6 +260,7 @@ def cancelAutopay(request):
 				'recipient': provider.schoolName,
 				'schedule': schedule,
 				'host': request.get_host(),
+				'support_phone': support_phone,
 			}
 			send_autopay_cancelled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)
 			## End Send Confirm Email
