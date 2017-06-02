@@ -864,3 +864,9 @@ payments-component .table tr a, invoices-component .table tr a {
 .angular-with-newlines {
     white-space: pre-line;
 }
+
+/*----------------- Bootstrap Datepicker overrides ------------------*/
+
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+	background:#ccc;
+}

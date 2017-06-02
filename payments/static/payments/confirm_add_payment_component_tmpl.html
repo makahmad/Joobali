@@ -2,58 +2,51 @@
 <div class="">
   <div class="modal-header">
     <a type="button" class="close" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&times;</a>
-    <h4 class="modal-title">Are you sure you want to add payment?</h4>
-    <h3 class="modal-title">(once added you cannot edit)</h3>
+    <h4 class="modal-title">Are you sure you want to add this payment? <br /><small>You cannot undo this.</small></h4>
   </div> <!-- end modal-header -->
   <div class="modal-body">
 		<div class="col-centered programOverviewForm">
 		            <div class="form-group">
 		                <label class="control-label" >Child:</label>
-
-		                       {{$ctrl.newPayment.child.first_name}} {{$ctrl.newPayment.child.last_name}}
+											<b>{{$ctrl.newPayment.child.first_name}} {{$ctrl.newPayment.child.last_name}}</b>
 		            	</div>
 		            <div class="form-group">
 		                <label class="control-label" >Invoice (optional):</label>
-
-		                       {{$ctrl.newPayment.invoice.invoiceDescription}}
+		                       <b>{{$ctrl.newPayment.invoice.invoiceDescription}}</b>
 		            	</div>
 		            <div class="form-group">
 		                <label class="control-label" >Payer:</label>
 
-		                       {{$ctrl.newPayment.payer}}
+		                       <b>{{$ctrl.newPayment.payer}}</b>
 		            	</div>
 		            <div class="form-group">
 		                <label class="control-label" >Amount:</label>
-
-		                       {{$ctrl.newPayment.amount}}
+		                       <b>{{$ctrl.newPayment.amount}}</b>
 		            	</div>
 
 								<div class="form-group">
 			            <div class="col-1">
 			                <label class="control-label" >Payment Date:</label>
-
-			                    {{$ctrl.paymentDateDisplay}}
+			                    <b>{{$ctrl.paymentDateDisplay}}</b>
 			            </div>
 			            </div>
 				<div class="form-group">
 						<div class="col-1">
 			                <label class="control-label" >Payment Type:</label>
-
-			                    {{$ctrl.newPayment.payment_type.id}}
+			                    <b>{{$ctrl.newPayment.payment_type.id}}</b>
 			            </div>
 			</div>
 				<div class="form-group">
 						<div class="col-1">
 			                <label class="control-label" >Note (required if payment type is Other):</label>
-
-			                    {{$ctrl.newPayment.note}}
+			                    <b>{{$ctrl.newPayment.note}}</b>
 			            </div>
 			</div>
 							</div>
 						<div class="formActions">
 							<center>
-								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.cancel()">Nevermind &raquo;</button>
-								<a class="pull-left delete" ng-click="$ctrl.addPayment()">&laquo; Add</a>
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.addPayment()">Add payment &raquo;</button>
+								<a class="pull-left delete" ng-click="$ctrl.cancel()" >&laquo; Nevermind</a>
 							</center>
 						</div> <!-- end formActions -->
 		</div><!-- end col-centered programOerviewForm -->
