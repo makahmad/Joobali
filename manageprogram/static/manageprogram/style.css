@@ -1,0 +1,14 @@
+small {
+	color:#a1a1a1;
+	font-size:75%;
+}
+
+.fee.formInstructions {
+	text-align:left;
+	display:inline-block;
+	background:#FFEAAD;
+	padding: 5px 10px;
+	margin:5px auto 0;
+	min-width: 100%;
+	line-height:normal;
+}

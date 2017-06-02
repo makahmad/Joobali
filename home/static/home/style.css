@@ -191,6 +191,9 @@ a.logoLink:hover {
 	.jumbotron, .homePitch2 {
 		background-size: auto 100%;
 	}
+	label {
+	  white-space: normal !important;
+	}
 }
 
 .thumbnail {
@@ -661,6 +664,18 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 	border:none !important;
 }
 
+/*.form-group input[required="required"]:before, .form-group input[required="true"], form-group input[required="true"]:before, .form-group input[ng-required="true"], .form-group input[ng-required="true"]:before {
+	border:1px solid red;
+	color:red;
+	content:"*";
+}
+*/
+/*input[ng-required="true"]:not(.required) {
+  border: 2px solid red;
+	content:"*";
+	color:red;
+}*/
+
 .form-group {
   margin: 15px auto;
   width: 63%;
@@ -789,7 +804,7 @@ a.delete:hover {
     position: absolute;
     top: 0;
     left: 111px;
-	}	
+	}
 }
 .tooltip-inner {
     background-color: #ff5b35;
