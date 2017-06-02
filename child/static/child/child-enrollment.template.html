@@ -28,13 +28,13 @@
                     <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
                         <div>
                             <label>Registration fee:</label>
-                            <b>{{$ctrl.newEnrollment.program.registrationFee}}</b>
+                            <b>${{$ctrl.newEnrollment.program.registrationFee}}</b>
                         </div>
                         <div>
-                            <label>Fee: </label> <b>{{$ctrl.newEnrollment.program.fee}}</b>
+                            <label>Fee: </label> <b>${{$ctrl.newEnrollment.program.fee}}</b>
                         </div>
                         <div>
-                            <label>Latefee: </label> <b>{{$ctrl.newEnrollment.program.lateFee}}</b>
+                            <label>Late fee: </label> <b>${{$ctrl.newEnrollment.program.lateFee}}</b>
                         </div>
                         <div ng-show="$ctrl.newEnrollment.program.billingFrequency == 'Weekly'">
                             <label> Weekly bill day:</label>
