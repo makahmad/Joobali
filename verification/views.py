@@ -23,7 +23,7 @@ def verify_provider_email(request):
         provider = token.provider_key.get()
         provider.status.status = 'active'
         provider.put()
-        # token.key.delete()
+        token.key.delete()
         context["status"] = 'successful'
         context["email"] = provider.email
         context["schoolName"] = provider.schoolName
