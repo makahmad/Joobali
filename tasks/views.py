@@ -296,8 +296,10 @@ def dwolla_webhook(request):
 
         source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
-        if invoice.status != Invoice._POSSIBLE_STATUS['FAILED']:
-            invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
+        if invoice.status != Invoice._POSSIBLE_STATUS['CANCELLED']:
+            invoice.status = Invoice._POSSIBLE_STATUS['CANCELLED']
+            # invoice.cancelled_transfer_ids.append(invoice.dwolla_transfer_id)
+            invoice.dwolla_transfer_id = None
             invoice.put()
 
         template = loader.get_template('funding/joobali-to-customer-transfer-cancelled.html')
@@ -310,8 +312,9 @@ def dwolla_webhook(request):
             'host': host,
             'support_phone': support_phone
         }
+        logger.info(data)
         send_payment_cancelled_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
-
+        logger.info("Cancel Email Sent.")
         event = DwollaEvent(id=webhook_data['id'])
         event.event_id = webhook_data['id']
         event.event_content = str(webhook_content)

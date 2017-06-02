@@ -19,7 +19,7 @@ from invoice import invoice_util
 from common.pdf import render_to_pdf
 from google.appengine.ext import ndb
 from os import environ
-from common.dwolla import get_funding_source
+from common.dwolla import get_funding_source, get_funded_transfer, cancel_transfer
 from common.email.autopay import send_autopay_cancelled_email, send_autopay_scheduled_email
 
 import json
@@ -107,6 +107,7 @@ def listInvoices(request):
             'amount' : invoice.amount,
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
+			'processing': invoice.is_processing(),
             'status' : "Paid" if invoice.is_paid() else 'Unpaid',
 			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
         })
@@ -269,6 +270,25 @@ def cancelAutopay(request):
 				if not invoice.is_paid():
 					invoice.autopay_source_id = None
 					invoice.put()
+
+	return HttpResponse("success")
+
+def cancelPayment(request):
+	parent = Parent.get_by_id(request.session.get('user_id'))
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		if invoice.dwolla_transfer_id:
+			funded_transfer = get_funded_transfer(invoice.dwolla_transfer_id)
+			if 'cancel' in funded_transfer:
+				cancel_transfer(funded_transfer['cancel'])
+				invoice.status = invoice._POSSIBLE_STATUS['CANCELLED']
+				invoice.put()
+			else:
+				return HttpResponse("Failure: the payment is being processed and can't be cancelled at this moment.")
+		else:
+			return HttpResponse("Failure: no payment is associated with this invoice.")
 
 	return HttpResponse("success")
 

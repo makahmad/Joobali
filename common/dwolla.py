@@ -330,7 +330,16 @@ def get_funded_transfer(transfer_url):
     result['fee_transfer_url'] = transfer['_links']['fees']['href']
     result['status'] = transfer['status']
     result['created_date'] = transfer['created'][0:10]
+    if 'cancel' in transfer['_links']:
+        result['cancel'] = transfer['_links']['cancel']['href']
     return result
+
+def cancel_transfer(cancel_url):
+    logger.info('Cancelling transfer: %s' % cancel_url);
+    request_body = {
+        'status': 'cancelled',
+    }
+    account_token.post(cancel_url, request_body)
 
 def get_fee_transfer(fee_transfer_url):
     """ Fee transfer is the transfer incurred from charging fees for normal dwolla transfer. """

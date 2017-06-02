@@ -25,12 +25,14 @@ class Invoice(ndb.Model):
         'PROCESSING': 'PROCESSING',
         'COMPLETED': 'COMPLETED', # paid by parents
         'FAILED': 'FAILED',
+        'CANCELLED': 'CANCELLED',
         'MARKED_PAID': 'MARKED_PAID', # marked paid by provider
         'PAID_OFFLINE': 'PAID_OFFLINE', # paid offline with case/check
     }
     email_sent = ndb.BooleanProperty(required=True, default=False)
     autopay_source_id = ndb.StringProperty() # come from enrollment
-    dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment
+    dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment (funded_transfer)
+    cancelled_transfer_ids = ndb.StringProperty(repeated=True) # The payments that were cancelled (funded_transfer)
     pdf = ndb.BlobProperty()
 
 
@@ -39,6 +41,10 @@ class Invoice(ndb.Model):
 
     def is_paid(self):
         return self.status == Invoice._POSSIBLE_STATUS['COMPLETED'] or self.status == Invoice._POSSIBLE_STATUS['MARKED_PAID'] or self.status == Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
+
+    def is_processing(self):
+        return self.status == Invoice._POSSIBLE_STATUS['PROCESSING'] and self.dwolla_transfer_id != None
+
 
 class InvoiceLineItem(ndb.Model):
     enrollment_key = ndb.KeyProperty(kind=Enrollment)

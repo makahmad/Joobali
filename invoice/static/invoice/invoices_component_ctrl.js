@@ -50,18 +50,52 @@ InvoicesComponentController = function($window, $http, $uibModal) {
         if (this.isProvider == 'true') {
             this.openAddPaymentModal(clicked_invoice);
         } else {
-            if (this.fundings.length == 0) {
-                var modalInstance = $uibModal.open({
-                    animation: true,
-                    component: 'paymentSetupComponent',
-                });
-            } else {
-                $('#makePaymentModal').modal('show');
-                for (i in this.invoices) {
-                    invoice = this.invoices[i];
-                    invoice.selected = false;
+
+            if (clicked_invoice.paid == false && clicked_invoice.processing == false) {
+                // Make Payment
+                if (this.fundings.length == 0) {
+                    var modalInstance = $uibModal.open({
+                        animation: true,
+                        component: 'paymentSetupComponent',
+                    });
+                } else {
+                    $('#makePaymentModal').modal('show');
+                    for (i in this.invoices) {
+                        invoice = this.invoices[i];
+                        invoice.selected = false;
+                    }
+                    clicked_invoice.selected = true;
                 }
-                clicked_invoice.selected = true;
+            } else if (clicked_invoice.processing == true && clicked_invoice.paid == false) {
+                // Cancel Payment
+                var r = confirm("Do you really want to cancel the payment?");
+                if (r == true) {
+                    var data = {
+                        'invoice_id': clicked_invoice.invoice_id
+                    }
+                    this.http_({
+                      method: 'POST',
+                      url: '/invoice/cancelpayment',
+                      data: JSON.stringify(data)
+                    })
+                    .then(
+                        function(response){
+                            console.log('post suceeded');
+                            console.log(response);
+                            if (response.data !== 'success') {
+                                alert(response.data);
+                            } else {
+                                alert('Payment cancelled successfully.')
+                                location.reload();
+                            }
+                        },
+                        function(response){
+                            alert('Payment cancellation failed. Please contact us for this issue.');
+                            console.log('post failed');
+                            console.log(response);
+                        }
+                     );
+                }
             }
         }
     }
@@ -98,6 +132,7 @@ InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_in
                         alert(response.data);
                     } else {
                         alert('Autopay cancelled successfully.')
+                        location.reload();
                     }
                 },
                 function(response){
@@ -109,10 +144,14 @@ InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_in
         }
 }
 
-InvoicesComponentController.prototype.getButtonText = function() {
+InvoicesComponentController.prototype.getButtonText = function(invoice) {
     if (this.isProvider == 'true') {
         return "Mark Paid";
     } else {
-        return "Make Payment"
+        if (!invoice.paid && !invoice.processing) {
+            return "Make Payment";
+        } else if (invoice.processing && !invoice.paid) {
+            return "Cancel Payment";
+        }
     }
 }

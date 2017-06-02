@@ -57,7 +57,7 @@
           <td>${{ invoice.amount }}</td>
           <td>{{ invoice.status }}</td>
           <td>
-            <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid"><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText() }}</button>
+            <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="!invoice.paid"><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText(invoice) }}</button>
             <button class="AdjustButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.adjustButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid"><i class="fa fa-pencil fa-lg"></i> &nbsp;Adjust</button>
             <button class="AdjustButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.cancelAutopayClicked(invoice); $event.stopPropagation();" ng-show="!$ctrl.isProvider && invoice.autopay_source_id && !invoice.paid"><i class="fa fa-pencil fa-lg"></i>  Cancel Autopay</button>
           </td>
