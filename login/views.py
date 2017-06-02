@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 
@@ -137,7 +138,7 @@ def provider_signup(request):
             return render_to_response(
                 'login/provider_signup.html',
                 {'form': form,
-                 'host': request.get_host(),
+                 'host': get_default_version_hostname(),
                  'captcha': captcha_results['success'],
                  'beta_error': True },
                 template.RequestContext(request)
@@ -182,7 +183,7 @@ def provider_signup(request):
                 provider.put()
                 token = VerificationToken.create_new_provider_email_token(provider=provider)
                 token.put()
-                send_provider_email_address_verification(token, host=request.get_host())
+                send_provider_email_address_verification(token, host=get_default_version_hostname())
                 return render_to_response('login/provider_signup_confirmation.html',
                                           {'form': form,
                                            'email': email},
@@ -194,7 +195,7 @@ def provider_signup(request):
     return render_to_response(
         'login/provider_signup.html',
         {'form': form,
-         'host': request.get_host(),
+         'host': get_default_version_hostname(),
          'captcha': captcha_results['success']},
         template.RequestContext(request)
     )
@@ -366,11 +367,11 @@ def forgot(request):
             if provider_result:
                 token = VerificationToken.create_new_provider_password_reset_token(provider_result[0])
                 token.put()
-                send_reset_password_email_for_provider(token, request.get_host())
+                send_reset_password_email_for_provider(token, get_default_version_hostname())
             elif parent_result:
                 token = VerificationToken.create_new_parent_password_reset_token(parent_result[0])
                 token.put()
-                send_reset_password_email_for_parent(token, request.get_host())
+                send_reset_password_email_for_parent(token, get_default_version_hostname())
 
             if provider_result or parent_result:
                 return render_to_response('login/forgot_sent.html',

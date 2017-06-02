@@ -5,6 +5,7 @@ from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
 
 import enrollment_util
@@ -83,7 +84,7 @@ def add_enrollment(request):
         logger.info("enrollment is %s", enrollment_input)
         try:
             enrollment = enrollment_util.upsert_enrollment(enrollment_input)
-            send_parent_enrollment_notify_email(enrollment=enrollment, host=request.get_host())
+            send_parent_enrollment_notify_email(enrollment=enrollment, host=get_default_version_hostname())
             status = "success"
         except JoobaliRpcException as e:
             status = 'failure'
@@ -188,7 +189,7 @@ def reactivate_enrollment(request):
     provider_id = request.session.get("user_id")
     enrollment_id = request_body_dict['enrollment_id']
     if enrollment_util.reactivate_enrollment(provider_id=provider_id, enrollment_id=enrollment_id,
-                                             host=request.get_host()):
+                                             host=get_default_version_hostname()):
         status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
@@ -292,7 +293,7 @@ def resent_enrollment_invitation(request):
     if not enrollment.can_resend_invitation():
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
     logger.info("request.get_host() %s", request.get_host())
-    send_parent_enrollment_notify_email(enrollment=enrollment, host=request.get_host())
+    send_parent_enrollment_notify_email(enrollment=enrollment, host=get_default_version_hostname())
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
