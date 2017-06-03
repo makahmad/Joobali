@@ -133,7 +133,7 @@ def get_autopay_info(invoice):
         if lineItem.enrollment_key:
             enrollment = lineItem.enrollment_key.get()
             if enrollment:
-                if enrollment.pay_days_before and enrollment.autopay_source_id:
+                if enrollment.pay_days_before != None and enrollment.autopay_source_id != None:
                     return (enrollment.pay_days_before, enrollment.autopay_source_id)
     return (None, None)
 

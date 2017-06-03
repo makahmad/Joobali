@@ -23,7 +23,7 @@ class Enrollment(ndb.Model):
     # Autopay funding source. If set, the related invoice will be automatically paid by this source.
     autopay_source_id = ndb.StringProperty()
     # Autopay # of days before the due date
-    pay_days_before = ndb.IntegerProperty()
+    pay_days_before = ndb.IntegerProperty(default=0)
     # Whether to waive or not waive registration fee for the first invoice
     waive_registration = ndb.BooleanProperty()
     # All possible status for an enrollment

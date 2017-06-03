@@ -184,8 +184,9 @@ def autopay(request):
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
+        pay_days_before = 0 if pay_days_before == None else pay_days_before
         # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-        if autopay_source_id and pay_days_before and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid():
+        if autopay_source_id != None and pay_days_before != None and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
             logger.info("Autopaying for invoice: %s" % invoice)
             provider = invoice.provider_key.get()
 
@@ -193,10 +194,8 @@ def autopay(request):
                 funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice)
             except ValidationError as err:
                 return HttpResponse(err.body['_embedded']['errors'][0]['message'])
-
-            break # temporary only do one test autopay, remove before launch
         else:
-            logger.info("Skipping autopay for invoice: %s" % invoice)
+            logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice))
 
     return HttpResponse(status=200)
 
