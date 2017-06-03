@@ -82,13 +82,12 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.invoices = [];
-	    //console.log(response.data);
+	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(invoice) {
 	        invoice.due_date_str = invoice.due_date;
 	        invoice.due_date = new Date(invoice.due_date_str);
 	    	this.scope_.invoices.push(invoice);
 	    }));
-	    //console.log(this.scope_.invoices);
 
 	  }), function errorCallback(response) {
 	    // called asynchronously if an error occurs
@@ -106,7 +105,6 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
 	    	this.scope_.payments.push(payment);
 	    }));
-	    console.log(this.scope_.payments);
 
 	  }), function errorCallback(response) {
 	    // called asynchronously if an error occurs
