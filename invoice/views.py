@@ -108,7 +108,7 @@ def listInvoices(request):
             'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
 			'processing': invoice.is_processing(),
-            'status' : "Paid" if invoice.is_paid() else 'Unpaid',
+            'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
 			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
         })
 	return HttpResponse(json.dumps(results))
