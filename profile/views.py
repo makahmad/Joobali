@@ -52,8 +52,8 @@ def getProfile(request):
         dict = provider.to_dict()
 
         dict['id'] = provider.key.id()
-        dict['ssn'] = int(provider.ssn) if provider.ssn else None
-        dict['zipcode'] = int(provider.zipcode) if provider.zipcode else None
+        dict['ssn'] = provider.ssn if provider.ssn else None
+        dict['zipcode'] = provider.zipcode if provider.zipcode else None
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
         try:
             dwolla_customer = dwolla.get_customer(provider.customerId)

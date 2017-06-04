@@ -174,10 +174,10 @@
                                close-text="Close"/>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-class="{ 'has-error' : profileForm.ssn.$invalid && !profileForm.ssn.$pristine }">
                     <label class="control-label" for="ssn">Last 4 digits of SSN:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="number" class="form-control dwolla-verify" id="ssn" name="ssn" ng-required="false"
+											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="number" ng-minlength="4" ng-maxlength="4" ng-pattern="/^[0-9]*$/" class="form-control dwolla-verify" id="ssn" name="ssn" ng-required="false"
                            ng-model="$ctrl.profile.ssn">
                     </div>
                 </div>
@@ -215,7 +215,7 @@
                      </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Dwolla Status: {{ $ctrl.profile.dwolla_status }}</label>
+                    <label class="control-label">Account Status: {{ $ctrl.profile.dwolla_status }}</label>
                      <div ng-show="$ctrl.profile.dwolla_status != 'verified'">
                          <button ng-click="$ctrl.dwollaVerify(true)">Verify</button>
                      </div>
