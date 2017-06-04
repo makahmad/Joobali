@@ -10,7 +10,6 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
     this.showConflictLabel = false;
     this.location_ = $location;
 
-
 //    TODO: add session editing
 //	$http({
 //		method: 'GET',
@@ -70,6 +69,8 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
             else
                 this.program.showLastDayCheckbox = false;
 
+            this.setProgramInfoDisplay(this.program);
+
 
 //            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
 //                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
@@ -93,6 +94,29 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 
 };
 
+EditProgramComponentController.prototype.setProgramInfoDisplay = function(program) {
+console.log(program);
+    var startDate = moment(program.startDate);
+
+    this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
+    this.dayOfMonthDisplayOnly = startDate.format('Do'); //change 1 to 1st, 2 to 2nd....
+    this.startDateDisplayOnly = startDate.format('MM/DD/YYYY');
+
+    if(program.billingFrequency=='Monthly' && program.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the last day of '+
+        'each month starting '+this.startDateDisplayOnly;
+    else if(program.billingFrequency=='Monthly' && !program.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the '+this.dayOfMonthDisplayOnly+
+                              ' day of each month starting '+this.startDateDisplayOnly;
+    else if(program.billingFrequency=='Weekly')
+        this.programInfoDisplay = 'We will automatically collect fees for this program weekly on '+this.dayOfWeekDisplayOnly+'s'+
+                              ' starting '+this.startDateDisplayOnly;
+
+    if(program.endDate)
+        this.programInfoDisplay += ' and ending on '+moment(program.endDate).format('MM/DD/YYYY')+'.';
+    else
+        this.programInfoDisplay += ' indefinitely.'
+}
 
 EditProgramComponentController.prototype.initializeTimePickers = function() {
     $('#startDate').datetimepicker({
