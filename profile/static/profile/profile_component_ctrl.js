@@ -6,6 +6,9 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 	this.emailError = false;
 	this.disableSave = false;
 	this.scope_ = $scope;
+    this.dateOfBirthPickerOpened = false;
+    this.today = new Date();
+    this.dateFormat = "MM/dd/yyyy"
 
     this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
     '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
@@ -19,7 +22,7 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
             // when the response is available
 
             this.profile = JSON.parse(response.data[0]);
-
+            this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate()
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -29,11 +32,18 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 
 };
 
+ProfileComponentController.prototype.openDateOfBirthPicker = function() {
+        this.dateOfBirthPickerOpened = true;
+}
 ProfileComponentController.prototype.saveProfile = function() {
+    submitting_profile = angular.copy(this.profile)
+    submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
+    this.dwollaVerify(false);
+
 	this.http_({
 		method: 'POST',
 		url: '/profile/updateprofile',
-		data: JSON.stringify(this.profile)
+		data: JSON.stringify(submitting_profile)
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
@@ -125,3 +135,45 @@ ProfileComponentController.prototype.validateEmail = function() {
 	  }
 };
 
+ProfileComponentController.prototype.dwollaFieldsFilled = function(markError) {
+    var content = $(".profileContent");
+
+  	var inputs = content.find("input.dwolla-verify"),
+  	isValid = true;
+
+	$(".form-group").removeClass("has-error");
+	for(var i=0; i< inputs.length; i++){
+		if (!inputs[i].value){
+			isValid = false;
+			if (markError) {
+                $(inputs[i]).closest(".form-group").addClass("has-error");
+			}
+		}
+	}
+    return isValid
+};
+
+ProfileComponentController.prototype.dwollaVerify = function(markError) {
+    submitting_profile = angular.copy(this.profile)
+    submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
+    if (this.dwollaFieldsFilled(markError)) {
+        this.http_({
+            method: 'POST',
+            url: '/profile/dwollaverify',
+            data: JSON.stringify(submitting_profile)
+        }).then(angular.bind(this, function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            if (response.data == 'success') {
+                this.profile.dwolla_status = 'verified'
+            } else {
+                alert(response.data);
+            }
+
+          }), angular.bind(this, function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+                alert("Something is wrong with the verification. Please try again later");
+          }));
+    }
+};

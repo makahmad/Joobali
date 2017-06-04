@@ -49,6 +49,8 @@ class Provider(ndb.Model):
 
     # Dwolla customer id
     customerId = ndb.StringProperty()
+    # Dwolla status
+    dwolla_status = ndb.StringProperty()
     # Dwolla funding source to receive money
     default_funding_source = ndb.StringProperty()
 

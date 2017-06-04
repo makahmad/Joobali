@@ -12,31 +12,31 @@
 	<!-- <div class="profileFormBody"> -->
     <div class="col-centered">
         <form id="profileForm" name="profileForm" role="form" class="well" enctype="multipart/form-data">
-            <div class="">
+            <div class="profileContent">
                 <div class="form-group">
                     <label class="control-label" for="schoolName">School Name:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span><input type="text" class="form-control" id="schoolName" name="schoolName" ng-required="true"
+											<span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="schoolName" name="schoolName" ng-required="true"
 	                           ng-model="$ctrl.profile.schoolName">
 										 </div>
                 </div>
                 <div class="form-group">
 										<label class="control-label" for="firstName">First Name:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="firstName" name="firstName" ng-required="true"
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="firstName" name="firstName" ng-required="true"
                            ng-model="$ctrl.profile.firstName">
 										 </div>
 									 </div>
 									 <div class="form-group">
 	                  <label class="control-label" for="lastName">Last Name:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
+											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
 										</div>
                 </div>
                 <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control" id="email" name="email" ng-required="true"
+											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control dwolla-verify" id="email" name="email" ng-required="true"
                            ng-model="$ctrl.profile.email"  ng-change="$ctrl.validateEmail()">
 										 </div>
                     <span style="color:red" ng-show="(profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError">
@@ -78,7 +78,7 @@
                 <div class="form-group">
                     <label class="control-label" for="addressLine1">Address Line 1:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="addressLine1" name="addressLine1" ng-required="false" ng-model="$ctrl.profile.addressLine1">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="addressLine1" name="addressLine1" ng-required="false" ng-model="$ctrl.profile.addressLine1">
 										</div>
                 </div>
                 <div class="form-group">
@@ -90,20 +90,103 @@
                 <div class="form-group">
                     <label class="control-label" for="city">City:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="state">State:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="state" name="state" ng-required="false" ng-model="$ctrl.profile.state">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span>
+                        <select type="text" class="form-control dwolla-verify" id="state" name="state" ng-required="false" ng-model="$ctrl.profile.state">
+                        	    <option value="AL">Alabama</option>
+                                <option value="AK">Alaska</option>
+                                <option value="AZ">Arizona</option>
+                                <option value="AR">Arkansas</option>
+                                <option value="CA">California</option>
+                                <option value="CO">Colorado</option>
+                                <option value="CT">Connecticut</option>
+                                <option value="DE">Delaware</option>
+                                <option value="DC">District Of Columbia</option>
+                                <option value="FL">Florida</option>
+                                <option value="GA">Georgia</option>
+                                <option value="HI">Hawaii</option>
+                                <option value="ID">Idaho</option>
+                                <option value="IL">Illinois</option>
+                                <option value="IN">Indiana</option>
+                                <option value="IA">Iowa</option>
+                                <option value="KS">Kansas</option>
+                                <option value="KY">Kentucky</option>
+                                <option value="LA">Louisiana</option>
+                                <option value="ME">Maine</option>
+                                <option value="MD">Maryland</option>
+                                <option value="MA">Massachusetts</option>
+                                <option value="MI">Michigan</option>
+                                <option value="MN">Minnesota</option>
+                                <option value="MS">Mississippi</option>
+                                <option value="MO">Missouri</option>
+                                <option value="MT">Montana</option>
+                                <option value="NE">Nebraska</option>
+                                <option value="NV">Nevada</option>
+                                <option value="NH">New Hampshire</option>
+                                <option value="NJ">New Jersey</option>
+                                <option value="NM">New Mexico</option>
+                                <option value="NY">New York</option>
+                                <option value="NC">North Carolina</option>
+                                <option value="ND">North Dakota</option>
+                                <option value="OH">Ohio</option>
+                                <option value="OK">Oklahoma</option>
+                                <option value="OR">Oregon</option>
+                                <option value="PA">Pennsylvania</option>
+                                <option value="RI">Rhode Island</option>
+                                <option value="SC">South Carolina</option>
+                                <option value="SD">South Dakota</option>
+                                <option value="TN">Tennessee</option>
+                                <option value="TX">Texas</option>
+                                <option value="UT">Utah</option>
+                                <option value="VT">Vermont</option>
+                                <option value="VA">Virginia</option>
+                                <option value="WA">Washington</option>
+                                <option value="WV">West Virginia</option>
+                                <option value="WI">Wisconsin</option>
+                                <option value="WY">Wyoming</option>
+                        </select>
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="zipcode">Zipcode:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="number" class="form-control" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="number" class="form-control dwolla-verify" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
 										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="dateOfBirth">Date of Birth:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span>
+                        <input id="dateOfBirth" name="dateOfBirth"
+                               type="text" class="form-control dwolla-verify"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-options="{maxDate: $ctrl.today}"
+                               ng-model="$ctrl.profile.dateOfBirth"
+                               is-open="$ctrl.dateOfBirthPickerOpened"
+                               ng-required="false"
+                               ng-click="$ctrl.openDateOfBirthPicker()"
+                               close-text="Close"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="ssn">Last 4 digits of SSN:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="number" class="form-control dwolla-verify" id="ssn" name="ssn" ng-required="false"
+                           ng-model="$ctrl.profile.ssn">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="license">License:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="license" name="license" ng-required="false"
+                           ng-model="$ctrl.profile.license">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="website">Website:</label>
@@ -113,16 +196,7 @@
 										 </div>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="license">License:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="license" name="license" ng-required="false"
-                           ng-model="$ctrl.profile.license">
-                    </div>
-
-
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="license">TIN (visible on invoice):</label>
+                    <label class="control-label" for="tin">TIN (visible on invoice):</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-percent fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="tin" name="tin" ng-required="false"
                            ng-model="$ctrl.profile.tin">
@@ -138,6 +212,12 @@
                      <div ng-show="$ctrl.profile.showLogo">
                          <a href="../profile/getproviderlogo" target="_blank"><img  ng-show="$ctrl.profile.showLogo" src='../profile/getproviderlogo' alt='your logo' width="40%" height="40%"/></a>
                          <a ng-click="$ctrl.deleteLogo()">Delete Logo</a>
+                     </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Dwolla Status: {{ $ctrl.profile.dwolla_status }}</label>
+                     <div ng-show="$ctrl.profile.dwolla_status != 'verified'">
+                         <button ng-click="$ctrl.dwollaVerify(true)">Verify</button>
                      </div>
                 </div>
 

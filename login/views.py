@@ -158,7 +158,7 @@ def provider_signup(request):
                     'firstName': provider.firstName,
                     'lastName': provider.lastName,
                     'email': provider.email,
-                    'ipAddress': '99.99.99.99'
+                    'ipAddress': get_client_ip(request),
                 }
                 try:
                     customer = account_token.post('customers', request_body)
@@ -265,7 +265,7 @@ def parent_signup(request):
                     'firstName': first_name,
                     'lastName': last_name,
                     'email': email,
-                    'ipAddress': '99.99.99.99'
+                    'ipAddress': get_client_ip(request),
                 }
                 try:
                     customer = account_token.post('customers', request_body)

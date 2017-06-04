@@ -10,9 +10,14 @@ from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 from google.appengine.ext import ndb
-
+from common import dwolla
+from datetime import datetime
+from dwollav2.error import ValidationError
 
 logger = logging.getLogger(__name__)
+
+account_token = dwolla.create_account_token('sandbox')
+DATE_FORMAT = '%m/%d/%Y'
 
 def getProviderLogo(request):
     """Handles get provider logo request. Returns logo if one exists. """
@@ -44,7 +49,19 @@ def getProfile(request):
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
         provider.logo = None  # set to none as HTTP response encode breaks for blobs
-        return HttpResponse(json.dumps([JEncoder().encode(provider)]))
+        dict = provider.to_dict()
+
+        dict['id'] = provider.key.id()
+        dict['ssn'] = int(provider.ssn) if provider.ssn else None
+        dict['zipcode'] = int(provider.zipcode) if provider.zipcode else None
+        dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
+        try:
+            dwolla_customer = dwolla.get_customer(provider.customerId)
+            if dwolla_customer:
+                dict['dwolla_status'] = dwolla_customer['status']
+        except ValidationError:
+            dict['dwolla_status'] = 'Unknown'
+        return HttpResponse(json.dumps([JEncoder().encode(dict)]))
 
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))
@@ -88,11 +105,13 @@ def updateProfile(request):
         provider.addressLine2 = profile['addressLine2']
         provider.city = profile['city']
         provider.state = profile['state']
-        provider.zipcode = profile['zipcode']
+        provider.zipcode = str(profile['zipcode'])
         provider.email = profile['email']
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
+        provider.ssn = str(profile['ssn'])
+        provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
         provider.tin = profile['tin']
 
         if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'],
@@ -109,6 +128,69 @@ def updateProfile(request):
 
     return HttpResponse('success')
 
+
+def dwolla_verify(request):
+    """Updates the provider profile"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if not request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
+    profile = json.loads(request.body)
+
+    # provider profile update
+    provider = Provider.get_by_id(request.session['user_id'])
+
+    if request.session['email'] != profile['email']:
+        query = Provider.query().filter(Provider.email == profile['email'])
+        result = query.fetch(1)
+        if result:
+            return HttpResponseServerError('email already exists')
+        request.session['email'] = profile['email']
+
+    if provider is not None:
+        request_body = {
+            'firstName': profile['firstName'],
+            'lastName': profile['lastName'],
+            'email': profile['email'],
+            'type': 'personal', # TODO support business type
+            'address1': profile['addressLine1'],
+            'city': profile['city'],
+            'state': profile['state'],
+            'postalCode': profile['zipcode'],
+            'dateOfBirth': datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date().strftime('%Y-%m-%d'),
+            'ssn': profile['ssn'],
+        }
+        try:
+            customer = account_token.post(provider.customerId, request_body)
+            logger.info("customer %s" % customer.body)
+        except ValidationError as err:  # ValidationError as err
+            logger.warning(err)
+            return HttpResponse('Dwolla Verification Failed: %s' % err.body['_embedded']['errors'][0]['message'])
+
+        provider.schoolName = profile['schoolName']
+        provider.firstName = profile['firstName']
+        provider.lastName = profile['lastName']
+
+        unique_util.update_provider(provider.email, profile['email'], provider.key)
+        provider.addressLine1 = profile['addressLine1']
+        provider.addressLine2 = profile['addressLine2']
+        provider.city = profile['city']
+        provider.state = profile['state']
+        provider.zipcode = str(profile['zipcode'])
+        provider.email = profile['email']
+        provider.ssn = str(profile['ssn'])
+        provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
+        provider.put()
+
+    # return render_to_response(
+    # 	'profile/profile_component_tmpl.html',
+    # 	{'form': profile},
+    # 	template.RequestContext(request)
+    # )
+
+    return HttpResponse('success')
 
 def updateLogo(request):
     """Updates the provider's logo"""

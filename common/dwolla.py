@@ -144,69 +144,71 @@ def get_funding_source(funding_source_url):
 def get_customer(customer_url):
     # Example Dwolla customer (provider or parents) object
     # {
-    #     u'created': u'2016-08-25T04:39:36.643   Z',
+    #     u'created': u'2016-09-08T22:09:47.980   Z',
     #     u'_links': {
+    #         u'edit': {
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e',
+    #             u'resource-type': u'customer'
+    #         },
     #         u'transfers': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/45ad438b-dc6f-4210-b9d7-f651a870265b/transfers',
-    #             u'resource-type': u'transfer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e/transfers',
+    #             u'resource-type': u'transfer'
     #         },
     #         u'send': {
-    #             u'href': u'https://api-uat.dwolla.com/transfers',
-    #             u'resource-type': u'transfer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
-    #         },
-    #         u'edit': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/45ad438b-dc6f-4210-b9d7-f651a870265b',
-    #             u'resource-type': u'customer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers',
+    #             u'resource-type': u'transfer'
     #         },
     #         u'receive': {
-    #             u'href': u'https://api-uat.dwolla.com/transfers',
-    #             u'resource-type': u'transfer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers',
+    #             u'resource-type': u'transfer'
     #         },
     #         u'self': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/45ad438b-dc6f-4210-b9d7-f651a870265b',
-    #             u'resource-type': u'customer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
-    #         },
-    #         u'funding-sources': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/45ad438b-dc6f-4210-b9d7-f651a870265b/funding-sources',
-    #             u'resource-type': u'funding-source',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e',
+    #             u'resource-type': u'customer'
     #         },
     #         u'edit-form': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/45ad438b-dc6f-4210-b9d7-f651a870265b',
-    #             u'resource-type': u'customer',
-    #             u'type': u'application/vnd.dwolla.v1.hal+json; profile="https://github.com/dwolla/hal-forms"'
+    #             u'type': u'application/vnd.dwolla.v1.hal+json; profile="https://github.com/dwolla/hal-forms"',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e',
+    #             u'resource-type': u'customer'
+    #         },
+    #         u'funding-sources': {
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e/funding-sources',
+    #             u'resource-type': u'funding-source'
     #         }
     #     },
-    #     u'id': u'45ad438b-dc6f-4210-b9d7-f651a870265b',
-    #     u'state': u'CA',
-    #     u'email': u'rongjian@joobali.com',
-    #     u'city': u'San Mateo',
-    #     u'postalCode': u'94403',
-    #     u'lastName': u'Lan',
     #     u'status': u'verified',
-    #     u'firstName': u'Rongjian',
+    #     u'id': u'255b92a7-300b-42fc-b72f-5301c0c6c42e',
+    #     u'state': u'CA',
+    #     u'postalCode': u'94403',
+    #     u'email': u'rongjian.lan@gmail.com',
+    #     u'city': u'San Mateo',
+    #     u'lastName': u'Lan',
+    #     u'firstName': u'Rongjian - verified',
     #     u'address1': u'118D 36th Avenue',
-    #     u'phone': u'3015386558',
-    #     u'type': u'personal'
+    #     u'type': u'personal',
+    #     u'phone': u'3015386558'
     # }
     customer = account_token.get(customer_url).body
+    logger.info('Get Dwolla Customer: %s' % customer)
     result = {}
-    result['state'] = customer['state']
-    result['email'] = customer['email']
-    result['city'] = customer['city']
-    result['postal_code'] = customer['postalCode']
-    result['last_name'] = customer['lastName']
     result['status'] = customer['status']
-    result['first_name'] = customer['firstName']
-    result['address'] = customer['address1']
-    result['phone'] = customer['phone']
-    result['type'] = customer['type']
-    result['funding_source_url'] = customer['_links']['funding-sources']['href']
+    # TODO: need to fetch data ONLY if present
+    # result['state'] = customer['state']
+    # result['email'] = customer['email']
+    # result['city'] = customer['city']
+    # result['postal_code'] = customer['postalCode']
+    # result['last_name'] = customer['lastName']
+    # result['first_name'] = customer['firstName']
+    # result['address'] = customer['address1']
+    # result['phone'] = customer['phone']
+    # result['type'] = customer['type']
+    # result['funding_source_url'] = customer['_links']['funding-sources']['href']
     return result
 
 
