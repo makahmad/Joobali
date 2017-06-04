@@ -14,3 +14,8 @@ indexes:
   properties:
   - name: enrollment_key
   - name: start_date
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: startDate
