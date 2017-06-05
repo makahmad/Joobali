@@ -73,12 +73,14 @@
                                             ng-click="$ctrl.openStartDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
+
+                    <div class="input-group" >
+                       <span class="input-group-addon angular-with-newlines fee formInstructions" ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a due date based on your selected program. For one-time payments, create a new invoice from the Invoices page.</span>
+                    </div>
+
                 </div>
 								
-                <div class="input-group" >
-                   <span class="input-group-addon angular-with-newlines fee formInstructions" ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp;{{$ctrl.programInfoDisplay}}</span>
-                </div>
-								
+
                 <div class="form-group"
                      ng-class="{'has-error': addEnrollmentForm.endDate.$invalid && addEnrollmentForm.endDate.$touched}"
                      ng-show="$ctrl.newEnrollment.program">
