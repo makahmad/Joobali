@@ -209,6 +209,10 @@ def provider_signup(request):
 
 
 def parent_signup(request):
+    loggedIn = False
+    if request.session.get('email'):
+        loggedIn = True
+
     if request.method == 'GET':
         token_id = request.GET['t']
         verification_token = get_parent_signup_verification_token(token_id)
@@ -229,7 +233,9 @@ def parent_signup(request):
                  'invitation_token': token_id,
                  'child_first_name': child_first_name,
                  'child_dob': child_dob,
-                 'provider_school_name': provider_school_name},
+                 'provider_school_name': provider_school_name,
+                 'loggedIn': loggedIn,
+                 'email': request.session.get('email')},
                 template.RequestContext(request)
             )
         else:
