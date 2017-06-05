@@ -144,7 +144,8 @@ def provider_signup(request):
                 {'form': form,
                  'host': get_default_version_hostname(),
                  'captcha': captcha_results['success'],
-                 'beta_error': True },
+                 'beta_error': True ,
+		         'home_url': get_default_version_hostname()},
                 template.RequestContext(request)
             )
         # Remove above snippet once we are out of Beta
@@ -190,7 +191,8 @@ def provider_signup(request):
                 send_provider_email_address_verification(token, host=get_default_version_hostname())
                 return render_to_response('login/provider_signup_confirmation.html',
                                           {'form': form,
-                                           'email': email},
+                                           'email': email,
+		                                   'home_url': get_default_version_hostname()},
                                           template.RequestContext(request))
                 # return HttpResponseRedirect('/login')
             else:
@@ -200,7 +202,8 @@ def provider_signup(request):
         'login/provider_signup.html',
         {'form': form,
          'host': get_default_version_hostname(),
-         'captcha': captcha_results['success']},
+         'captcha': captcha_results['success'],
+		  'home_url': get_default_version_hostname()},
         template.RequestContext(request)
     )
 
@@ -230,7 +233,8 @@ def parent_signup(request):
                  'invitation_token': token_id,
                  'child_first_name': child_first_name,
                  'child_dob': child_dob,
-                 'provider_school_name': provider_school_name},
+                 'provider_school_name': provider_school_name,
+		         'home_url': get_default_version_hostname()},
                 template.RequestContext(request)
             )
         else:

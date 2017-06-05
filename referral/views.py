@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response
 from common.session import check_session
 from django import template
 from django.http import HttpResponseRedirect,HttpResponse
+from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 from referral import models
@@ -50,7 +51,8 @@ def referralForm(request):
                 {'form': form,
                  'loggedIn': loggedIn,
                  'email': request.session.get('email'),
-                 'sent': 'true'
+                 'sent': 'true',
+			      'HOME_URL': get_default_version_hostname()
                  },
                 template.RequestContext(request)
             )
@@ -60,7 +62,8 @@ def referralForm(request):
         {'form': form,
          'loggedIn': loggedIn,
          'email': request.session.get('email'),
-         'sent': 'false'
+         'sent': 'false',
+		 'home_url': get_default_version_hostname()
          },
         template.RequestContext(request)
     )

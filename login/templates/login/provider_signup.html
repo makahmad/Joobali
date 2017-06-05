@@ -212,8 +212,7 @@
     </div>
 </div>
 
-<footer ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>
-
+<footer onload="home_url = '{{home_url}}'" ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>
 
 </body>
 </html>

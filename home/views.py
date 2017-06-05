@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django import template
 from django.http import HttpResponse
 from login.models import Provider
+from google.appengine.api.app_identity import get_default_version_hostname
 from manageprogram.models import Program
 import json
 import logging
@@ -21,7 +22,8 @@ def index(request):
 		'home/index.html',
 		{
 			'loggedIn': loggedIn,
-			'email': request.session.get('email')
+			'email': request.session.get('email'),
+		    'home_url': get_default_version_hostname()
 		 },
 		template.RequestContext(request)
 	)
