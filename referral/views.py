@@ -23,6 +23,11 @@ ReferralForm = model_form(models.Referral)
 
 def referralForm(request):
     """A form function to handle referral form GET and POST requests"""
+
+    loggedIn = False
+    if request.session.get('email'):
+        loggedIn = True
+
     form = ReferralForm()
     if request.method == 'POST':
         referral = models.Referral()
@@ -43,7 +48,10 @@ def referralForm(request):
 
     return render_to_response(
         'referral/referralform.html',
-        {'form': form},
+        {'form': form,
+         'loggedIn': loggedIn,
+         'email': request.session.get('email')
+         },
         template.RequestContext(request)
     )
 

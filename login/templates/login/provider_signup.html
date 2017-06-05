@@ -1,6 +1,6 @@
 ﻿<!DOCTYPE html>
 {% load staticfiles %}
-<html>
+<html ng-app="password_module">
 <head>
     <title>Joobali - Provider Registration</title>
     <meta charset="utf-8">
@@ -39,44 +39,45 @@
 
 <body id="signUp">
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button> -->
-            <a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png"
-                                                  class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
-            &nbsp;
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                {% if loggedIn %}
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{ email }}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Profile</a></li>
-                        <li><a href="/home/dashboard">Dashboard</a></li>
-                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                <li>
-                    <a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a>
-                </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+						 <a class="logoLink" href="#"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
+	&nbsp;
+			</div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav navbar-right">
+					{% if loggedIn %}
+					<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                  {{ email }}
+                  <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+				<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
+                  <li><a href="/home/dashboard#!/profile">Profile</a></li>
+
+                <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+              </ul>
+          </li>
+        {% else %}
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+          <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        {% endif %}
+	      </ul>
+	    </div> <!-- end .#myNavbar -->
+		</div> <!-- end .container -->
+	</nav>
+
 
 <div class="jumbotron">
     <div class="row">
-        <div ng-app="password_module" ng-controller="credentialsController" class="profileFormContainer container">
+        <div  ng-controller="credentialsController" class="profileFormContainer container">
             <div class="profileFormHeader">
                 <h2 class="profile-title">Provider Sign up <br /></h2>
 								<center>Don't worry, parents! Soon you'll be able to sign up too and refer your provider directly to Joobali.</center>
@@ -211,63 +212,8 @@
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <br/>
-    <div class
-    "row text-center">
-    <div class="col-sm-12 text-center">
-        <a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
-    </div>
-    </div>
-    <div class
-    "row text-center">
-    <div class="col-sm-3 text-center">
-        <h4>Providers </h4>
-        <ul>
-            <li><a href="/login/signup">Sign Up &amp; Pricing</a></li>
-            <li>Resources</li>
-            <li>Provider Care</li>
-            <li>Request a Feature/Optimization</li>
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>Parents </h4>
-        <ul>
-            <li>Sign Up</li>
-            <li><a href="/referral">Refer your Provider</a></li>
-            <li>Parent Care</li>
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>About </h4>
-        <ul>
-            <li>About Joobali</li>
-            <li>Contact</li>
-						<li><a href="/login/termsofservice">Terms and Conditions</a></li>
-						<li><a href="/login/privacypolicy">Privacy Policy</a></li>
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>Find Us On</h4>
-        <ul>
-            <li><a href="https://twitter.com/joobalicare"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
-            </li>
-            <li><a href="https://www.facebook.com/joobalicare"><i class="fa fa-facebook" aria-hidden="true"></i>
-                Facebook</a></li>
-            <li><a href="https://www.instagram.com/joobalicare/"><i class="fa fa-instagram" aria-hidden="true"></i>
-                Instagram</a></li>
-            <li><a href="https://www.linkedin.com/company/joobali"><i class="fa fa-linkedin-square"
-                                                                      aria-hidden="true"></i> LinkedIn</a></li>
-        </ul>
-    </div>
-    </div>
-    <br/>
-    <br/>
-    <div class
-    "row text-center" style="clear:both;">
-    <p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p>
-    </div>
-</footer>
+<footer ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>
+
 
 </body>
 </html>

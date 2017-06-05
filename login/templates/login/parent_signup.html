@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html>
+<html ng-app="password_module">
 <head>
     <title>Joobali - Parent Registration</title>
     <meta charset="utf-8">
@@ -62,7 +62,7 @@
 
 <div class="jumbotron">
     <div class="row">
-        <div ng-app="password_module" ng-controller="credentialsController" class="profileFormContainer container">
+        <div  ng-controller="credentialsController" class="profileFormContainer container">
             <div class="profileFormHeader">
                 <h2 class="profile-title">                   Provider <b>{{ provider_school_name }}</b> invites you to signup as parent for
                     your child
@@ -168,72 +168,7 @@
     </div>
 </div>
 
-<footer class="container-fluid text-center">
-    <br/>
-    <div class
-    "row text-center">
-    <div class="col-sm-12 text-center">
-        <a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
-    </div>
-    </div>
-    <div class
-    "row text-center">
-    <div class="col-sm-3 text-center">
-        <h4>Providers </h4>
-        <ul>
-            <li><a href="/login/signup">Sign Up &amp; Pricing</a></li>
-            <li>Resources</li>
-            <li>Terms and Conditions</li>
-            <li>Provider Care</li>
-            <li>Request a Feature/Optimization</li>
-            <!-- <li><a href="#">ONE</a></li>
-            <li><a href="#">TWO</a></li>
-            <li><a href="#">THREE</a></li> -->
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>Parents </h4>
-        <ul>
-            <li>Sign Up</li>
-            <li><a href="/referral">Refer your Provider</a></li>
-            <li>Terms of Use</li>
-            <li>Parent Care</li>
-            <!-- <li><a href="#">ONE</a></li>
-            <li><a href="#">TWO</a></li>
-            <li><a href="#">THREE</a></li> -->
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>About </h4>
-        <ul>
-            <li>About Joobali</li>
-            <li>Contact</li>
-            <!-- <li><a href="#">Legal</a></li>
-            <li><a href="#">TWO</a></li>
-            <li><a href="#">THREE</a></li> -->
-        </ul>
-    </div>
-    <div class="col-sm-3 text-center">
-        <h4>Find Us On</h4>
-        <ul>
-            <li><a href="https://twitter.com/joobalicare"><i class="fa fa-twitter" aria-hidden="true"></i> Twitter</a>
-            </li>
-            <li><a href="https://www.facebook.com/joobalicare"><i class="fa fa-facebook" aria-hidden="true"></i>
-                Facebook</a></li>
-            <li><a href="https://www.instagram.com/joobalicare/"><i class="fa fa-instagram" aria-hidden="true"></i>
-                Instagram</a></li>
-            <li><a href="https://www.linkedin.com/company/joobali"><i class="fa fa-linkedin-square"
-                                                                      aria-hidden="true"></i> LinkedIn</a></li>
-        </ul>
-    </div>
-    </div>
-    <br/>
-    <br/>
-    <div class
-    "row text-center" style="clear:both;">
-    <p>© Joobali.com. All rights reserved. <a href="{{ HOME_URL }}" title="Joobali">www.joobali.com</a></p>
-    </div>
-</footer>
+<footer ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>
 
 </body>
 </html>

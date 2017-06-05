@@ -107,6 +107,11 @@ def provider_signup(request):
     captcha_results = dict()
     captcha_results['success'] = False
 
+    loggedIn = False
+    if request.session.get('email'):
+        loggedIn = True
+
+
     if request.method == 'POST':
         form = ProviderForm(request.POST)
 
@@ -196,7 +201,9 @@ def provider_signup(request):
         'login/provider_signup.html',
         {'form': form,
          'host': get_default_version_hostname(),
-         'captcha': captcha_results['success']},
+         'captcha': captcha_results['success'],
+         'loggedIn': loggedIn,
+         'email': request.session.get('email')},
         template.RequestContext(request)
     )
 
