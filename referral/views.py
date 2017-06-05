@@ -10,6 +10,7 @@ from referral import models
 from common.email.referral import send_referral_email,send_provider_referral_email
 import logging
 from login.models import Provider
+from os import environ
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +25,7 @@ ReferralForm = model_form(models.Referral)
 
 def referralForm(request):
     """A form function to handle referral form GET and POST requests"""
+    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
 
     loggedIn = False
     if request.session.get('email'):
@@ -52,7 +54,7 @@ def referralForm(request):
                  'loggedIn': loggedIn,
                  'email': request.session.get('email'),
                  'sent': 'true',
-			      'HOME_URL': get_default_version_hostname()
+			      'home_url': http_prefix + get_default_version_hostname()
                  },
                 template.RequestContext(request)
             )
@@ -63,7 +65,7 @@ def referralForm(request):
          'loggedIn': loggedIn,
          'email': request.session.get('email'),
          'sent': 'false',
-		 'home_url': get_default_version_hostname()
+		 'home_url': http_prefix + get_default_version_hostname()
          },
         template.RequestContext(request)
     )

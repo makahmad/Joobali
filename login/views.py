@@ -106,6 +106,7 @@ def provider_signup(request):
     form = ProviderForm()
     captcha_results = dict()
     captcha_results['success'] = False
+    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
 
     # If the provider is logged in, redirect them to the dashboard
     if request.session.get('email'):
@@ -145,7 +146,7 @@ def provider_signup(request):
                  'host': get_default_version_hostname(),
                  'captcha': captcha_results['success'],
                  'beta_error': True ,
-		         'home_url': get_default_version_hostname()},
+		         'home_url': http_prefix + get_default_version_hostname()},
                 template.RequestContext(request)
             )
         # Remove above snippet once we are out of Beta
@@ -192,7 +193,7 @@ def provider_signup(request):
                 return render_to_response('login/provider_signup_confirmation.html',
                                           {'form': form,
                                            'email': email,
-		                                   'home_url': get_default_version_hostname()},
+		                                   'home_url': http_prefix + get_default_version_hostname()},
                                           template.RequestContext(request))
                 # return HttpResponseRedirect('/login')
             else:
@@ -203,12 +204,14 @@ def provider_signup(request):
         {'form': form,
          'host': get_default_version_hostname(),
          'captcha': captcha_results['success'],
-		  'home_url': get_default_version_hostname()},
+		  'home_url': http_prefix + get_default_version_hostname()},
         template.RequestContext(request)
     )
 
 
 def parent_signup(request):
+    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+
     # If the parent is logged in, redirect them to their dashboard
     if request.session.get('email'):
         return HttpResponseRedirect("/parent")
@@ -234,7 +237,7 @@ def parent_signup(request):
                  'child_first_name': child_first_name,
                  'child_dob': child_dob,
                  'provider_school_name': provider_school_name,
-		         'home_url': get_default_version_hostname()},
+		         'home_url': http_prefix + get_default_version_hostname()},
                 template.RequestContext(request)
             )
         else:
