@@ -320,6 +320,48 @@ def get_funded_transfer(transfer_url):
     #     u'id': u'48d9977f-c50a-e711-80ef-0aa34a9b2388',
     #     u'created': u'2017-03-17T03:55:03.267   Z'
     # }
+    # Response in question:
+    # {
+    #     u'status': u'processed',
+    #     u'amount': {
+    #         u'currency': u'usd',
+    #         u'value': u'73.50'
+    #     },
+    #     u'_links': {
+    #         u'self': {
+    #             u'resource-type': u'transfer',
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers/71649077-5c49-e711-80f2-0aa34a9b2388',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'destination': {
+    #             u'resource-type': u'customer',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/441b7124-12a0-4d76-a9af-48ef513408cc',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'source': {
+    #             u'resource-type': u'customer',
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/c5313382-e157-4429-b1aa-6dd4564453c6',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'destination-funding-source': {
+    #             u'resource-type': u'funding-source',
+    #             u'href': u'https://api-sandbox.dwolla.com/funding-sources/e2e57628-11a9-4878-a1f3-fb0e7edc4d5c',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'fees': {
+    #             u'resource-type': u'fee',
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers/71649077-5c49-e711-80f2-0aa34a9b2388/fees',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'source-funding-source': {
+    #             u'resource-type': u'funding-source',
+    #             u'href': u'https://api-sandbox.dwolla.com/funding-sources/96e37ac1-8e14-4a19-8255-1460a1e26c15',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         }
+    #     },
+    #     u'id': u'71649077-5c49-e711-80f2-0aa34a9b2388',
+    #     u'created': u'2017-06-04T19:31:55.917   Z'
+    # }
     transfer = account_token.get(transfer_url).body
     logger.info(transfer)
     result = {}
@@ -328,7 +370,7 @@ def get_funded_transfer(transfer_url):
     result['source_funding_url'] = transfer['_links']['source-funding-source']['href']
     result['source_customer_url'] = transfer['_links']['source']['href']
     result['destination_customer_url'] = transfer['_links']['destination']['href']
-    result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href']
+    result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href'] if 'funding-transfer' in transfer['_links'] else None
     result['fee_transfer_url'] = transfer['_links']['fees']['href']
     result['status'] = transfer['status']
     result['created_date'] = transfer['created'][0:10]
