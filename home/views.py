@@ -1,5 +1,4 @@
 from common.json_encoder import JEncoder
-from os import environ
 from common.session import check_session
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
@@ -20,13 +19,12 @@ def index(request):
     if request.session.get('email'):
         loggedIn = True
 
-    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
     return render_to_response(
         'home/index.html',
         {
             'loggedIn': loggedIn,
             'email': request.session.get('email'),
-            'home_url': http_prefix + get_default_version_hostname()
+            'home_url': 'https://www.joobali.com'
         },
         template.RequestContext(request)
     )
