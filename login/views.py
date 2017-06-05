@@ -107,10 +107,9 @@ def provider_signup(request):
     captcha_results = dict()
     captcha_results['success'] = False
 
-    loggedIn = False
+    # If the provider is logged in, redirect them to the dashboard
     if request.session.get('email'):
-        loggedIn = True
-
+        return HttpResponseRedirect("/home/dashboard")
 
     if request.method == 'POST':
         form = ProviderForm(request.POST)
@@ -201,17 +200,15 @@ def provider_signup(request):
         'login/provider_signup.html',
         {'form': form,
          'host': get_default_version_hostname(),
-         'captcha': captcha_results['success'],
-         'loggedIn': loggedIn,
-         'email': request.session.get('email')},
+         'captcha': captcha_results['success']},
         template.RequestContext(request)
     )
 
 
 def parent_signup(request):
-    loggedIn = False
+    # If the parent is logged in, redirect them to their dashboard
     if request.session.get('email'):
-        loggedIn = True
+        return HttpResponseRedirect("/parent")
 
     if request.method == 'GET':
         token_id = request.GET['t']
@@ -233,9 +230,7 @@ def parent_signup(request):
                  'invitation_token': token_id,
                  'child_first_name': child_first_name,
                  'child_dob': child_dob,
-                 'provider_school_name': provider_school_name,
-                 'loggedIn': loggedIn,
-                 'email': request.session.get('email')},
+                 'provider_school_name': provider_school_name},
                 template.RequestContext(request)
             )
         else:
