@@ -166,6 +166,8 @@ ProfileComponentController.prototype.dwollaVerify = function(markError) {
             // when the response is available
             if (response.data == 'success') {
                 this.profile.dwolla_status = 'verified'
+                alert("Verification Succeeded.")
+                location.reload();
             } else {
                 alert(response.data);
             }

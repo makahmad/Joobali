@@ -55,17 +55,35 @@ def getProfile(request):
         dict['ssn'] = provider.ssn if provider.ssn else None
         dict['zipcode'] = provider.zipcode if provider.zipcode else None
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
-        try:
-            dwolla_customer = dwolla.get_customer(provider.customerId)
-            if dwolla_customer:
-                dict['dwolla_status'] = dwolla_customer['status']
-        except ValidationError:
-            dict['dwolla_status'] = 'Unknown'
+        if dict['dwolla_status'] == None:
+            try:
+                dwolla_customer = dwolla.get_customer(provider.customerId)
+                if dwolla_customer:
+                    dict['dwolla_status'] = dwolla_customer['status']
+            except ValidationError:
+                dict['dwolla_status'] = 'Unknown'
         return HttpResponse(json.dumps([JEncoder().encode(dict)]))
 
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
+def get_dwolla_status(request):
+    """Handles get profile request. Returns the profile with provided email"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    provider = Provider.get_by_id(request.session['user_id'])
+    if provider is not None:
+        if provider.dwolla_status is None:
+            try:
+                dwolla_customer = dwolla.get_customer(provider.customerId)
+                if dwolla_customer:
+                    provider.dwolla_status = dwolla_customer['status']
+                    provider.put()
+            except ValidationError:
+                provider.dwolla_status = None
+        return HttpResponse(provider.dwolla_status)
+    return HttpResponse('Unknown')
 
 def updateProfile(request):
     """Updates the provider profile"""
@@ -159,9 +177,10 @@ def dwolla_verify(request):
             'city': profile['city'],
             'state': profile['state'],
             'postalCode': profile['zipcode'],
-            'dateOfBirth': datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date().strftime('%Y-%m-%d'),
-            'ssn': profile['ssn'],
+            #'dateOfBirth': datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date().strftime('%Y-%m-%d'),
+            #'ssn': profile['ssn'],
         }
+        customer = None
         try:
             customer = account_token.post(provider.customerId, request_body)
             logger.info("customer %s" % customer.body)
@@ -182,6 +201,8 @@ def dwolla_verify(request):
         provider.email = profile['email']
         provider.ssn = str(profile['ssn'])
         provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
+        if customer and 'status' in customer.body:
+            provider.dwolla_status = customer.body['status']
         provider.put()
 
     # return render_to_response(

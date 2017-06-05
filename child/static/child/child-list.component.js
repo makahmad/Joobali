@@ -38,14 +38,16 @@ ChildListController.prototype.refreshList = function() {
 
 ChildListController.prototype.openAddChildModal = function() {
     console.log("Opening Add Enrollment Modal");
-    var modalInstance = this.uibModal_.open({
-        animation: true,
-        templateUrl: '/static/child/child-form.template.html',
-        controller: 'ChildFormController',
-        controllerAs: '$ctrl',
-    }).closed.then(angular.bind(this, function() {
-        this.refreshList();
-    }));
+    if (this.checkRequirements()) { // Check prerequisites for provider to enroll a child
+        var modalInstance = this.uibModal_.open({
+            animation: true,
+            templateUrl: '/static/child/child-form.template.html',
+            controller: 'ChildFormController',
+            controllerAs: '$ctrl',
+        }).closed.then(angular.bind(this, function() {
+            this.refreshList();
+        }));
+    }
 };
 
 ChildListController.prototype.getProgramData = function() {

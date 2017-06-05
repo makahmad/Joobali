@@ -9,4 +9,5 @@ urlpatterns = [
 	url(r'^updatelogo', views.updateLogo, name='updateLogo'),
 	url(r'^validateemail', views.validateEmail, name='validateEmail'),
 	url(r'^dwollaverify', views.dwolla_verify, name='dwollaVerify'),
+	url(r'^getdwollastatus', views.get_dwolla_status, name='getDwollaStatus'),
 ]

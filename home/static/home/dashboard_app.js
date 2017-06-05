@@ -7,9 +7,12 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
+	this.scope_.dwollaStatus = 'Unknown';
 	this.initialize($uibModal);
 	this.scope_.module = '/programs'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
+
+    self = this;
 
     //IF URL = http://joobali.com/home/dashboard#!/programs GET /programs
     //used for left hand nav menu highlighting
@@ -38,6 +41,19 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         });
       };
 
+    this.scope_.checkRequirements = function() {
+        console.log("Checking provider requriements");
+        if (self.scope_.fundings.length == 0) {
+            alert("You haven't added any bank account to receive payments. Let's do it now.");
+            self.scope_.changeView('/billing');
+            return false;
+        } else if (self.scope_.dwollaStatus != 'verified') {
+            alert("You haven't add enough profile information to be a verified user. Let's do it now.");
+            self.scope_.changeView('/profile');
+            return false;
+        }
+        return true;
+    }
 
 };
 
@@ -52,6 +68,14 @@ DashboardController.prototype.initialize = function($uibModal) {
                 component: 'initSetupComponent',
             });
 	    }
+	}), function errorCallback(response) {
+	    // Do nothing
+	});
+    this.http_({
+	  method: 'GET',
+	  url: '/profile/getdwollastatus'
+	}).then(angular.bind(this, function successCallback(response) {
+	    this.scope_.dwollaStatus = response.data;
 	}), function errorCallback(response) {
 	    // Do nothing
 	});
@@ -138,6 +162,7 @@ DashboardController.prototype.selectProgram = function(program) {
     this.location_.path('/program/' + program.id);
 }
 
+
 app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute'])
     .config(['$httpProvider',
         function($httpProvider) {
@@ -154,7 +179,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
-                 .when('/child/list', {template: '<child-list></child-list>'})
+                 .when('/child/list', {template: '<child-list check-requirements="checkRequirements()"></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .otherwise('/programs'); //.otherwise('/dashboard');
@@ -374,7 +399,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController]
+        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],
+        bindings: {
+            checkRequirements : '&'
+        }
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
