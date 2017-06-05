@@ -59,7 +59,7 @@
 		  <div class="modal-header">
 		    <h4 class="modal-title">Want your childcare provider to join Joobali? Refer them here!</h4>
 		  </div> <!-- end modal-header -->
-		  <div class="modal-body">
+		  <div class="modal-body" ng-show="!{{sent}}">
 
 			  <form role="form" class="well" action="/referral/" method="POST">
 				{% csrf_token %}
@@ -81,7 +81,14 @@
 				  </div>
 				  <center><button type="submit" class="btn btn-default btn-lg joobali">Refer</button></center>
 			  </form>
-				</div><!-- end col-centered programOerviewForm -->
+				</div><!-- end col-centered  -->
+
+
+                <div class="modal-body" ng-show="{{sent}}">
+                        Referral email sent, thank you.
+                </div><!-- end col-centered  -->
+
+
 			</div> <!-- end modal body -->
 	</div>
 <footer ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>

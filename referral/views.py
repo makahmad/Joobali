@@ -29,6 +29,7 @@ def referralForm(request):
         loggedIn = True
 
     form = ReferralForm()
+
     if request.method == 'POST':
         referral = models.Referral()
         form = ReferralForm(request.POST)
@@ -44,13 +45,22 @@ def referralForm(request):
             send_referral_email(referral.schoolName, referral.schoolEmail, referral.referrerName,
                                 emailTemplate.render(data), "Joobali <howdy@joobali.com>")
             logger.info("INFO: successfully sent referral email:" + str(referral))
-            return HttpResponseRedirect('/referral')
+            return render_to_response(
+                'referral/referralform.html',
+                {'form': form,
+                 'loggedIn': loggedIn,
+                 'email': request.session.get('email'),
+                 'sent': 'true'
+                 },
+                template.RequestContext(request)
+            )
 
     return render_to_response(
         'referral/referralform.html',
         {'form': form,
          'loggedIn': loggedIn,
-         'email': request.session.get('email')
+         'email': request.session.get('email'),
+         'sent': 'false'
          },
         template.RequestContext(request)
     )
