@@ -23,6 +23,8 @@
     <script src="{{ STATIC_URL }}home/script.js"></script>
 
     <script type="text/javascript" language="javascript">
+        if(window.location.href.includes("joobali.com"))
+            ga('send', 'event', 'Provider', 'sign up page');
 
         function validateform(){
         var captcha_response = grecaptcha.getResponse();
@@ -33,7 +35,8 @@
                 return false;
             }
         }
-        // ]]></script>
+        // ]]>
+    </script>
 
 </head>
 

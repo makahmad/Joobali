@@ -20,7 +20,10 @@
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
     <script src="{{ STATIC_URL }}login/password_module.js"></script>
     <script src="{{ STATIC_URL }}home/script.js"></script>
-
+    <script type="text/javascript" language="javascript">
+        if(window.location.href.includes("joobali.com"))
+            ga('send', 'event', 'Parent', 'sign up page');
+    </script>
 </head>
 
 <body id="signUp">

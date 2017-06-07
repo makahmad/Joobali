@@ -20,6 +20,12 @@
 		}
 	</style>
     <script src="{{ STATIC_URL }}home/script.js"></script>
+
+	<script type="text/javascript" language="javascript">
+		if(window.location.href.includes("joobali.com"))
+			ga('send', 'event', 'Provider', 'signed up');
+	</script>
+
 </head>
 <body>
 	<div class="container">
