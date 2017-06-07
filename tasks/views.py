@@ -218,6 +218,28 @@ def dwolla_webhook(request):
     #             u'href': u'https://api-uat.dwolla.com/funding-sources/553c6c1f-0941-45dd-9038-2c9a32ce46ce'},
     #         u'account': {u'href': u'https://api-uat.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'}},
     #                    u'timestamp': u'2017-04-26T04:04:27.831Z', u'id': u'88e0c745-0c2d-4441-a56b-b1c08382781c'}
+    # When the money stays in dwolla balance.
+    # {
+    #     u'created': u'2017-06-05T03:32:03.943   Z',
+    #     u'resourceId': u'71649077-5c49-e711-80f2-0aa34a9b2388',
+    #     u'topic': u'customer_transfer_completed',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/441b7124-12a0-4d76-a9af-48ef513408cc'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api-sandbox.dwolla.com/events/3c2e2daa-8fe3-4b81-9ca4-e964ae4186b3'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api-sandbox.dwolla.com/transfers/71649077-5c49-e711-80f2-0aa34a9b2388'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api-sandbox.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-06-05T03:32:03.943   Z',
+    #     u'id': u'3c2e2daa-8fe3-4b81-9ca4-e964ae4186b3'
+    # }
     logger.info(webhook_content)
     webhook_data = parse_webhook_data(webhook_content)
     if DwollaEvent.get_by_id(webhook_data['id']) != None:
