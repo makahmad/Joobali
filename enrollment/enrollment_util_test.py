@@ -1,9 +1,7 @@
-import os
 import unittest
 
 from datetime import datetime
-from google.appengine.ext import ndb
-from google.appengine.ext import testbed
+from google.appengine.ext import testbed, ndb
 
 from child.models import Child
 from common.exception.JoobaliRpcException import JoobaliRpcException
@@ -12,6 +10,7 @@ from login.models import Provider
 from manageprogram.models import Program
 from manageprogram.views import DATE_FORMAT
 from parent.models import Parent
+
 
 class EnrollmentUtilTestCase(unittest.TestCase):
 
@@ -123,7 +122,7 @@ class EnrollmentUtilTestCase(unittest.TestCase):
             'child_key': self.test_child.key,
             'program_key': self.test_program.key,
             'status': 'initialized',
-            'start_date': '02/15/2017',
+            'start_date': '05/25/2017',
             'end_date': '',
             'waive_registration': True
         }

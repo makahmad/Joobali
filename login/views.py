@@ -6,13 +6,14 @@ from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 
-from common.session import check_session
+from common.session import check_session, is_provider, is_parent
 from common.dwolla import create_account_token
 from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent, \
     send_provider_email_address_verification
 
 from login import models
 from home.models import InitSetupStatus
+from login.login_util import provider_login, parent_login
 from login.models import ProviderStatus, Provider, FailedBetaLogins
 from parent.models import Parent
 from parent import parent_util
@@ -102,14 +103,17 @@ def get_client_ip(request):
 
 
 def provider_signup(request):
+    # If the user is logged in, redirect them to the dashboard / parent page
+    if check_session(request):
+        if is_provider(request):
+            return HttpResponseRedirect("/home/dashboard")
+        elif is_parent(request):
+            return HttpResponseRedirect("/parent")
+
     logger.info("request.POST %s" % request.POST)
     form = ProviderForm()
     captcha_results = dict()
     captcha_results['success'] = False
-
-    # If the provider is logged in, redirect them to the dashboard
-    if request.session.get('email'):
-        return HttpResponseRedirect("/home/dashboard")
 
     if request.method == 'POST':
         form = ProviderForm(request.POST)
@@ -144,8 +148,8 @@ def provider_signup(request):
                 {'form': form,
                  'host': get_default_version_hostname(),
                  'captcha': captcha_results['success'],
-                 'beta_error': True ,
-		         'home_url': 'https://www.joobali.com'},
+                 'beta_error': True,
+                 'home_url': 'https://www.joobali.com'},
                 template.RequestContext(request)
             )
         # Remove above snippet once we are out of Beta
@@ -239,6 +243,7 @@ def parent_signup(request):
             )
         else:
             return HttpResponse("Need a valid token id for parent to signup")
+
     if request.method == 'POST':
         form = ParentForm(request.POST)
 
@@ -337,24 +342,20 @@ def set_init_setup_finished(request):
 
 
 @ndb.transactional(xg=True)
-def get_or_insert(model, email, form):
-    result = models.Unique.get_by_id(email)
+def get_or_insert(email, form):
+    result = Provider.Unique.get_by_id(email)
     if result is not None:
         return result, False
 
-    user = model(id=model.get_next_available_id())
-    form.populate_obj(user)
+    provider = Provider(id=Provider.get_next_available_id())
+    form.populate_obj(provider)
 
-    user.password = pwd_context.encrypt(user.password)
-    user.put()
+    provider.password = pwd_context.encrypt(provider.password)
+    provider.put()
     unique = models.Unique(id=email)
-    if model._get_kind() == "Provider":
-        unique.provider_key = user.key
-    else:
-        unique.parent_key = user.key
     unique.put()
-    logger.info("INFO: successfully stored " + model._get_kind() + ":" + str(user))
-    return user, True
+    logger.info("INFO: successfully stored Provider :" + str(provider))
+    return provider, True
 
 
 def forgot(request):
@@ -453,66 +454,38 @@ def reset(request):
 
 def login(request):
     form = LoginForm()
-    return_to = request.GET.get('return_to')
-    zendesk = request.GET.get('z')
-
-    redirect = ''
-    if request.POST.get('url') and '#!' in request.POST.get('url'):
-        redirect = '/#!'+request.POST.get('url').split('#!')[1]
-
-    if return_to == 'None':
-        return_to = None
-
-    if zendesk == 'None':
-        zendesk = None
 
     if request.method == 'POST':
         form = LoginForm(request.POST)
         form.validate()
         email = request.POST.get('email')
         password = request.POST.get('password')
-        if email and password:
-            is_provider = True
-            query = models.Provider.query().filter(models.Provider.email == email)
-            result = query.get()
+        login_result = provider_login(email, password)
+        if login_result.is_succeeded() is False:
+            login_result = parent_login(email, password)
+        if login_result.is_succeeded():
+            # authentication succeeded.
+            logger.info('login successful')
+            request.session['email'] = login_result.email
+            request.session['name'] = login_result.name
+            request.session['user_id'] = login_result.user_id
+            request.session['is_provider'] = login_result.is_provider
+            request.session['dwolla_customer_url'] = login_result.dwolla_customer_url
+            logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
+        else:
+            form.email.errors = login_result.error_msg
 
-            if not result:
-                is_provider = False
-                query = Parent.query().filter(Parent.email == email)
-                result = query.get()
+    redirect = ''
+    if request.POST.get('url') and '#!' in request.POST.get('url'):
+        redirect = '/#!' + request.POST.get('url').split('#!')[1]
+    return_to = request.GET.get('return_to')
 
-                if not result:
-                    logger.info("Oops, those credentials don't match.");
-                    form.email.errors = "Oops, those credentials don't match."
-                    return render_to_response(
-                        'login/login.html',
-                        {'form': form},
-                        template.RequestContext(request))
-                else:
-                    name = result.first_name + ' ' + result.last_name
-            else:
-                name = result.firstName + ' ' + result.lastName
+    if return_to == 'None':
+        return_to = None
 
-            if isinstance(result, Provider):
-                if result.status.status != 'active':
-                    logger.info('Error: user has not yet verify email');
-                    form.email.errors = 'Error: user has not yet verify email'
-                    return render_to_response(
-                        'login/login.html',
-                        {'form': form},
-                        template.RequestContext(request))
-
-            if result and pwd_context.verify(password, result.password):
-                # authentication succeeded.
-                logger.info('login successful')
-                request.session['email'] = email
-                request.session['name'] = name
-                request.session['user_id'] = result.key.id()
-                request.session['is_provider'] = is_provider
-                request.session['dwolla_customer_url'] = getCustomerUrl(email)
-                logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
-            else:
-                form.email.errors = 'Error: wrong combination of credential'
+    zendesk = request.GET.get('z')
+    if zendesk == 'None':
+        zendesk = None
 
     if check_session(request) and not zendesk:
         if request.session.get('is_provider') is True:

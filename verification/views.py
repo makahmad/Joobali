@@ -1,11 +1,11 @@
 import logging
-from django import template
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 
 from verification_util import get_provider_email_verification_token
 
 logger = logging.getLogger(__name__)
+
 
 def verify_provider_email(request):
     if request.method != 'GET':
@@ -19,7 +19,6 @@ def verify_provider_email(request):
     }
 
     if token is not None:
-
         provider = token.provider_key.get()
         provider.status.status = 'active'
         provider.put()
