@@ -182,6 +182,7 @@ def setupAutopay(request):
 	parent = Parent.get_by_id(request.session.get('user_id'))
 	invoice_id = data['invoice_id']
 	source = data['source']
+	today = date.today()
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		enrollments = get_invoice_enrollments(invoice)
@@ -206,12 +207,19 @@ def setupAutopay(request):
 
 			source_funding_source = get_funding_source(source)
 
+			first_transfer_date = enrollment.start_date
+			if first_transfer_date is None:
+				first_transfer_date = program.startDate
+			while first_transfer_date < today:
+				first_transfer_date = invoice_util.get_next_due_date(first_transfer_date, program.billingFrequency)
+
 			data = {
 				'transfer_type': 'Online',
 				'amount': '$' + str(amount),
 				'account_name': source_funding_source['name'],
 				'recipient': provider.schoolName,
 				'schedule': schedule,
+				'first_transfer_date': first_transfer_date.strftime('%A, %B %d %Y'),
 				'host': request.get_host(),
 				'support_phone': support_phone,
 			}
