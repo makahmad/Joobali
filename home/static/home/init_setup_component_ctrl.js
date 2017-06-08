@@ -173,6 +173,7 @@ InitSetupComponentController.prototype.moveToNext = function(curContent, curNav)
 	  curContent.next().addClass("current");
 
 	  if (curNav.next().attr('id') === "navStep3") {
+		  $("#initSetupSkipButton").hide();
 		  $("#initSetupNextButton").hide();
 		  $("#initSetupDoneButton").show();
 	  } else {
