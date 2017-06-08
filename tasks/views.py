@@ -329,7 +329,7 @@ def dwolla_webhook(request):
             'amount': '$' + str(amount),
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
-            'cancelled_date': webhook_data['event_date'],
+            'created_date': funded_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
