@@ -157,7 +157,7 @@ def provider_signup(request):
         if form.validate() and captcha_results['success']:
             email = request.POST.get('email')
 
-            (provider, created) = get_or_insert(models.Provider, email, form)
+            (provider, created) = get_or_insert(email, form)
             if created:
                 create_new_init_setup_status(provider.email)
 
