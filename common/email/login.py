@@ -45,7 +45,7 @@ def send_provider_email_address_verification(verification_token, host, sender_ad
     provider = verification_token.provider_key.get()
     message = mail.EmailMessage(
         sender=sender_address,
-        subject="Joobali: Please verify your email address")
+        subject="Joobali: Please confirm your email address")
 
     message.to = "%s" % provider.email
     http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'

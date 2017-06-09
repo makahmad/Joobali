@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Verification Status</title>
+    <title>User Confirmation Status</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -15,29 +15,27 @@
 </head>
 <body>
 <div class="container">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h4 class="modal-title">Log in to your account:</h4>
-        </div> <!-- end modal-header -->
-        <div class="modal-body">
-            <h2>
-                <p>
-                    Hi <b>{{schoolName}}</b> with email address <b>{{email}}</b>.
-                </p>
-                <p>
-                    Your email verification status is <b>{{status}}</b>.
-                </p>
-                <p>
-                    Since you accepted <a href="https://www.dwolla.com/legal/tos/">Dwolla Terms of Service</a> and Privacy Policy, we have created a Dwolla Customer Account for you so you can receive or transfer money online.
-                </p>
-            </h2>
-            <nav>
-                <h2>
-                    <label>Click <a href="/login">here</a> to login</label>
-                </h2>
-            </nav>
-        </div>
-    </div>
+		<!-- Modal content-->
+		<div class="modal-content">
+		  <div class="modal-header">
+		    <h4 class="modal-title">Thank You!</h4>
+				<img src="{{ STATIC_URL }}home/pics/icon_complete.png" class="img-responsive logo col-centered" alt="Joobali Website Logo">
+		  </div> <!-- end modal-header -->
+		  <div class="modal-body">
+				<div class="col-centered programOverviewForm">
+					  <div class="form-group">
+						  <b>{{schoolName}}</b>, your account has been confirmed.
+					  </div>
+
+				</div><!-- end col-centered programOverviewForm -->
+			</div> <!-- end modal body -->
+
+				<div class="modal-footer">
+					<a href="/login" class="btn btn-info btn-default joobali"><i class="fa fa-sign-in" aria-hidden="true"></i> &nbsp; Login &nbsp;</a>
+				</div>
+
+		</div> <!-- end modal-content -->	
+		
 </div>
 </body>
 </html>
