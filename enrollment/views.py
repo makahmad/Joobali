@@ -299,6 +299,7 @@ def resent_enrollment_invitation(request):
 
 
 def setupAutopay(request):
+    status = 'failure'
     data = json.loads(request.body)
     pay_days_before = data['payDaysBefore']
     source = data['bankAccountId']
@@ -308,7 +309,11 @@ def setupAutopay(request):
     enrollment = parent.invitation.enrollment_key.get()
     enrollment.autopay_source_id = source
     enrollment.pay_days_before = int(pay_days_before)
-    enrollment.status = 'active'
     enrollment.put()
 
-    return HttpResponse("success")
+    provider_id = enrollment.key.parent().id()
+    enrollment_id = enrollment.key.id()
+    parent_id = get_parent_id(request)
+    if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
+        status = 'success'
+    return HttpResponse(status)
