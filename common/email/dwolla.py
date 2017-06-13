@@ -16,6 +16,19 @@ def send_payment_created_email(parent_address, parent_name, school_name, amount,
     message.html = template
     message.send()
 
+def send_payment_created_email_to_provider(provider_address, provider_name, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
+    # [START send_mail]
+    message = mail.EmailMessage(
+        sender=sender_address,
+        subject="A payment to %s is created." % school_name)
+
+    message.to = "%s" % provider_address
+    message.body = """Hi, %s
+    Parent %s created a payment of amount $%s to you. Another email will be sent if the payment is completed.""" % (provider_name, parent_name, amount)
+
+    message.html = template
+    message.send()
+
 def send_payment_success_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(

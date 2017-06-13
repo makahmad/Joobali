@@ -130,10 +130,10 @@ def get_funding_source(funding_source_url):
     # }
     logger.info("Get Funding Source: %s" % funding_source_url)
     source = account_token.get(funding_source_url).body
-    logger.info("Get Funding Source: %s" % funding_source_url)
+    logger.info("Get Funding Source: %s" % source)
     result = {}
     result['name'] = source['name']
-    result['bank_name'] = source['bankName']
+    result['bank_name'] = source['bankName'] if 'bankName' in source else ''
     result['status'] = source['status']
     result['type'] = source['type']
     result['removed'] = source['removed']
@@ -368,6 +368,7 @@ def get_funded_transfer(transfer_url):
     result['amount'] = transfer['amount']['value']
     result['currency'] = transfer['amount']['currency']
     result['source_funding_url'] = transfer['_links']['source-funding-source']['href']
+    result['destination_funding_url'] = transfer['_links']['destination-funding-source']['href']
     result['source_customer_url'] = transfer['_links']['source']['href']
     result['destination_customer_url'] = transfer['_links']['destination']['href']
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href'] if 'funding-transfer' in transfer['_links'] else None

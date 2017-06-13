@@ -14,7 +14,10 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
     funding_sources = account_token.get(fundings_url)
     dest_funding_source_id = None # TODO(rongjian): allow users to set receiving bank source.
     for funding in funding_sources.body['_embedded']['funding-sources']:
-        dest_funding_source_id = funding['id']
+        logger.info(funding)
+        if funding['name'] != 'Balance' and funding['removed'] is False:
+            dest_funding_source_id = funding['id']
+            break
     request_body = {
         '_links': {
             'destination': {

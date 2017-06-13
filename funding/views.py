@@ -82,7 +82,7 @@ def makeTransfer(request):
             return HttpResponse("failure: payment amount must be equal to invoice amount")
         if invoice.is_paid():
             return HttpResponse("failure: the invoice has already been paid")
-        if invoice.dwolla_transfer_id:
+        if invoice.dwolla_transfer_id and invoice.is_processing():
             return HttpResponse("failure: payment for this invoice is in process")
 
     try:

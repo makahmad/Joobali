@@ -13,7 +13,7 @@ from common.dwolla import parse_webhook_data
 from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding_source
 from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
-from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_cancelled_email
+from common.email.dwolla import send_payment_success_email, send_payment_failure_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
 from common.dwolla import start_webhook, clear_webhook
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
@@ -202,7 +202,7 @@ def autopay(request):
 def dwolla_webhook_setup(request):
     logger.info("DWOLLA WEBHOOK SETUP")
     clear_webhook(request.get_host())
-    #start_webhook('%s://%s' % (request.scheme, request.get_host()))
+    start_webhook('%s://%s' % (request.scheme, request.get_host()))
     return HttpResponse(status=200)
 
 @csrf_exempt
@@ -271,6 +271,19 @@ def dwolla_webhook(request):
             'support_phone': support_phone
         }
         send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
+
+        destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
+        template = loader.get_template('funding/joobali-to-provider-transfer-created.html')
+        data = {
+            'transfer_type': 'Online',
+            'amount': '$' + str(amount),
+            'account_name': destination_funding_source['name'],
+            'sender': '%s %s' % (parent.first_name, parent.last_name),
+            'created_date': funded_transfer['created_date'],
+            'host': host,
+            'support_phone': support_phone
+        }
+        send_payment_created_email_to_provider(provider.email, provider.firstName, '%s %s' % (parent.first_name, parent.last_name), provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
