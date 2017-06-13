@@ -128,6 +128,5 @@ def get_child(request):
     return HttpResponse(json.dumps(response), content_type="application/json")
 
 
-# TODO(zilong): Implement this
 def update_child(request):
-    pass
+    raise NotImplementedError()

@@ -151,7 +151,11 @@ ChildFormContentController.prototype.save = function() {
     }
 
     var submittingForm = angular.copy(this.newChildEnrollmentInfo);
-    submittingForm.child_date_of_birth = moment(submittingForm.child_date_of_birth).format("MM/DD/YYYY");
+    if (submittingForm.child_date_of_birth) {
+        submittingForm.child_date_of_birth = moment(submittingForm.child_date_of_birth).format("MM/DD/YYYY");
+    } else {
+        submittingForm.child_date_of_birth = '';
+    }
     console.log(submittingForm.child_date_of_birth);
     submittingForm.start_date = moment(submittingForm.start_date).format("MM/DD/YYYY");
     submittingForm.end_date = submittingForm.end_date ? moment(submittingForm.end_date).format("MM/DD/YYYY") : "";

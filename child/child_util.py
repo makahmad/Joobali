@@ -5,6 +5,8 @@ import logging
 from models import Child
 from models import ProviderChildView
 from enrollment import enrollment_util
+from datetime import datetime
+
 
 logger = logging.getLogger(__name__)
 
@@ -95,10 +97,14 @@ def list_child_by_parent(parent_key):
     return children
 
 
-def update_child(child_input, parent_id, child_id):
-    child = None
-    return child
-
+def update_child(child_key, child_data):
+    """
+        Update child with new child_data
+    """
+    child = child_key.get()
+    if 'date_of_birth' in child_data:
+        child.date_of_birth = datetime.strptime(child_data['date_of_birth'], "%m/%d/%Y").date()
+    return child.put()
 
 def match_child(child1, child2):
     if child1.first_name == child2.first_name:

@@ -1,8 +1,10 @@
-EnrollmentParentViewController = function EnrollmentParentViewController($http, $routeParams, $location, $timeout) {
+EnrollmentParentViewController = function EnrollmentParentViewController($uibModal, $log, $http, $routeParams, $location, $timeout) {
+    this.uibModal_ = $uibModal;
     this.http_ = $http;
     this.routeParams_ = $routeParams;
     this.location_ = $location;
     this.timeout_ = $timeout;
+    this.log_ = $log;
 
     this.showSuccessAlert = false;
     this.showFailureAlert = false;
@@ -29,24 +31,39 @@ EnrollmentParentViewController.prototype.$onInit = function() {
     this.getEnrollmentDetail();
 }
 
-EnrollmentParentViewController.prototype.acceptEnrollment = function() {
-    request = {
-        'enrollment_id' : this.enrollmentId,
-        'provider_id' : this.providerId
-    };
+EnrollmentParentViewController.prototype.openEnrollmentAcceptanceDialog = function() {
 
+    var config = {
+        providerId: this.providerId,
+        enrollmentId: this.enrollmentId,
+        isChildDOBMissing: true
+    }
 
-    this.http_
-        .post('/enrollment/accept', request)
-        .then(angular.bind(this, function successCallback(response){
-            this.showSuccessAlert = true;
-            this.showFailureAlert = false;
-            this.redirectToFirstInvoice();
+    if (this.enrollmentDetail.child.date_of_birth) {
+        config.isChildDOBMissing = false;
+    }
+
+    var modalInstance = this.uibModal_.open({
+        animation : true, 
+        templateUrl: '/static/enrollment/enrollment-acceptance-dialog.template.html',
+        controller: 'EnrollmentAcceptanceDialogController',
+        controllerAs: '$ctrl',
+        resolve: {
+            config: function() {return config;}
+        }
+    })
+
+    modalInstance.result.then(angular.bind(this, function(data) {
+        this.log_.info("data is %s", angular.toJson(data));
+        if (data.refreshEnrollmentDetail) {
             this.getEnrollmentDetail();
-        }), angular.bind(this, function errorCallback(response){
-            this.showSuccessAlert = false;
-            this.showFailureAlert = true;
-        }));
+        }
+        if (data.redirectToFirstInvoice) {
+            this.redirectToFirstInvoice();
+        }
+    }), angular.bind(this, function() {
+        this.log_.info('Modal dismissed at: ' + new Date());
+    }));
 }
 
 

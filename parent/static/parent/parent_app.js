@@ -128,6 +128,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
                  .otherwise('/due'); //.otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
+    .controller('EnrollmentAcceptanceDialogController', EnrollmentAcceptanceDialogController)
 	.component('initSetupComponent', {
         templateUrl: '/static/parent/init_setup_component_tmpl.html',
         controller: InitSetupComponentController,
@@ -229,7 +230,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     })
     .component('enrollmentParentView', {
         templateUrl: '/static/enrollment/enrollment-parent-view.template.html',
-        controller: ['$http', '$routeParams', '$location', '$timeout', EnrollmentParentViewController]
+        controller: ['$uibModal', '$log', '$http', '$routeParams', '$location', '$timeout', EnrollmentParentViewController]
     })
     .component('childListParentView', {
         templateUrl: '/static/child/child-list-parent-view.template.html',

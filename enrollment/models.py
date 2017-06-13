@@ -34,7 +34,7 @@ class Enrollment(ndb.Model):
 
     @classmethod
     def generate_key(cls, provider_id, enrollment_id):
-        return ndb.Key(Provider.__name__, provider_id, cls.__name__, enrollment_id)
+        return ndb.Key(Provider.__name__, int(provider_id), cls.__name__, int(enrollment_id))
 
     @classmethod
     def get(cls, provider_id, enrollment_id):

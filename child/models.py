@@ -24,7 +24,8 @@ class Child(ndb.Model):
         child = Child()
         child.first_name = first_name
         child.last_name = last_name
-        child.date_of_birth = datetime.strptime(date_of_birth, "%m/%d/%Y").date()
+        if date_of_birth:
+            child.date_of_birth = datetime.strptime(date_of_birth, "%m/%d/%Y").date()
         child.parent_email = parent_email
         return child
 

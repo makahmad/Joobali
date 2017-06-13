@@ -195,7 +195,6 @@ def reactivate_enrollment(request):
 
 
 def accept_enrollment(request):
-    logger.info("Accept Enrollment Called")
     status = "failure"
     if not check_session(request):
         return
@@ -208,6 +207,11 @@ def accept_enrollment(request):
     request_body_dict = json.loads(request.body)
     provider_id = request_body_dict['provider_id']
     enrollment_id = request_body_dict['enrollment_id']
+    logger.info("provider %s, enrollment_id %s" % (provider_id, enrollment_id))
+    if 'date_of_birth' in request_body_dict:
+        enrollment = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id).get()
+        child_key = enrollment.child_key
+        child_util.update_child(child_key, {'date_of_birth': request_body_dict['date_of_birth']})
     parent_id = get_parent_id(request)
     if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
         status = 'success'
