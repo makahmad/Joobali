@@ -42,9 +42,20 @@ def send_payment_success_email(parent_address, parent_name, school_name, amount,
     message.html = template
     message.send()
 
+def send_payment_success_email_to_provider(provider_address, provider_name, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
+    # [START send_mail]
+    message = mail.EmailMessage(
+        sender=sender_address,
+        subject="The payment of $%s from %s succeeded." % (amount, parent_name))
 
+    message.to = "%s" % provider_address
+    message.body = """Hi, %s
+    Parent %s's payment of amount $%s to you is completed successfully.""" % (provider_name, parent_name, amount)
 
-def send_payment_failure_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
+    message.html = template
+    message.send()
+
+def send_payment_failed_email(parent_address, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
     # [START send_mail]
     message = mail.EmailMessage(
         sender=sender_address,
@@ -53,6 +64,19 @@ def send_payment_failure_email(parent_address, parent_name, school_name, amount,
     message.to = "%s" % parent_address
     message.body = """Hi, %s
     Your payment of $%s to <%s> was denied by the bank. Please try again.""" % (parent_name, school_name, amount)
+
+    message.html = template
+    message.send()
+
+def send_payment_failed_email_to_provider(provider_address, provider_name, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
+    # [START send_mail]
+    message = mail.EmailMessage(
+        sender=sender_address,
+        subject="The payment of $%s from %s failed." % (amount, parent_name))
+
+    message.to = "%s" % provider_address
+    message.body = """Hi, %s
+    Parent %s's payment of amount $%s to you failed.""" % (provider_name, parent_name, amount)
 
     message.html = template
     message.send()
@@ -66,6 +90,19 @@ def send_payment_cancelled_email(parent_address, parent_name, school_name, amoun
     message.to = "%s" % parent_address
     message.body = """Hi, %s
     Your payment of $%s to <%s> is successfully cancelled.""" % (parent_name, school_name, amount)
+
+    message.html = template
+    message.send()
+
+def send_payment_cancelled_email_to_provider(provider_address, provider_name, parent_name, school_name, amount, template, sender_address="Joobali <howdy@joobali.com>"):
+    # [START send_mail]
+    message = mail.EmailMessage(
+        sender=sender_address,
+        subject="The payment of $%s from %s was cancelled." % (amount, parent_name))
+
+    message.to = "%s" % provider_address
+    message.body = """Hi, %s
+    Parent %s's payment of amount $%s to you was cancelled.""" % (provider_name, parent_name, amount)
 
     message.html = template
     message.send()

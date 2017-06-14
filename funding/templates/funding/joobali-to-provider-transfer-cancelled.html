@@ -636,8 +636,8 @@
 
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;">
-                                                                <p>Your transfer for ${{ amount }} from "{{ account_name }}" to {{ recipient }} has
-                                                                    been canceled. </p>
+                                                                <p>The transfer in the amount of {{ amount }} from parent "{{ sender }}" to your bank account {{ account_name }} has
+                                                                    been cancelled. </p>
                                                                 <p>This message is for informational purposes only.
                                                                     Please do not reply to this email. For
                                                                     account-specific inquiries, please sign on to your
@@ -706,9 +706,9 @@
                                                                 Type of transfer:<br>
                                                                 Amount of transfer:<br>
                                                                 Date of transfer:<br>
-                                                                Recipient of transfer<br>
-                                                                Transfer source:<br>
-                                                                <br></td>
+                                                                Sender of transfer<br>
+                                                                Transfer destination:<br>
+                                                                </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
@@ -730,9 +730,9 @@
                                                                 {{ transfer_type }}<br>
                                                                 {{ amount }}<br>
                                                                 {{ created_date }}<br>
-                                                                {{ recipient }}<br>
+                                                                {{ sender }}<br>
                                                                 {{ account_name }}<br>
-                                                                <br></td>
+                                                                </td>
                                                         </tr>
                                                         </tbody>
                                                     </table>
