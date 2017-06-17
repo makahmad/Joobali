@@ -220,7 +220,11 @@
 						<i class="fa fa-university fa-2x"></i> &nbsp; Funds
 					</a>
                 </li>
-
+              <li ng-click="changeView('/verify')" ng-class="{active: module=='/verify'}" ng-hide="dwollaStatus == 'verified'">
+                    <a>
+						<i class="fa fa-university fa-2x"></i> &nbsp; Verify
+					</a>
+                </li>
 
                 <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
                     <a>
