@@ -9,7 +9,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.payments = [];
 	this.scope_.dwollaStatus = 'Unknown';
 	this.initialize($uibModal);
-	this.scope_.module = '/programs'; //module is used to highlight active left hand nav selection
+	this.scope_.module = '/home'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
 
     self = this;
@@ -182,7 +182,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/child/list', {template: '<child-list check-requirements="checkRequirements()"></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
-                 .otherwise('/dashboard');
+                 .when('/home', {templateUrl: '/static/home/home.html'})
+                 .otherwise('/home');
           }])
     .filter('childAgeFilter', function() {
         return function(children, minAge, maxAge) {
