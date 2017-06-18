@@ -1,33 +1,26 @@
-<div class="programHeader" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"><b>Your Profile</b> <sup><i class="fa fa-question-circle fa-lg"></i></sup></div>
-	<span class="pageInstructions" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Edit your profile to update information about you and your business.</span>
-<div class="programsContainer">	
-    <div class="programsDiv">
+<div class="verifyHeader" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"><b>Account Status: {{ $ctrl.profile.dwolla_status }}</b> <sup><i class="fa fa-question-circle fa-lg"></i></sup></div>
+	<span class="pageInstructions" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-3"></i> Provide more information to become a verified user. </span>
+<div class="verifyContainer">
+    <div class="verifyDiv">
 		  <div class="well well-sm">
 				
 				
 <!-- <div class="profileFormContainer" >
 	<div class="profileFormHeader"> -->
-		<h2 class="profile-title">Edit Your Profile</h2>
+		<h2 class="profile-title">Provide more information to become a verified user.</h2>
 	</div>
 	<!-- <div class="profileFormBody"> -->
     <div class="col-centered">
-        <form id="profileForm" name="profileForm" role="form" class="well" enctype="multipart/form-data">
-            <div class="profileContent">
-                <div class="form-group">
-                    <label class="control-label" for="schoolName">School Name:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="schoolName" name="schoolName" ng-required="true"
-	                           ng-model="$ctrl.profile.schoolName">
-										 </div>
-                </div>
+        <form id="verifyForm" name="verifyForm" role="form" class="well" enctype="multipart/form-data">
+            <div class="verifyContent">
                 <div class="form-group">
 										<label class="control-label" for="firstName">First Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="firstName" name="firstName" ng-required="true"
                            ng-model="$ctrl.profile.firstName">
 										 </div>
-									 </div>
-									 <div class="form-group">
+                 </div>
+                 <div class="form-group">
 	                  <label class="control-label" for="lastName">Last Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
@@ -43,36 +36,6 @@
                         <span ng-show="profileForm.email.$error.required">Email is required.</span>
                         <span ng-show="profileForm.email.$error.email">Invalid email address.</span>
                         <span ng-show="$ctrl.emailError">Email address already in use.</span>
-                    </span>
-                </div>
-                <div class="form-group" >
-                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="!showChangePassword">Change Password?</a>
-                    <a ng-click="showChangePassword = ! showChangePassword" ng-show="showChangePassword">Nevermind, don't change password</a>
-                </div>
-                <div class="form-group pwChange"  ng-class="{ 'has-error' : profileForm.currentPassword.$error.required}" ng-show="showChangePassword">
-                    <label class="control-label" for="currentPassword">Current Password:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password" class="form-control" id="currentPassword" name="currentPassword"
-                           ng-model="$ctrl.profile.currentPassword" ng-required='$ctrl.profile.newPassword.length>0 && showChangePassword'>
-										 </div>
-                      <span style="color:red" ng-show="$ctrl.currentPasswordError">
-                            Current password is incorrect.
-                    </span>
-
-                    <span style="color:red" ng-show="profileForm.currentPassword.$error.required">
-                        <span ng-show="profileForm.currentPassword.$error.required">Current password is ng-required if entering new password.</span>
-                    </span>
-                </div>
-                <div class="form-group pwChange" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
-                    <label class="control-label" for="newPassword">New Password:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" class="form-control" id="newPassword" name="newPassword"
-                           ng-model="$ctrl.profile.newPassword"  ng-required='$ctrl.profile.currentPassword.length>0 && showChangePassword' ng-model-options="{allowInvalid: true}" pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})">
-
-                    </div>
-                    <password-strength ng-model="$ctrl.profile.newPassword"></password-strength>
-                     <span style="color:red" ng-show="profileForm.newPassword.$error.required">
-                        <span ng-show="profileForm.newPassword.$error.required">New password is ng-required if entering current password.</span>
                     </span>
                 </div>
                 <div class="form-group">
@@ -174,7 +137,6 @@
                                close-text="Close"/>
                     </div>
                 </div>
-                <!--
                 <div class="form-group" ng-class="{ 'has-error' : profileForm.ssn.$invalid && !profileForm.ssn.$pristine }">
                     <label class="control-label" for="ssn">Last 4 digits of SSN:</label>
                     <div class="input-group">
@@ -182,49 +144,11 @@
                            ng-model="$ctrl.profile.ssn">
                     </div>
                 </div>
-                -->
-                <div class="form-group">
-                    <label class="control-label" for="license">License:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="license" name="license" ng-required="false"
-                           ng-model="$ctrl.profile.license">
-                    </div>
-                </div>
-                <div class="form-group" ng-class="{ 'has-error' : profileForm.website.$invalid && !profileForm.website.$pristine }">
-                    <label class="control-label" for="website">Website:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-globe fa-lg"></i></span>
-                        <input type="url" class="form-control" id="website" name="website" ng-required="false"
-                           ng-model="$ctrl.profile.website">
-										 </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="tin">TIN (visible on invoice):</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-percent fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="tin" name="tin" ng-required="false"
-                           ng-model="$ctrl.profile.tin">
-                    </div>
-
-
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="logo">Logo (visible on invoice):</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.logo"  class="form-control" name="logo" id="logo">
-										 </div>
-                     <div ng-show="$ctrl.profile.showLogo">
-                         <a href="../profile/getproviderlogo" target="_blank"><img  ng-show="$ctrl.profile.showLogo" src='../profile/getproviderlogo' alt='your logo' width="40%" height="40%"/></a>
-                         <a ng-click="$ctrl.deleteLogo()">Delete Logo</a>
-                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Account Status: {{ $ctrl.profile.dwolla_status }}</label>
-                </div>
 
             </div>
 		        </form>
 						<div class="formActions">
-								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave||profileForm.$invalid||profileForm.$pristine">Update &raquo;</button>
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.dwollaVerify(true)" ng-disabled="(verifyForm.email.$dirty && verifyForm.email.$invalid)">Verify &raquo;</button>
 						</div> <!-- end formActions -->
     </div>
 <!-- </div></div> --></div></div>

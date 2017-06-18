@@ -53,6 +53,7 @@
 
     <!-- Profile Related JS -->
     <script src="{{ STATIC_URL }}profile/profile_component_ctrl.js"></script>
+    <script src="{{ STATIC_URL }}profile/verification_component_ctrl.js"></script>
 
     <!-- Help Center Related JS -->
     <script src="{{ STATIC_URL }}helpcenter/helpcenter_component_ctrl.js"></script>
@@ -220,15 +221,16 @@
 						<i class="fa fa-university fa-2x"></i> &nbsp; Funds
 					</a>
                 </li>
-              <li ng-click="changeView('/verify')" ng-class="{active: module=='/verify'}" ng-hide="dwollaStatus == 'verified'">
-                    <a>
-						<i class="fa fa-university fa-2x"></i> &nbsp; Verify
-					</a>
-                </li>
 
                 <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
                     <a>
                         <i class="fa fa-user fa-2x"></i> &nbsp; Profile
+                    </a>
+                </li>
+
+                <li  ng-hide="dwollaStatus == 'verified'" ng-click="changeView('/verification')" ng-class="{active: module=='/verification'}">
+                    <a>
+                        <i class="fa fa-user fa-2x"></i> &nbsp; Verify Account
                     </a>
                 </li>
 

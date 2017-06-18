@@ -31,7 +31,7 @@ InitSetupComponentController = function($http, $location) {
                     if (!err) {
                         // Funding IAV successful
                         $('#initSetupNextButton').show();
-                        $('#initSetupSkipButton').show();
+                        $('#initSetupSkipButton').hide();
                     }
                 }));
             }), function errorCallback(response) {
@@ -40,15 +40,15 @@ InitSetupComponentController = function($http, $location) {
                 console.log(response);
             });
 
-//            this.http_({
-//              method: 'POST',
-//              url: '/login/setinitsetupfinished'
-//            }).then(angular.bind(this, function successCallback(response) {
-//            }), function errorCallback(response) {
-//                // called asynchronously if an error occurs
-//                // or server returns response with an error status.
-//                console.log(response);
-//            });
+            this.http_({
+              method: 'POST',
+              url: '/login/setinitsetupfinished'
+            }).then(angular.bind(this, function successCallback(response) {
+            }), function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log(response);
+            });
 	    } else {
             $('#initSetupModal').remove();
 	    }
@@ -79,6 +79,7 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
             this.moveToNext(curContent, curNav);
 	    }
 	} else if (curNav.attr('id') === "navStep1" || this.validateCurrentForm()) {
+	    this.isDone = true;
         this.moveToNext(curContent, curNav);
     }
 };
@@ -90,9 +91,8 @@ InitSetupComponentController.prototype.handleDone = function() {
 	  method: 'POST',
 	  url: '/login/setinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
-	    window.location.href = '/home/dashboard#!/profile';
+	    window.location.href = '/home/dashboard#!/verification';
 	    window.location.reload();
-		//this.location_.url('/profile'); // todo: change to verify page.
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.

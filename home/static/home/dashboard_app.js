@@ -178,6 +178,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
+                 .when('/verification', {template: '<verification-component profile="profile"></verification-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
                  .when('/child/list', {template: '<child-list check-requirements="checkRequirements()" dwolla-status="this.scope_.dwollaStatus"></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
@@ -371,6 +372,13 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .component('profileComponent', {
         templateUrl: '/static/profile/profile_component_tmpl.html',
         controller: ProfileComponentController,
+        bindings: {
+          profile: '<'
+        }
+    })
+    .component('verificationComponent', {
+        templateUrl: '/static/profile/verification_component_tmpl.html',
+        controller: VerificationComponentController,
         bindings: {
           profile: '<'
         }

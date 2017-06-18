@@ -38,7 +38,6 @@ ProfileComponentController.prototype.openDateOfBirthPicker = function() {
 ProfileComponentController.prototype.saveProfile = function() {
     submitting_profile = angular.copy(this.profile)
     submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
-    this.dwollaVerify(false);
 
 	this.http_({
 		method: 'POST',

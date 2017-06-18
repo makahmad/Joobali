@@ -53,7 +53,7 @@ def getProfile(request):
 
         dict['id'] = provider.key.id()
         dict['ssn'] = provider.ssn if provider.ssn else None
-        dict['zipcode'] = provider.zipcode if provider.zipcode else None
+        dict['zipcode'] = int(provider.zipcode) if provider.zipcode else None
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
         logger.info("Dwolla Status: %s" % dict['dwolla_status'])
         if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
@@ -129,7 +129,7 @@ def updateProfile(request):
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
-        provider.ssn = str(profile['ssn'])
+        #provider.ssn = str(profile['ssn'])
         provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
         provider.tin = profile['tin']
 
@@ -178,8 +178,8 @@ def dwolla_verify(request):
             'city': profile['city'],
             'state': profile['state'],
             'postalCode': profile['zipcode'],
-            #'dateOfBirth': datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date().strftime('%Y-%m-%d'),
-            #'ssn': profile['ssn'],
+            'dateOfBirth': datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date().strftime('%Y-%m-%d'),
+            'ssn': profile['ssn'],
         }
         customer = None
         try:
@@ -200,7 +200,7 @@ def dwolla_verify(request):
         provider.state = profile['state']
         provider.zipcode = str(profile['zipcode'])
         provider.email = profile['email']
-        provider.ssn = str(profile['ssn'])
+        #provider.ssn = str(profile['ssn'])
         provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
         if customer and 'status' in customer.body:
             provider.dwolla_status = customer.body['status']
