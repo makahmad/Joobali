@@ -3,10 +3,13 @@
 <div class="programsContainer">
 	<div class="programsDiv">
 		<div class="buttonDiv addChildButtonDiv pull-left">
-			<a class="btn btn-default btn-lg pull-right programHeader joobali" ng-click="$ctrl.openAddChildModal()">
-				<i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Enroll a new child
-			</a>
+
+			<button type="button" ng-disabled="$ctrl.dwollaStatus!='verified'"
+                 class="btn btn-default btn-lg pull-right programHeader joobali"
+					ng-click="$ctrl.openAddChildModal()"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Enroll a new child
+             </button>
 		</div>
+		<div ng-show="$ctrl.dwollaStatus!='verified'"><br><a href="#" ng-click="changeView('/verify')">Verify</a> your account<br>before enrolling.</div>
 		<div class="child-list-filter-options pull-right">
 			<span class="label label-default">Filter by Program</span>
 			<select class="form-control"
