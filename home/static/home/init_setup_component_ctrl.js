@@ -1,15 +1,10 @@
-InitSetupComponentController = function($http) {
+InitSetupComponentController = function($http, $location) {
     console.log('InitSetupComponentController running');
-    this.dateOfBirthPickerOpened = false;
     this.isDone = false;
+    this.location_ = $location;
     self = this
-    this.openDateOfBirthPicker = function() {
-        console.log("Toggle Date picker: " + this.dateOfBirthPickerOpened);
-        this.dateOfBirthPickerOpened = ! this.dateOfBirthPickerOpened;
-    };
 
     this.http_ = $http;
-	this.newProgram = {"feeType": "Hourly", "billingFrequency": "Monthly"};
 	$http({
 	  method: 'GET',
 	  url: '/login/isinitsetupfinished'
@@ -45,15 +40,15 @@ InitSetupComponentController = function($http) {
                 console.log(response);
             });
 
-            this.http_({
-              method: 'POST',
-              url: '/login/setinitsetupfinished'
-            }).then(angular.bind(this, function successCallback(response) {
-            }), function errorCallback(response) {
-                // called asynchronously if an error occurs
-                // or server returns response with an error status.
-                console.log(response);
-            });
+//            this.http_({
+//              method: 'POST',
+//              url: '/login/setinitsetupfinished'
+//            }).then(angular.bind(this, function successCallback(response) {
+//            }), function errorCallback(response) {
+//                // called asynchronously if an error occurs
+//                // or server returns response with an error status.
+//                console.log(response);
+//            });
 	    } else {
             $('#initSetupModal').remove();
 	    }
@@ -77,85 +72,27 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
 	var curContent = $(".init-setup.form-content.current");
 	var curNav = $(".init-setup.form-nav.current");
 	if (skip) {
-	    if (curNav.attr('id') === "navStep3") {
+	    if (curNav.attr('id') === "navStep2") {
 		    this.cancel();
 	    } else {
+	        this.isDone = true;
             this.moveToNext(curContent, curNav);
 	    }
 	} else if (curNav.attr('id') === "navStep1" || this.validateCurrentForm()) {
-        if (curNav.attr('id') === "navStep2") {
-
-            this.newProgram.startDate =  moment(this.newProgram.startDate).format('MM/DD/YYYY');
-
-            if (this.newProgram.endDate!=null)
-                this.newProgram.endDate =  moment(this.newProgram.endDate).format('MM/DD/YYYY');
-
-            var data = {
-                'program': this.newProgram
-            };
-            this.http_({
-                method: 'POST',
-                url: '/manageprogram/addprogram',
-                data: JSON.stringify(data)
-            }).then(
-                angular.bind(this, function (response) {
-                    console.log('post suceeded');
-                    this.getPrograms();
-                    this.moveToNext(curContent, curNav);
-                }),
-                function (response) {
-                    console.log('post failed');
-                    alert("Something is wrong with the saving. Please try again later");
-                }
-            );
-        } else {
-            this.moveToNext(curContent, curNav);
-        }
+        this.moveToNext(curContent, curNav);
     }
 };
 
-InitSetupComponentController.prototype.getPrograms = function() {
-    this.http_({
-        method: 'GET',
-        url: '/manageprogram/listprograms'
-    }).then(angular.bind(this, function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is available
-        this.programs = [];
-        angular.forEach(response.data, angular.bind(this, function(program) {
-            this.programs.push(JSON.parse(program));
-        }));
-    }), angular.bind(this, function errorCallback(response) {
-        // TODO(zilong): deal with error here
-    }));
-};
-
-InitSetupComponentController.prototype.onSaveChildEnrollmentInfo = function(isSaved) {
-    this.isDone = isSaved;
-}
-
 InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
-    console.log('$ctrl.newChildEnrollmentInfo: ' + this.newChildEnrollmentInfo);
-    var submittingForm = angular.copy(this.newChildEnrollmentInfo);
-    this.http_.post('/child/add', submittingForm).then(function successCallback(response) {
-        var isSaveSuccess = false;
-        console.log(response);
-        if (response.data.status == 'success') {
-            isSaveSuccess = true;
-        }
-        if (!isSaveSuccess) {
-            console.log("Something is wrong with the saving child info. Please try again later");
-        }
-    }, function errorCallback(response) {
-        console.log("Something is wrong with the saving child info. Please try again later");
-    });
 
     this.http_({
 	  method: 'POST',
 	  url: '/login/setinitsetupfinished'
 	}).then(angular.bind(this, function successCallback(response) {
-		location.reload();
+	    window.location.href = '/home/dashboard#!/profile';
+	    window.location.reload();
+		//this.location_.url('/profile'); // todo: change to verify page.
 	}), function errorCallback(response) {
 	    // called asynchronously if an error occurs
 	    // or server returns response with an error status.
@@ -172,7 +109,7 @@ InitSetupComponentController.prototype.moveToNext = function(curContent, curNav)
 	  curContent.removeClass("current");
 	  curContent.next().addClass("current");
 
-	  if (curNav.next().attr('id') === "navStep3") {
+	  if (curNav.next().attr('id') === "navStep2") {
 		  $("#initSetupSkipButton").hide();
 		  $("#initSetupNextButton").hide();
 		  $("#initSetupDoneButton").show();

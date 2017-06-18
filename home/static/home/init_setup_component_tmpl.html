@@ -6,8 +6,7 @@
     <div class="stepsDiv">
       <ul class="nav nav-pills nav-wizard">
         <li id="navStep1" class="init-setup form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Link Bank Account</a><div class="nav-arrow"></div></li>
-        <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Add a Program</a><div class="nav-arrow"></div></li>
-        <li id="navStep3" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Invite a Child</a></li>
+        <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Learn How Joobali Works</a><div class="nav-arrow"></div></li>
       </ul>
     </div>
   </div>
@@ -19,15 +18,7 @@
       </div>
       <div id="step2" class="init-setup form-content">
                     <span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; A program is a set dollar amount to bill parents on a weekly or monthly basis. Some common program names include <i>Full-time</i>, <i>Part-time</i>, and <i>Extended care</i>.</span>
-        <form id="programForm" role="form" class="well">
 
-          <add-program-form-component program="$ctrl.newProgram"></add-program-form-component>
-
-        </form>
-      </div>
-      <div id="step3" class="init-setup form-content">
-        <child-form-content programs="$ctrl.programs"
-                            on-save="$ctrl.onSaveChildEnrollmentInfo(isSaved)"></child-form-content>
       </div>
     </div>
     </div>
