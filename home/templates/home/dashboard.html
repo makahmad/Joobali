@@ -182,11 +182,11 @@
         <div class="menu-list">
 
             <ul id="myNavbar" class="menu-content collapse out">
-                <!--<li ng-click="changeView('/programs')"  ng-class="{active: module=='#'}">-->
-                    <!--<a>-->
-                        <!--<i class="fa fa-home fa-2x"></i> &nbsp; Dashboard-->
-                    <!--</a>-->
-                <!--</li>-->
+                <li ng-click="changeView('/home')"  ng-class="{active: module=='/home'}">
+                    <a>
+                        <i class="fa fa-home fa-2x"></i> &nbsp; Home
+                    </a>
+                </li>
                 <li ng-click="changeView('/programs')" ng-class="{active: module=='/programs'}">
                     <a>
 						<i class="fa fa-list-alt fa-2x"></i> &nbsp; Programs
@@ -220,7 +220,11 @@
 						<i class="fa fa-university fa-2x"></i> &nbsp; Funds
 					</a>
                 </li>
-
+              <li ng-click="changeView('/verify')" ng-class="{active: module=='/verify'}" ng-hide="dwollaStatus == 'verified'">
+                    <a>
+						<i class="fa fa-university fa-2x"></i> &nbsp; Verify
+					</a>
+                </li>
 
                 <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
                     <a>

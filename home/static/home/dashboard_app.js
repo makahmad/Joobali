@@ -9,7 +9,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.payments = [];
 	this.scope_.dwollaStatus = 'Unknown';
 	this.initialize($uibModal);
-	this.scope_.module = '/programs'; //module is used to highlight active left hand nav selection
+	this.scope_.module = '/home'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
 
     self = this;
@@ -179,10 +179,11 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
-                 .when('/child/list', {template: '<child-list check-requirements="checkRequirements()"></child-list>'})
+                 .when('/child/list', {template: '<child-list check-requirements="checkRequirements()" dwolla-status="this.scope_.dwollaStatus"></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
-                 .otherwise('/programs'); //.otherwise('/dashboard');
+                 .when('/home', {templateUrl: '/static/home/home.html'})
+                 .otherwise('/home');
           }])
     .filter('childAgeFilter', function() {
         return function(children, minAge, maxAge) {
@@ -401,7 +402,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/child/child-list.template.html',
         controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],
         bindings: {
-            checkRequirements : '&'
+            checkRequirements : '&',
+            dwollaStatus : '<'
         }
     })
     .component('childCard', {
