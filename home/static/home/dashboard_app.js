@@ -7,6 +7,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
+	this.scope_.numberOfChildren = 0;
 	this.scope_.dwollaStatus = 'Unknown';
 	this.initialize($uibModal);
 	this.scope_.module = '/home'; //module is used to highlight active left hand nav selection
@@ -152,6 +153,24 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // or server returns response with an error status.
 	    console.log(response);
 	  });
+	this.http_({
+	  method: 'GET',
+	  url: '/child/list?'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.numberOfChildren = 0;
+
+	    angular.forEach(response.data, angular.bind(this, function(funding) {
+	    	this.scope_.numberOfChildren +=1;
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
+
 }
 
 DashboardController.prototype.selectProgram = function(program) {
