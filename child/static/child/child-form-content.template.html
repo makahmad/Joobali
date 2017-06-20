@@ -113,9 +113,8 @@
                    datepicker-popup-template-url="/static/home/datepicker.template.html"
                    datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
                    ng-model="$ctrl.newChildEnrollmentInfo.end_date"
-                   ng-readonly="$ctrl.newChildEnrollmentInfo.no_end_date || $ctrl.readOnly"
+                   ng-readonly="$ctrl.readOnly"
                    is-open="$ctrl.endDatePickerOpened"
-                   ng-required="!$ctrl.newChildEnrollmentInfo.no_end_date"
                    close-text="Close"
                    ng-click="$ctrl.openEndDatePicker()"/>
             <span class="input-group-btn">
@@ -123,10 +122,6 @@
                                             ng-click="$ctrl.openEndDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
         </p>
-        <label>No specific end date
-            <input ng-readonly="$ctrl.readOnly" type="checkbox" ng-model="$ctrl.newChildEnrollmentInfo.no_end_date"
-                   ng-change="$ctrl.whenChangeNoEndDate()">
-        </label>
     </div>
     <div class="form-group">
         <label class="control-label">Waive registration fee?

@@ -115,9 +115,8 @@ ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
         this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate, this.dateFormat).toDate();
         if (this.newEnrollment.program.endDate) {
             this.newEnrollment.end_date = moment(this.newEnrollment.program.endDate, this.dateFormat).toDate();
-            this.newEnrollment.no_end_date = false;
         } else {
-            this.newEnrollment.no_end_date = true;
+            this.newEnrollment.end_date = "";
         }
     } else {
         this.newEnrollment.start_date = null;
@@ -126,17 +125,9 @@ ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
 }
 
 ChildEnrollmentController.prototype.whenChangeStartDate = function(isManualChange) {
-    if (isManualChange) {
-        this.newEnrollment.no_end_date = false;
-    }
     this.whenChangeNoEndDate();
 }
 
-ChildEnrollmentController.prototype.whenChangeNoEndDate = function() {
-    if (this.newEnrollment.no_end_date) {
-        this.newEnrollment.end_date = null;
-    }
-}
 ChildEnrollmentController.prototype.getMinEndDate = function() {
     var minDate = null;
     if (this.newEnrollment.start_date) {

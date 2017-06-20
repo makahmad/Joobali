@@ -38,9 +38,8 @@ ChildFormContentController.prototype.whenSelectedProgramChange = function () {
         this.newChildEnrollmentInfo.start_date = moment(this.newChildEnrollmentInfo.program.startDate, this.dateFormat).toDate();
         if (this.newChildEnrollmentInfo.program.endDate) {
             this.newChildEnrollmentInfo.end_date = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat).toDate();
-            this.newChildEnrollmentInfo.no_end_date = false;
         } else {
-            this.newChildEnrollmentInfo.no_end_date = true;
+            this.newChildEnrollmentInfo.end_date = "";
         }
     } else {
         this.newChildEnrollmentInfo.start_date = null;
@@ -49,16 +48,7 @@ ChildFormContentController.prototype.whenSelectedProgramChange = function () {
 }
 
 ChildFormContentController.prototype.whenChangeStartDate = function(isManualChange) {
-    if (isManualChange) {
-        this.newChildEnrollmentInfo.no_end_date = false;
-    }
     this.whenChangeNoEndDate();
-}
-
-ChildFormContentController.prototype.whenChangeNoEndDate = function() {
-    if (this.newChildEnrollmentInfo.no_end_date) {
-        this.newChildEnrollmentInfo.end_date = null;
-    }
 }
 
 // Disable invalid choices for billing end date
