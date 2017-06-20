@@ -34,10 +34,9 @@ EnrollmentEditorController.prototype.renderEnrollmentEditor = function(enrollmen
 };
 
 EnrollmentEditorController.prototype.cancelEnrollment = function() {
-    console.log(this.enrollment.start_date);
-    console.log(this.billing_start_date);
-    if (!(this.enrollment.start_date == this.billing_start_date)) {
-        console.log("Invalid Start Date check");
+
+    if (!(this.enrollment.end_date == this.billing_end_date)) {
+        console.log("Invalid End Date check");
         this.showWarning = true;
         return ;
     }
@@ -53,8 +52,8 @@ EnrollmentEditorController.prototype.cancelEnrollment = function() {
 
 EnrollmentEditorController.prototype.reactivateEnrollment = function() {
     var enrollment_id = this.enrollment.id;
-    if (!(this.enrollment.start_date == this.billing_start_date)) {
-        console.log("Invalid Start Date check");
+    if (!(this.enrollment.end_date == this.billing_end_date)) {
+        console.log("Invalid End Date check");
         this.showWarning = true;
         return ;
     }

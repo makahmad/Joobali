@@ -8,10 +8,10 @@
             in program <b>{{$ctrl.program.programName}}</b></p>
         <div>
             <p>
-                <span class="label label-danger" ng-show="$ctrl.showWarning">Incorrect billing start date</span>
+                <span class="label label-danger" ng-show="$ctrl.showWarning">Incorrect billing end date</span>
             </p>
-            <label>Enter enrollment billing start date (MM/DD/YYYY) for further operation</label>
-            <input type="text" required ng-model="$ctrl.billing_start_date">
+            <label>Enter enrollment billing end date (MM/DD/YYYY) for further operation</label>
+            <input type="text" required ng-model="$ctrl.billing_end_date">
         </div>
         <div ng-show="$ctrl.enrollment.status == 'inactive'">
             <button type="button" class="btn btn-primary" ng-click="$ctrl.reactivateEnrollment()">
