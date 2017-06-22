@@ -149,8 +149,8 @@
                             <div style="text-align: left;">Child Name:&nbsp;<strong>{{ child_first_name }}</strong></div>
 
 <div style="text-align: left;">Program Name:&nbsp;<strong>{{ program_name }}</strong><br>
-Program Fee:&nbsp;<strong>[[Fee Amount]]</strong><br>
-Payment Due Date:&nbsp;<strong>[[MM/DD/YYYY]]</strong><br>
+Program Fee:&nbsp;<strong>{{ amount }}</strong><br>
+Payment Due Date:&nbsp;<strong>{{ due_date }}</strong><br>
 Payment Schedule:&nbsp;<strong>{{ program_billing_frequency }}</strong><br>
 <br>
 {% if is_acceptance_reminder %}

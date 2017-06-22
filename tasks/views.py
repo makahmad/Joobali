@@ -160,14 +160,23 @@ def invoice_notification(request):
         logger.info("Sending notification for invoice: %s" % invoice)
         if now + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
+            enrollment = invoice_util.get_invoice_enrollment(invoice)
+            program = None
+            if enrollment:
+                program = enrollment.program_key.get()
+            parent = parent_util.get_parents_by_email(invoice.parent_email)
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
-                'pay_invoice_url': request.get_host() + '/static/logo/img_headerbg.png',
+                'pay_invoice_url': request.get_host() + '/login',
                 'invoice_id': invoice.key.id(),
                 'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
                 'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
                 'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
                 'school_name': invoice.provider_key.get().schoolName,
+                'program_billing_frequency': program.billingFrequency if program else '',
+                'amount': invoice.amount,
+                'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             }
             send_invoice_email(invoice.parent_email, invoice, datetime_util.utc_to_local(start_date), datetime_util.utc_to_local(end_date), template.render(data))
             invoice.email_sent = True
