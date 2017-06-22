@@ -22,6 +22,7 @@ from common.session import is_provider
 from login.models import Provider
 from models import Enrollment
 from parent.models import Parent
+from common import datetime_util
 
 logger = logging.getLogger(__name__)
 
@@ -99,6 +100,9 @@ def list_enrollment(request):
         return HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     provider_id = request.session.get('email')
     enrollments = enrollment_util.list_enrollment_by_provider(provider_id)
+    for enrollment in enrollments:
+        enrollment['start_date'] = datetime_util.utc_to_local(enrollment['start_date'])
+        enrollment['end_date'] = datetime_util.utc_to_local(enrollment['end_date'])
     response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
     logger.info("response is %s" % response)
     return response

@@ -17,9 +17,9 @@ class Enrollment(ndb.Model):
     # The enrollment status
     status = ndb.StringProperty()
     # Effective Start Date for the billing, used for computing invoice.
-    start_date = ndb.DateProperty()
+    start_date = ndb.DateTimeProperty()
     # Effective End Date for the billing, used for computing invoice. If null, it means this enrollment will never end
-    end_date = ndb.DateProperty()
+    end_date = ndb.DateTimeProperty()
     # Autopay funding source. If set, the related invoice will be automatically paid by this source.
     autopay_source_id = ndb.StringProperty()
     # Autopay # of days before the due date

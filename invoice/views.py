@@ -21,7 +21,7 @@ from google.appengine.ext import ndb
 from os import environ
 from common.dwolla import get_funding_source, get_funded_transfer, cancel_transfer
 from common.email.autopay import send_autopay_cancelled_email, send_autopay_scheduled_email
-
+from common import datetime_util
 import json
 import logging
 
@@ -40,8 +40,8 @@ def add_invoice(request):
 
 	description = data['description']
 	amount = data['amount']
-	due_date = datetime.strptime(data['due_date'], DATE_FORMAT).date()
-	created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
+	due_date = datetime_util.local_to_utc(datetime.strptime(data['due_date'], DATE_FORMAT))
+	created_date = datetime_util.local_to_utc(datetime.strptime(data['created_date'], DATE_FORMAT))
 	if 'all_children' in data:
 		if 'program_id' in data:
 			for child in child_util.list_child_by_provider_program(request.session.get('user_id'), long(data['program_id'])):
@@ -105,7 +105,7 @@ def listInvoices(request):
             'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
 			'original_amount': invoice_util.sum_up_original_amount_due(invoice),
             'amount' : invoice.amount,
-            'due_date' : invoice.due_date.strftime('%m/%d/%Y'),
+            'due_date' : datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
 			'processing': invoice.is_processing(),
             'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
@@ -154,16 +154,16 @@ def viewInvoice(request):
 		note = provider.lateFeeInvoiceNote if invoice.is_late() else provider.generalInvoiceNote
 		data = {
 			'invoice_id': invoice.key.id(),
-			'invoice_date': invoice.date_created.strftime('%m/%d/%Y'),
+			'invoice_date': datetime_util.utc_to_local(invoice.date_created).strftime('%m/%d/%Y'),
             'provider_street': provider.addressLine1 + (", %s" % provider.addressLine2) if provider.addressLine2 else provider.addressLine1,
 			'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.zipcode),
 			'provider_name': provider.schoolName,
             'provider_phone_number': provider.phone,
             'child_name': '%s %s' % (child.first_name, child.last_name),
             'parent_name' : '%s %s' % (parent.first_name, parent.last_name),
-			'start_date': start_date.strftime('%m/%d/%Y') if start_date else 'N/A',
-			'end_date': end_date.strftime('%m/%d/%Y') if end_date else 'N/A',
-			'due_date': invoice.due_date.strftime('%m/%d/%Y'),
+			'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else 'N/A',
+			'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else 'N/A',
+			'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
 			'parent_id': parent.key.id(),
 			'total': invoice.amount,
 			'items': items,
@@ -210,7 +210,7 @@ def setupAutopay(request):
 			first_transfer_date = enrollment.start_date
 			if first_transfer_date is None:
 				first_transfer_date = program.startDate
-			while first_transfer_date < today:
+			while first_transfer_date.date() < today:
 				first_transfer_date = invoice_util.get_next_due_date(first_transfer_date, program.billingFrequency)
 
 			data = {

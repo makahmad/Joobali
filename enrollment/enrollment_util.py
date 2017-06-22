@@ -10,8 +10,9 @@ from manageprogram.models import Program
 from models import Enrollment
 from invoice import invoice_util
 from parent.models import Parent
-from datetime import date
+from datetime import datetime, date
 from manageprogram import program_util
+from common import datetime_util
 
 logger = logging.getLogger(__name__)
 
@@ -44,8 +45,8 @@ def upsert_enrollment(enrollment_input):
     enrollment.waive_registration = enrollment_input['waive_registration']
     if enrollment.status not in Enrollment.get_possible_status():
         raise RuntimeError('invalid status %s for enrollment' % enrollment.status)
-    enrollment.start_date = datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y").date()
-    enrollment.end_date = datetime.strptime(enrollment_input['end_date'], "%m/%d/%Y").date() if enrollment_input[
+    enrollment.start_date = datetime_util.local_to_utc(datetime.strptime(enrollment_input['start_date'], "%m/%d/%Y"))
+    enrollment.end_date = datetime_util.local_to_utc(datetime.strptime(enrollment_input['end_date'], "%m/%d/%Y")) if enrollment_input[
         'end_date'] else None
 
     program = program_key.get()
@@ -103,9 +104,9 @@ def accept_enrollment(provider_id, enrollment_id, parent_id):
         if not enrollment.waive_registration and program.registrationFee > 0:
             provider = enrollment.program_key.parent().get()
             child = enrollment.child_key.get()
-            today = date.today()
+            now = datetime.now()
             due_date = program_util.get_first_bill_due_date(program)
-            invoice = invoice_util.create_invoice(provider, child, today, due_date, None, program.registrationFee,
+            invoice = invoice_util.create_invoice(provider, child, now, due_date, None, program.registrationFee,
                                                   False)
             invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee",
                                                   program.registrationFee)

@@ -2,7 +2,7 @@ from google.appengine.ext import ndb
 from models import InvoiceLineItem
 from models import Invoice
 from common import key_util
-from datetime import date, timedelta
+from datetime import datetime, date, timedelta
 from calendar import monthrange
 import logging
 
@@ -14,7 +14,7 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
     invoice_line_item = InvoiceLineItem(parent=invoice.key)
     invoice_line_item.enrollment_key = enrollment_key
     invoice_line_item.invoice_key = invoice.key
-    if amount > 0:
+    if amount != 0:
         invoice_line_item.amount = amount
     else:
         invoice_line_item.amount = program.fee if program else 0.0
@@ -90,8 +90,8 @@ def sum_up_original_amount_due(invoice):
 
 def get_invoice_late_fee_added(invoice):
     """ Gets whether the late fee has been added to this unpaid late invoice. """
-    today = date.today()
-    if not invoice.is_paid() and invoice.due_date < today:
+    now = datetime.now()
+    if not invoice.is_paid() and invoice.due_date < now:
         lineItems = InvoiceLineItem.query(ancestor=invoice.key)
         for lineItem in lineItems:
             if lineItem.description == 'Late Fee':
@@ -180,16 +180,18 @@ def list_invoice_by_provider_and_child(provider_key, child_key):
 @ndb.transactional(xg=True)
 def pay(invoice, payment):
     if payment.balance >= invoice.amount:
+        amount = invoice.amount
         create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
-                                              -invoice.amount, payment)
+                                              -amount, payment)
         payment.balance = payment.balance - invoice.amount
         invoice.status = Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
         invoice.amount = 0
         payment.put()
         invoice.put()
     else:
+        amount = payment.balance
         create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
-                                              -payment.balance, payment)
+                                              -amount, payment)
         invoice.amount = invoice.amount - payment.balance
         payment.balance = 0
         payment.put()

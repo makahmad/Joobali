@@ -12,6 +12,8 @@ from enrollment import enrollment_util
 from login.models import Provider
 from manageprogram import models
 from manageprogram import program_util
+from common import datetime_util
+import pytz
 
 import json
 import logging
@@ -57,6 +59,8 @@ def listPrograms(request):
         logger.info("JEncoder().encode(program) %s" % JEncoder().encode(program))
         program_dict = program.to_dict()
         program_dict['id'] = program.key.id()
+        program_dict['startDate'] = datetime_util.utc_to_local(program_dict['startDate'])
+        program_dict['endDate'] = datetime_util.utc_to_local(program_dict['endDate'])
         program_dict['has_enrollment'] = True if enrollment_util.list_active_enrollment_by_provider_program(user_id, program_dict['id']) else False
 
         output.append(program_dict)
@@ -104,22 +108,6 @@ def updateProgram(request):
 
     program.programName = newProgram['programName']
 
-    # program.maxCapacity = newProgram['maxCapacity']
-    # program.registrationFee = newProgram['registrationFee']
-    # program.fee = newProgram['fee']
-    # program.feeType = newProgram['feeType']
-    # program.lateFee = newProgram['lateFee']
-    # program.billingFrequency = newProgram['billingFrequency']
-
-    # program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
-    #
-    # if newProgram['indefinite']:
-    #     program.indefinite = newProgram['indefinite']
-    #     program.endDate = None
-    # else:
-    #     program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
-
-    # program.dueDate = datetime.strptime(newProgram['dueDate'], DATE_FORMAT).date()
     program.put()
 
     return HttpResponse('success')
@@ -160,7 +148,7 @@ def addProgram(request):
     program.fee = newProgram['fee']
     program.lateFee = newProgram['lateFee']
     program.billingFrequency = newProgram['billingFrequency']
-    program.startDate = datetime.strptime(newProgram['startDate'], DATE_FORMAT).date()
+    program.startDate = datetime_util.local_to_utc(datetime.strptime(newProgram['startDate'], DATE_FORMAT))
 
     if program.billingFrequency == 'Monthly':
         #if program is monthly and last day of month is checked
@@ -172,7 +160,7 @@ def addProgram(request):
         program.weeklyBillDay = day_name[program.startDate.weekday()]
 
     if newProgram['endDate']:
-        program.endDate = datetime.strptime(newProgram['endDate'], DATE_FORMAT).date()
+        program.endDate = datetime_util.local_to_utc(datetime.strptime(newProgram['endDate'], DATE_FORMAT))
     else:
         program.indefinite = True
         program.endDate = None

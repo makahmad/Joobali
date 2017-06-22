@@ -57,7 +57,7 @@ class EnrollmentUtilTestCase(unittest.TestCase):
         test_program.fee = 10
         test_program.programName = "Test Program"
         test_program.billingFrequency = "monthly"
-        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT).date()
+        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT)
         test_program.put()
         self.test_program = test_program
 
@@ -65,13 +65,13 @@ class EnrollmentUtilTestCase(unittest.TestCase):
         self.testbed.deactivate()
 
     def test_validate_enrollment_date_with_empty_endDate(self):
-        start_date = datetime.strptime('05/25/2017', DATE_FORMAT).date()
-        end_date = datetime.strptime('07/22/2017', DATE_FORMAT).date()
+        start_date = datetime.strptime('05/25/2017', DATE_FORMAT)
+        end_date = datetime.strptime('07/22/2017', DATE_FORMAT)
         enrollment_util.validate_enrollment_date(self.test_program, start_date, end_date)
 
     def test_validate_enrollment_date_with_empty_endDate_startDateTooEarly(self):
-        start_date = datetime.strptime('05/20/2017', DATE_FORMAT).date()
-        end_date = datetime.strptime('07/22/2017', DATE_FORMAT).date()
+        start_date = datetime.strptime('05/20/2017', DATE_FORMAT)
+        end_date = datetime.strptime('07/22/2017', DATE_FORMAT)
         with self.assertRaises(JoobaliRpcException):
             enrollment_util.validate_enrollment_date(self.test_program, start_date, end_date)
 
@@ -80,12 +80,12 @@ class EnrollmentUtilTestCase(unittest.TestCase):
         test_program.fee = 10
         test_program.programName = "Test Program"
         test_program.billingFrequency = "monthly"
-        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT).date()
-        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT).date()
+        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT)
+        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT)
         test_program.put()
 
-        start_date = datetime.strptime('05/23/2017', DATE_FORMAT).date()
-        end_date = datetime.strptime('01/22/2018', DATE_FORMAT).date()
+        start_date = datetime.strptime('05/23/2017', DATE_FORMAT)
+        end_date = datetime.strptime('01/22/2018', DATE_FORMAT)
         enrollment_util.validate_enrollment_date(test_program, start_date, end_date)
 
     def test_validate_enrollment_date_startDateTooEarly(self):
@@ -93,12 +93,12 @@ class EnrollmentUtilTestCase(unittest.TestCase):
         test_program.fee = 10
         test_program.programName = "Test Program"
         test_program.billingFrequency = "monthly"
-        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT).date()
-        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT).date()
+        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT)
+        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT)
         test_program.put()
 
-        start_date = datetime.strptime('05/20/2017', DATE_FORMAT).date()
-        end_date = datetime.strptime('01/22/2018', DATE_FORMAT).date()
+        start_date = datetime.strptime('05/20/2017', DATE_FORMAT)
+        end_date = datetime.strptime('01/22/2018', DATE_FORMAT)
         with self.assertRaises(JoobaliRpcException):
             enrollment_util.validate_enrollment_date(test_program, start_date, end_date)
 
@@ -107,12 +107,12 @@ class EnrollmentUtilTestCase(unittest.TestCase):
         test_program.fee = 10
         test_program.programName = "Test Program"
         test_program.billingFrequency = "monthly"
-        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT).date()
-        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT).date()
+        test_program.startDate = datetime.strptime('05/22/2017', DATE_FORMAT)
+        test_program.endDate = datetime.strptime('05/22/2018', DATE_FORMAT)
         test_program.put()
 
-        start_date = datetime.strptime('05/20/2017', DATE_FORMAT).date()
-        end_date = datetime.strptime('05/23/2018', DATE_FORMAT).date()
+        start_date = datetime.strptime('05/20/2017', DATE_FORMAT)
+        end_date = datetime.strptime('05/23/2018', DATE_FORMAT)
         with self.assertRaises(JoobaliRpcException):
             enrollment_util.validate_enrollment_date(test_program, start_date, end_date)
 
