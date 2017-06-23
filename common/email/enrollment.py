@@ -4,6 +4,7 @@ from os import environ
 from google.appengine.api import mail
 from django.template import Context, loader
 from google.appengine.runtime.apiproxy_errors import OverQuotaError
+from common import datetime_util
 
 from verification import verification_util
 
@@ -35,9 +36,9 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         'provider_school_name': provider.schoolName,
         'program_name': program.programName,
         'child_first_name': child.first_name,
-        'enrollment_start_date': enrollment.start_date,
+        'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date),
         'program_fee': program.fee,
-        'program_billing_cycle': program.billingFrequency,
+        'program_billing_frequency': program.billingFrequency,
         'enrollment_detail_url': enrollment_detail_url,
         'is_unenroll_reminder': True
     }
@@ -72,12 +73,15 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
         signup_url = http_prefix + host + "/login/parentsignup?t=" + verification_token.token_id
         logger.info('sending signup invitation to %s' % parent_email)
         global _signup_notification_template
+
         rendering_data = {
             'host': host,
             'provider_school_name': provider.schoolName,
             'program_name': program.programName,
             'child_first_name': child.first_name,
-            'enrollment_start_date': enrollment.start_date,
+            'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date),
+            'start_date': datetime_util.utc_to_local(enrollment.start_date),
+            'end_date': datetime_util.utc_to_local(enrollment.end_date) if enrollment.end_date else '',
             'program_fee': program.fee,
             'program_billing_cycle': program.billingFrequency,
             'signup_url': signup_url,
@@ -93,10 +97,12 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'provider_school_name': provider.schoolName,
             'program_name': program.programName,
             'child_first_name': child.first_name,
-            'enrollment_start_date': enrollment.start_date,
+            'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date),
             'enrollment_detail_url': enrollment_detail_url,
             'program_billing_frequency': program.billingFrequency,
-            'is_acceptance_reminder': True
+            'is_acceptance_reminder': True,
+            'due_date': datetime_util.utc_to_local(enrollment.start_date),
+            'amount': program.fee,
         }
         message.html = _enrollment_notification_template.render(Context(rendering_data))
     try:

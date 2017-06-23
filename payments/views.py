@@ -22,6 +22,7 @@ from invoice import invoice_util
 from common.pdf import render_to_pdf
 from common import dwolla
 from google.appengine.ext import ndb
+from common import datetime_util
 
 import json
 import logging
@@ -53,8 +54,8 @@ def add_payment(request):
     except KeyError:
         note = None
     amount = data['amount']
-    payment_date = datetime.strptime(data['payment_date'], DATE_FORMAT).date()
-    created_date = datetime.strptime(data['created_date'], DATE_FORMAT).date()
+    payment_date = datetime_util.local_to_utc(datetime.strptime(data['payment_date'], DATE_FORMAT))
+    created_date = datetime_util.local_to_utc(datetime.strptime(data['created_date'], DATE_FORMAT))
 
     provider = Provider.get_by_id(request.session.get('user_id'))
     child = Child.get_by_id(child_id)
@@ -100,7 +101,7 @@ def listPayments(request):
         results.append({
             'child': '%s %s' % (payment.child_key.get().first_name, payment.child_key.get().last_name),
             'amount': float(payment.amount),
-            'date': payment.date.strftime('%m/%d/%Y'),
+            'date': datetime_util.utc_to_local(payment.date).strftime('%m/%d/%Y'),
             'type': payment.type,
             'payer': payment.payer,
             'provider_amount': float(payment.amount),

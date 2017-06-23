@@ -66,6 +66,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    if (response.data == 'false') {
             var modalInstance = $uibModal.open({
                 animation: true,
+                backdrop: 'static',
                 component: 'initSetupComponent',
             });
 	    }
@@ -199,7 +200,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
                  .when('/verification', {template: '<verification-component profile="profile"></verification-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
-                 .when('/child/list', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}"></child-list>'})
+                 .when('/child/list', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
                  .when('/child/list/:programId', {template: '<child-list></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .when('/home', {templateUrl: '/static/home/home.html'})
@@ -431,7 +432,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         bindings: {
             checkRequirements : '&',
             dwollaStatus : '@',
-            changeView : '&'
+            changeView : '&',
+            fundingSources : '@'
         }
     })
     .component('childCard', {

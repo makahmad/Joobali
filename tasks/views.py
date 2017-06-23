@@ -21,19 +21,20 @@ from funding import funding_util
 from dwollav2.error import ValidationError
 from models import DwollaEvent
 from payments.models import Payment
+from common import datetime_util
 import logging
 import json
 
 logger = logging.getLogger(__name__)
 
 def invoice_calculation(request):
-    today = date.today()
+    now = datetime.now()
 
     logger.info("LATE FEE CALCULATION")
     # loop over invoices...
     for invoice in Invoice.query().fetch():
         provider = invoice.provider_key.get()
-        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < today and not invoice_util.get_invoice_late_fee_added(invoice):
+        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < now and not invoice_util.get_invoice_late_fee_added(invoice):
             program = invoice_util.get_invoice_program(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             provider = provider_util.get_provider_by_email(invoice.provider_email)
@@ -88,7 +89,7 @@ def invoice_calculation(request):
             while due_date < program.startDate:
                 due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
             # find the upcomming due date in adding bill cycles to the enrollment start date until it passes today
-            while due_date < today:
+            while due_date < now:
                 due_date = invoice_util.get_next_due_date(due_date, program.billingFrequency)
 
             if enrollment.end_date:
@@ -105,7 +106,7 @@ def invoice_calculation(request):
             #     should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id())
-            if due_date - timedelta(days=5) <= today: # 5 days ahead billing before due date
+            if due_date - timedelta(days=15) <= now: # 5 days ahead billing before due date
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()
@@ -115,7 +116,7 @@ def invoice_calculation(request):
                         logger.info("Skipping...Invoice has already been calculated for this cycle for enrollment: %s" % enrollment)
                         should_proceed = False
             else:
-                logger.info("Skipping, due date too far away: today - %s, due date - %s" % (today, due_date))
+                logger.info("Skipping, due date too far away: today - %s, due date - %s" % (now, due_date))
 
             # figure out the current cycle period, which is the program cycle period overlapping with current due date
             #while cycle_start_date + program_cycle_time <= due_date:
@@ -132,7 +133,7 @@ def invoice_calculation(request):
                 if provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
-                    invoice = invoice_util.create_invoice(provider, child, today, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
+                    invoice = invoice_util.create_invoice(provider, child, now, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice_dict[provider_child_pair_key] = invoice
                 invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
                 # if should_add_registration_fee:
@@ -149,7 +150,7 @@ def invoice_calculation(request):
 
 def invoice_notification(request):
     logger.info("INVOICE NOTIFICATION")
-    today = date.today()
+    now = datetime.now()
     invoice_dict = dict()
     days_before = 5 # send notification 5 days before due date
 
@@ -157,18 +158,27 @@ def invoice_notification(request):
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         logger.info("Sending notification for invoice: %s" % invoice)
-        if today + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
+        if now + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
+            enrollment = invoice_util.get_invoice_enrollment(invoice)
+            program = None
+            if enrollment:
+                program = enrollment.program_key.get()
+            parent = parent_util.get_parents_by_email(invoice.parent_email)
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
-                'pay_invoice_url': request.get_host() + '/static/logo/img_headerbg.png',
+                'pay_invoice_url': request.get_host() + '/login',
                 'invoice_id': invoice.key.id(),
-                'start_date': start_date.strftime('%m/%d/%Y') if start_date else '',
-                'end_date': end_date.strftime('%m/%d/%Y') if end_date else '',
-                'due_date': invoice.due_date.strftime('%m/%d/%Y'),
+                'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
+                'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
+                'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
                 'school_name': invoice.provider_key.get().schoolName,
+                'program_billing_frequency': program.billingFrequency if program else '',
+                'amount': invoice.amount,
+                'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             }
-            send_invoice_email(invoice.parent_email, invoice, start_date, end_date, template.render(data))
+            send_invoice_email(invoice.parent_email, invoice, datetime_util.utc_to_local(start_date), datetime_util.utc_to_local(end_date), template.render(data))
             invoice.email_sent = True
             invoice.put()
             # break # temporary only sent out one email as our quota is limited
@@ -178,7 +188,7 @@ def invoice_notification(request):
 def autopay(request):
     logger.info("INVOICE AUTOPAY")
 
-    today = date.today()
+    now = datetime.now()
     invoice_dict = dict()
     # loop over invoices...
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
@@ -186,7 +196,7 @@ def autopay(request):
         (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
         pay_days_before = 0 if pay_days_before == None else pay_days_before
         # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-        if autopay_source_id != None and pay_days_before != None and today + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
+        if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
             logger.info("Autopaying for invoice: %s" % invoice)
             provider = invoice.provider_key.get()
 

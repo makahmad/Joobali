@@ -5,12 +5,11 @@ from login.models import Provider
 class Program(ndb.Model):
     ''' Parent (Provider) '''
     programName = ndb.StringProperty(required=True)
-    startDate = ndb.DateProperty(required=True)
-    endDate = ndb.DateProperty()
+    startDate = ndb.DateTimeProperty(required=True)
+    endDate = ndb.DateTimeProperty()
     registrationFee = ndb.FloatProperty()
     fee = ndb.FloatProperty(required=True)
     lateFee = ndb.FloatProperty()  # default to general setting if blank.
-    # dueDate = ndb.DateProperty(required=True) # initial payment due date.
     billingFrequency = ndb.StringProperty(required=True)  #enum: Weekly, Monthly (default)
     weeklyBillDay = ndb.StringProperty(required=False)  #enum: Monday, Tuesday, Wednesday....Sunday
     monthlyBillDay = ndb.StringProperty(required=False)  # enum: 1-28 + Last Day

@@ -1,309 +1,430 @@
-<!DOCTYPE HTML>
-<!--Quite a few clients strip your Doctype out, and some even apply their own. Many clients do honor your doctype and it can make things much easier if you can validate constantly against a Doctype.-->
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Joobali Enrollment Notification</title>
-
-    <!-- Please use an inliner tool to convert all CSS to inline as inpage or external CSS is removed by email clients -->
-    <!-- important in CSS is used to prevent the styles of currently inline CSS from overriding the ones mentioned in media queries when corresponding screen sizes are encountered -->
-
-    <style type="text/css">
-    body {
-        margin: 0;
-    }
-    body, table, td, p, a, li, blockquote {
-        -webkit-text-size-adjust: none!important;
-        font-family: sans-serif;
-        font-style: normal;
-        font-weight: 400;
-    }
-    button {
-        width: 90%;
-    }
-
-    @media screen and (max-width:600px) {
-    /*styling for objects with screen size less than 600px; */
-    body, table, td, p, a, li, blockquote {
-        -webkit-text-size-adjust: none!important;
-        font-family: sans-serif;
-    }
-    table {
-        /* All tables are 100% width */
-        width: 100%;
-    }
-    .footer {
-        /* Footer has 2 columns each of 48% width */
-        height: auto !important;
-        max-width: 48% !important;
-        width: 48% !important;
-    }
-    table.responsiveImage {
-        /* Container for images in catalog */
-        height: auto !important;
-        max-width: 30% !important;
-        width: 30% !important;
-    }
-    table.responsiveContent {
-        /* Content that accompanies the content in the catalog */
-        height: auto !important;
-        max-width: 66% !important;
-        width: 66% !important;
-    }
-    .top {
-        /* Each Columnar table in the header */
-        height: auto !important;
-        max-width: 48% !important;
-        width: 48% !important;
-    }
-    .catalog {
-        margin-left: 0%!important;
-    }
-    }
-
-    @media screen and (max-width:480px) {
-    /*styling for objects with screen size less than 480px; */
-    body, table, td, p, a, li, blockquote {
-        -webkit-text-size-adjust: none!important;
-        font-family: sans-serif;
-    }
-    table {
-        /* All tables are 100% width */
-        width: 100% !important;
-        border-style: none !important;
-    }
-    .footer {
-        /* Each footer column in this case should occupy 96% width  and 4% is allowed for email client padding*/
-        height: auto !important;
-        max-width: 96% !important;
-        width: 96% !important;
-    }
-    .table.responsiveImage {
-        /* Container for each image now specifying full width */
-        height: auto !important;
-        max-width: 96% !important;
-        width: 96% !important;
-    }
-    .table.responsiveContent {
-        /* Content in catalog  occupying full width of cell */
-        height: auto !important;
-        max-width: 96% !important;
-        width: 96% !important;
-    }
-    .top {
-        /* Header columns occupying full width */
-        height: auto !important;
-        max-width: 100% !important;
-        width: 100% !important;
-    }
-    .catalog {
-        margin-left: 0%!important;
-    }
-    button {
-        width: 90%!important;
-    }
-    }
-
-    </style>
-</head>
-<body yahoo="yahoo">
-<table width="100%" cellspacing="0" cellpadding="0">
-    <tbody>
-    <tr>
-        <td>
-            <table width="600" align="center" cellpadding="0" cellspacing="0">
-                <!-- Main Wrapper Table with initial width set to 60opx -->
-                <tbody>
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+        <center>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;">
                 <tr>
-                    <td>
-                        <table bgcolor="#ff5b35" background="img_headerbg.png" class="top" width="100%" align="left"
-                               cellpadding="0" cellspacing="0" style="padding:10px 10px 10px 10px;">
-                            <!-- First header column with Logo -->
-                            <tbody>
-                            <tr>
-                                <td style="font-size: 12px; color:#929292; text-align:center; font-family: sans-serif;">
-                                    <a href="#"><img src="http://{{host}}/static/home/pics/logo/logo.png" width="220" height="100" alt=""/></a></td>
+                    <td align="center" valign="top" id="bodyCell" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;">
+                        <!-- BEGIN TEMPLATE // -->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+							<tr>
+								<td align="center" valign="top" id="templateHeader" data-template-container style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 0px;">
+									<!--[if gte mso 9]>
+									<table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+									<tr>
+									<td align="center" valign="top" width="600" style="width:600px;">
+									<![endif]-->
+									<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;max-width: 600px !important;">
+										<tr>
+                                			<td valign="top" class="headerContainer" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ff5b35;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnImageBlockOuter">
+            <tr>
+                <td valign="top" style="padding: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
+                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <tbody><tr>
+                            <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                
+                                    
+                                        <img align="center" alt="" src="{{ host }}/static/home/pics/logo/logo.png" width="100" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
+                                    
+                                
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+    </tbody>
+</table></td>
+										</tr>
+									</table>
+									<!--[if gte mso 9]>
+									</td>
+									</tr>
+									</table>
+									<![endif]-->
+								</td>
                             </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+							<tr>
+								<td align="center" valign="top" id="templateBody" data-template-container style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 40px;padding-bottom: 40px;">
+									<!--[if gte mso 9]>
+									<table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+									<tr>
+									<td align="center" valign="top" width="600" style="width:600px;">
+									<![endif]-->
+									<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;max-width: 600px !important;">
+										<tr>
+                                			<td valign="top" class="bodyContainer" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
+                        
+                            <div style="text-align: left;"><strong>{{ parent_first_name }}, you are invited to make payments online.</strong></div>
 
-                <tr>
-                    <!-- HTML Spacer row -->
-                    <td style="font-size: 0; line-height: 0;" height="20">
-                        <table width="96%" align="left" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td style="font-size: 0; line-height: 0;" height="20">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
+<div style="text-align: center;">&nbsp;</div>
 
-                <tr>
-                    <!-- Introduction area -->
-                    <td>
-                        <table>
-                            <tr>
-                                <!-- Row container for Intro/ Description -->
-                                <td align="left"
-                                    style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
-                                    {% if is_acceptance_reminder %}
-                                    <p><strong>{{ provider_school_name }}</strong> has invited you to make payments
-                                        online and
-                                        view invoices for childcare services provided.
-                                    </p>
-                                    {% endif %}
-                                    {% if is_unenroll_reminder %}
-                                    <p><strong>{{ provider_school_name }}</strong> has cancelled the following
-                                        enrollment.
-                                    </p>
-                                    {% endif %}
-                                </td>
+<div style="text-align: left;"><strong>{{ provider_school_name }}</strong> has invited you to make payments and view invoices online for <strong>{{ child_first_name }}.&nbsp;</strong></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnButtonBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnButtonBlockOuter">
+        <tr>
+            <td style="padding-top: 0;padding-right: 18px;padding-bottom: 18px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="center" class="mcnButtonBlockInner">
+                <table border="0" cellpadding="0" cellspacing="0" class="mcnButtonContentContainer" style="border-collapse: separate !important;border: 1px solid #339999;border-radius: 3px;background-color: #FFFFFF;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                    <tbody>
+                        <tr>
+                            <td align="center" valign="middle" class="mcnButtonContent" style="font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-size: 18px;padding: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                               {% if is_acceptance_reminder %}
+                                <a class="mcnButton " title="Get Started" href="{{enrollment_detail_url}}" target="_self" style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Get Started</a>
+                                {% endif %}
+                                {% if is_unenroll_reminder %}
+                                <a class="mcnButton " title="Get Started" href="{{enrollment_detail_url}}" target="_self" style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">View Enrollment</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
+    <tbody class="mcnDividerBlockOuter">
+        <tr>
+            <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 0px 18px 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top: 1px dotted #FF5B35;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                    <tbody><tr>
+                        <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--            
+                <td class="mcnDividerBlockInner" style="padding: 18px;">
+                <hr class="mcnDividerContent" style="border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;" />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
+                        
+                            <div style="text-align: left;">Child Name:&nbsp;<strong>{{ child_first_name }}</strong></div>
+
+<div style="text-align: left;">Program Name:&nbsp;<strong>{{ program_name }}</strong><br>
+Program Fee:&nbsp;<strong>{{ amount }}</strong><br>
+Payment Due Date:&nbsp;<strong>{{ due_date }}</strong><br>
+Payment Schedule:&nbsp;<strong>{{ program_billing_frequency }}</strong><br>
+<br>
+{% if is_acceptance_reminder %}
+<em>Payment will be applied to services provided from {{ start_date }} to {{ end_date }}.</em></div>
+{% endif %}
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
+    <tbody class="mcnDividerBlockOuter">
+        <tr>
+            <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 0px 18px 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-top: 1px dotted #FF5B35;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                    <tbody><tr>
+                        <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--            
+                <td class="mcnDividerBlockInner" style="padding: 18px;">
+                <hr class="mcnDividerContent" style="border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;" />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnDividerBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;table-layout: fixed !important;">
+    <tbody class="mcnDividerBlockOuter">
+        <tr>
+            <td class="mcnDividerBlockInner" style="min-width: 100%;padding: 18px 18px 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                <table class="mcnDividerContent" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                    <tbody><tr>
+                        <td style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--            
+                <td class="mcnDividerBlockInner" style="padding: 18px;">
+                <hr class="mcnDividerContent" style="border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;" />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
+                        {% if is_acceptance_reminder %}
+                            Joobali is a service being provided to you by {{ provider_school_name }}. Please let us know if we can be of assistance!<br>
+                            {% endif %}
+<br>
+Best,<br>
+<strong>Joobali Care Team</strong><br>
+<a href="https://support.joobali.com/hc/en-us/requests/new" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Submit a Request</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+										</tr>
+									</table>
+									<!--[if gte mso 9]>
+									</td>
+									</tr>
+									</table>
+									<![endif]-->
+								</td>
                             </tr>
                             <tr>
-                                <table width="96%" align="center" cellpadding="0" cellspacing="0"
-                                       style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; text-align:center;">
+								<td align="center" valign="top" id="templateFooter" data-template-container style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 63px;">
+									<!--[if gte mso 9]>
+									<table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+									<tr>
+									<td align="center" valign="top" width="600" style="width:600px;">
+									<![endif]-->
+									<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;max-width: 600px !important;">
+										<tr>
+                                			<td valign="top" class="footerContainer" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #transparent;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0;padding-bottom: 0;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnFollowBlockOuter">
+        <tr>
+            <td align="center" valign="top" style="padding: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowBlockInner">
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnFollowContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody><tr>
+        <td align="center" style="padding-left: 9px;padding-right: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnFollowContent">
+                <tbody><tr>
+                    <td align="center" valign="top" style="padding-top: 9px;padding-right: 9px;padding-left: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <table align="center" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                            <tbody><tr>
+                                <td align="center" valign="top" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                    <!--[if mso]>
+                                    <table align="center" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td></td>
-                                        <!-- pay invoice button -->
-                                        {% if is_acceptance_reminder %}
-                                        <td colspan="2" cellpadding="4" bgcolor="#1E988A">
-                                            <a href="{{enrollment_detail_url}}"
-                                               style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">Accept
-                                                this Enrollment</a>
-                                        </td>
-                                        {% endif %}
-                                        {% if is_unenroll_reminder %}
-                                        <td colspan="2" cellpadding="4" bgcolor="#1E988A">
-                                            <a href="{{enrollment_detail_url}}"
-                                               style="font-size: 16px; font-weight:300; color: white; font-family: sans-serif; line-height:4;">
-                                                View this Enrollment
-                                            </a>
-                                        </td>
-                                        {% endif %}
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3">&nbsp; </td>
-                                    </tr>
-                                    <tr cellpadding="10">
-                                        <td align="center">
-                                            <table>
-                                                <tr>
-                                                    <td align="center">Child Name</td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" style="color:black;">{{ child_first_name }}</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td align="center">
-                                            <table>
-                                                <tr>
-                                                    <td align="center">Program Name</td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" style="color:black;">{{program_name}}</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td align="center">
-                                            <table width="100%">
-                                                <tr>
-                                                    <td align="center">Billing Frequency</td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" style="color:black;">{{program_billing_frequency}}</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                        <td align="center">
-                                            <table width="100%">
-                                                <tr>
-                                                    <td align="center">Start Date</td>
-                                                </tr>
-                                                <tr>
-                                                    <td align="center" style="color:black;"><strong>{{enrollment_start_date}}</strong>
+                                    <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                        <a href="https://www.facebook.com/joobalicare" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-gray-facebook-96.png" alt="Facebook" class="mcnFollowBlockIcon" width="48" style="width: 48px;max-width: 48px;display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;"></a>
                                                     </td>
                                                 </tr>
-                                            </table>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
                                         </td>
+                                        <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                        <a href="https://twitter.com/joobalicare" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-gray-twitter-96.png" alt="Twitter" class="mcnFollowBlockIcon" width="48" style="width: 48px;max-width: 48px;display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;"></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right: 10px;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                        <a href="https://www.instagram.com/joobalicare/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-gray-instagram-96.png" alt="Link" class="mcnFollowBlockIcon" width="48" style="width: 48px;max-width: 48px;display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;"></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                        <!--[if mso]>
+                                        <td align="center" valign="top">
+                                        <![endif]-->
+                                        
+                                            <table align="left" border="0" cellpadding="0" cellspacing="0" class="mcnFollowStacked" style="display: inline;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                 
+                                                <tbody><tr>
+                                                    <td align="center" valign="top" class="mcnFollowIconContent" style="padding-right: 0;padding-bottom: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                                                        <a href="https://www.linkedin.com/company/joobali" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><img src="https://cdn-images.mailchimp.com/icons/social-block-v2/outline-gray-linkedin-96.png" alt="LinkedIn" class="mcnFollowBlockIcon" width="48" style="width: 48px;max-width: 48px;display: block;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;"></a>
+                                                    </td>
+                                                </tr>
+                                                
+                                                
+                                            </tbody></table>
+                                        
+                                        
+                                        <!--[if mso]>
+                                        </td>
+                                        <![endif]-->
+                                    
+                                    <!--[if mso]>
                                     </tr>
-                                </table>
-                            </tr>
-                            <tr>
-                                <td style="font-size: 0; line-height: 0;" height="20">
-                                    <table width="96%" align="left" cellpadding="0" cellspacing="0">
-                                        <tr>
-                                            <!-- HTML Spacer row -->
-                                            <td style="font-size: 0; line-height: 0;" height="20">&nbsp;</td>
-                                        </tr>
                                     </table>
+                                    <![endif]-->
                                 </td>
                             </tr>
-                            <tr>
-                                <!-- Row container for Intro/ Description -->
-                                <td align="left"
-                                    style="font-size: 14px; font-style: normal; font-weight: 100; color: #929292; line-height: 1.8; text-align:justify; padding:10px 20px 0px 20px; font-family: sans-serif;">
-                                    {% if is_acceptance_reminder %}
-                                    <p>If you do not pay online, be sure to make a payment directy to
-                                        {{ provider_school_name }} by <strong>{{enrollment_start_date}}</strong>. </p>
-                                    <p>Don’t forget, late fees may be incurred if payments are not made on time. </p>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        </table>
+                        </tbody></table>
                     </td>
                 </tr>
-
-                <tr>
-                    <!-- HTML spacer row -->
-                    <td style="font-size: 0; line-height: 0;" height="20">
-                        <table width="96%" align="left" cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td style="font-size: 0; line-height: 0;" height="20">&nbsp;</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-
-                <tr bgcolor="#d0cfcf">
-                    <td>
-                        <table class="footer" width="48%" align="left" cellpadding="0" cellspacing="0">
-                            <!-- First column of footer content -->
-                            <tr>
-                                <td>
-                                    <p align="center"
-                                       style="font-size: 22px; font-weight:300; line-height: 2.5em; color: #929292; font-family: sans-serif;">
-                                        {{provider_school_name}}
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-                        <table class="footer" width="48%" align="left" cellpadding="0" cellspacing="0">
-                            <!-- Second column of footer content -->
-                            <tr>
-                                <td>
-                                    <p style="font-size: 14px; font-style: normal; font-weight:normal; color: #ffffff; line-height: 1.8; text-align:justify;padding-top:10px; margin-left:20px; margin-right:20px; font-family: sans-serif;">
-                                        Joobali is a service being provided to you by Joobali Inc. to make automated
-                                        payments and view/review invoices any updates regarding your fees for child
-                                        care..
-                                    </p>
-                                    <p align="right" style="font-family: sans-serif;">
-                                        <a style="color:#929292; text-decoration:none; padding-left:20px; font-size:14px;"
-                                                href="http://joobali.com/">Joobali</a>
-                                    </p>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+            </tbody></table>
         </td>
     </tr>
+</tbody></table>
+
+            </td>
+        </tr>
     </tbody>
-</table>
-</body>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+                        
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 12px;line-height: 150%;text-align: center;">
+                        
+                            <div style="text-align: center;"><a href="{{ host }}" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Joobali</a>&nbsp;</div>
+<a href="{{ host }}/login/termsofservice" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Terms of Service</a>&nbsp;|&nbsp;<a href="{{ host }}/login/privacypolicy" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Privacy Policy</a> | <a href="https://support.joobali.com" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Support</a>&nbsp;
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+										</tr>
+									</table>
+									<!--[if gte mso 9]>
+									</td>
+									</tr>
+									</table>
+									<![endif]-->
+								</td>
+                            </tr>
+                        </table>
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
 </html>

@@ -7,7 +7,7 @@ class Invoice(ndb.Model):
     child_key = ndb.KeyProperty(required=True)
     provider_key = ndb.KeyProperty(required=True)
     amount = ndb.FloatProperty(required=True)
-    due_date = ndb.DateProperty(required=True)
+    due_date = ndb.DateTimeProperty(required=True)
     # provider info
     provider_email = ndb.StringProperty(required=True)
     provider_phone = ndb.StringProperty()
@@ -16,7 +16,7 @@ class Invoice(ndb.Model):
     child_last_name = ndb.StringProperty(required=True)
     parent_email= ndb.StringProperty(required=True)
     # other
-    date_created = ndb.DateProperty(required=True)
+    date_created = ndb.DateTimeProperty(required=True)
     late_fee_enforced = ndb.BooleanProperty(default=True)
     status = ndb.StringProperty(required=True, default="NEW")
     # All possible status for a invoice
@@ -37,7 +37,7 @@ class Invoice(ndb.Model):
 
 
     def is_late(self):
-        return self.due_date < date.today()
+        return self.due_date.date() < date.today()
 
     def is_paid(self):
         return self.status == Invoice._POSSIBLE_STATUS['COMPLETED'] or self.status == Invoice._POSSIBLE_STATUS['MARKED_PAID'] or self.status == Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
@@ -51,8 +51,8 @@ class InvoiceLineItem(ndb.Model):
     invoice_key = ndb.KeyProperty(kind=Invoice, required=True)
     program_name = ndb.StringProperty(required=True)
     amount = ndb.FloatProperty(required=True)
-    start_date = ndb.DateProperty()
-    end_date = ndb.DateProperty()
+    start_date = ndb.DateTimeProperty()
+    end_date = ndb.DateTimeProperty()
     # Reason for adjustment
     description = ndb.StringProperty()
 

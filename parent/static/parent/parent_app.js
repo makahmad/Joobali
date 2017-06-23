@@ -47,6 +47,7 @@ ParentController.prototype.initialize = function($uibModal) {
 	    if (response.data == 'false') {
             var modalInstance = $uibModal.open({
                 animation: true,
+                backdrop: 'static',
                 component: 'initSetupComponent',
             });
 	    }
