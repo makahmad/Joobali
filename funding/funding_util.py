@@ -3,6 +3,7 @@ from common.dwolla import create_account_token
 from invoice.models import Invoice
 import dwollav2
 import logging
+from os import environ
 
 logger = logging.getLogger(__name__)
 account_token = create_account_token('sandbox')
@@ -21,10 +22,10 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
     request_body = {
         '_links': {
             'destination': {
-                'href': 'https://api.dwolla.com/funding-sources/' + dest_funding_source_id
+                'href': 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', dest_funding_source_id)
             },
             'source': {
-                'href': 'https://api.dwolla.com/funding-sources/' + funding_source
+                'href': 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source)
             }
         },
         'amount': {

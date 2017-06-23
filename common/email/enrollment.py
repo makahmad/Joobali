@@ -27,7 +27,7 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         sender=sender_address,
         subject="Invitation from %s to make payments online." % provider_name)
     message.to = "%s" % parent_email
-    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+    http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     enrollment_detail_url = http_prefix + host + "/parent/#!/enrollmentview/" + ("%d/%d" % (
         provider.key.id(), enrollment.key.id()))
 
@@ -59,7 +59,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
 
     is_parent_signup = (parent.status.status == 'active')
     parent_email = parent.email
-    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+    http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     provider_name = provider.schoolName
 
     message = mail.EmailMessage(

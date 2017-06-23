@@ -148,7 +148,7 @@ def viewInvoice(request):
 		if total != invoice.amount:
 			HttpResponse("Something is wrong when retrieving the invoice.")
 
-		http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+		http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
 		root_path = http_prefix + request.get_host()
 
 		note = provider.lateFeeInvoiceNote if invoice.is_late() else provider.generalInvoiceNote

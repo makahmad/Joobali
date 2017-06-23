@@ -1,27 +1,36 @@
 """Package for common dwolla related helper methods and constants"""
 import dwollav2
 import logging
+from os import environ
 
 logger = logging.getLogger(__name__)
 
 # Client constants
-CLIENT_ID = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9'
-CLIENT_SECRET = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9'
-DEFAULT_ENVIRONMENT = 'sandbox'
+CLIENT_ID_PROD = 'XC7mP0GhC2cymZgOvdaHp7IC7FyPBEqex6hU7niubUdbGzEQhX'
+CLIENT_SECRET_PROD = 'AVTGFRA4spKTrDPOTFKmlMBKmcjx3RzLlomA8zMiEJnq180fDS'
+ENVIRONMENT_PROD = 'production'
+CLIENT_ID_UAT = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9'
+CLIENT_SECRET_UAT = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9'
+ENVIRONMENT_UAT = 'sandbox'
 
 # Account constants
-ACCESS_TOKEN = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB'
-REFRESH_TOKEN = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke'
+ACCESS_TOKEN_PROD = 'eCZiKqVeBYY9MgSKnOjBbfIHXrP03ThF7PbJQEgBnewHkBOEMl'
+REFRESH_TOKEN_PROD = '9AG9ybHLorJMASp2Kc51WBzl5wmhsJ8P3NW1n3yOgNIiW1347w'
+ACCESS_TOKEN_UAT = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB'
+REFRESH_TOKEN_UAT = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke'
 
 # WEBHOOK SECRET
 WEBHOOK_SECRET = 'joobali_webhook_secret_fb2onpb23nbv-9834t-9nv3-4thg49896-34'
 
 
 def create_account_token(environment):
-    client = dwollav2.Client(id=CLIENT_ID, secret=CLIENT_SECRET, environment=environment)
-    return client.Token(access_token=ACCESS_TOKEN, refresh_token=REFRESH_TOKEN)
+    client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' else CLIENT_ID_PROD,
+                             secret=CLIENT_SECRET_UAT if environ.get('IS_DEV') == 'True' else CLIENT_SECRET_PROD,
+                             environment=environment)
+    return client.Token(access_token=ACCESS_TOKEN_UAT if environ.get('IS_DEV') == 'True' else ACCESS_TOKEN_PROD,
+                        refresh_token=REFRESH_TOKEN_UAT if environ.get('IS_DEV') == 'True' else REFRESH_TOKEN_PROD)
 
-account_token = create_account_token('sandbox')
+account_token = create_account_token(ENVIRONMENT_UAT if environ.get('IS_DEV') == 'True' else ENVIRONMENT_PROD)
 def start_webhook(host_url):
     # Setup webhook to receive transfer status events
     logger.info('Starting webhook: %s' % (host_url + '/tasks/dwollawebhook/'))

@@ -23,7 +23,7 @@ def _send_reset_password_email(token, host, sender_address="Joobali <howdy@jooba
         parent = token.parent_key.get()
         receiver_address = parent.email
         receiver_name = parent.first_name
-    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+    http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     root_path = http_prefix + host
     reset_password_link = root_path + "/login/reset?t=" + token.token_id
     message = mail.EmailMessage(
@@ -49,7 +49,7 @@ def send_provider_email_address_verification(verification_token, host, sender_ad
         subject="Joobali: Please confirm your email address")
 
     message.to = "%s" % provider.email
-    http_prefix = 'http://' if environ.get('IS_DEV') else 'https://'
+    http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     verification_link = http_prefix + host + '/verification/provideremail?t=' + verification_token.token_id
     data = {
         'provider_school_name': provider.schoolName,

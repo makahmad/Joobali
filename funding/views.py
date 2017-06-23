@@ -16,6 +16,7 @@ from common.dwolla import create_account_token
 import json
 import dwollav2
 import logging
+from os import environ
 
 logger = logging.getLogger(__name__)
 account_token = create_account_token('sandbox')
@@ -96,7 +97,7 @@ def makeTransfer(request):
 def removeFunding(request):
     data = json.loads(request.body)
     funding_source_id = data['funding_source_id']
-    funding_source_url = 'https://api-uat.dwolla.com/funding-sources/%s' % funding_source_id
+    funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_id)
 
     try:
         account_token.post(funding_source_url, { 'removed': True })
