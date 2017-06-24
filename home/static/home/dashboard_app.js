@@ -195,7 +195,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
-                 .when('/invoice', {template: '<invoice-component invoices="invoices"></invoice-component>'})
+                 .when('/invoice', {template: '<invoice-component invoices="invoices" change-view="changeView()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
                  .when('/verification', {template: '<verification-component profile="profile"></verification-component>'})
@@ -349,7 +349,10 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/home/invoice_component_tmpl.html',
         controller: InvoiceComponentController,
         bindings: {
-          invoices: '<'
+          invoices: '<',
+          dwollaStatus : '@',
+          changeView : '&',
+          fundingSources : '@'
         }
     })
     // The Invoice page in dashboard
