@@ -1,9 +1,13 @@
 InitSetupComponentController = function($http, $location) {
     console.log('InitSetupComponentController running');
+    console.log(this.programs);
     this.isDone = false;
     this.location_ = $location;
     self = this
 
+	self.programs = [];
+	self.fundings = [];
+	self.numberOfChildren = 0;
     this.http_ = $http;
 	$http({
 	  method: 'GET',
@@ -84,6 +88,69 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
     }
 };
 
+InitSetupComponentController.prototype.checkList = function() {
+
+    this.http_({
+	  method: 'GET',
+	  url: '/profile/getdwollastatus'
+	}).then(angular.bind(this, function successCallback(response) {
+	    this.dwollaStatus = response.data;
+	}), function errorCallback(response) {
+	    // Do nothing
+	});
+	this.http_({
+		method: 'GET',
+		url: '/manageprogram/listprograms'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.programs = [];
+	    angular.forEach(response.data, angular.bind(this, function(program) {
+            program = JSON.parse(program);
+            if(program.indefinite)
+                program.endDate = "Indefinite";
+	    	this.programs.push(program);
+	    }));
+
+	}), function errorCallback(response) {
+		// called asynchronously if an error occurs
+		// or server returns response with an error status.
+		console.log(response);
+	});
+	this.http_({
+	  method: 'GET',
+	  url: '/funding/listfunding'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.fundings = [];
+	    angular.forEach(response.data, angular.bind(this, function(funding) {
+	    	this.fundings.push(JSON.parse(funding));
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
+	this.http_({
+	  method: 'GET',
+	  url: '/child/list?'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.numberOfChildren = 0;
+
+	    angular.forEach(response.data, angular.bind(this, function(funding) {
+	    	this.numberOfChildren +=1;
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
+}
 InitSetupComponentController.prototype.handleDone = function() {
     console.log('done');
 
@@ -110,6 +177,7 @@ InitSetupComponentController.prototype.moveToNext = function(curContent, curNav)
 	  curContent.next().addClass("current");
 
 	  if (curNav.next().attr('id') === "navStep2") {
+	      this.checkList();
 		  $("#initSetupSkipButton").hide();
 		  $("#initSetupNextButton").hide();
 		  $("#initSetupDoneButton").show();

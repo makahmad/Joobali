@@ -6,7 +6,7 @@
     <div class="stepsDiv">
       <ul class="nav nav-pills nav-wizard">
         <li id="navStep1" class="init-setup form-nav current active" ng-click='$ctrl.setCurrent($event)'><a href="#" >Link Bank Account</a><div class="nav-arrow"></div></li>
-        <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Learn How Joobali Works</a><div class="nav-arrow"></div></li>
+        <li id="navStep2" class="init-setup form-nav" ng-click='$ctrl.setCurrent($event)'><div class="nav-wedge"></div><a href="#" >Get Ready</a><div class="nav-arrow"></div></li>
       </ul>
     </div>
   </div>
@@ -17,8 +17,25 @@
         <div id="initSetupIavContainer"></div>
       </div>
       <div id="step2" class="init-setup form-content">
-                    <span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; A program is a set dollar amount to bill parents on a weekly or monthly basis. Some common program names include <i>Full-time</i>, <i>Part-time</i>, and <i>Extended care</i>.</span>
+        <div style="margin-left:20px">
+            <h2>Joobali in 3 easy steps</h2>
 
+            <div ng-show="$ctrl.dwollaStatus == 'verified'">
+                1. Add your bank account in the <a href="#!/billing">funds tab</a> and verify you're you in the verification tab <i ng-show="$ctrl.fundings.length > 0" class="fa fa-check fa-2x"></i>
+            </div>
+            <div ng-show="$ctrl.dwollaStatus != 'verified'">
+                1. Add your bank account in the <a href="#!/billing">funds tab</a> and <a href="#!/verification">verify</a> you're you in the verification tab
+            </div>
+            <br>
+            <div>
+                2. Add a <a href="#!/programs">program</a> (or two or three) <i ng-show="$ctrl.programs.length > 0" class="fa fa-check fa-2x"></i>
+            </div>
+            <br>
+            <div>
+                3. <a href="#!/child/list">Enroll</a> children to your programs <i ng-show="$ctrl.numberOfChildren > 0" class="fa fa-check fa-2x"></i>
+            </div>
+
+        </div>
       </div>
     </div>
     </div>
