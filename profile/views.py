@@ -53,7 +53,7 @@ def getProfile(request):
 
         dict['id'] = provider.key.id()
         dict['ssn'] = provider.ssn if provider.ssn else None
-        dict['zipcode'] = int(provider.zipcode) if provider.zipcode else None
+        dict['zipcode'] = provider.zipcode if provider.zipcode else None
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
         logger.info("Dwolla Status: %s" % dict['dwolla_status'])
         if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
