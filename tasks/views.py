@@ -14,7 +14,7 @@ from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding
 from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
 from common.email.dwolla import send_payment_cancelled_email_to_provider, send_payment_success_email_to_provider, send_payment_failed_email_to_provider, send_payment_success_email, send_payment_failed_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
-from common.dwolla import start_webhook, clear_webhook
+from common.dwolla import start_webhook, clear_webhook, client
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 from funding import funding_util
@@ -22,6 +22,7 @@ from dwollav2.error import ValidationError
 from models import DwollaEvent
 from payments.models import Payment
 from common import datetime_util
+from tasks.models import DwollaTokens
 import logging
 import json
 
@@ -494,4 +495,27 @@ def dwolla_webhook(request):
         event.event_id = webhook_data['id']
         event.event_content = str(webhook_content)
         event.put()
+    return HttpResponse(status=200)
+
+def dwolla_token_refresh(request):
+    logger.info("DWOLLA TOKEN REFRESH")
+
+    application_token = client.Auth.client()
+    print application_token.access_token
+    print application_token.refresh_token
+    print application_token.expires_in
+    print application_token.scope
+    print application_token.app_id
+    print application_token.account_id
+
+    tokens = DwollaTokens.query().fetch(1)
+    if not tokens:
+        tokens = DwollaTokens()
+        tokens.access_token = application_token.access_token
+        tokens.refresh_token = application_token.refresh_token if application_token.refresh_token else ''
+        tokens.put()
+        pass # token empty. Page on call!!
+    else:
+        tokens[0].access_token = application_token.access_token
+        tokens[0].put()
     return HttpResponse(status=200)

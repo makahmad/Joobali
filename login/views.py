@@ -7,7 +7,7 @@ from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 
 from common.session import check_session, is_provider, is_parent
-from common.dwolla import create_account_token
+from common.dwolla import create_customer
 from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent, \
     send_provider_email_address_verification
 
@@ -32,16 +32,7 @@ from verification.verification_util import get_parent_signup_verification_token
 
 DATE_FORMAT = '%m/%d/%Y'
 
-account_token = create_account_token('sandbox')
 logger = logging.getLogger(__name__)
-
-
-def home(request):
-    if request.method == 'GET':
-        customers = account_token.get('customers')
-        logger.info("Customer info: %s" % customers.body['_embedded']['customers'])
-        return HttpResponse(customers.body['_embedded']['customers'])
-
 
 stripFilter = lambda x: x.strip() if x else ''
 ProviderForm = model_form(models.Provider, exclude=['logo'], field_args={
@@ -170,7 +161,7 @@ def provider_signup(request):
                     'ipAddress': get_client_ip(request),
                 }
                 try:
-                    customer = account_token.post('customers', request_body)
+                    customer = create_customer(request_body)
                     logger.info("customer.headers['location'] %s" % customer.headers['location'])
                     provider.customerId = customer.headers['location']
                     provider.put()
@@ -285,7 +276,7 @@ def parent_signup(request):
                     'ipAddress': get_client_ip(request),
                 }
                 try:
-                    customer = account_token.post('customers', request_body)
+                    customer = create_customer(request_body)
                     parent.customerId = customer.headers['location']
                     parent.put()
                     request.session['dwolla_customer_url'] = customer.headers['location']

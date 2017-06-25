@@ -138,7 +138,6 @@ INSTALLED_APPS = (
     'payments',
     'profile',
     'funding',
-    'users',
     'enrollment',
     'child',
     'parent',

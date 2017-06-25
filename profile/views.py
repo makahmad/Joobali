@@ -10,13 +10,12 @@ from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 from google.appengine.ext import ndb
-from common import dwolla
+from common.dwolla import update_customer
 from datetime import datetime
 from dwollav2.error import ValidationError
 
 logger = logging.getLogger(__name__)
 
-account_token = dwolla.create_account_token('sandbox')
 DATE_FORMAT = '%m/%d/%Y'
 
 def getProviderLogo(request):
@@ -183,7 +182,7 @@ def dwolla_verify(request):
         }
         customer = None
         try:
-            customer = account_token.post(provider.customerId, request_body)
+            customer = update_customer(provider.customerId, request_body)
             logger.info("customer %s" % customer.body)
         except ValidationError as err:  # ValidationError as err
             logger.warning(err)

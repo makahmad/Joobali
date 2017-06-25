@@ -11,15 +11,13 @@ from login.models import Provider
 from funding import funding_util
 #from django.core.exceptions import ValidationError
 from common.session import check_session
+from common.dwolla import list_customers, get_iav_token, remove_funding
 from dwollav2.error import ValidationError
-from common.dwolla import create_account_token
 import json
-import dwollav2
 import logging
 from os import environ
 
 logger = logging.getLogger(__name__)
-account_token = create_account_token('sandbox')
 
 stripFilter = lambda x: x.strip()  if x else ''
 FundingForm = model_form(models.Funding, field_args={
@@ -43,16 +41,11 @@ def listFunding(request):
     customer_url = request.session.get('dwolla_customer_url')
 
     fundings = funding_util.list_fundings(customer_url)
-        # Sample code to get funding source info
-        #funding_source = account_token.get(funding['_links']['self']['href']);
-        #print funding['_links']['self']['href'];
-        #print funding_source.body
-        #print funding_source.body['_embedded'];
     return HttpResponse(json.dumps([JEncoder().encode(funding) for funding in fundings]))
 
 def listProvider(request):
 
-    customers = account_token.get('customers')
+    customers = list_customers()
     providers = [];
     for customer in customers.body['_embedded']['customers']:
         providers.append({
@@ -67,8 +60,8 @@ def getIAVToken(request):
     if not request.session.get('email'):
         return HttpResponseRedirect('/login')
     customer_url = request.session.get('dwolla_customer_url')
-    logger.info("account_token.post(%s)" % (customer_url + '/iav-token'))
-    customer = account_token.post(customer_url + '/iav-token')
+
+    customer = get_iav_token(customer_url + '/iav-token')
 
     return HttpResponse(customer.body['token'])
 
@@ -100,7 +93,7 @@ def removeFunding(request):
     funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_id)
 
     try:
-        account_token.post(funding_source_url, { 'removed': True })
+        remove_funding(funding_source_url)
     except ValidationError as err:
         return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     return HttpResponse("success")

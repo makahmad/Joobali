@@ -2,6 +2,7 @@
 import dwollav2
 import logging
 from os import environ
+from tasks.models import DwollaTokens
 
 logger = logging.getLogger(__name__)
 
@@ -13,24 +14,21 @@ CLIENT_ID_UAT = 'g36djuD0XBwoDteIjEz9fcGKsKJbWN72IW8wmXBZA5glcSUhg9'
 CLIENT_SECRET_UAT = '3clqlV4LrOf7udsCjuYs9ONnN1Eq78a0OcNvpUWcCBK5PTNkQ9'
 ENVIRONMENT_UAT = 'sandbox'
 
-# Account constants
-ACCESS_TOKEN_PROD = 'kzbnQpwYx5z2OxnKlbBKqGKRbGNBglNghrlHo3p34QyLbksh7L'
-REFRESH_TOKEN_PROD = 'O6om8i10NoRm3GqP8utzUjvCjUROY0AhS6tBOuLlV3O0JOOIIw'
-ACCESS_TOKEN_UAT = 'UZjwsTujbiEVxi0egVgWHACt1vT5tQckyE1uj1gaqNxwL0TwOB'
-REFRESH_TOKEN_UAT = 'o9tuD34y19J7yw86lDratuOCdD4Ngmq5xqOLJqTiBAIK4LEqke'
 
 # WEBHOOK SECRET
 WEBHOOK_SECRET = 'joobali_webhook_secret_fb2onpb23nbv-9834t-9nv3-4thg49896-34'
 
+client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' else CLIENT_ID_PROD,
+                         secret=CLIENT_SECRET_UAT if environ.get('IS_DEV') == 'True' else CLIENT_SECRET_PROD,
+                         environment=ENVIRONMENT_UAT if environ.get('IS_DEV') == 'True' else ENVIRONMENT_PROD)
 
-def create_account_token(environment):
-    client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' else CLIENT_ID_PROD,
-                             secret=CLIENT_SECRET_UAT if environ.get('IS_DEV') == 'True' else CLIENT_SECRET_PROD,
-                             environment=environment)
-    return client.Token(access_token=ACCESS_TOKEN_UAT if environ.get('IS_DEV') == 'True' else ACCESS_TOKEN_PROD,
-                        refresh_token=REFRESH_TOKEN_UAT if environ.get('IS_DEV') == 'True' else REFRESH_TOKEN_PROD)
+def create_account_token():
+    tokens = DwollaTokens.query().fetch(1)
+    if not tokens:
+        return # token empty. Page on call!!
 
-account_token = create_account_token(ENVIRONMENT_UAT if environ.get('IS_DEV') == 'True' else ENVIRONMENT_PROD)
+    return client.Token(access_token=tokens[0].access_token)
+
 def start_webhook(host_url):
     # Setup webhook to receive transfer status events
     logger.info('Starting webhook: %s' % (host_url + '/tasks/dwollawebhook/'))
@@ -38,10 +36,11 @@ def start_webhook(host_url):
         'url': host_url + '/tasks/dwollawebhook/',
         'secret': 'joobali_webhook_secret_fb2onpb23nb'
     }
-    account_token.post('webhook-subscriptions', request_body)
+
+    create_account_token().post('webhook-subscriptions', request_body)
 
 def clear_webhook(host):
-    webhook_subscriptions = account_token.get("webhook-subscriptions").body
+    webhook_subscriptions = create_account_token().get("webhook-subscriptions").body
     logger.info(webhook_subscriptions)
     # {
     #     u'_links': {
@@ -96,10 +95,10 @@ def clear_webhook(host):
     for subscription in webhook_subscriptions['_embedded']['webhook-subscriptions']:
         if host in subscription['url']:
             logger.info("Remove webhook: url (%s), id (%s)" % (subscription['url'], subscription['_links']['self']['href']))
-            account_token.delete(subscription['_links']['self']['href'])
+            create_account_token().delete(subscription['_links']['self']['href'])
 
 def get_general(url):
-    return account_token.get(url)
+    return create_account_token().get(url)
 
 def get_funding_source(funding_source_url):
     # Example Dwolla funding source object
@@ -138,7 +137,7 @@ def get_funding_source(funding_source_url):
     #     u'created': u'2017-01-23T05:31:33.000   Z'
     # }
     logger.info("Get Funding Source: %s" % funding_source_url)
-    source = account_token.get(funding_source_url).body
+    source = create_account_token().get(funding_source_url).body
     logger.info("Get Funding Source: %s" % source)
     result = {}
     result['name'] = source['name']
@@ -149,6 +148,27 @@ def get_funding_source(funding_source_url):
     result['created_date'] = source['created'][0:10]
     result['customer_url'] = source['_links']['customer']['href']
     return result
+
+def make_transfer(request_body):
+    return create_account_token().post('transfers', request_body)
+
+def list_fundings(customer_url):
+    return create_account_token().get('%s/funding-sources' % customer_url)
+
+def remove_funding(funding_source_url):
+    return create_account_token().post(funding_source_url, {'removed': True})
+
+def get_iav_token(token_url):
+    return create_account_token().post(token_url)
+
+def update_customer(customer_id, request_body):
+    return create_account_token().post(customer_id, request_body)
+
+def create_customer(request_body):
+    return create_account_token().post('customers', request_body)
+
+def list_customers():
+    return create_account_token().get('customers')
 
 def get_customer(customer_url):
     # Example Dwolla customer (provider or parents) object
@@ -203,7 +223,7 @@ def get_customer(customer_url):
     #     u'type': u'personal',
     #     u'phone': u'3015386558'
     # }
-    customer = account_token.get(customer_url).body
+    customer = create_account_token().get(customer_url).body
     logger.info('Get Dwolla Customer: %s' % customer)
     result = {}
     result['status'] = customer['status']
@@ -264,7 +284,7 @@ def get_funding_transfer(transfer_url):
     #     u'status': u'failed',
     #     u'created': u'2017-03-10T06:31:33.503   Z'
     # }
-    transfer = account_token.get(transfer_url).body
+    transfer = create_account_token().get(transfer_url).body
     logger.info(transfer)
     result = {}
     result['amount'] = transfer['amount']['value']
@@ -371,7 +391,7 @@ def get_funded_transfer(transfer_url):
     #     u'id': u'71649077-5c49-e711-80f2-0aa34a9b2388',
     #     u'created': u'2017-06-04T19:31:55.917   Z'
     # }
-    transfer = account_token.get(transfer_url).body
+    transfer = create_account_token().get(transfer_url).body
     logger.info(transfer)
     result = {}
     result['amount'] = transfer['amount']['value']
@@ -393,7 +413,7 @@ def cancel_transfer(cancel_url):
     request_body = {
         'status': 'cancelled',
     }
-    account_token.post(cancel_url, request_body)
+    create_account_token().post(cancel_url, request_body)
 
 def get_fee_transfer(fee_transfer_url):
     """ Fee transfer is the transfer incurred from charging fees for normal dwolla transfer. """
@@ -475,7 +495,7 @@ def get_fee_transfer(fee_transfer_url):
     #         }
     #     ]
     # }
-    fee_transfer = account_token.get(fee_transfer_url).body
+    fee_transfer = create_account_token().get(fee_transfer_url).body
     logger.info(fee_transfer)
     result = {}
     if fee_transfer['total'] > 1:

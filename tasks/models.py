@@ -5,3 +5,8 @@ class DwollaEvent(ndb.Model):
         Note invoice payment related dwolla transfer is kept by Invoice.dwolla_transfer_id '''
     event_id = ndb.StringProperty(required=True)
     event_content = ndb.StringProperty()
+
+class DwollaTokens(ndb.Model):
+    ''' Dwolla tokens needed to make API calls to Dwolla. Needs to refresh every 1 hour.'''
+    access_token = ndb.StringProperty(required=True)
+    refresh_token = ndb.StringProperty(required=True)

@@ -1,18 +1,14 @@
 
-from common.dwolla import create_account_token
+from common import dwolla
 from invoice.models import Invoice
-import dwollav2
 import logging
 from os import environ
 
 logger = logging.getLogger(__name__)
-account_token = create_account_token('sandbox')
 
 def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
     """Make Dwolla Money Transfer"""
-    fundings_url = '%s/funding-sources' % dest_customer_url
-    logger.info(fundings_url)
-    funding_sources = account_token.get(fundings_url)
+    funding_sources = dwolla.list_fundings(dest_customer_url)
     dest_funding_source_id = None # TODO(rongjian): allow users to set receiving bank source.
     for funding in funding_sources.body['_embedded']['funding-sources']:
         logger.info(funding)
@@ -46,7 +42,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
             }
         ]
     }
-    transfer = account_token.post('transfers', request_body)
+    transfer = dwolla.make_transfer(request_body)
     if invoice:
         invoice.dwolla_transfer_id = transfer.headers['location'] # funded_transfer url
         invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
@@ -54,7 +50,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
 
 def list_fundings(customer_url):
     fundings = []
-    funding_sources = account_token.get('%s/funding-sources' % customer_url)
+    funding_sources = dwolla.list_fundings(customer_url)
     logger.info("Funding sources: %s" % funding_sources.body['_embedded']['funding-sources'])
     for funding in funding_sources.body['_embedded']['funding-sources']:
         # Example funding:
