@@ -449,6 +449,7 @@ def dwolla_webhook(request):
 
         template = loader.get_template('funding/joobali-to-customer-funding-source-added.html')
         data = {
+            'first_name': first_name,
             'bank_name': funding_source['bank_name'],
             'account_name': funding_source['name'],
             'created_date': funding_source['created_date'],
@@ -480,6 +481,7 @@ def dwolla_webhook(request):
 
         template = loader.get_template('funding/joobali-to-customer-funding-source-removed.html')
         data = {
+            'first_name': first_name,
             'bank_name': funding_source['bank_name'],
             'account_name': funding_source['name'],
             'removed_date': webhook_data['event_date'],

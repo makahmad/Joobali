@@ -212,14 +212,17 @@ def setupAutopay(request):
 				first_transfer_date = program.startDate
 			while first_transfer_date.date() < today:
 				first_transfer_date = invoice_util.get_next_due_date(first_transfer_date, program.billingFrequency)
-
+			child = enrollment.child_key.get()
 			data = {
+				'child_name': child.first_name if child.first_name else '',
+				'program_name': program.programName if program.programName else '',
+				'first_name': provider.firstName if provider.firstName else '',
 				'transfer_type': 'Online',
 				'amount': '$' + str(amount),
 				'account_name': source_funding_source['name'],
 				'recipient': provider.schoolName,
 				'schedule': schedule,
-				'first_transfer_date': first_transfer_date.strftime('%A, %B %d %Y'),
+				'next_payment_date': first_transfer_date.strftime('%A, %B %d %Y'),
 				'host': request.get_host(),
 				'support_phone': support_phone,
 			}
@@ -261,8 +264,12 @@ def cancelAutopay(request):
 			provider = enrollment.key.parent().get()
 
 			source_funding_source = get_funding_source(source)
-
+			child = enrollment.child_key.get()
 			data = {
+				'date_cancelled': date.today().strftime(DATE_FORMAT),
+				'child_name': child.first_name if child.first_name else '',
+				'program_name': program.programName if program.programName else '',
+				'first_name': provider.firstName if provider.firstName else '',
 				'transfer_type': 'Online',
 				'amount': '$' + str(amount),
 				'account_name': source_funding_source['name'],

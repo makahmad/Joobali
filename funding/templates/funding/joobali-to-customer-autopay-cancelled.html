@@ -70,11 +70,11 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
-                            <div style="text-align: left;">Hello [[First Name]],<br>
+                            <div style="text-align: left;">Hello {{ first_name }},<br>
 &nbsp;</div>
 
 <div style="text-align: left;"><strong>Joobali AutoPay has been canceled.</strong><br>
-Your autopay payments&nbsp;for {{ amount }} from {{ account_name }} to {{ recipient }} for [[child name]] on a {{ schedule }} basis have&nbsp;been canceled.<br>
+Your autopay payments&nbsp;for {{ amount }} from {{ account_name }} to {{ recipient }} for {{ child_name }} on a {{ schedule }} basis have&nbsp;been canceled.<br>
 &nbsp;</div>
 
 <div style="text-align: left;">This message is for informational purposes only. For account-specific inquiries, please sign in to your Joobali account and visit our support center or <a href="https://support.joobali.com/hc/en-us/requests/new" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">Submit a Request</a>.</div>
@@ -130,12 +130,9 @@ Your autopay payments&nbsp;for {{ amount }} from {{ account_name }} to {{ recipi
                         
                             <div style="text-align: left;"><strong>Transfer Status:&nbsp;</strong><em>AutoPay Canceled</em><br>
 <strong>Transfer Amount:&nbsp;</strong>{{ amount }}<br>
-<strong>Funding Source:&nbsp;</strong>[[Account]]</div>
-
-<div style="text-align: left;"><strong>Account Name:&nbsp;</strong>{{ account_name }}<br>
-<strong>Date Canceled:&nbsp;</strong>[[Date Removed]]<br>
+<strong>Funding Source:&nbsp;</strong>{{ account_name }}</div>
+<strong>Date Cancelled:&nbsp;</strong>{{ date_cancelled }}<br>
 <strong>Recipient of transfer:&nbsp;</strong>{{ recipient }}<br>
-<strong>Source of Transfer:&nbsp;</strong>[[Customer Funding Source Name]]<br>
 &nbsp;</div>
 
                         </td>
