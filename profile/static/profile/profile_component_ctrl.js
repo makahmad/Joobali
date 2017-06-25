@@ -8,7 +8,7 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 	this.scope_ = $scope;
     this.dateOfBirthPickerOpened = false;
     this.today = new Date();
-    this.dateFormat = "MM/dd/yyyy"
+    this.dateFormat = "MM/DD/YYYY";
 
     this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
     '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
@@ -37,7 +37,9 @@ ProfileComponentController.prototype.openDateOfBirthPicker = function() {
 }
 ProfileComponentController.prototype.saveProfile = function() {
     submitting_profile = angular.copy(this.profile)
-    submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
+
+    if (submitting_profile.dateOfBirth!=null)
+        submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
 
 	this.http_({
 		method: 'POST',
