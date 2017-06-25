@@ -17,7 +17,11 @@ VerificationComponentController = function($scope, $http, $window, $sce) {
             // when the response is available
 
             this.profile = JSON.parse(response.data[0]);
-            this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate()
+            this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate();
+
+            //redirect provider to home if they are already verified
+            if(this.profile.dwolla_status=='verified')
+                window.location = "/home/dashboard#!/home";
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
