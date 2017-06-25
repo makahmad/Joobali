@@ -10,7 +10,7 @@ from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 from google.appengine.ext import ndb
-from common.dwolla import update_customer
+from common.dwolla import update_customer, get_customer
 from datetime import datetime
 from dwollav2.error import ValidationError
 
@@ -60,7 +60,7 @@ def getProfile(request):
         logger.info("Dwolla Status: %s" % dict['dwolla_status'])
         if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
             try:
-                dwolla_customer = dwolla.get_customer(provider.customerId)
+                dwolla_customer = get_customer(provider.customerId)
                 if dwolla_customer:
                     dict['dwolla_status'] = dwolla_customer['status']
             except ValidationError:
@@ -79,7 +79,7 @@ def get_dwolla_status(request):
     if provider is not None:
         if provider.dwolla_status is None or provider.dwolla_status == '':
             try:
-                dwolla_customer = dwolla.get_customer(provider.customerId)
+                dwolla_customer = get_customer(provider.customerId)
                 if dwolla_customer:
                     provider.dwolla_status = dwolla_customer['status']
                     provider.put()

@@ -6,7 +6,7 @@ VerificationComponentController = function($scope, $http, $window, $sce) {
 	this.scope_ = $scope;
     this.dateOfBirthPickerOpened = false;
     this.today = new Date();
-    this.dateFormat = "MM/dd/yyyy"
+    this.dateFormat = "MM/DD/YYYY"
 
     if (angular.equals(this.profile, {})) {
     	$http({
@@ -62,6 +62,7 @@ VerificationComponentController.prototype.dwollaFieldsFilled = function(markErro
 
 VerificationComponentController.prototype.dwollaVerify = function(markError) {
     submitting_profile = angular.copy(this.profile)
+    if (submitting_profile.dateOfBirth!=null)
     submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
     if (this.dwollaFieldsFilled(markError)) {
         this.http_({

@@ -27,4 +27,4 @@ builtins:
 - django_wsgi: on
 
 env_variables:
-  IS_DEV: "True"
+  IS_DEV: "False"
