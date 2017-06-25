@@ -52,7 +52,10 @@ def getProfile(request):
 
         dict['id'] = provider.key.id()
         dict['ssn'] = provider.ssn if provider.ssn else None
-        dict['zipcode'] = int(provider.zipcode) if provider.zipcode else None
+
+        dict['zipcode'] = ''
+        if provider.zipcode:
+            dict['zipcode'] = int(provider.zipcode)
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
         logger.info("Dwolla Status: %s" % dict['dwolla_status'])
         if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
@@ -129,7 +132,8 @@ def updateProfile(request):
         provider.website = profile['website']
         provider.license = profile['license']
         #provider.ssn = str(profile['ssn'])
-        provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
+
+        provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT) if profile['dateOfBirth'] else None
         provider.tin = profile['tin']
 
         if 'currentPassword' in profile and 'newPassword' in profile and pwd_context.verify(profile['currentPassword'],
