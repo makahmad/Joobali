@@ -71,6 +71,9 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 
             this.setProgramInfoDisplay(this.program);
 
+            this.program.startDate = moment(this.program.startDate).format('MM/DD/YYYY');
+            this.program.endDate = moment(this.program.endDate).format('MM/DD/YYYY');
+
 
 //            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
 //                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
