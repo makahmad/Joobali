@@ -21,11 +21,11 @@
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Start Date:</td>
-									<td class="theData">{{ $ctrl.program.startDate }}</td>
+									<td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">End Date:</td>
-									<td class="theData">{{ $ctrl.program.endDate }}</td>
+									<td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Registration Fee:</td>
@@ -49,8 +49,8 @@
 									<td class="theData"><div class="mainName">{{ $ctrl.program.programName }}</div></td>									
 									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
 									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
-									<td class="theData">{{ $ctrl.program.startDate }}</td>
-									<td class="theData">{{ $ctrl.program.endDate }}</td>
+									<td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
+									<td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
 									<td class="theData"><sup>$</sup>{{ $ctrl.program.registrationFee }}</td>
 									<td class="theData"><sup>$</sup>{{ $ctrl.program.lateFee }}</td>
 							  </tr>
