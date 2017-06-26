@@ -190,7 +190,7 @@ def dwolla_verify(request):
             logger.info("customer %s" % customer.body)
         except ValidationError as err:  # ValidationError as err
             logger.warning(err)
-            return HttpResponse('Dwolla Verification Failed: %s' % err.body['_embedded']['errors'][0]['message'])
+            return HttpResponse('Account Verification Failed: %s' % err.body['_embedded']['errors'][0]['message'])
 
         provider.schoolName = profile['schoolName']
         provider.firstName = profile['firstName']
