@@ -1,4 +1,4 @@
-ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance, $http, child, programs) {
+ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalInstance, $http, child, programs) {
     /*
      * @input: child
      * @input: programs
@@ -15,16 +15,7 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
     self.doneButton = {};
     self.enrollmentStatus = '';
     this.dateFormat = 'MM/DD/YYYY';
-
-    this.days = {
-        'Sunday': 0,
-        'Monday': 1,
-        'Tuesday': 2,
-        'Wednesday': 3,
-        'Thursday': 4,
-        'Friday': 5,
-        'Saturday': 6
-    }
+    this.log_ = $log;
 
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
@@ -111,21 +102,24 @@ ChildEnrollmentController = function ChildEnrollmentController($uibModalInstance
 }
 
 ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
+    this.log_.info("selected program: " + angular.toJson(this.newEnrollment.program));
     if (this.newEnrollment.program) {
-        this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate, this.dateFormat).toDate();
-        if (this.newEnrollment.program.endDate) {
-            this.newEnrollment.end_date = moment(this.newEnrollment.program.endDate, this.dateFormat).toDate();
-        } else {
-            this.newEnrollment.end_date = "";
-        }
+        this.log_.info("computing: " + moment(this.newEnrollment.program.startDate));
+        this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate).toDate();
     } else {
-        this.newEnrollment.start_date = null;
+        this.newEnrollment.start_date = "";
     }
+    this.log_.info("setting the start date to be: " + angular.toJson(this.newEnrollment.start_date));
     this.whenChangeStartDate();
 }
 
-ChildEnrollmentController.prototype.whenChangeStartDate = function(isManualChange) {
-    this.whenChangeNoEndDate();
+ChildEnrollmentController.prototype.whenChangeStartDate = function() {
+    if (this.newEnrollment.program && this.newEnrollment.program.endDate) {
+        this.newEnrollment.end_date = moment(this.newEnrollment.program.endDate).toDate();
+    } else {
+        this.newEnrollment.end_date = "";
+    }
+    this.log_.info("setting the end date to be: " + angular.toJson(this.newEnrollment.end_date));
 }
 
 ChildEnrollmentController.prototype.getMinEndDate = function() {
@@ -164,7 +158,7 @@ ChildEnrollmentController.prototype.enrollmentDisabledEndDate = function(dateAnd
                         return true;
                     }
                 } else {
-                    var programEndDate = moment(this.newEnrollment.program.endDate, this.dateFormat);
+                    var programEndDate = moment(this.newEnrollment.program.endDate).toDate();
                     if (currentDate > programEndDate) {
                         return true;
                     }
@@ -194,7 +188,7 @@ ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMod
                 if (this.newEnrollment.program.monthlyBillDay === 'Last Day') {
                     result = (dateAndMode.date.getDate() != currentDate.daysInMonth());
                 } else {
-                    result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
+                    result = (dateAndMode.date.getDate() != this.newEnrollment.program.monthlyBillDay);
                 }
             }
         }

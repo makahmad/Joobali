@@ -183,7 +183,7 @@ DashboardController.prototype.selectProgram = function(program) {
 }
 
 
-app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute'])
+app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'joobali.base'])
     .config(['$httpProvider',
         function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -257,8 +257,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     .controller('ChildFormController', ChildFormController)
     // to support EnrollmentEditorModal
     // need enrollment/enrollment-editor.component.js
-    .controller('EnrollmentResendInvitationDialogController', EnrollmentResendInvitationDialogController)
     .controller('EnrollmentEditorController', EnrollmentEditorController)
+    .controller('EnrollmentResendInvitationDialogController', EnrollmentResendInvitationDialogController)
     .controller('AddInvoiceController', AddInvoiceController)
     .controller('InvoiceSettingsController', InvoiceSettingsController)
     .controller('AddPaymentController', AddPaymentController)
@@ -450,7 +450,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childFormContent', {
         templateUrl: '/static/child/child-form-content.template.html',
-        controller: ['$http', ChildFormContentController],
+        controller: ['$http', 'EnrollmentDateChecker', ChildFormContentController],
         bindings: {
             programs : '<',
             onSave : '&'

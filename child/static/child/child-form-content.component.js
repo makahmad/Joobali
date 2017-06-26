@@ -1,4 +1,4 @@
-ChildFormContentController = function ChildFormContentController($http) {
+ChildFormContentController = function ChildFormContentController($http, EnrollmentDateChecker) {
     this.http_ = $http;
     this.dateOfBirthPickerOpened = false;
     this.startDatePickerOpened = false;
@@ -10,6 +10,7 @@ ChildFormContentController = function ChildFormContentController($http) {
     this.disableSaveButton = false;
     this.newChildEnrollmentInfo = {};
     this.newChildEnrollmentInfo.error = {};
+    this.enrollmentDateChecker_ = EnrollmentDateChecker;
 
     this.enrollmentStatus = '';
     this.enrollmentDatePickerOptions = {
@@ -21,95 +22,43 @@ ChildFormContentController = function ChildFormContentController($http) {
         minDate: this.todayDate,
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
-
-    this.days = {
-        'Sunday': 0,
-        'Monday': 1,
-        'Tuesday': 2,
-        'Wednesday': 3,
-        'Thursday': 4,
-        'Friday': 5,
-        'Saturday': 6
-    }
 }
 
 ChildFormContentController.prototype.whenSelectedProgramChange = function () {
     if (this.newChildEnrollmentInfo.program) {
-        this.newChildEnrollmentInfo.start_date = moment(this.newChildEnrollmentInfo.program.startDate, this.dateFormat).toDate();
+        this.newChildEnrollmentInfo.start_date = moment(this.newChildEnrollmentInfo.program.startDate).toDate();
         if (this.newChildEnrollmentInfo.program.endDate) {
-            this.newChildEnrollmentInfo.end_date = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat).toDate();
+            this.newChildEnrollmentInfo.end_date = moment(this.newChildEnrollmentInfo.program.endDate).toDate();
         } else {
             this.newChildEnrollmentInfo.end_date = "";
         }
     } else {
         this.newChildEnrollmentInfo.start_date = null;
     }
-    this.whenChangeStartDate(false);
+    this.whenChangeStartDate();
 }
 
-ChildFormContentController.prototype.whenChangeStartDate = function(isManualChange) {
-    this.whenChangeNoEndDate();
+ChildFormContentController.prototype.whenChangeStartDate = function() {
+    if (this.newChildEnrollmentInfo.program && this.newChildEnrollmentInfo.program.endDate) {
+        this.newChildEnrollmentInfo.end_date = moment(this.newChildEnrollmentInfo.program.endDate).toDate();
+    } else {
+        this.newChildEnrollmentInfo.end_date = null;
+    }
 }
+
 
 // Disable invalid choices for billing end date
 ChildFormContentController.prototype.enrollmentDisabledEndDate = function(dateAndMode) {
-    if (dateAndMode.mode === 'day') {
-        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
-        if (this.newChildEnrollmentInfo.start_date) {
-            if (currentDate <= this.newChildEnrollmentInfo.start_date) {
-                return true;
-            }
-        }
-
-        if (this.newChildEnrollmentInfo.program) {
-            if (this.newChildEnrollmentInfo.program.endDate) {
-                if (this.newChildEnrollmentInfo.program.monthlyBillDay === 'Last Day') {
-                    if (currentDate.date() != currentDate.daysInMonth()) {
-                        return true;
-                    }
-                } else {
-                    var programEndDate = moment(this.newChildEnrollmentInfo.program.endDate, this.dateFormat);
-                    if (currentDate > programEndDate) {
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-    return this.enrollmentDisabledDate(dateAndMode);
+    return this.enrollmentDateChecker_.isEnrollmentEndDateDisabled(
+            dateAndMode, 
+            this.newChildEnrollmentInfo.program, 
+            this.newChildEnrollmentInfo.start_date);
 }
 
 ChildFormContentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
-    var result = false;
-    if (dateAndMode.mode === 'day') {
-        var today = moment(new Date());
-        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
-        if (currentDate.diff(today, 'days') < 5) {
-            return true;
-        }
-        if (this.newChildEnrollmentInfo != null &&
-                this.newChildEnrollmentInfo.program != null &&
-                this.newChildEnrollmentInfo.program.billingFrequency != null) {
-            if (this.newChildEnrollmentInfo.program.billingFrequency === 'Weekly') {
-                result =  (dateAndMode.date.getDay() != this.days[this.newChildEnrollmentInfo.program.weeklyBillDay]);
-            } else if (this.newChildEnrollmentInfo.program.billingFrequency === 'Monthly') {
-                if (this.newChildEnrollmentInfo.program.monthlyBillDay === 'Last Day') {
-                    result = (dateAndMode.date.getDate() != currentDate.daysInMonth());
-                } else {
-                    result = (dateAndMode.date.getDate() != this.newChildEnrollmentInfo.program.monthlyBillDay);
-                }
-            }
-        }
-
-        if (this.newChildEnrollmentInfo.program) {
-            var programStartDate = moment(this.newChildEnrollmentInfo.program.startDate, this.dateFormat);
-            if (currentDate < programStartDate) {
-                return true;
-            }
-        }
-
-    }
-    return result;
+    return this.enrollmentDateChecker_.isEnrollmentDateDisabled(
+            dateAndMode, 
+            this.newChildEnrollmentInfo.program);
 }
 
 ChildFormContentController.prototype.openDateOfBirthPicker = function() {

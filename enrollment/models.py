@@ -27,7 +27,13 @@ class Enrollment(ndb.Model):
     # Whether to waive or not waive registration fee for the first invoice
     waive_registration = ndb.BooleanProperty()
     # All possible status for an enrollment
-    _POSSIBLE_STATUS = {'initialized', 'invited', 'active', 'payment_resolve_pending', 'inactive', 'expired'}
+    _POSSIBLE_STATUS = {
+        'initialized',
+        'invited',
+        'active',
+        'payment resolve pending',
+        'inactive',
+        'expired'}
 
     def can_resend_invitation(self):
         return self.status in {'initialized', 'invited'}

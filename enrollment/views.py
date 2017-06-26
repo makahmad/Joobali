@@ -4,6 +4,7 @@ import logging
 from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
@@ -325,3 +326,11 @@ def setupAutopay(request):
     if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
         status = 'success'
     return HttpResponse(status)
+
+
+def list_statuses(request):
+    if check_session(request):
+        data = list(Enrollment.get_possible_status())
+        return JsonResponse(data, encoder=JEncoder, safe=False)
+    else:
+        return HttpResponse(status=401)
