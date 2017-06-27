@@ -8,7 +8,7 @@ body {
     background: #fa5d26 url("./pics/img_headerbg2.jpg") no-repeat top center;
 		background-size:100%;
     color: #ffffff;
-    padding: 100px 25px;
+    padding: 150px 25px;
 }
 
 .jumbotron .btn, .homePitch2 .btn {
@@ -85,7 +85,7 @@ body {
 .homePitch2 {
 	background: #a2a2a2 url("./pics/img_homebtbg.jpg") no-repeat center;
 	background-size: 100%;
-	padding:10px 0 120px 0;
+	padding:70px 0 120px 0;
 }
 
 .homePitch2 h2 {
@@ -308,9 +308,17 @@ footer {
   margin-top: -30px;
 }
 
+footer div {
+  padding-top: 30px;
+  padding-bottom: 40px;
+}
+
 footer h4 {
-	color:white;
-	text-align:left;
+  color: gray;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: smaller;
+  letter-spacing: .1em;
 }
 
 footer ul {
