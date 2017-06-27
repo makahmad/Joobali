@@ -53,6 +53,9 @@ class Provider(ndb.Model):
     dwolla_status = ndb.StringProperty()
     # Dwolla funding source to receive money
     default_funding_source = ndb.StringProperty()
+    # Dwolla Verification document
+    doc = ndb.BlobProperty()
+    hasDoc = ndb.BooleanProperty(default=False) # used to decide whether a doc is uploaded
 
     # General Invoice Related Fields
     graceDays = ndb.IntegerProperty(default=0)

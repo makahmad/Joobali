@@ -35,7 +35,7 @@ DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
 
 stripFilter = lambda x: x.strip() if x else ''
-ProviderForm = model_form(models.Provider, exclude=['logo'], field_args={
+ProviderForm = model_form(models.Provider, exclude=['logo', 'doc'], field_args={
     'firstName': {
         'filters': [stripFilter],
     },

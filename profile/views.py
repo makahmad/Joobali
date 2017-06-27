@@ -10,7 +10,7 @@ from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 from google.appengine.ext import ndb
-from common.dwolla import update_customer, get_customer
+from common.dwolla import update_customer, get_customer, upload_document
 from datetime import datetime
 from dwollav2.error import ValidationError
 
@@ -39,6 +39,26 @@ def getProviderLogo(request):
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
+def getProviderDoc(request):
+    """Handles get provider logo request. Returns logo if one exists. """
+    if request.method != 'GET':
+        return
+    provider_id = request.GET.get('id', None)
+    provider = None
+    print provider_id
+    if provider_id:
+        provider = Provider.get_by_id(int(provider_id))
+
+    if provider is None:
+        if not check_session(request):
+            return HttpResponseRedirect('/login')
+        provider = Provider.get_by_id(request.session['user_id'])
+
+    if provider is not None:
+        return HttpResponse(provider.doc, content_type="application/pdf")
+
+    # todo Must specify parent since id is not unique in DataStore
+    return HttpResponse(json.dumps([JEncoder().encode(None)]))
 
 def getProfile(request):
     """Handles get profile request. Returns the profile with provided email"""
@@ -48,6 +68,7 @@ def getProfile(request):
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
         provider.logo = None  # set to none as HTTP response encode breaks for blobs
+        provider.doc = None  # set to none as HTTP response encode breaks for blobs
         dict = provider.to_dict()
 
         dict['id'] = provider.key.id()
@@ -237,6 +258,30 @@ def updateLogo(request):
 
     return HttpResponse('success')
 
+def updateDoc(request):
+    """Updates the provider's document for dwolla verification"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if not request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
+    provider = Provider.get_by_id(request.session['user_id'])
+
+
+    if request.body:
+        # print 'LALALA'
+        # print type(request.body)
+        # upload_document(provider.customerId, request.body, 'idCard')
+        provider.doc = request.body
+        provider.hasDoc = True
+    else:
+        provider.doc = None
+        provider.hasDoc = False
+
+    provider.put()
+
+    return HttpResponse('success')
 
 def validateEmail(request):
     """Validates user email. Successful if email does not already exist in the system, otherwise failure"""

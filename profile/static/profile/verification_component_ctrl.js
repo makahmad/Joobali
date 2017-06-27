@@ -17,11 +17,12 @@ VerificationComponentController = function($scope, $http, $window, $sce) {
             // when the response is available
 
             this.profile = JSON.parse(response.data[0]);
+            console.log(this.profile);
             this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate();
 
             //redirect provider to home if they are already verified
-            if(this.profile.dwolla_status=='verified')
-                window.location = "/home/dashboard#!/home";
+//            if(this.profile.dwolla_status=='verified')
+//                window.location = "/home/dashboard#!/home";
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
@@ -68,26 +69,104 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
     submitting_profile = angular.copy(this.profile)
     if (submitting_profile.dateOfBirth!=null)
     submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
-    if (this.dwollaFieldsFilled(markError)) {
-        this.http_({
-            method: 'POST',
-            url: '/profile/dwollaverify',
-            data: JSON.stringify(submitting_profile)
-        }).then(angular.bind(this, function successCallback(response) {
-            // this callback will be called asynchronously
-            // when the response is available
-            if (response.data == 'success') {
-                this.profile.dwolla_status = 'verified'
-                alert("Verification Succeeded.")
-                location.reload();
-            } else {
-                alert(response.data);
-            }
+                if(this.profile.doc) {
+                    console.log(this.profile.doc);
+                this.http_({
+                    method: 'POST',
+                    url: '/profile/updatedoc',
+                    data: this.profile.doc
+                }).then(angular.bind(this, function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log('logo post suceeded');
+                    location.reload();
 
-          }), angular.bind(this, function errorCallback(response) {
-            // called asynchronously if an error occurs
-            // or server returns response with an error status.
-                alert("Something is wrong with the verification. Please try again later");
-          }));
+                  }), angular.bind(this, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                        console.log('logo post failed');
+
+                         alert("Something is wrong with the saving. Please try again later");
+                  }));
+            }
+    if (this.profile.dwolla_status != 'verified') {
+        if (this.profile.dwolla_status == 'document') {
+            if(this.profile.doc) {
+                this.http_({
+                    method: 'POST',
+                    url: '/profile/updatedoc',
+                    data: this.profile.doc
+                }).then(angular.bind(this, function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    console.log('logo post suceeded');
+                    location.reload();
+
+                  }), angular.bind(this, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                        console.log('logo post failed');
+
+                         alert("Something is wrong with the saving. Please try again later");
+                  }));
+            }
+        } else {
+            if (this.dwollaFieldsFilled(markError)) {
+                this.http_({
+                    method: 'POST',
+                    url: '/profile/dwollaverify',
+                    data: JSON.stringify(submitting_profile)
+                }).then(angular.bind(this, function successCallback(response) {
+                    // this callback will be called asynchronously
+                    // when the response is available
+                    if (response.data == 'success') {
+                        this.profile.dwolla_status = 'verified'
+                        alert("Verification Succeeded.")
+                        location.reload();
+                    } else {
+                        alert(response.data);
+                    }
+
+                  }), angular.bind(this, function errorCallback(response) {
+                    // called asynchronously if an error occurs
+                    // or server returns response with an error status.
+                        alert("Something is wrong with the verification. Please try again later");
+                  }));
+            }
+        }
     }
 };
+
+VerificationComponentController.prototype.deleteDoc = function() {
+	this.http_({
+		method: 'POST',
+		url: '/profile/updatedoc',
+		data: this.profile.doc
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+        console.log('post suceeded');
+    alert(this.profile.doc);
+        location.reload();
+
+
+	  }), angular.bind(this, function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+			console.log('post failed');
+			alert("Something is wrong with the saving. Please try again later");
+	  }));
+};
+
+VerificationComponentController.prototype.getDocName = function() {
+    var fullPath = document.getElementById('verification_doc').value;
+    if (fullPath) {
+        var startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+        var filename = fullPath.substring(startIndex);
+        if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+            filename = filename.substring(1);
+        }
+        return filename;
+    }
+    return null;
+}
