@@ -69,46 +69,31 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
     submitting_profile = angular.copy(this.profile)
     if (submitting_profile.dateOfBirth!=null)
     submitting_profile.dateOfBirth = moment(submitting_profile.dateOfBirth).format("MM/DD/YYYY");
-                if(this.profile.doc) {
-                    console.log(this.profile.doc);
-                this.http_({
-                    method: 'POST',
-                    url: '/profile/updatedoc',
-                    data: this.profile.doc
-                }).then(angular.bind(this, function successCallback(response) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    console.log('logo post suceeded');
-                    location.reload();
 
-                  }), angular.bind(this, function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                        console.log('logo post failed');
-
-                         alert("Something is wrong with the saving. Please try again later");
-                  }));
-            }
     if (this.profile.dwolla_status != 'verified') {
         if (this.profile.dwolla_status == 'document') {
             if(this.profile.doc) {
-                this.http_({
-                    method: 'POST',
-                    url: '/profile/updatedoc',
-                    data: this.profile.doc
-                }).then(angular.bind(this, function successCallback(response) {
-                    // this callback will be called asynchronously
-                    // when the response is available
-                    console.log('logo post suceeded');
-                    location.reload();
+                    var fd = new FormData();
+                    //Take the first selected file
+                    fd.append("file", this.profile.doc);
 
-                  }), angular.bind(this, function errorCallback(response) {
-                    // called asynchronously if an error occurs
-                    // or server returns response with an error status.
-                        console.log('logo post failed');
+                    this.http_.post('/profile/updatedoc', fd, {
+                        withCredentials: true,
+                        headers: {'Content-Type': undefined },
+                        transformRequest: angular.identity
+                    }).then(angular.bind(this, function successCallback(response) {
+                        // this callback will be called asynchronously
+                        // when the response is available
+                        console.log('logo post suceeded');
+                        location.reload();
 
-                         alert("Something is wrong with the saving. Please try again later");
-                  }));
+                      }), angular.bind(this, function errorCallback(response) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                            console.log('logo post failed');
+
+                             alert("Something is wrong with the saving. Please try again later");
+                      }));
             }
         } else {
             if (this.dwollaFieldsFilled(markError)) {
@@ -138,24 +123,27 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
 };
 
 VerificationComponentController.prototype.deleteDoc = function() {
-	this.http_({
-		method: 'POST',
-		url: '/profile/updatedoc',
-		data: this.profile.doc
-	}).then(angular.bind(this, function successCallback(response) {
-	    // this callback will be called asynchronously
-	    // when the response is available
-        console.log('post suceeded');
-    alert(this.profile.doc);
+    var fd = new FormData();
+    //Take the first selected file
+    fd.append("file", this.profile.doc);
+
+    this.http_.post('/profile/updatedoc', fd, {
+        withCredentials: true,
+        headers: {'Content-Type': undefined },
+        transformRequest: angular.identity
+    }).then(angular.bind(this, function successCallback(response) {
+        // this callback will be called asynchronously
+        // when the response is available
+        console.log('logo post suceeded');
         location.reload();
 
+      }), angular.bind(this, function errorCallback(response) {
+        // called asynchronously if an error occurs
+        // or server returns response with an error status.
+            console.log('logo post failed');
 
-	  }), angular.bind(this, function errorCallback(response) {
-	    // called asynchronously if an error occurs
-	    // or server returns response with an error status.
-			console.log('post failed');
-			alert("Something is wrong with the saving. Please try again later");
-	  }));
+             alert("Something is wrong with the saving. Please try again later");
+      }));
 };
 
 VerificationComponentController.prototype.getDocName = function() {

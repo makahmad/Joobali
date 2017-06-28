@@ -146,12 +146,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label ng-hide="$ctrl.profile.hasDoc"  class="control-label" for="verification_doc">Photo ID Upload:</label>
-                    <div ng-hide="$ctrl.profile.hasDoc" class="input-group">
+                    <label ng-hide="$ctrl.profile.docName"  class="control-label" for="verification_doc">Photo ID Upload:</label>
+                    <div ng-hide="$ctrl.profile.docName" class="input-group">
 											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.doc"  class="form-control" name="doc" id="verification_doc">
 										 </div>
-                    <label ng-show="$ctrl.profile.hasDoc"  class="control-label" for="verification_doc">Photo ID Uploaded and Under Review...</label>
-                     <div ng-show="$ctrl.profile.hasDoc">
+                    <label ng-show="$ctrl.profile.docName"  class="control-label" for="verification_doc">Photo ID Uploaded and Under Review...</label>
+                     <div ng-show="$ctrl.profile.docName">
                          <a ng-click="$ctrl.deleteDoc()">Delete Doc</a>
                      </div>
                 </div>

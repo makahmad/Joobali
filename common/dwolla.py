@@ -149,8 +149,8 @@ def get_funding_source(funding_source_url):
     result['customer_url'] = source['_links']['customer']['href']
     return result
 
-def upload_document(customer_url, document, type):
-    document = create_account_token().post('%s/documents' % customer_url, file=document, documentType=type)
+def upload_document(customer_url, document, doc_type):
+    document = create_account_token().post('%s/documents' % customer_url, file=document, documentType=doc_type)
     return document.headers['location']
 
 def make_transfer(request_body):

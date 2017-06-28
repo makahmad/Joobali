@@ -13,7 +13,7 @@ from google.appengine.ext import ndb
 from common.dwolla import update_customer, get_customer, upload_document
 from datetime import datetime
 from dwollav2.error import ValidationError
-
+from io import StringIO, BytesIO
 logger = logging.getLogger(__name__)
 
 DATE_FORMAT = '%m/%d/%Y'
@@ -55,7 +55,7 @@ def getProviderDoc(request):
         provider = Provider.get_by_id(request.session['user_id'])
 
     if provider is not None:
-        return HttpResponse(provider.doc, content_type="application/pdf")
+        return HttpResponse(provider.doc, content_type=provider.docContentType)
 
     # todo Must specify parent since id is not unique in DataStore
     return HttpResponse(json.dumps([JEncoder().encode(None)]))
@@ -269,15 +269,15 @@ def updateDoc(request):
     provider = Provider.get_by_id(request.session['user_id'])
 
 
-    if request.body:
-        # print 'LALALA'
-        # print type(request.body)
-        # upload_document(provider.customerId, request.body, 'idCard')
-        provider.doc = request.body
-        provider.hasDoc = True
+    if 'file' in request.FILES:
+        upload_document(provider.customerId, BytesIO(request.FILES['file'].read()), 'idCard')
+        provider.doc = request.FILES['file'].read()
+        provider.docContentType = request.FILES['file'].content_type
+        provider.docName = request.FILES['file'].name
     else:
         provider.doc = None
-        provider.hasDoc = False
+        provider.docContentType = None
+        provider.docName = None
 
     provider.put()
 

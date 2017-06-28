@@ -229,7 +229,7 @@
                     </a>
                 </li>
 
-                <li  ng-click="changeView('/verification')" ng-class="{active: module=='/verification'}">
+                <li  ng-hide="dwollaStatus == 'verified'" ng-click="changeView('/verification')" ng-class="{active: module=='/verification'}">
                     <a>
                         <i class="fa fa-user fa-2x"></i> &nbsp; Verify Account
                     </a>
