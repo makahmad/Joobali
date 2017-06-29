@@ -1,28 +1,115 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="$ctrl.closeModal(false)">&times;</button>
     <h4 class="modal-title">Edit Enrollment</h4>
+    <div class="stepsDiv">
+        <ul class="nav nav-pills nav-wizard">
+            <li class="form-nav" ng-class="{active: $ctrl.currentStep==0}" >
+                <a ng-click="$ctrl.changeStep(0)">Editing Enrollment</a>
+                <div class="nav-arrow"></div>
+            </li>
+            <li class="form-nav" ng-class="{active: $ctrl.currentStep==1}">
+                <a ng-click="$ctrl.changeStep(1)">Confirming Changes</a>
+                <div class="nav-arrow"></div>
+            </li>
+        </ul>
+    </div>
 </div>
 <div class="modal-body">
     <div class="enrollmentEditor">
         <p>You're editing Enrollment for <b>{{$ctrl.child.first_name + " " + $ctrl.child.last_name}}</b>
             in program <b>{{$ctrl.program.programName}}</b></p>
-        <div>
-            <p>
-                <span class="label label-danger" ng-show="$ctrl.showWarning">Incorrect billing end date</span>
-            </p>
-            <label>Enter enrollment billing end date (MM/DD/YYYY) for further operation</label>
-            <input type="text" required ng-model="$ctrl.billing_end_date">
+        <div id="step1" ng-show="$ctrl.currentStep==0">
+            <form name="enrollmentEditor">
+                <div class="form-group"
+                     ng-class="{'has-error': enrollmentEditor.startDate.$invalid && enrollmentEditor.startDate.$touched}">
+                    <label class="control-label"
+                           ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">
+                        When is the first (or next) fee due?
+                        <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;
+                        <small>
+                            (MM/DD/YYYY)
+                        </small>
+                    </label>
+                    <p class="input-group">
+                        <input name="startDate"
+                               type="text" class="form-control"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               datepicker-options="$ctrl.enrollmentDatePickerOptions"
+                               ng-model="$ctrl.newEnrollment.start_date"
+                               ng-readonly="$ctrl.isStartDateReadOnly()"
+                               is-open="$ctrl.startDatePickerOpened"
+                               ng-required="true"
+                               ng-change="$ctrl.whenChangeStartDate(true)"
+                               ng-click="$ctrl.openStartDatePicker()"
+                               close-text="Close"/>
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openStartDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                    </p>
+
+                    <div class="input-group">
+                    <span class="input-group-addon angular-with-newlines fee formInstructions"
+                          ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a due date based on your selected program. For one-time payments, create a new invoice from the Invoices page.</span>
+                    </div>
+
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error': enrollmentEditor.endDate.$invalid && enrollmentEditor.endDate.$touched}">
+                    <label class="control-label">When is the LAST fee due? (optional)
+                        <small>(MM/DD/YYYY)</small>
+                    </label>
+                    <p class="input-group">
+                        <input name="endDate"
+                               type="text" class="form-control"
+                               uib-datepicker-popup="MM/dd/yyyy"
+                               datepicker-popup-template-url="/static/home/datepicker.template.html"
+                               datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
+                               ng-model="$ctrl.newEnrollment.end_date"
+                               ng-readonly="$ctrl.readOnly"
+                               is-open="$ctrl.endDatePickerOpened"
+                               close-text="Close"
+                               ng-click="$ctrl.openEndDatePicker()"/>
+                        <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default"
+                                            ng-click="$ctrl.openEndDatePicker()">
+                                        <i class="glyphicon glyphicon-calendar"></i></button></span>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Status</label>
+                    <select ng-model="$ctrl.newEnrollment.status">
+                        <option
+                                ng-selected="{{$ctrl.enrollment.status === status}}"
+                                ng-repeat="status in $ctrl.getPossibleStatus()" value="{{status}}">
+                            {{status}}
+                        </option>
+                    </select>
+                </div>
+            </form>
         </div>
-        <div ng-show="$ctrl.enrollment.status == 'inactive'">
-            <button type="button" class="btn btn-primary" ng-click="$ctrl.reactivateEnrollment()">
-                Reactive Enrollment
-            </button>
-        </div>
-        <div ng-show="$ctrl.isEnrollmentActive()">
-            <button type="button" class="btn btn-danger" ng-click="$ctrl.cancelEnrollment()">
-                Cancel Enrollment
-            </button>
+
+        <div id="step2" ng-show="$ctrl.currentStep==1">
+            <div class="panel panel-body">
+                <div ng-show="$ctrl.enrollment.status !== $ctrl.newEnrollment.status">
+                    <h4 class="control-label">Enrollment Status:</h4>
+                    {{$ctrl.enrollment.status}} &rArr; {{$ctrl.newEnrollment.status}}
+                </div>
+                <div ng-show="$ctrl.enrollment.start_date_str !== $ctrl.newEnrollment.start_date_str">
+                    <h4 class="control-label">Enrollment start date:</h4>
+                    {{$ctrl.enrollment.start_date_str}} &rArr;
+                    {{$ctrl.newEnrollment.start_date_str}}
+                </div>
+                <div ng-show="$ctrl.enrollment.end_date_str !== $ctrl.newEnrollment.end_date_str">
+                    <h4 class="control-label">Enrollment end date:</h4>
+                    {{$ctrl.enrollment.end_date_str}} &rArr; {{$ctrl.newEnrollment.end_date_str}}
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<div class="modal-footer"></div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-show="$ctrl.currentStep==0" ng-disabled="!$ctrl.hasChange()"ng-click="$ctrl.changeStep(1)">Next</button>
+    <button class="btn btn-success" ng-show="$ctrl.currentStep==1" ng-click="$ctrl.save()">Save</button>
+</div>

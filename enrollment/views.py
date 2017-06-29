@@ -1,6 +1,7 @@
 import json
 import logging
 
+from datetime import datetime
 from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -287,6 +288,28 @@ def get_enrollment(request):
             enrollments_details.append(enrollment_detail)
         return HttpResponse(json.dumps(JEncoder().encode(enrollments_details)), content_type='application/json')
 
+
+def update_enrollment(request):
+    if request.method != 'POST':
+        return HttpResponse(status=400)
+    logger.info(request.body)
+    if not check_session(request):
+        return HttpResponse(status=401)
+    provider_id = get_provider_id(request)
+    request_body_dict = json.loads(request.body)
+    enrollment_key = Enrollment.generate_key(provider_id, request_body_dict['id'])
+    enrollment = enrollment_key.get()
+    if enrollment is None:
+        return HttpResponse("enrollment does not exists", status=400)
+    else:
+        if 'status' in request_body_dict:
+            enrollment.status = request_body_dict['status']
+        elif 'start_date' in request_body_dict:
+            enrollment.start_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['start_date'], "%m/%d/%Y"))
+        elif 'end_date' in request_body_dict:
+            enrollment.end_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['end_date'], "%m/%d/%Y"))
+        enrollment.put()
+        return HttpResponse(status=200)
 
 def resent_enrollment_invitation(request):
     status = "Failure"

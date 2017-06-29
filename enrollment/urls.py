@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^get', views.get_enrollment, name='getEnrollment'),
     url(r'^cancel', views.cancel_enrollment, name='cancelEnrollment'),
     url(r'^accept', views.accept_enrollment, name='acceptEnrollment'),
+    url(r'^update', views.update_enrollment, name='updateEnrollment'),
     url(r'^reactivate', views.reactivate_enrollment, name='reactivateEnrollment'),
     url(r'^resendInvitation', views.resent_enrollment_invitation, name='resendInvitation'),
     url(r'^setupautopay', views.setupAutopay, name='setupAutopay'),
