@@ -209,7 +209,7 @@
                 <div class="form-group">
                     <label class="control-label" for="logo">Logo (visible on invoice):</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.logo"  class="form-control" name="logo" id="logo">
+											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" onchange="angular.element(this).scope().fileNameChanged()" demo-file-model="$ctrl.profile.logo"  class="form-control" name="logo" id="logo">
 										 </div>
                      <div ng-show="$ctrl.profile.showLogo">
                          <a href="../../profile/getproviderlogo" target="_blank"><img  ng-show="$ctrl.profile.showLogo" src='../../profile/getproviderlogo' alt='your logo' width="40%" height="40%"/></a>
@@ -223,7 +223,8 @@
             </div>
 		        </form>
 						<div class="formActions">
-								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="(profileForm.email.$dirty && profileForm.email.$invalid) ||$ctrl.disableSave||profileForm.$invalid||profileForm.$pristine">Update &raquo;</button>
+                            {{newImageSelected}}
+								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.saveProfile()" ng-disabled="$ctrl.emailError||(profileForm.email.$dirty && profileForm.email.$invalid) ||profileForm.$invalid||( profileForm.$pristine && !newImageSelected )">Update &raquo;</button>
 						</div> <!-- end formActions -->
     </div>
 <!-- </div></div> --></div></div>

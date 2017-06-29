@@ -4,14 +4,18 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 	this.window_ = $window;
 	this.profile = {};
 	this.emailError = false;
-	this.disableSave = false;
 	this.scope_ = $scope;
+	this.scope_.newImageSelected = false;
     this.dateOfBirthPickerOpened = false;
     this.today = new Date();
     this.dateFormat = "MM/DD/YYYY";
 
     this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
     '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
+
+    this.scope_.fileNameChanged = function() {
+        $scope.newImageSelected = true;
+    }
 
     if (angular.equals(this.profile, {})) {
     	$http({
@@ -121,15 +125,13 @@ ProfileComponentController.prototype.validateEmail = function() {
         }).then(angular.bind(this, function successCallback(response) {
             // this callback will be called asynchronously
             // when the response is available
-            console.log('email valid ');
-            this.disableSave = false;
+//            console.log('email valid ');
             this.emailError = false;
 
           }), angular.bind(this, function errorCallback(response) {
             // called asynchronously if an error occurs
             // or server returns response with an error status.
-                console.log('email invalid');
-                this.disableSave = true;
+//                console.log('email invalid');
                 this.emailError = true;
           }));
 
