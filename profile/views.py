@@ -10,10 +10,11 @@ from login import unique_util
 from login.models import Provider
 from passlib.apps import custom_app_context as pwd_context
 from google.appengine.ext import ndb
-from common.dwolla import update_customer, get_customer, upload_document
+from common.dwolla import update_customer, get_customer, upload_document, list_documents, get_document
 from datetime import datetime
 from dwollav2.error import ValidationError
 from io import StringIO, BytesIO
+
 logger = logging.getLogger(__name__)
 
 DATE_FORMAT = '%m/%d/%Y'
@@ -79,6 +80,12 @@ def getProfile(request):
             dict['zipcode'] = int(provider.zipcode)
         dict['dateOfBirth'] = provider.dateOfBirth.strftime(DATE_FORMAT) if provider.dateOfBirth else None
         logger.info("Dwolla Status: %s" % dict['dwolla_status'])
+
+        documents = list_documents(provider.customerId)
+
+        for doc in documents['documents']:
+            dict['docStatus'] = doc['status']
+            pass
         if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
             try:
                 dwolla_customer = get_customer(provider.customerId)
@@ -268,15 +275,16 @@ def updateDoc(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
 
-
-    if 'file' in request.FILES:
-        upload_document(provider.customerId, BytesIO(request.FILES['file'].read()), 'idCard')
+    if 'file' in request.FILES and request.POST.get('docType') is not None:
+        upload_document(provider.customerId, BytesIO(request.FILES['file'].read()), request.POST.get('docType'))
         provider.doc = request.FILES['file'].read()
         provider.docContentType = request.FILES['file'].content_type
+        provider.docType = request.POST.get('docType')
         provider.docName = request.FILES['file'].name
     else:
         provider.doc = None
         provider.docContentType = None
+        provider.docType = None
         provider.docName = None
 
     provider.put()

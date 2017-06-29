@@ -145,15 +145,24 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label ng-hide="$ctrl.profile.docName"  class="control-label" for="verification_doc">Photo ID Upload:</label>
-                    <div ng-hide="$ctrl.profile.docName" class="input-group">
+                <div class="form-group" ng-hide="$ctrl.profile.dwolla_status == 'verified'">
+                    <label ng-hide="$ctrl.profile.docStatus"  class="control-label" for="verification_doc">Photo ID Upload:</label>
+                    <div ng-hide="$ctrl.profile.docStatus" class="input-group">
 											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.doc"  class="form-control" name="doc" id="verification_doc">
 										 </div>
-                    <label ng-show="$ctrl.profile.docName"  class="control-label" for="verification_doc">Photo ID Uploaded and Under Review...</label>
-                     <div ng-show="$ctrl.profile.docName">
+                    <label ng-hide="$ctrl.profile.docStatus"  class="control-label" for="docType">Photo ID Type:</label>
+                    <div ng-hide="$ctrl.profile.docStatus" class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span>
+                        <select type="text" class="form-control" id="docType" name="docType" ng-required="false" ng-model="$ctrl.profile.docType">
+                        	    <option selected value="passport">Passport</option>
+                                <option value="license">Driver’s license</option>
+                                <option value="idCard">Other government-issued photo id card</option>
+                        </select>
+										 </div>
+                    <label ng-show="$ctrl.profile.docStatus"  class="control-label" for="verification_doc">Photo ID Uploaded with Status: {{ $ctrl.profile.docStatus }}</label>
+                     <!--<div ng-show="$ctrl.profile.docStatus">
                          <a ng-click="$ctrl.deleteDoc()">Delete Doc</a>
-                     </div>
+                     </div>-->
                 </div>
             </div>
 		        </form>

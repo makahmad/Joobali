@@ -20,6 +20,9 @@ VerificationComponentController = function($scope, $http, $window, $sce) {
             console.log(this.profile);
             this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate();
 
+            if (!this.profile.docType) {
+                this.profile.docType = 'passport'
+            }
             //redirect provider to home if they are already verified
 //            if(this.profile.dwolla_status=='verified')
 //                window.location = "/home/dashboard#!/home";
@@ -76,6 +79,7 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
                     var fd = new FormData();
                     //Take the first selected file
                     fd.append("file", this.profile.doc);
+                    fd.append("docType", this.profile.docType);
 
                     this.http_.post('/profile/updatedoc', fd, {
                         withCredentials: true,

@@ -55,7 +55,8 @@ class Provider(ndb.Model):
     default_funding_source = ndb.StringProperty()
     # Dwolla Verification document
     docName = ndb.StringProperty()
-    docContentType = ndb.StringProperty()
+    docContentType = ndb.StringProperty() # image/jpg, application/pdf...
+    docType = ndb.StringProperty() # passport, license, or idCard
     doc = ndb.BlobProperty() # document binary data
 
     # General Invoice Related Fields

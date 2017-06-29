@@ -3,7 +3,7 @@ import dwollav2
 import logging
 from os import environ
 from tasks.models import DwollaTokens
-
+from google.appengine.api import urlfetch
 logger = logging.getLogger(__name__)
 
 # Client constants
@@ -150,8 +150,84 @@ def get_funding_source(funding_source_url):
     return result
 
 def upload_document(customer_url, document, doc_type):
+    urlfetch.set_default_fetch_deadline(60)
     document = create_account_token().post('%s/documents' % customer_url, file=document, documentType=doc_type)
     return document.headers['location']
+
+def get_document(document_url):
+    # {
+    #     u'_links': {
+    #         u'self': {
+    #             u'resource-type': u'document',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json',
+    #             u'href': u'https://api-sandbox.dwolla.com/documents/57086708-b440-424e-a80a-021d2ea8b8f8'
+    #         }
+    #     },
+    #     u'id': u'57086708-b440-424e-a80a-021d2ea8b8f8',
+    #     u'type': u'idcard',
+    #     u'status': u'pending',
+    #     u'created': u'2017-06-28T05:48:11.000   Z'
+    # }
+    document = get_general(document_url).body
+    logger.info('Get Document:')
+    logger.info(document)
+    return document
+
+def list_documents(customer_url):
+    # {
+    #     u'total': 2,
+    #     u'_embedded': {
+    #         u'documents': [
+    #             {
+    #                 u'status': u'pending',
+    #                 u'created': u'2017-06-28T05:48:11.000            Z',
+    #                 u'type': u'idcard',
+    #                 u'id': u'57086708-b440-424e-a80a-021d2ea8b8f8',
+    #                 u'_links': {
+    #                     u'self': {
+    #                         u'href': u'https://api-sandbox.dwolla.com/documents/57086708-b440-424e-a80a-021d2ea8b8f8',
+    #                         u'resource-type': u'document',
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json'
+    #                     }
+    #                 }
+    #             },
+    #             {
+    #                 u'status': u'pending',
+    #                 u'created': u'2017-06-28T05:47:44.000            Z',
+    #                 u'type': u'idcard',
+    #                 u'id': u'f6a790ba-85b1-4e54-a055-4b44c97d68aa',
+    #                 u'_links': {
+    #                     u'self': {
+    #                         u'href': u'https://api-sandbox.dwolla.com/documents/f6a790ba-85b1-4e54-a055-4b44c97d68aa',
+    #                         u'resource-type': u'document',
+    #                         u'type': u'application/vnd.dwolla.v1.hal+json'
+    #                     }
+    #                 }
+    #             }
+    #         ]
+    #     },
+    #     u'_links': {
+    #         u'self': {
+    #             u'href': u'https://api-sandbox.dwolla.com/customers/dd6a3c07-97bd-4bdb-8079-b2dd3ae809ff/documents',
+    #             u'resource-type': u'document',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         }
+    #     }
+    # }
+    documents = create_account_token().get('%s/documents' % customer_url).body
+    logger.info("Get Documents:")
+    logger.info(documents)
+    result = {}
+    result['total'] = documents['total']
+    result['documents'] = []
+    for doc in documents['_embedded']['documents']:
+        result['documents'].append({
+            'status': doc['status'],
+            'type': doc['type'],
+            'id': doc['id'],
+            'link': doc['_links']['self']['href']
+        })
+    return result
 
 def make_transfer(request_body):
     return create_account_token().post('transfers', request_body)
