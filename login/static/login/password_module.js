@@ -2,7 +2,7 @@ angular.module('password_module', [ 'ui.bootstrap'])
   .controller('credentialsController', ['$scope', '$sce',
     function($scope, $sce) {
 
-         console.log('credentialsController running');
+//         console.log('credentialsController running');
         $scope.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
         '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
     }

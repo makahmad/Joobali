@@ -2,7 +2,7 @@ var TIME_FORMAT =  'hh:mm A';
 
 
 AddProgramComponentController = function($scope, $http, $window, $filter) {
-    console.log('AddProgramComponentController running');
+//    console.log('AddProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.scope_ = $scope;
@@ -120,7 +120,7 @@ AddProgramComponentController.prototype.handleSave = function() {
             data: JSON.stringify(data)
         }).then(
             function (response) {
-                console.log('post suceeded');
+//                console.log('post suceeded');
                 location.reload();
             },
             function (response) {
