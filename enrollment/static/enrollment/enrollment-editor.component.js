@@ -6,8 +6,11 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
     this.enrollment = enrollment;
     this.enrollment.start_date = moment(enrollment.start_date).toDate();
     this.enrollment.start_date_str = moment(enrollment.start_date).format("LL");
-    this.enrollment.end_date = moment(enrollment.end_date).toDate();
-    this.enrollment.end_date_str = moment(enrollment.end_date).format("LL");
+
+    if( enrollment.end_date!=null )
+        this.enrollment.end_date_str = moment(enrollment.end_date).format("LL");
+    else
+        this.enrollment.end_date_str = null;
 
     this.newEnrollment = angular.copy(enrollment);
 
@@ -124,7 +127,9 @@ EnrollmentEditorController.prototype.closeModal = function(refresh) {
 EnrollmentEditorController.prototype.changeStep = function(step) {
     if (step == 1) {
         this.newEnrollment.start_date_str = moment(this.newEnrollment.start_date).format('LL');
-        this.newEnrollment.end_date_str = moment(this.newEnrollment.end_date).format('LL');
+
+        if( this.newEnrollment.end_date!=null )
+            this.newEnrollment.end_date_str = moment(this.newEnrollment.end_date).format('LL');
     }
     this.currentStep = step;
 }
@@ -163,7 +168,7 @@ EnrollmentEditorController.prototype.hasChange = function() {
         return true;
     }
 
-    if (this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
+    if (this.enrollment.end_date!=null && this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
         return true;
     }
     return false;
@@ -179,7 +184,7 @@ EnrollmentEditorController.prototype.save = function() {
     if (this.enrollment.start_date.toString() !== this.newEnrollment.start_date.toString()) {
         request.start_date = moment(this.newEnrollment.start_date).format("MM/DD/YYYY");
     }
-    if (this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
+    if (this.enrollment.end_date!=null && this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
         request.end_date = moment(this.newEnrollment.end_date).format("MM/DD/YYYY");
     }
     this.http_.post('/enrollment/update', request)
