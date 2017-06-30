@@ -45,6 +45,7 @@
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
+                                            ng-disabled="$ctrl.isStartDateReadOnly()"
                                             ng-click="$ctrl.openStartDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>

@@ -109,7 +109,8 @@ EnrollmentEditorController.prototype.$onInit = function() {
 };
 
 EnrollmentEditorController.prototype.openStartDatePicker = function() {
-  this.startDatePickerOpened = true;
+  if( !this.isStartDateReadOnly() )
+    this.startDatePickerOpened = true;
 };
 
 EnrollmentEditorController.prototype.openEndDatePicker = function() {
