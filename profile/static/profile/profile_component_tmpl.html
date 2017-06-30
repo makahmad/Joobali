@@ -78,25 +78,25 @@
                 <div class="form-group">
                     <label class="control-label" for="addressLine1">Address Line 1:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="addressLine1" name="addressLine1" ng-required="false" ng-model="$ctrl.profile.addressLine1">
+											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="text" class="form-control" id="addressLine1" name="addressLine1" ng-required="false" ng-model="$ctrl.profile.addressLine1">
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="addressLine2">Address Line 2 (optional):</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="addressLine2" name="addressLine2" ng-required="false" ng-model="$ctrl.profile.addressLine2">
+											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="text" class="form-control" id="addressLine2" name="addressLine2" ng-required="false" ng-model="$ctrl.profile.addressLine2">
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="city">City:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
+											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="text" class="form-control" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="state">State:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span>
+											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span>
                         <select type="text" class="form-control" id="state" name="state" ng-required="false" ng-model="$ctrl.profile.state">
                         	    <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
@@ -155,13 +155,19 @@
                 <div class="form-group">
                     <label class="control-label" for="zipcode">Zipcode:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="number" class="form-control" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
+											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="number" class="form-control" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
+										</div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label" for="city">Phone:</label>
+                    <div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-phone fa-lg"></i></span><input type="text" class="form-control" id="phone" name="phone" ng-required="false" ng-model="$ctrl.profile.phone">
 										</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="dateOfBirth">Date of Birth <small>(MM/DD/YYYY)</small>:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span>
+											<span class="input-group-addon"><i class="fa fa-birthday-cake fa-lg" aria-hidden="true"></i></span>
                         <input id="dateOfBirth" name="dateOfBirth"
                                type="text" class="form-control"
                                datepicker-popup-template-url="/static/home/datepicker.template.html"
@@ -200,7 +206,7 @@
                 <div class="form-group">
                     <label class="control-label" for="tin">TIN (visible on invoice):</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-percent fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="tin" name="tin" ng-required="false"
+											<span class="input-group-addon"><i class="fa fa-tag fa-lg" aria-hidden="true"></i></span><input type="text" class="form-control" id="tin" name="tin" ng-required="false"
                            ng-model="$ctrl.profile.tin">
                     </div>
 
