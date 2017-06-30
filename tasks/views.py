@@ -273,6 +273,8 @@ def dwolla_webhook(request):
 
         template = loader.get_template('funding/joobali-to-customer-transfer-created.html')
         data = {
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+            'first_name': parent.first_name if parent.first_name else '',
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': source_funding_source['name'],
@@ -286,6 +288,8 @@ def dwolla_webhook(request):
         destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-created.html')
         data = {
+            'first_name': provider.first_name if provider.first_name else '',
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': destination_funding_source['name'],
@@ -329,6 +333,8 @@ def dwolla_webhook(request):
         destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-completed.html')
         data = {
+            'first_name': provider.first_name if provider.first_name else '',
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': destination_funding_source['name'],
@@ -362,6 +368,8 @@ def dwolla_webhook(request):
 
         template = loader.get_template('funding/joobali-to-customer-transfer-cancelled.html')
         data = {
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+            'first_name': parent.first_name if parent.first_name else '',
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': source_funding_source['name'],
@@ -375,6 +383,8 @@ def dwolla_webhook(request):
         destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-cancelled.html')
         data = {
+            'first_name': provider.first_name if provider.first_name else '',
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': destination_funding_source['name'],
@@ -405,6 +415,8 @@ def dwolla_webhook(request):
         source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
         template = loader.get_template('funding/joobali-to-customer-transfer-failed.html')
         data = {
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+            'first_name': parent.first_name if parent.first_name else '',
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': source_funding_source['name'],
@@ -418,6 +430,8 @@ def dwolla_webhook(request):
         destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-failed.html')
         data = {
+            'first_name': provider.first_name if provider.first_name else '',
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': '$' + str(amount),
             'account_name': destination_funding_source['name'],

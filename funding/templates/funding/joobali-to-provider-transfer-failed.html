@@ -70,13 +70,12 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
-                            <div style="text-align: left;">Hello [[Payor's First Name]],<br>
+                            <div style="text-align: left;">Hello {{ first_name }},<br>
 &nbsp;</div>
 
 <div style="text-align: left;"><strong>Payment&nbsp;Failed.</strong><br>
-Your payment of ${{ amount }} from [[Funding Source]] to {{ recipient }} failed.<br>
-<br>
-Potential reasons for failure may include insufficient funds in the account associated with "[[Funding Source Name]]". Please be sure to make a payment to {{ recipient }} at your earliest convenience. If you beleive this failure has occurred in error, please contact us immediately at <a href="mailto:howdy@joobali.com?subject=Payment%20Failure%20Inquiry" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">howdy@joobali.com</a>&nbsp;</div>
+The payment of ${{ amount }} from {{ sender }} for child {{ child_name }} failed.<br>
+<br></div>
 
 <div style="text-align: left;">&nbsp;</div>
 
@@ -129,13 +128,10 @@ Potential reasons for failure may include insufficient funds in the account asso
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
-                            <div style="text-align: left;"><strong>Payment Status: </strong><em>Incomplete</em><br>
+                            <div style="text-align: left;"><strong>Payment Status: </strong><em>Failed</em><br>
                               <strong>Payment Amount: </strong>${{ amount }}<br>
-                              <strong>Funding Source: </strong>[[FUnding Source Name ]]</div>
-
-<div style="text-align: left;"><strong>Account Name: </strong>[[Account Nickname]]<br>
-  <strong>Date of Failure: </strong>[[Date of failed transaction]]<br>
-  <strong>Intended Recipient of Payment: </strong> {{ recipient }}<br>
+  <strong>Date of Transfer: </strong> {{ created_date }}<br>
+  <strong>Payer: </strong> {{ sender }}<br>
 </div>
 
                         </td>

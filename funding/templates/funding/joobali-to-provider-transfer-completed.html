@@ -70,10 +70,10 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
-                            Hello [[Parent Name]],<br>
+                            Hello {{ first_name }},<br>
 <br>
 <strong>Payment Completed.&nbsp;</strong><br>
-Your AutoPay payment has been successfully transferred from "{{ account_name }}" to {{ recipient }} for [[Program name]] in the amount of {{ amount }}<br>
+The payment has been successfully transferred from {{ sender }} for child {{ child_name }} in the amount of ${{ amount }}<br>
 &nbsp;
                         </td>
                     </tr>
@@ -141,14 +141,17 @@ Your AutoPay payment has been successfully transferred from "{{ account_name }}"
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             <div style="text-align: left;"><strong>Payment Status:&nbsp;</strong><em>Completed</em><br>
-<strong>Child Name:&nbsp;</strong>[[Child Name]]</div>
+                                <strong>Child Name:&nbsp;</strong>{{ child_name }} <br>
+                              <strong>Payer : </strong>{{ sender }}</div>
 
+<!-- TODO: only show following info if the invoice is associated with a program
 <div style="text-align: left;"><strong>Program Name:&nbsp;</strong>[[Program Name]]<br>
 <strong>Program Fee:&nbsp;</strong>{{amount }}<br>
 <strong>Billing Period:&nbsp;</strong>[[Billing Period]]<br>
 <strong>Payment Scheduled:&nbsp;</strong>[[Next Payment Due]]<br>
 <strong>Payment Frequency:&nbsp;</strong>[[Fee Frequency]]<br>
 &nbsp;</div>
+-->
 
                         </td>
                     </tr>

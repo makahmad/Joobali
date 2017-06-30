@@ -68,10 +68,10 @@
                 <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
                     <tbody><tr>
                         
-                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;"> Hello [[First Name of Payor]],<br>
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;"> Hello {{ first_name }},<br>
                           <br>
                           <strong>Payment has been scheduled.</strong><br>
-A payment of {{ amount }} from "[[Insert Account Source Nickname]]" to [[recipient]] has been scheduled. <br>
+A payment of {{ amount }} from "{{ account_name }}" to {{ recipient }} has been scheduled. <br>
 &nbsp; </td>
                     </tr>
                 </tbody></table>
@@ -139,14 +139,15 @@ A payment of {{ amount }} from "[[Insert Account Source Nickname]]" to [[recipie
                         
                             <div style="text-align: left;"><strong>Transfer Status:&nbsp;</strong><em>Payment Scheduled</em><br>
 <strong>Payment Amount:&nbsp;</strong>${{ amount }}<br>
-<strong>Child Name:&nbsp;</strong>[[Child Name]]</div>
+<strong>Child Name:&nbsp;</strong> {{ child_name }}</div>
 
+<!-- TODO: only show following info if the invoice is associated with a program
 <div style="text-align: left;"><strong>Program Name: </strong><br>
-[[Program Name]]<br>
+{{ Program Name }}<br>
 <strong>Billing Period: </strong>[[Billing Start]] - [[Billing end]]<br>
 <strong>Payment Scheduled: </strong>[[Next Payment Due Date]]<br>
 <strong>Payment Frequency: [[</strong>One-Time/weekly/monthly]]</div>
-
+-->
                         </td>
                     </tr>
                 </tbody></table>
