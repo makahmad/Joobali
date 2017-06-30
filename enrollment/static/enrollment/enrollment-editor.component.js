@@ -140,13 +140,13 @@ EnrollmentEditorController.prototype.enrollmentDisabledDate = function(dateAndMo
 }
 
 EnrollmentEditorController.prototype.isStartDateReadOnly = function() {
-    var date = this.newEnrollment.start_date
-    var program = this.program;
+    var date = this.enrollment.start_date
+    var enrollment = this.enrollment;
 
     var startDate = moment([date.getFullYear(), date.getMonth(), date.getDate()]);
     var currentDate = moment();
-    if (startDate >= currentDate) {
-        if (program.status === 'active') {
+    if (startDate <= currentDate) {
+        if (enrollment.status === 'active') {
             return true;
         }
     }
