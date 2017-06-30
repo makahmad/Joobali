@@ -1,7 +1,7 @@
 var TIME_FORMAT =  'hh:mm A';
 
 EditProgramComponentController = function($uibModal,$http, $window, $location) {
-    console.log('EditProgramComponentController running');
+//    console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.program = {};
@@ -101,7 +101,7 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 };
 
 EditProgramComponentController.prototype.setProgramInfoDisplay = function(program) {
-console.log(program);
+//console.log(program);
     var startDate = moment(program.startDate);
 
     this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
@@ -195,7 +195,7 @@ EditProgramComponentController.prototype.saveProgram = function() {
 		data: JSON.stringify(this.program)
 	}).then(
 		angular.bind(this, function (response) {
-			console.log('post suceeded');
+//			console.log('post suceeded');
             this.program.css = 1;
             this.close({$value : this.program});
 
@@ -214,7 +214,7 @@ EditProgramComponentController.prototype.deleteProgram = function() {
 		data: JSON.stringify({id: this.program.id})
 	}).then(
 		angular.bind(this, function (response) {
-			console.log('post suceeded');
+//			console.log('post suceeded');
 
 			//this.window_.location.href = '/home/dashboard';
 
@@ -237,7 +237,7 @@ EditProgramComponentController.prototype.addSession = function(session) {
 		data: JSON.stringify(session)
 	}).then(
 		function (response) {
-			console.log('post suceeded');
+//			console.log('post suceeded');
 			location.reload();
 		},
 		function (response) {
@@ -268,7 +268,7 @@ EditProgramComponentController.prototype.saveSession = function() {
 		data: JSON.stringify(this.newSession)
 	}).then(
 		function (response) {
-			console.log('post suceeded');
+//			console.log('post suceeded');
 			location.reload();
 		},
 		function (response) {
@@ -288,7 +288,7 @@ EditProgramComponentController.prototype.deleteSession = function() {
 		data: JSON.stringify(this.newSession)
 	}).then(
 		function (response) {
-			console.log('post suceeded');
+//			console.log('post suceeded');
 			location.reload();
 		},
 		function (response) {
@@ -356,7 +356,7 @@ EditProgramComponentController.prototype.addNewSession = function() {
 		}
 
 		newSession.repeatOn = selectedDates.toString();
-		console.log(newSession);
+//		console.log(newSession);
 
 		if (this.validateNewSession(newSession)) {
 			this.addSession(newSession);

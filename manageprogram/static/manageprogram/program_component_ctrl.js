@@ -1,5 +1,5 @@
 ProgramComponentController = function($uibModal, $log, $location) {
-    console.log('ProgramComponentController running');
+//    console.log('ProgramComponentController running');
     this.location_ = $location;
 
      var $ctrl = this;
