@@ -21,7 +21,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
 
     this.scope_.changeView = function(view) {
-        console.log("changeView(" + view + ")");
+//        console.log("changeView(" + view + ")");
         $location.path(view);
         this.module = view;
 
@@ -43,7 +43,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
       };
 
     this.scope_.checkRequirements = function() {
-        console.log("Checking provider requriements");
+//        console.log("Checking provider requirements");
         if (self.scope_.fundings.length == 0) {
             alert("You haven't added any bank account to receive payments. Let's do it now.");
             self.scope_.changeView('/billing');
@@ -108,7 +108,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.invoices = [];
-	    console.log(response.data);
+//	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(invoice) {
 	        invoice.due_date_str = invoice.due_date;
 	        invoice.due_date = new Date(invoice.due_date_str);
@@ -127,7 +127,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.payments = [];
-	    console.log(response.data);
+//	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
 	    	this.scope_.payments.push(payment);
 	    }));
@@ -144,7 +144,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.fundings = [];
-	    console.log(response);
+//	    console.log(response);
 	    angular.forEach(response.data, angular.bind(this, function(funding) {
 	    	this.scope_.fundings.push(JSON.parse(funding));
 	    }));
@@ -217,14 +217,14 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                 tokens = minAge.split(" ");
                 if (tokens.length == 2) {
                     minDuration = moment.duration(parseInt(tokens[0]), tokens[1])
-                    console.log(minDuration);
+//                    console.log(minDuration);
                 }
             }
             if (maxAge) {
                 tokens = maxAge.split(" ");
                 if (tokens.length == 2) {
                     maxDuration = moment.duration(parseInt(tokens[0]), tokens[1]);
-                    console.log(maxDuration);
+//                    console.log(maxDuration);
                 }
             }
             var currentDate = moment(new Date());

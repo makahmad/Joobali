@@ -1,5 +1,5 @@
 VerificationComponentController = function($scope, $http, $window, $sce) {
-    console.log('VerificationComponentController running');
+//    console.log('VerificationComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
 	this.profile = {};
@@ -17,7 +17,7 @@ VerificationComponentController = function($scope, $http, $window, $sce) {
             // when the response is available
 
             this.profile = JSON.parse(response.data[0]);
-            console.log(this.profile);
+//            console.log(this.profile);
             this.profile.dateOfBirth = moment(this.profile.dateOfBirth, this.dateFormat).toDate();
 
             if (!this.profile.docType) {
