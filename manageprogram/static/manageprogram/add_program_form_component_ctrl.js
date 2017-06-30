@@ -1,7 +1,7 @@
 var TIME_FORMAT =  'hh:mm A';
 
 AddProgramFormComponentController = function($scope,$http) {
-    console.log('AddProgramFormComponentController running');
+//    console.log('AddProgramFormComponentController running');
 
     this._scope = $scope;
     var $ctrl = this;
