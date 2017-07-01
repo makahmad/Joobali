@@ -495,7 +495,7 @@ def login(request):
         else:
             payload['user_fields'] = {'is_parent_': True}
 
-        shared_key = 'YnmwhNazqOXXVAdEgWwpa7HiVa01Ud7kzuLIUHoySPgklwAp'
+        shared_key = 'X837bnHY15qx7iLf9uYOmNVWXNW77wCoQKctGajLN1NboEy5'
         jwt_string = jwt.encode(payload, shared_key)
         location = "https://joobali.zendesk.com/access/jwt?jwt=" + jwt_string
 

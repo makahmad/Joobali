@@ -31,7 +31,7 @@ def index(request):
         'iat': datetime.now(),
         'jti': request.session.get('email') + str(random.getrandbits(64))
     }
-    zendesk_token = jwt.encode(payload, '142f1e0db16dae59354211d49d1962cd')
+    zendesk_token = jwt.encode(payload, '06d401e8e50ac108d2da325caa12854c')
 
     return render_to_response(
         'parent/index.html',

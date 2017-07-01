@@ -10,7 +10,7 @@
             <td>{{ enrollment.provider.schoolName}}</td>
             <td>{{ enrollment.program.programName }}</td>
             <td>{{ enrollment.enrollment.status }}</td>
-            <td>{{ enrollment.enrollment.start_date}}</td>
+            <td>{{ enrollment.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>
         </tr>
         </tbody>
     </table>
