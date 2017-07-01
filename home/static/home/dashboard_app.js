@@ -201,7 +201,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
                  .when('/verification', {template: '<verification-component profile="profile"></verification-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
                  .when('/child/list', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
-                 .when('/child/list/:programId', {template: '<child-list></child-list>'})
+                 .when('/child/list/:programId', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .when('/home', {templateUrl: '/static/home/home.html'})
                  .otherwise('/home');
