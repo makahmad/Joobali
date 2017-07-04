@@ -167,7 +167,7 @@ def invoice_notification(request):
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
                 'is_recurring': invoice.is_recurring,
-                'pay_invoice_url': request.get_host() + '/login',
+                'host': request.get_host(),
                 'invoice_id': invoice.key.id(),
                 'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
                 'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
