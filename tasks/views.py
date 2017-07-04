@@ -152,15 +152,12 @@ def invoice_calculation(request):
 
 def invoice_notification(request):
     logger.info("INVOICE NOTIFICATION")
-    now = datetime.now()
-    invoice_dict = dict()
-    days_before = 5 # send notification 5 days before due date
 
     # loop over invoices...
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         logger.info("Sending notification for invoice: %s" % invoice)
-        if now + timedelta(days=days_before) >= invoice.due_date and not invoice.email_sent:
+        if not invoice.email_sent:
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             program = None

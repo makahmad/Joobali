@@ -4,7 +4,7 @@ cron:
   schedule: every 24 hours
 - description: invoice notification
   url: /tasks/invoicenoti/
-  schedule: every 24 hours
+  schedule: every 2 hours
 - description: invoice automatic payment
   url: /tasks/autopay/
   schedule: every 24 hours
