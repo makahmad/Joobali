@@ -141,11 +141,16 @@ Please sign up and make a payment via Joobali on or before the due date indicate
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             <div style="text-align: left;"><strong>Child Name:&nbsp;</strong>{{ child_name }}<br>
+
+                                {% if is_recurring %}
 <strong>Program Name:&nbsp;</strong>{{ program_name }}<br>
-<strong>Program Fee:&nbsp;</strong>{{ amount }}<br>
+<strong>Program Fee:&nbsp;</strong>${{ amount }}<br>
 <strong>Due Date:&nbsp;</strong>{{ due_date }}<br>
 <strong>Payment Frequency:&nbsp;</strong>{{ program_billing_frequency }}<br>
 <strong>Billing Period:&nbsp;</strong>{{ start_date }} -&nbsp;{{ end_date }}<br>
+                                {% else %}
+<strong>Amount Due:&nbsp;</strong>${{ amount }}<br>
+                                {% endif %}
 &nbsp;</div>
 
                         </td>

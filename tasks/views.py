@@ -166,6 +166,7 @@ def invoice_notification(request):
             parent = parent_util.get_parents_by_email(invoice.parent_email)
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
+                'is_recurring': invoice.is_recurring,
                 'pay_invoice_url': request.get_host() + '/login',
                 'invoice_id': invoice.key.id(),
                 'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
