@@ -105,6 +105,7 @@ def listInvoices(request):
             'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
 			'original_amount': invoice_util.sum_up_original_amount_due(invoice),
             'amount' : invoice.amount,
+            'is_recurring' : invoice.is_recurring,
             'due_date' : datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
             'paid' : invoice.is_paid(),
 			'processing': invoice.is_processing(),

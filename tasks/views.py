@@ -135,6 +135,7 @@ def invoice_calculation(request):
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
                     invoice = invoice_util.create_invoice(provider, child, now, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
+                    invoice.is_recurring = True
                     invoice_dict[provider_child_pair_key] = invoice
                 invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
                 # if should_add_registration_fee:

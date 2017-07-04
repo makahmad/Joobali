@@ -35,6 +35,7 @@ class Invoice(ndb.Model):
     cancelled_transfer_ids = ndb.StringProperty(repeated=True) # The payments that were cancelled (funded_transfer)
     pdf = ndb.BlobProperty()
 
+    is_recurring = ndb.BooleanProperty(default=False) # is program recurring fee invoices
 
     def is_late(self):
         return self.due_date.date() < date.today()

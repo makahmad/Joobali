@@ -66,6 +66,11 @@ MakePaymentComponentController.prototype.makePayment = function() {
       }
 }
 
+MakePaymentComponentController.prototype.autopayable = function() {
+    var selected_invoice = this.getSelectedInvoice();
+    return selected_invoice.is_recurring;
+}
+
 MakePaymentComponentController.prototype.setupAutopay = function() {
       if (this.validate()) {
         var source = $('#source :selected').val();
