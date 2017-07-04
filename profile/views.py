@@ -86,7 +86,7 @@ def getProfile(request):
         for doc in documents['documents']:
             dict['docStatus'] = doc['status']
             pass
-        if dict['dwolla_status'] == None or dict['dwolla_status'] == '':
+        if provider.dwolla_status is None or provider.dwolla_status != 'verified':
             try:
                 dwolla_customer = get_customer(provider.customerId)
                 if dwolla_customer:
@@ -105,7 +105,7 @@ def get_dwolla_status(request):
 
     provider = Provider.get_by_id(request.session['user_id'])
     if provider is not None:
-        if provider.dwolla_status is None or provider.dwolla_status == '':
+        if provider.dwolla_status is None or provider.dwolla_status != 'verified':
             try:
                 dwolla_customer = get_customer(provider.customerId)
                 if dwolla_customer:
