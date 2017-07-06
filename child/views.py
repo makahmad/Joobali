@@ -1,7 +1,7 @@
 # External Libraries
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from google.appengine.api.app_identity import get_default_version_hostname
+from common.request import get_host_from_request
 from google.appengine.ext import ndb
 import json
 import logging
@@ -92,12 +92,12 @@ def add_child(request):
             enrollment = enrollment_util.upsert_enrollment(enrollment_input)
             if parent.status is 'active':
                 # The parent already signup
-                send_parent_enrollment_notify_email(enrollment, host=get_default_version_hostname())
+                send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()))
             else:
                 # The parent has not yet signup
                 parent.invitation.enrollment_key = enrollment.key
                 parent.put()
-                send_parent_enrollment_notify_email(enrollment, host=get_default_version_hostname(),
+                send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()),
                                                     verification_token=verification_token)
             response['status'] = 'success'
     except JoobaliRpcException as e:

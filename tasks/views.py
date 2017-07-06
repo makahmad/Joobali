@@ -22,6 +22,7 @@ from dwollav2.error import ValidationError
 from models import DwollaEvent
 from payments.models import Payment
 from common import datetime_util
+from common.request import get_host_from_request
 from tasks.models import DwollaTokens
 import logging
 import json
@@ -167,7 +168,7 @@ def invoice_notification(request):
             template = loader.get_template('invoice/invoice_invite.html')
             data = {
                 'is_recurring': invoice.is_recurring,
-                'host': request.get_host(),
+                'host': get_host_from_request(request.get_host()),
                 'invoice_id': invoice.key.id(),
                 'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
                 'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
@@ -255,7 +256,7 @@ def dwolla_webhook(request):
     if DwollaEvent.get_by_id(webhook_data['id']) != None:
         logger.info("Webhook already processed.")
         return HttpResponse(status=200)
-    host = request.get_host()
+    host = get_host_from_request(request.get_host())
     support_phone = '301-538-6558'
     if ('customer_transfer_created' in webhook_content['topic']):
         funded_transfer = get_funded_transfer(webhook_data['resource_url'])

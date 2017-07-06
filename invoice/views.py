@@ -22,6 +22,7 @@ from os import environ
 from common.dwolla import get_funding_source, get_funded_transfer, cancel_transfer
 from common.email.autopay import send_autopay_cancelled_email, send_autopay_scheduled_email
 from common import datetime_util
+from common.request import get_host_from_request
 import json
 import logging
 
@@ -224,7 +225,7 @@ def setupAutopay(request):
 				'recipient': provider.schoolName,
 				'schedule': schedule,
 				'next_payment_date': first_transfer_date.strftime('%A, %B %d %Y'),
-				'host': request.get_host(),
+				'host': get_host_from_request(request.get_host()),
 				'support_phone': support_phone,
 			}
 			send_autopay_scheduled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)
@@ -276,7 +277,7 @@ def cancelAutopay(request):
 				'account_name': source_funding_source['name'],
 				'recipient': provider.schoolName,
 				'schedule': schedule,
-				'host': request.get_host(),
+				'host': get_host_from_request(request.get_host()),
 				'support_phone': support_phone,
 			}
 			send_autopay_cancelled_email('%s %s' % (parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email, data)

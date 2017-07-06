@@ -2,7 +2,6 @@ from django.shortcuts import render_to_response
 from django import template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from google.appengine.api.app_identity import get_default_version_hostname
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 
@@ -12,6 +11,7 @@ from common.email.login import send_reset_password_email_for_provider, send_rese
     send_provider_email_address_verification
 
 from login import models
+from common.request import get_host_from_request
 from home.models import InitSetupStatus
 from login.login_util import provider_login, parent_login
 from login.models import ProviderStatus, Provider, FailedBetaLogins
@@ -137,7 +137,7 @@ def provider_signup(request):
             return render_to_response(
                 'login/provider_signup.html',
                 {'form': form,
-                 'host': get_default_version_hostname(),
+                 'host': get_host_from_request(request.get_host()),
                  'captcha': captcha_results['success'],
                  'beta_error': True,
                  'home_url': 'https://www.joobali.com'},
@@ -183,7 +183,7 @@ def provider_signup(request):
                 provider.put()
                 token = VerificationToken.create_new_provider_email_token(provider=provider)
                 token.put()
-                send_provider_email_address_verification(token, host=get_default_version_hostname())
+                send_provider_email_address_verification(token, host=get_host_from_request(request.get_host()))
                 return render_to_response('login/provider_signup_confirmation.html',
                                           {'form': form,
                                            'email': email,
@@ -196,7 +196,7 @@ def provider_signup(request):
     return render_to_response(
         'login/provider_signup.html',
         {'form': form,
-         'host': get_default_version_hostname(),
+         'host': get_host_from_request(request.get_host()),
          'captcha': captcha_results['success'],
 		  'home_url': 'https://www.joobali.com'},
         template.RequestContext(request)
@@ -371,11 +371,11 @@ def forgot(request):
             if provider_result:
                 token = VerificationToken.create_new_provider_password_reset_token(provider_result[0])
                 token.put()
-                send_reset_password_email_for_provider(token, get_default_version_hostname())
+                send_reset_password_email_for_provider(token, get_host_from_request(request.get_host()))
             elif parent_result:
                 token = VerificationToken.create_new_parent_password_reset_token(parent_result[0])
                 token.put()
-                send_reset_password_email_for_parent(token, get_default_version_hostname())
+                send_reset_password_email_for_parent(token, get_host_from_request(request.get_host()))
 
             if provider_result or parent_result:
                 return render_to_response('login/forgot_sent.html',
