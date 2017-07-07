@@ -1,13 +1,13 @@
 cron:
 - description: invoice calculation
   url: /tasks/invoicecalc/
-  schedule: every day 08:00
+  schedule: every day 10:00
 - description: invoice notification
   url: /tasks/invoicenoti/
   schedule: every 2 hours
 - description: invoice automatic payment
   url: /tasks/autopay/
-  schedule: every day 06:00
+  schedule: every day 08:00
 - description: setup or refresh dwolla webhook
   url: /tasks/dwolla_webhook_setup/
   schedule: every day 18:00
