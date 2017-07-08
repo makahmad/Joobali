@@ -516,12 +516,8 @@ def dwolla_token_refresh(request):
     logger.info("DWOLLA TOKEN REFRESH")
 
     application_token = client.Auth.client()
-    print application_token.access_token
-    print application_token.refresh_token
-    print application_token.expires_in
-    print application_token.scope
-    print application_token.app_id
-    print application_token.account_id
+    logger.info(application_token.access_token)
+    logger.info(application_token.expires_in)
 
     tokens = DwollaTokens.query().fetch(1)
     if not tokens:
