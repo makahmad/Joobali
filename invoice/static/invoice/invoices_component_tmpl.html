@@ -41,6 +41,13 @@
           </a>
         </th>
         <th>
+          <a ng-click="$ctrl.sortType = 'autopay'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Autopay
+            <i ng-show="$ctrl.sortType == 'autopay' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'autopay' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
           <a ng-click="$ctrl.sortType = 'status'; $ctrl.sortReverse = !$ctrl.sortReverse">
             Status
             <i ng-show="$ctrl.sortType == 'status' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
@@ -55,6 +62,7 @@
           <td>{{ invoice.due_date | date:'MM/dd/yyyy'}}</td>
           <td>${{ invoice.original_amount }}</td>
           <td>${{ invoice.amount }}</td>
+          <td>{{ invoice.autopay_source_id && 'Yes' || 'No' }}</td>
           <td>{{ invoice.status }}</td>
           <td>
             <button class="PayBillButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.buttonClicked(invoice); $event.stopPropagation();" ng-show="($ctrl.isProvider && !invoice.paid && !invoice.processing) || (!$ctrl.isProvider && !invoice.paid) "><i class="fa fa-check-circle fa-lg"></i> &nbsp;{{ $ctrl.getButtonText(invoice) }}</button>

@@ -272,10 +272,13 @@
 				<tr style="height:63px"><td colspan="8">&nbsp;</td></tr>
         <tr style="height:39px;">
             <td class="s36"></td>
-            <td class="s39" dir="ltr" colspan="6">No action is required if you have set up Joobali AutoPay. If you have
-                not signed up for Joobali AutoPay, please be sure to do one of the following: <br>1. Use Joobali, for
-                free, to manually submit an online payment <br>2. Submit check or cash payment to provider for the
-                amount indicated. <br></td>
+            <td class="s39" dir="ltr" colspan="6">
+                  {% if autopay_source_id %}
+                    No action is required as Joobali AutoPay is enabled.
+                  {% else %}
+                    Please enable Joobali AutoPay or manually submit an online payment through Joobali. Otherwise, remit check or cash payment directly to provider for the amount indicated.
+                  {% endif %}
+                <br></td>
             <td class="s36"></td>
         </tr>
 				<tr style="height:20px"><td colspan="8">&nbsp;</td></tr>

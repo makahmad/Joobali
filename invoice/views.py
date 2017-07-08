@@ -172,6 +172,7 @@ def viewInvoice(request):
 			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()) if provider.logo else None,
 			'note': note,
 			'tin': provider.tin,
+			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
         }
 		print data
 		return render_to_pdf(
