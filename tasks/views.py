@@ -132,7 +132,8 @@ def invoice_calculation(request):
                 invoice = None
                 # for a single day, only generate one invoice per provider-child-duedate pair.
                 # the single invoices can have multiple line items if the child enrolled in multiple programs.
-                if provider_child_pair_key in invoice_dict:
+                # NOTE: disable this for launch. One invoice for each program of the child.
+                if False: # provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
                     invoice = invoice_util.create_invoice(provider, child, now, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
