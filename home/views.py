@@ -4,7 +4,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from django import template
 from django.http import HttpResponse
-from login.models import Provider
+from login.models import Provider,Parent
 from manageprogram.models import Program
 import json
 import logging
@@ -58,6 +58,53 @@ def dashboard(request):
         },
         template.RequestContext(request)
     )
+
+def admin(request):
+    if not check_session(request) or request.session['is_admin'] is False:
+        return HttpResponseRedirect('/login')
+
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        query = Provider.query().filter(Provider.email == email)
+        provider = query.get()
+
+        redirect = ''
+        if request.POST.get('url') and '#!' in request.POST.get('url'):
+            redirect = '/#!' + request.POST.get('url').split('#!')[1]
+
+        if provider is None:
+            query = Parent.query().filter(Parent.email == email)
+            parent = query.get()
+            if parent is None:
+                return render_to_response(
+                    'home/admin.html',
+                    {
+                        'error': 'User does not exist'
+                    },
+                    template.RequestContext(request)
+                )
+            else:
+                request.session['email'] = parent.email
+                request.session['name'] = parent.first_name + ' ' + parent.last_name
+                request.session['user_id'] = parent.key.id()
+                request.session['is_provider'] = False
+                request.session['dwolla_customer_url'] = parent.customerId
+                return HttpResponseRedirect("/parent" + redirect)
+
+        else:
+            request.session['email'] = provider.email
+            request.session['name'] = provider.firstName + ' ' + provider.lastName
+            request.session['user_id'] = provider.key.id()
+            request.session['is_provider'] = True
+            request.session['dwolla_customer_url'] = provider.customerId
+            return HttpResponseRedirect("/home/dashboard" + redirect)
+
+    return render_to_response(
+        'home/admin.html',
+        template.RequestContext(request)
+    )
+
 
     # Deprecated
     # def listSessions(program):

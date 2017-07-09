@@ -462,6 +462,11 @@ def login(request):
             request.session['user_id'] = login_result.user_id
             request.session['is_provider'] = login_result.is_provider
             request.session['dwolla_customer_url'] = login_result.dwolla_customer_url
+            request.session['is_admin'] = False
+
+            if email == 'joobali-prod@joobali.com':
+                request.session['is_admin'] = True
+
             logger.info('dwolla_customer_url is %s' % request.session['dwolla_customer_url'])
         else:
             form.email.errors = login_result.error_msg
