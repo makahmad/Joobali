@@ -5,7 +5,20 @@ MakePaymentComponentController = function($location, $http) {
     self = this;
     $('#makePaymentModal').on('hidden.bs.modal', function () {
         self.autopayOptIn = false;
+        if (self.showPaymentSuccessAlert) {
+            location.reload();
+        }
     })
+
+
+    this.showPaymentSuccessAlert = false;
+    this.showPaymentFailureAlert = false;
+    this.showAutopaySuccessAlert = false;
+    this.showAutopayFailureAlert = false;
+    this.paymentFailureMessage = '';
+    this.autopaySuccessMessage = '';
+
+    this.disableButton = false;
 }
 
 
@@ -22,7 +35,7 @@ MakePaymentComponentController.prototype.getSelectedInvoice = function() {
 MakePaymentComponentController.prototype.makePayment = function() {
 
       if (this.validate()) {
-        var paymentSuccess = false;
+        this.disableButton = true;
         var source = $('#source :selected').val();
         var selected_invoice = this.getSelectedInvoice();
         var destination = selected_invoice.provider_customer_id;
@@ -41,23 +54,23 @@ MakePaymentComponentController.prototype.makePayment = function() {
           data: JSON.stringify(data)
         })
         .then(
-            function(response){
+            angular.bind(this, function(response){
                 console.log('post suceeded');
                 console.log(response);
                 if (response.data !== 'success') {
-                    alert(response.data);
+                    this.disableButton = false;
+                    this.paymentFailureMessage = response.data;
+                    this.showPaymentFailureAlert = true;
                 } else {
-                    paymentSuccess = true;
-                    if (!self.autopayOptIn) {
-                        alert('Payment succeeded.')
-                        location.reload();
-                    }
+                    this.showPaymentSuccessAlert = true;
                 }
-            },
-            function(response){
-                console.log('post failed');
-                alert(response);
-            }
+            }),
+            angular.bind(this, function(response){
+                this.disableButton = false;
+                console.log('post failed: ' + response.data);
+                this.paymentFailureMessage = response.data;
+                this.showPaymentFailureAlert = true;
+            })
          );
 
          if (this.autopayOptIn) {
@@ -85,19 +98,21 @@ MakePaymentComponentController.prototype.setupAutopay = function() {
           data: JSON.stringify(data)
         })
         .then(
-            function(response){
+            angular.bind(this, function(response){
                 console.log('post suceeded');
                 console.log(response);
                 if (response.data !== 'success') {
-                    alert(response.data);
+                    this.autopayFailureMessage = response.data;
+                    this.showAutopayFailureAlert = true;
                 } else {
-                    alert('Payment and autopay setup succeeded.')
+                    this.showAutopaySuccessAlert = true;
                 }
-            },
-            function(response){
-                console.log('post failed');
-                console.log(response);
-            }
+            }),
+            angular.bind(this, function(response){
+                console.log('post failed: ' + response.data);
+                this.autopayFailureMessage = response.data;
+                this.showAutopayFailureAlert = true;
+            })
          );
       }
 }

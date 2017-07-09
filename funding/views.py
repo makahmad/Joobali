@@ -73,11 +73,11 @@ def makeTransfer(request):
     if invoice_id:
         invoice = Invoice.get_by_id(invoice_id)
         if invoice.amount != data['amount']:
-            return HttpResponse("failure: payment amount must be equal to invoice amount")
+            return HttpResponse("Payment amount must be equal to invoice amount")
         if invoice.is_paid():
-            return HttpResponse("failure: the invoice has already been paid")
+            return HttpResponse("The invoice has already been paid")
         if invoice.dwolla_transfer_id and invoice.is_processing():
-            return HttpResponse("failure: payment for this invoice is in process")
+            return HttpResponse("Payment for this invoice is in process")
 
     try:
         funding_util.make_transfer(data['destination'], data['source'], data['amount'], invoice)

@@ -43,9 +43,18 @@
           </div>
       </div>
       <div class="modal-footer">
-        <button id="payButton" type="button" class="btn btn-primary" ng-click="$ctrl.makePayment()">Pay</button>
+        <div class="alert alert-success" ng-show="$ctrl.showPaymentSuccessAlert">Payment made successfully. It takes a few business days to clear.
+        </div>
+        <div class="alert alert-success" ng-show="$ctrl.showAutopaySuccessAlert">Autopay setup successfully.
+        </div>
+        <div class="alert alert-warning" ng-show="$ctrl.showPaymentFailureAlert">{{ $ctrl.paymentFailureMessage }}
+        </div>
+        <div class="alert alert-warning" ng-show="$ctrl.showAutopayFailureAlert">{{ $ctrl.autopayFailureMessage }}
+        </div>
+
+        <button id="payButton" type="button" class="btn btn-primary" ng-click="$ctrl.makePayment()" ng-disabled="$ctrl.disableButton">Pay</button>
         <div ng-show="$ctrl.autopayable()" class="checkbox">
-          <label><input type="checkbox" ng-model="$ctrl.autopayOptIn">Setup Autopay (insert verbiage)</label>
+          <label><input type="checkbox" ng-model="$ctrl.autopayOptIn" ng-disabled="$ctrl.disableButton">Setup Autopay (insert verbiage)</label>
         </div>
     </div>
 
