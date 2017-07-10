@@ -22,7 +22,7 @@
                             required
                             ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                             ng-model="$ctrl.newEnrollment.program"
-                            ng-change="$ctrl.whenSelectedProgramChange()">
+                            ng-change="$ctrl.whenSelectedProgramChange()" ng-readonly="$ctrl.readOnly">
                         <option value="">Select a program</option>
                     </select>
                     <div class="panel panel-body" ng-show="$ctrl.newEnrollment.program">
@@ -45,17 +45,23 @@
                             <b>{{$ctrl.newEnrollment.program.monthlyBillDay}}</b>
                         </div>
                         <div>
-                            <label>Start date:</label> <b>{{$ctrl.newEnrollment.program.startDate | date: 'MM/dd/yyyy': 'PST'}}</b>
+                            <label>Start date:</label> <b>{{$ctrl.newEnrollment.program.startDate | date: 'MM/dd/yyyy':
+                            'PST'}}</b>
                         </div>
                         <div ng-show="$ctrl.newEnrollment.program.indefinite != true">
-                            <label>End date:</label> <b>{{$ctrl.newEnrollment.program.endDate | date: 'MM/dd/yyyy': 'PST'}}</b>
+                            <label>End date:</label> <b>{{$ctrl.newEnrollment.program.endDate | date: 'MM/dd/yyyy':
+                            'PST'}}</b>
                         </div>
                     </div>
                 </div>
                 <div class="form-group"
                      ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}"
                      ng-show="$ctrl.newEnrollment.program">
-                    <label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When is the first (or next) fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>(MM/DD/YYYY)</small></label>
+                    <label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When
+                        is the first (or next) fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>
+                            (MM/DD/YYYY)
+                        </small>
+                    </label>
                     <p class="input-group">
                         <input name="startDate"
                                type="text" class="form-control"
@@ -67,6 +73,7 @@
                                ng-required="true"
                                ng-change="$ctrl.whenChangeStartDate()"
                                ng-click="$ctrl.openStartDatePicker()"
+                               ng-readonly="$ctrl.readOnly"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -74,17 +81,23 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
 
-                    <div class="input-group" >
-                       <span class="input-group-addon angular-with-newlines fee formInstructions" ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a due date based on your selected program. For one-time payments, create a new invoice from the Invoices page.</span>
+                    <div class="input-group">
+                        <span class="input-group-addon angular-with-newlines fee formInstructions"
+                              ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i
+                                class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a due date based on your selected program. For one-time payments, create a new invoice from the Invoices page.</span>
                     </div>
 
                 </div>
-								
+
 
                 <div class="form-group"
                      ng-class="{'has-error': addEnrollmentForm.endDate.$invalid && addEnrollmentForm.endDate.$touched}"
                      ng-show="$ctrl.newEnrollment.program">
-                    <label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When is the LAST fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>(MM/DD/YYYY)</small></label>
+                    <label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When
+                        is the LAST fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>
+                            (MM/DD/YYYY)
+                        </small>
+                    </label>
                     <p class="input-group">
                         <input name="endDate"
                                type="text" class="form-control"
@@ -94,6 +107,7 @@
                                ng-model="$ctrl.newEnrollment.end_date"
                                is-open="$ctrl.endDatePickerOpened"
                                ng-click="$ctrl.openEndDatePicker()"
+                               ng-readonly="$ctrl.readOnly"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -107,7 +121,6 @@
                                ng-required="false" ng-readonly="$ctrl.readOnly"
                                ng-model="$ctrl.newEnrollment.waive_registration">
                     </label>
-
                 </div>
             </div>
         </form>

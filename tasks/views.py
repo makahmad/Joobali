@@ -1,6 +1,5 @@
 from django.http import HttpResponse
 from enrollment import enrollment_util
-from manageprogram import program_util
 from invoice import invoice_util
 from parent import parent_util
 from login import provider_util
@@ -11,7 +10,6 @@ from datetime import datetime, date
 from datetime import timedelta
 from common.dwolla import parse_webhook_data
 from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding_source
-from common.dwolla import get_general
 from common.email.invoice import send_invoice_email
 from common.email.dwolla import send_payment_cancelled_email_to_provider, send_payment_success_email_to_provider, send_payment_failed_email_to_provider, send_payment_success_email, send_payment_failed_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
 from common.dwolla import start_webhook, clear_webhook, client

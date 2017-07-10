@@ -11,6 +11,7 @@
             <td>{{ enrollment.program.programName }}</td>
             <td>{{ enrollment.enrollment.status }}</td>
             <td>{{ enrollment.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>
+            <td>{{ (enrollment.enrollment.autopay_source_id) ? true : false }}</td>
         </tr>
         </tbody>
     </table>

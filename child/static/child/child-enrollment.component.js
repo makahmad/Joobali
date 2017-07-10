@@ -1,4 +1,4 @@
-ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalInstance, $http, child, programs) {
+ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalInstance, $http, enrollmentDateChecker, child, programs) {
     /*
      * @input: child
      * @input: programs
@@ -16,6 +16,10 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
     self.enrollmentStatus = '';
     this.dateFormat = 'MM/DD/YYYY';
     this.log_ = $log;
+    this.enrollmentDateChecker = enrollmentDateChecker;
+    this.readOnly = false;
+    console.log("Initializing ChildEnrollmentController");
+
 
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
@@ -43,25 +47,23 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
         if (!isValid) {
             return;
         }
-        self.newEnrollment.child_id = self.child.id;
-        self.newEnrollment.start_date = moment(self.newEnrollment.start_date).format('MM/DD/YYYY');
-        self.newEnrollment.end_date = self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "";
+
         var submittingForm = {
             'child_id': self.child.id,
             'parent_email': self.child.parent_email,
             'program_id': self.newEnrollment.program.id,
-            'start_date': self.newEnrollment.start_date,
-            'end_date' : self.newEnrollment.end_date ? self.newEnrollment.end_date : "",
+            'start_date': moment(self.newEnrollment.start_date).format('MM/DD/YYYY'),
+            'end_date' : self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "",
             'waive_registration': self.newEnrollment.waive_registration
         };
-        console.log(submittingForm);
+
         $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
-            console.log(response);
             if (response.data.status == 'success') {
                 isSaveSuccess = true;
             }
             if (isSaveSuccess) {
+                self.readOnly = true;
                 self.enrollmentStatus = 'success';
                 self.saveButton.show = false;
                 self.doneButton.show = true;
@@ -143,62 +145,15 @@ ChildEnrollmentController.prototype.openEndDatePicker = function() {
 
 // Disable invalid choices for billing end date
 ChildEnrollmentController.prototype.enrollmentDisabledEndDate = function(dateAndMode) {
-    if (dateAndMode.mode === 'day') {
-        if (this.newEnrollment.start_date) {
-            var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
-            if (currentDate <= this.newEnrollment.start_date) {
-                return true;
-            }
-        }
-
-        if (this.newEnrollment.program) {
-            if (this.newEnrollment.program.endDate) {
-                if (this.newEnrollment.program.monthlyBillDay === 'Last Day') {
-                    if (currentDate.date() != currentDate.daysInMonth()) {
-                        return true;
-                    }
-                } else {
-                    var programEndDate = moment(this.newEnrollment.program.endDate).toDate();
-                    if (currentDate > programEndDate) {
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-    return this.enrollmentDisabledDate(dateAndMode);
+    return this.enrollmentDateChecker.isEnrollmentEndDateDisabled(
+            dateAndMode,
+            this.newEnrollment.program,
+            this.newEnrollment.start_date);
 }
 
 // Disable invalid choices for billing start date
 ChildEnrollmentController.prototype.enrollmentDisabledDate = function(dateAndMode) {
-    var result = false;
-    if (dateAndMode.mode === 'day') {
-        var today = moment(new Date());
-        var currentDate = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
-        if (currentDate.diff(today, 'days') < 5) {
-            return true;
-        }
-
-        if (this.newEnrollment != null &&
-                this.newEnrollment.program != null &&
-                this.newEnrollment.program.billingFrequency != null) {
-            if (this.newEnrollment.program.billingFrequency === 'Weekly') {
-                result =  (dateAndMode.date.getDay() != this.days[this.newEnrollment.program.weeklyBillDay]);
-            } else if (this.newEnrollment.program.billingFrequency === 'Monthly') {
-                if (this.newEnrollment.program.monthlyBillDay === 'Last Day') {
-                    result = (dateAndMode.date.getDate() != currentDate.daysInMonth());
-                } else {
-                    result = (dateAndMode.date.getDate() != this.newEnrollment.program.monthlyBillDay);
-                }
-            }
-        }
-
-        if (this.newEnrollment.program) {
-            var programStartDate = moment(this.newEnrollment.program.startDate, this.dateFormat);
-            if (currentDate < programStartDate) {
-                return true;
-            }
-        }
-    }
-    return result;
+    return this.enrollmentDateChecker.isEnrollmentDateDisabled(
+        dateAndMode,
+        this.newEnrollment.program);
 }

@@ -188,3 +188,19 @@ def list_active_enrollment_by_provider_program(provider_id, program_id):
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
     return enrollments
+
+
+def setup_autopay_enrollment(pay_days_before, autopay_source_id, enrollment):
+    status = 'Failure'
+    enrollment.autopay_source_id = autopay_source_id
+    enrollment.pay_days_before = int(pay_days_before)
+    enrollment.put()
+
+    parent_key = enrollment.child_key.get().parent_key
+
+    provider_id = enrollment.key.parent().id()
+    enrollment_id = enrollment.key.id()
+    parent_id = parent_key.id()
+    if accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
+        status = 'success'
+    return status
