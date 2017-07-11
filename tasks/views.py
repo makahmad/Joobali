@@ -174,6 +174,7 @@ def invoice_notification(request):
                 'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
                 'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
                 'school_name': invoice.provider_key.get().schoolName,
+                'program_name': program.programName if program else '',
                 'program_billing_frequency': program.billingFrequency if program else '',
                 'amount': invoice.amount,
                 'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
