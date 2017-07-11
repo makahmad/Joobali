@@ -441,7 +441,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childCard', {
         templateUrl: '/static/child/child-card.template.html',
-        controller : ['$uibModal', '$scope', '$http', '$routeParams', '$location', ChildCardController],
+        controller : ['$uibModal', '$scope', '$http', '$routeParams', '$location', 'EnrollmentDateChecker', ChildCardController],
         bindings: {
           child: '<',
           index: '<',

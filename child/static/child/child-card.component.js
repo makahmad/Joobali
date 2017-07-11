@@ -1,9 +1,10 @@
-ChildCardController = function ChildCardController($uibModal, $scope, $http, $routeParams, $location) {
+ChildCardController = function ChildCardController($uibModal, $scope, $http, $routeParams, $location, EnrollmentDateChecker) {
     this.uibModal_ = $uibModal;
     this.scope_ = $scope;
     this.http_ = $http;
     this.routeParams_ = $routeParams;
     this.location_ = $location;
+    this.enrollmentDateChecker_ = EnrollmentDateChecker;
 }
 
 ChildCardController.prototype.$onInit = function() {
@@ -32,6 +33,9 @@ ChildCardController.prototype.openEnrollmentModal = function() {
         controller: 'ChildEnrollmentController',
         controllerAs: '$ctrl',
         resolve: {
+            enrollmentDateChecker: function() {
+                return self.enrollmentDateChecker_;
+            },
             child: function() {
                 return self.child;
             },

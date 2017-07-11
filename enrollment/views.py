@@ -213,11 +213,19 @@ def accept_enrollment(request):
     request_body_dict = json.loads(request.body)
     provider_id = request_body_dict['provider_id']
     enrollment_id = request_body_dict['enrollment_id']
+
     logger.info("provider %s, enrollment_id %s" % (provider_id, enrollment_id))
     if 'date_of_birth' in request_body_dict:
         enrollment = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id).get()
         child_key = enrollment.child_key
         child_util.update_child(child_key, {'date_of_birth': request_body_dict['date_of_birth']})
+
+    if 'autopay_source_id' in request_body_dict:
+        autopay_source_id = request_body_dict['autopay_source_id']
+        pay_days_before = request_body_dict['pay_days_before']
+        enrollment = Enrollment.generate_key(provider_id=provider_id, enrollment_id=enrollment_id).get()
+        enrollment_util.setup_autopay_enrollment(pay_days_before, autopay_source_id, enrollment)
+
     parent_id = get_parent_id(request)
     if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
         status = 'success'
@@ -311,6 +319,7 @@ def update_enrollment(request):
         enrollment.put()
         return HttpResponse(status=200)
 
+
 def resent_enrollment_invitation(request):
     status = "Failure"
     if not check_session(request) or not is_provider(request):
@@ -331,23 +340,14 @@ def resent_enrollment_invitation(request):
 
 
 def setupAutopay(request):
-    status = 'failure'
+    """Setup autopay for the first enrollment at parent signup"""
     data = json.loads(request.body)
     pay_days_before = data['payDaysBefore']
-    source = data['bankAccountId']
-
+    autopay_source_id = data['bankAccountId']
     parent = Parent.get_by_id(request.session['user_id'])
-
     enrollment = parent.invitation.enrollment_key.get()
-    enrollment.autopay_source_id = source
-    enrollment.pay_days_before = int(pay_days_before)
-    enrollment.put()
 
-    provider_id = enrollment.key.parent().id()
-    enrollment_id = enrollment.key.id()
-    parent_id = get_parent_id(request)
-    if enrollment_util.accept_enrollment(provider_id=provider_id, enrollment_id=enrollment_id, parent_id=parent_id):
-        status = 'success'
+    status = enrollment_util.setup_autopay_enrollment(pay_days_before, autopay_source_id, enrollment)
     return HttpResponse(status)
 
 

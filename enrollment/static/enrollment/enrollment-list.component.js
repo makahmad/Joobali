@@ -6,7 +6,8 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         'Status',
         'Start Date',
         'End Date',
-        'Billing Frequency'
+        'Billing Frequency',
+        'Is Auto pay ?'
     ];
 
     self.openEnrollmentEditorModal = function(enrollment) {
