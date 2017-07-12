@@ -34,12 +34,14 @@ def invoice_calculation(request):
     # loop over invoices...
     for invoice in Invoice.query().fetch():
         provider = invoice.provider_key.get()
-        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.due_date + timedelta(days=provider.graceDays if provider.graceDays >= 0 else 0) < now and not invoice_util.get_invoice_late_fee_added(invoice):
+        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.is_over_due(provider.graceDays if provider.graceDays >= 0 else 0) and not invoice_util.get_invoice_late_fee_added(invoice):
+            logger.info("Considering late fee for invoice: %s" % invoice)
             program = invoice_util.get_invoice_program(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)
             provider = provider_util.get_provider_by_email(invoice.provider_email)
             lateFee = program.lateFee if program and program.lateFee else provider.lateFee
             if lateFee != 0:
+                logger.info("Adding late fee with program: %s" % program)
                 invoice_util.create_invoice_line_item(enrollment.key if enrollment else None, invoice, program, None, None, "Late Fee", lateFee)
 
             invoice.amount = invoice_util.sum_up_amount_due(invoice)
@@ -48,12 +50,12 @@ def invoice_calculation(request):
     logger.info("PAYMENT CALCULATION")
     # loop over invoices...
     for invoice in Invoice.query().fetch():
-        if not invoice.is_paid():
-            logger.info("Considering payment for child: %s" % invoice.child_key)
+        if not invoice.is_paid() and not invoice.is_processing():
+            logger.info("Considering payment for invoice: %s" % invoice)
             for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
                 if not payment.invoice_key or payment.invoice_key and payment.invoice_key == invoice.key:
                     if payment.balance > 0:
-                        logger.info("Making payment: %s" % invoice)
+                        logger.info("Making payment with: %s" % payment)
                         invoice_util.pay(invoice, payment)
 
 
@@ -106,7 +108,7 @@ def invoice_calculation(request):
             #     should_add_registration_fee = True
 
             enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id())
-            if due_date - timedelta(days=15) <= now: # 5 days ahead billing before due date
+            if due_date - timedelta(days=5) <= now: # 5 days ahead billing before due date
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()

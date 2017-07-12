@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 from enrollment.models import Enrollment
 from payments.models import Payment
-from datetime import date
+from datetime import datetime, timedelta
 
 class Invoice(ndb.Model):
     child_key = ndb.KeyProperty(required=True)
@@ -37,8 +37,11 @@ class Invoice(ndb.Model):
 
     is_recurring = ndb.BooleanProperty(default=False) # is program recurring fee invoices
 
-    def is_late(self):
-        return self.due_date.date() < date.today()
+    # due date is 23:59:99 of that day, so add another day to the due date (which is 00:00:00 of that day)
+    def is_over_due(self, grace_days=0):
+        return self.due_date + timedelta(days=1 + grace_days) < datetime.now() and (self.status == Invoice._POSSIBLE_STATUS['NEW']
+                                                        or self.status == Invoice._POSSIBLE_STATUS['CANCELLED']
+                                                        or self.status == Invoice._POSSIBLE_STATUS['FAILED'])
 
     def is_paid(self):
         return self.status == Invoice._POSSIBLE_STATUS['COMPLETED'] or self.status == Invoice._POSSIBLE_STATUS['MARKED_PAID'] or self.status == Invoice._POSSIBLE_STATUS['PAID_OFFLINE']

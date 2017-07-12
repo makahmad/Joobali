@@ -153,7 +153,7 @@ def viewInvoice(request):
 		http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
 		root_path = http_prefix + request.get_host()
 
-		note = provider.lateFeeInvoiceNote if invoice.is_late() else provider.generalInvoiceNote
+		note = provider.lateFeeInvoiceNote if invoice.is_over_due() else provider.generalInvoiceNote
 		data = {
 			'invoice_id': invoice.key.id(),
 			'invoice_date': datetime_util.utc_to_local(invoice.date_created).strftime('%m/%d/%Y'),
