@@ -68,34 +68,43 @@ InvoicesComponentController = function($window, $http, $uibModal) {
                 }
             } else if (clicked_invoice.processing == true && clicked_invoice.paid == false) {
                 // Cancel Payment
-                var r = confirm("Do you really want to cancel the payment?");
-                if (r == true) {
-                    var data = {
-                        'invoice_id': clicked_invoice.invoice_id
-                    }
-                    this.http_({
-                      method: 'POST',
-                      url: '/invoice/cancelpayment',
-                      data: JSON.stringify(data)
-                    })
-                    .then(
-                        function(response){
-                            console.log('post suceeded');
-                            console.log(response);
-                            if (response.data !== 'success') {
-                                alert(response.data);
-                            } else {
-                                alert('Payment cancelled successfully.')
-                                location.reload();
-                            }
+                bootbox.confirm({
+                    message: "Do you really want to cancel the payment?",
+                    buttons: {
+                        confirm: {
+                            label: 'Yes',
+                            className: 'btn-success'
                         },
-                        function(response){
-                            alert('Payment cancellation failed. Please contact us for this issue.');
-                            console.log('post failed');
-                            console.log(response);
+                        cancel: {
+                            label: 'No',
                         }
-                     );
-                }
+                    },
+                    callback: angular.bind(this, function(result) {
+                        if (result === true) {
+                            var data = {
+                                'invoice_id': clicked_invoice.invoice_id
+                            }
+                            this.http_({
+                              method: 'POST',
+                              url: '/invoice/cancelpayment',
+                              data: JSON.stringify(data)
+                            })
+                            .then(
+                                function(response){
+                                    if (response.data !== 'success') {
+                                        bootbox.alert(response.data);
+                                    } else {
+                                        bootbox.alert('Payment cancelled successfully.')
+                                        location.reload();
+                                    }
+                                },
+                                function(response){
+                                    bootbox.alert('Payment cancellation failed. Please contact us for this issue.');
+                                }
+                             );
+                        }
+                    })
+                });
             }
         }
     }
@@ -114,34 +123,43 @@ InvoicesComponentController.prototype.adjustButtonClicked = function(clicked_inv
 }
 
 InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_invoice) {
-        var r = confirm("Do you really want to cancel the autopay?");
-        if (r == true) {
-            var data = {
-                'invoice_id': clicked_invoice.invoice_id
-            }
-            this.http_({
-              method: 'POST',
-              url: '/invoice/cancelautopay',
-              data: JSON.stringify(data)
-            })
-            .then(
-                function(response){
-                    console.log('post suceeded');
-                    console.log(response);
-                    if (response.data !== 'success') {
-                        alert(response.data);
-                    } else {
-                        alert('Autopay cancelled successfully.')
-                        location.reload();
-                    }
+        bootbox.confirm({
+            message: "Do you really want to cancel the autopay?",
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
                 },
-                function(response){
-                    alert('Autopay cancellation failed. Please contact us for this issue.');
-                    console.log('post failed');
-                    console.log(response);
+                cancel: {
+                    label: 'No',
                 }
-             );
-        }
+            },
+            callback: angular.bind(this, function(result) {
+                if (result === true) {
+                    var data = {
+                        'invoice_id': clicked_invoice.invoice_id
+                    }
+                    this.http_({
+                      method: 'POST',
+                      url: '/invoice/cancelautopay',
+                      data: JSON.stringify(data)
+                    })
+                    .then(
+                        function(response){
+                            if (response.data !== 'success') {
+                                bootbox.alert(response.data);
+                            } else {
+                                bootbox.alert('Autopay cancelled successfully.')
+                                location.reload();
+                            }
+                        },
+                        function(response){
+                            bootbox.alert('Autopay cancellation failed. Please contact us for this issue.');
+                        }
+                     );
+                }
+            })
+        });
 }
 
 InvoicesComponentController.prototype.getButtonText = function(invoice) {

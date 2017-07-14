@@ -49,7 +49,7 @@ ProfileComponentController.prototype.saveProfile = function() {
 			else if (response.data=="current password is incorrect")
                  this.currentPasswordError = true;
 			else
-			    alert("Something is wrong with the saving. Please try again later");
+			    bootbox.alert("Something is wrong with the saving. Please try again later");
 	  }));
 };
 

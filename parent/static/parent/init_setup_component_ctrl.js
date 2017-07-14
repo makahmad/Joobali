@@ -93,7 +93,7 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
                 console.log('post suceeded');
                 console.log(response);
                 if (response.data !== 'success') {
-                    alert(response.data);
+                    bootbox.alert(response.data);
                 }
             },
             function(response){

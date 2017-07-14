@@ -42,10 +42,10 @@ ConfirmAddPaymentComponentController.prototype.addPayment = function() {
         if (response.data == 'success') {
 			location.reload();
         } else {
-            alert('something is wrong');
+            bootbox.alert('something is wrong');
         }
     }, function errorCallback(response) {
-        alert('something is wrong');
+        bootbox.alert('something is wrong');
     });
 
 };

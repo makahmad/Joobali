@@ -46,9 +46,9 @@ TransferComponentController.prototype.makeTransfer = function() {
                 console.log('post suceeded');
                 console.log(response);
                 if (response.data !== 'success') {
-                    alert(response.data);
+                    bootbox.alert(response.data);
                 } else {
-                    alert('Transfer succeeded.')
+                    bootbox.alert('Transfer succeeded.')
                 }
             },
             function(response){

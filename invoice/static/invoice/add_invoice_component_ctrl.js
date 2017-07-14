@@ -67,12 +67,12 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                 self.cancel();
 			    location.reload();
             } else {
-                alert('something is wrong');
+                bootbox.alert('something is wrong');
                 self.isDisabled = false;
                 self.submitButton = "Create";
             }
         }, function errorCallback(response) {
-            alert('something is wrong');
+            bootbox.alert('something is wrong');
             self.isDisabled = false;
             self.submitButton = "Create";
         });
@@ -93,7 +93,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                 }));
                 this.newInvoice.program = this.programs[0];
             }), function errorCallback(response) {
-                alert('Something is wrong here. Please refresh the page and try again');
+                bootbox.alert('Something is wrong here. Please refresh the page and try again');
             });
         } else {
             this.programs = [];
@@ -111,7 +111,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                     this.programs.push(program);
                 }));
             }), function errorCallback(response) {
-                alert('Something is wrong here. Please refresh the page and try again');
+                bootbox.alert('Something is wrong here. Please refresh the page and try again');
             });
         }
     }

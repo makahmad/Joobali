@@ -48,7 +48,7 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
                 }));
                 //this.newPayment.program = this.programs[0];
             }), function errorCallback(response) {
-                alert('Something is wrong here. Please refresh the page and try again');
+                bootbox.alert('Something is wrong here. Please refresh the page and try again');
             });
         } else {
             this.invoices = [];

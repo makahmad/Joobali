@@ -96,7 +96,7 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
                         // or server returns response with an error status.
                             console.log('logo post failed');
 
-                             alert("Something is wrong with the saving. Please try again later");
+                             bootbox.alert("Something is wrong with the saving. Please try again later");
                       }));
             }
         } else {
@@ -110,16 +110,16 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
                     // when the response is available
                     if (response.data == 'success') {
                         this.profile.dwolla_status = 'verified'
-                        alert("Verification Succeeded.")
+                        bootbox.alert("Verification Succeeded.")
                         location.reload();
                     } else {
-                        alert(response.data);
+                        bootbox.alert(response.data);
                     }
 
                   }), angular.bind(this, function errorCallback(response) {
                     // called asynchronously if an error occurs
                     // or server returns response with an error status.
-                        alert("Something is wrong with the verification. Please try again later");
+                        bootbox.alert("Something is wrong with the verification. Please try again later");
                   }));
             }
         }
@@ -146,7 +146,7 @@ VerificationComponentController.prototype.deleteDoc = function() {
         // or server returns response with an error status.
             console.log('logo post failed');
 
-             alert("Something is wrong with the saving. Please try again later");
+             bootbox.alert("Something is wrong with the saving. Please try again later");
       }));
 };
 

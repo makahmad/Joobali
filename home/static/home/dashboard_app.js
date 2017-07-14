@@ -45,11 +45,11 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
     this.scope_.checkRequirements = function() {
 //        console.log("Checking provider requirements");
         if (self.scope_.fundings.length == 0) {
-            alert("You haven't added any bank account to receive payments. Let's do it now.");
+            bootbox.alert("You haven't added any bank account to receive payments. Let's do it now.");
             self.scope_.changeView('/billing');
             return false;
         } else if (self.scope_.dwollaStatus != 'verified') {
-            alert("You haven't add enough profile information to be a verified user. Let's do it now.");
+            bootbox.alert("You haven't add enough profile information to be a verified user. Let's do it now.");
             self.scope_.changeView('/profile');
             return false;
         }

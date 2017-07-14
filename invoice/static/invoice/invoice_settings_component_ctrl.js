@@ -23,7 +23,7 @@ InvoiceSettingsController = function InvoiceSettingsController($scope, $uibModal
             // called asynchronously if an error occurs
             // or server returns response with an error status.
                 console.log('post failed');
-                alert("Something is wrong with the saving. Please try again later");
+                bootbox.alert("Something is wrong with the saving. Please try again later");
           }));
   }
 

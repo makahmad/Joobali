@@ -125,7 +125,7 @@ AddProgramComponentController.prototype.handleSave = function() {
             },
             function (response) {
                 console.log('post failed');
-                alert("Something is wrong with the saving. Please try again later");
+                bootbox.alert("Something is wrong with the saving. Please try again later");
             }
         );
     }

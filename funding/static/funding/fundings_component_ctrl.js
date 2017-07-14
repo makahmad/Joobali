@@ -5,30 +5,45 @@ FundingsComponentController = function($location, $http) {
 }
 
 FundingsComponentController.prototype.removeFunding = function(funding) {
-    if (confirm("Are you sure you want to remove funding source - " + funding.name)) {
-        var data = {
-            'funding_source_id': funding.id
-        }
-        this.http_({
-          method: 'POST',
-          url: '/funding/removefunding',
-          data: JSON.stringify(data)
-        })
-        .then(
-            function(response){
-                console.log('post suceeded');
-                console.log(response);
-                if (response.data !== 'success') {
-                    alert(response.data);
-                } else {
-                    alert('Removal succeeded.')
-                    location.reload();
-                }
+
+    bootbox.confirm({
+        message: "Are you sure you want to remove funding source - " + funding.name,
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
             },
-            function(response){
-                console.log('post failed');
-                alert(response);
+            cancel: {
+                label: 'No',
             }
-         );
-    }
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+                var data = {
+                    'funding_source_id': funding.id
+                }
+                this.http_({
+                  method: 'POST',
+                  url: '/funding/removefunding',
+                  data: JSON.stringify(data)
+                })
+                .then(
+                    function(response){
+                        console.log('post suceeded');
+                        console.log(response);
+                        if (response.data !== 'success') {
+                            bootbox.alert(response.data);
+                        } else {
+                            bootbox.alert('Removal succeeded.')
+                            location.reload();
+                        }
+                    },
+                    function(response){
+                        console.log('post failed');
+                        bootbox.alert(response);
+                    }
+                 );
+            }
+        })
+    });
 }
