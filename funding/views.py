@@ -19,22 +19,6 @@ from os import environ
 
 logger = logging.getLogger(__name__)
 
-stripFilter = lambda x: x.strip()  if x else ''
-FundingForm = model_form(models.Funding, field_args={
-    'name': {
-        'filters': [stripFilter],
-    },
-    'type': {
-        'filters': [stripFilter],
-    },
-    'accountNumber': {
-        'filters': [stripFilter],
-    },
-    'routingNumber': {
-        'filters': [stripFilter],
-    }
-})
-
 def listFunding(request):
     if not request.session.get('email'):
         return HttpResponseRedirect('/login')
@@ -79,8 +63,10 @@ def makeTransfer(request):
         if invoice.dwolla_transfer_id and invoice.is_processing():
             return HttpResponse("Payment for this invoice is in process")
 
+    rate = funding_util.get_fee_rate(invoice.provider_key.id())
+
     try:
-        funding_util.make_transfer(data['destination'], data['source'], data['amount'], invoice)
+        funding_util.make_transfer(data['destination'], data['source'], data['amount'], invoice, rate)
     except ValidationError as err:
         return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     # print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'

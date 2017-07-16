@@ -481,7 +481,7 @@ def get_funded_transfer(transfer_url):
     result['source_customer_url'] = transfer['_links']['source']['href']
     result['destination_customer_url'] = transfer['_links']['destination']['href']
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href'] if 'funding-transfer' in transfer['_links'] else None
-    result['fee_transfer_url'] = transfer['_links']['fees']['href']
+    result['fee_transfer_url'] = transfer['_links']['fees']['href'] if 'fees' in transfer['_links'] else None
     result['status'] = transfer['status']
     result['created_date'] = transfer['created'][0:10]
     if 'cancel' in transfer['_links']:

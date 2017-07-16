@@ -203,9 +203,9 @@ def autopay(request):
         if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
             logger.info("Autopaying for invoice: %s" % invoice)
             provider = invoice.provider_key.get()
-
+            rate = funding_util.get_fee_rate(provider.key.id())
             try:
-                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice)
+                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice, rate)
             except ValidationError as err:
                 return HttpResponse(err.body['_embedded']['errors'][0]['message'])
         else:

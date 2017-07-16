@@ -1,12 +1,14 @@
 
 from common import dwolla
 from invoice.models import Invoice
+from login.models import Provider
 import logging
 from os import environ
+from funding.models import FeeRate
 
 logger = logging.getLogger(__name__)
 
-def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
+def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=None):
     """Make Dwolla Money Transfer"""
     funding_sources = dwolla.list_fundings(dest_customer_url)
     dest_funding_source_id = None # TODO(rongjian): allow users to set receiving bank source.
@@ -27,8 +29,11 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
         'amount': {
             'currency': 'USD',
             'value': amount
-        },
-        'fees': [
+        }
+    }
+
+    if rate and rate <= 0.1: # 0.1 is a sane upper limit
+        request_body['fees'] =  [
             {
                 '_links': {
                     'charge-to':{
@@ -36,13 +41,14 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None):
                     }
                 },
                 'amount': {
-                    'value': round(amount * 0.01, 2),
+                    'value': round(amount * rate, 2),
                     'currency': 'USD'
                 }
             }
         ]
-    }
+
     transfer = dwolla.make_transfer(request_body)
+
     if invoice:
         invoice.dwolla_transfer_id = transfer.headers['location'] # funded_transfer url
         invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
@@ -72,3 +78,11 @@ def list_fundings(customer_url):
                 "url": funding['_links']['self']['href'],
             })
     return fundings
+
+
+def get_fee_rate(provider_id):
+    provider_key = Provider.generate_key(provider_id)
+    rate_query = FeeRate.query(FeeRate.provider_key == provider_key)
+    for rate in rate_query:
+        return rate.rate
+    return None
