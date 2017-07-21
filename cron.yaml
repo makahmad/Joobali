@@ -1,4 +1,7 @@
 cron:
+- description: data cleaning
+  url: /tasks/datacleaning/
+  schedule: every day 01:00
 - description: invoice calculation
   url: /tasks/invoicecalc/
   schedule: every day 10:00

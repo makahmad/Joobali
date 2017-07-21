@@ -27,6 +27,15 @@ import json
 
 logger = logging.getLogger(__name__)
 
+def data_cleaning(request):
+    for invoice_line_item in InvoiceLineItem.query().fetch():
+        invoice = invoice_line_item.key.parent().get()
+        if not invoice:
+            logger.info("Deleting dangling invoice line item: %s" % invoice_line_item)
+            invoice_line_item.key.delete()
+
+    return HttpResponse(status=200)
+
 def invoice_calculation(request):
     now = datetime.now()
 
@@ -112,7 +121,7 @@ def invoice_calculation(request):
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()
-                    if invoice.due_date == due_date:
+                    if invoice and invoice.due_date == due_date:
                         # if there is a existing invoice for this enrollment that have the same due date
                         # only proceed if current enrollment haven't yield a invoice for current billing cycle
                         logger.info("Skipping...Invoice has already been calculated for this cycle for enrollment: %s" % enrollment)
