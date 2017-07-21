@@ -11,7 +11,7 @@
             <td>{{ enrollment.enrollment.start_date | date: 'MM/dd/yyyy': 'PST'}}</td>
             <td>{{ enrollment.enrollment.end_date | date: 'MM/dd/yyyy': 'PST'}}</td>
             <td>{{ enrollment.program.billingFrequency}}</td>
-            <td>{{ (enrollment.enrollment.autopay_source_id) ? true : false }}</td>
+            <td>{{ (enrollment.enrollment.autopay_source_id) ? 'yes' : 'no' }}</td>
             <td>
                 <a class="" ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)" alt="Edit Enrollment"><i class="fa fa-pencil fa-1x"></i>
 								</a>
