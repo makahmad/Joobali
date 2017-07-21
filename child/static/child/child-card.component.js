@@ -44,6 +44,15 @@ ChildCardController.prototype.openEnrollmentModal = function() {
             }
         }
     });
+
+    modalInstance.result.then(angular.bind(this, function(data) {
+        console.log("data is %s", angular.toJson(data));
+        if (data.enrollmentStatus === 'success') {
+            this.getEnrollmentData();
+        }
+    }), angular.bind(this, function() {
+        console.log('Modal dismissed at: ' + new Date());
+    }));
 };
 
 ChildCardController.prototype.getChild = function() {

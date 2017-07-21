@@ -18,7 +18,7 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
     this.log_ = $log;
     this.enrollmentDateChecker = enrollmentDateChecker;
     this.readOnly = false;
-    console.log("Initializing ChildEnrollmentController");
+    this.closeModalStatus = {};
 
 
     this.enrollmentDatePickerOptions = {
@@ -70,8 +70,10 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
             } else {
                 self.enrollmentStatus = 'failure';
                 self.failMessage = response.data.message;
+                this.onSave({'isSaved': false});
             }
         }, function errorCallback(response) {
+            this.onSave({'isSaved': false});
             self.enrollmentStatus = 'failure';
         });
     }
@@ -99,7 +101,7 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
     };
 
     self.closeModal = function() {
-        $uibModalInstance.close();
+        $uibModalInstance.close({'enrollmentStatus': self.enrollmentStatus});
     }
 }
 
