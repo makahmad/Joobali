@@ -114,10 +114,9 @@
 
                                                                 <div style="text-align: center;">&nbsp;</div>
 
-                                                                <div style="text-align: left;"><strong>{{
-                                                                    provider_school_name }}</strong> has invited you to
-                                                                    make payments and view invoices online for <strong>{{
-                                                                        child_first_name }}.&nbsp;</strong></div>
+                                                                <div style="text-align: left;"><strong>{{ provider_school_name }}</strong> has invited you to
+                                                                    make payments and view invoices online for
+                                                                    <strong>{{ child_first_name }}.&nbsp;</strong></div>
 
                                                             </td>
                                                         </tr>
@@ -215,16 +214,15 @@
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
 
-                                                                <div style="text-align: left;">Child Name:&nbsp;<strong>{{
-                                                                    child_first_name }}</strong></div>
+                                                                <div style="text-align: left;">
+                                                                    Child Name:&nbsp;<strong>{{ child_first_name }}</strong>
+                                                                </div>
 
-                                                                <div style="text-align: left;">Program
-                                                                    Name:&nbsp;<strong>{{ program_name }}</strong><br>
+                                                                <div style="text-align: left;">
+                                                                    Program Name:&nbsp;<strong>{{ program_name }}</strong><br>
                                                                     Program Fee:&nbsp;<strong>${{ amount }}</strong><br>
-                                                                    Payment Due Date:&nbsp;<strong>{{ due_date
-                                                                        }}</strong><br>
-                                                                    Payment Schedule:&nbsp;<strong>{{
-                                                                        program_billing_frequency }}</strong><br>
+                                                                    Payment Due Date:&nbsp;<strong>{{ due_date }}</strong><br>
+                                                                    Payment Schedule:&nbsp;<strong>{{ program_billing_frequency }}</strong><br>
                                                                     <br>
                                                                     {% if is_acceptance_reminder %}
                                                                     <em>Payment will be applied to services provided
@@ -324,8 +322,8 @@
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                                                                 {% if is_acceptance_reminder %}
-                                                                Joobali is a service being provided to you by {{
-                                                                provider_school_name }}. Please let us know if we can be
+                                                                Joobali is a service being provided to you by
+                                                                {{ provider_school_name }}. Please let us know if we can be
                                                                 of assistance!<br>
                                                                 {% endif %}
                                                                 <br>
