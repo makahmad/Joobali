@@ -27,9 +27,9 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
     invoice_line_item.put()
     return invoice_line_item
 
-def create_invoice(provider, child, date, due_date, autopay_source_id=None, amount=None, late_fee_enforced=True):
+def create_invoice(provider, child, due_date, autopay_source_id=None, amount=None, late_fee_enforced=True):
     """Creates a new Invoice"""
-    id = "%s-%s-%s-%%s" % (provider.key.id(), child.key.id(), date.strftime("%m/%d/%Y"))
+    id = "%s-%s-%s-%%s" % (provider.key.id(), child.key.id(), date.today.strftime("%m/%d/%Y"))
     index = 1
     while Invoice.get_by_id(id % index):
         index += 1
@@ -43,7 +43,6 @@ def create_invoice(provider, child, date, due_date, autopay_source_id=None, amou
     invoice.child_last_name = child.last_name
     invoice.parent_email = child.parent_email
     invoice.due_date = due_date
-    invoice.date_created = date
     invoice.amount = amount
     invoice.autopay_source_id = autopay_source_id
     invoice.late_fee_enforced = late_fee_enforced

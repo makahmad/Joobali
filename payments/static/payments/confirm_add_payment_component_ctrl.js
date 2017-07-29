@@ -35,7 +35,6 @@ ConfirmAddPaymentComponentController.prototype.addPayment = function() {
         'payment_type': self.newPayment.payment_type.id,
         'note': self.newPayment.note,
         'amount': self.newPayment.amount,
-        'created_date': moment().format('MM/DD/YYYY'),
     };
     console.log(data);
     self.http_.post('/payments/addpayment', data).then(function successCallback(response) {

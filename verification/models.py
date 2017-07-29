@@ -22,6 +22,10 @@ class VerificationToken(ndb.Model):
 
     expiration_date = ndb.DateTimeProperty(required=True)
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
     @classmethod
     def generate_key(cls, token_id):
         return ndb.Key(cls, token_id)

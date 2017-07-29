@@ -55,7 +55,6 @@ def add_payment(request):
         note = None
     amount = data['amount']
     payment_date = datetime_util.local_to_utc(datetime.strptime(data['payment_date'], DATE_FORMAT))
-    created_date = datetime_util.local_to_utc(datetime.strptime(data['created_date'], DATE_FORMAT))
 
     provider = Provider.get_by_id(request.session.get('user_id'))
     child = Child.get_by_id(child_id)
@@ -72,7 +71,6 @@ def add_payment(request):
     newPayment.type = payment_type
     newPayment.note = note
     newPayment.date = payment_date
-    newPayment.date_created = created_date
     newPayment.put()
 
     if newPayment.invoice_key:

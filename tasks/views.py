@@ -145,7 +145,7 @@ def invoice_calculation(request):
                 if False: # provider_child_pair_key in invoice_dict:
                     invoice = invoice_dict[provider_child_pair_key]
                 else:
-                    invoice = invoice_util.create_invoice(provider, child, now, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
+                    invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
                     invoice.is_recurring = True
                     #invoice_dict[provider_child_pair_key] = invoice
                     invoice_dict[invoice.key.id()] = invoice

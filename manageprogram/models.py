@@ -15,6 +15,10 @@ class Program(ndb.Model):
     monthlyBillDay = ndb.StringProperty(required=False)  # enum: 1-28 + Last Day
     indefinite = ndb.BooleanProperty(required=False)
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
     @classmethod
     def generate_key(cls, provider_id, program_id):
         return ndb.Key(Provider.__name__, provider_id, cls.__name__, program_id)
