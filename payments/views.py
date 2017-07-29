@@ -101,6 +101,7 @@ def listPayments(request):
         results.append({
             'child': '%s %s' % (payment.child_key.get().first_name, payment.child_key.get().last_name),
             'amount': float(payment.amount),
+            'balance': float(payment.balance),
             'date': datetime_util.utc_to_local(payment.date).strftime('%m/%d/%Y'),
             'type': payment.type,
             'payer': payment.payer,
@@ -149,6 +150,7 @@ def list_dwolla_payments(email):
                 results.append({
                     'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
                     'amount': float(amount),
+                    'balance': float(0),
                     'provider_amount': float(amount) - float(fee_amount),
                     'fee': fee_amount,
                     'date': date,

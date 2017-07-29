@@ -41,6 +41,13 @@
           </a>
         </th>
         <th>
+          <a ng-click="$ctrl.sortType = 'balance'; $ctrl.sortReverse = !$ctrl.sortReverse">
+            Balance
+            <i ng-show="$ctrl.sortType == 'balance' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
+            <i ng-show="$ctrl.sortType == 'balance' && $ctrl.sortReverse" class="fa fa-caret-up fa-3"></i>
+          </a>
+        </th>
+        <th>
           <a ng-click="$ctrl.sortType = 'type'; $ctrl.sortReverse = !$ctrl.sortReverse">
             Type
             <i ng-show="$ctrl.sortType == 'type' && !$ctrl.sortReverse" class="fa fa-caret-down fa-3"></i>
@@ -82,6 +89,7 @@
           <td>{{ payment.payer }}</td>
           <td>{{ payment.date }}</td>
           <td>${{ payment.amount }}</td>
+          <td>${{ payment.balance }}</td>
           <td>{{ payment.type }}</td>
           <td ng-show="$ctrl.isProvider == 'true'">${{ payment.provider_amount }}</td>
           <td ng-show="$ctrl.isProvider == 'true'">${{ payment.fee }}</td>
