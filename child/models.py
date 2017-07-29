@@ -15,13 +15,17 @@ class Child(ndb.Model):
     date_of_birth = ndb.DateProperty(required=False)
     parent_key = ndb.KeyProperty(kind=Parent, required=True)
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
     @classmethod
     def generate_key(cls, child_id):
         return ndb.Key(cls.__name__, child_id)
 
     @classmethod
     def generate_child_entity(cls, first_name, last_name, date_of_birth, parent_email):
-        child = Child()
+        child = Child(id=Child.get_next_available_id())
         child.first_name = first_name
         child.last_name = last_name
         if date_of_birth:
@@ -29,6 +33,27 @@ class Child(ndb.Model):
         child.parent_email = parent_email
         return child
 
+    @staticmethod
+    def get_next_available_id():
+        counter = ChildIdCounter.get_by_id("ChildIdCounter")
+        if counter:
+            child_id = counter.current_available_id
+            counter.current_available_id += 1
+            counter.put()
+        else:
+            child_id = 1  # TODO(rongjian): think about continue with the currently max id number
+            counter = ChildIdCounter(id="ChildIdCounter")
+            counter.current_available_id = 2
+            counter.put()
+        return child_id
+
+
+class ChildIdCounter(ndb.Model):
+    current_available_id = ndb.IntegerProperty(required=True)  # increment it after use in a transaction
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
 class ProviderChildView(ndb.Model):
     """
@@ -36,6 +61,10 @@ class ProviderChildView(ndb.Model):
     """
     provider_key = ndb.KeyProperty(kind=Provider)
     child_key = ndb.KeyProperty(kind=Child)
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def generate_key(cls, provider_child_view_id):

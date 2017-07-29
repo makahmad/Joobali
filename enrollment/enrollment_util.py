@@ -104,9 +104,8 @@ def accept_enrollment(provider_id, enrollment_id, parent_id):
         if not enrollment.waive_registration and program.registrationFee > 0:
             provider = enrollment.program_key.parent().get()
             child = enrollment.child_key.get()
-            now = datetime.now()
             due_date = program_util.get_first_bill_due_date(program)
-            invoice = invoice_util.create_invoice(provider, child, now, due_date, None, program.registrationFee,
+            invoice = invoice_util.create_invoice(provider, child, due_date, None, program.registrationFee,
                                                   False)
             invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee",
                                                   program.registrationFee)

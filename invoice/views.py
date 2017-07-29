@@ -42,19 +42,18 @@ def add_invoice(request):
 	description = data['description']
 	amount = data['amount']
 	due_date = datetime_util.local_to_utc(datetime.strptime(data['due_date'], DATE_FORMAT))
-	created_date = datetime_util.local_to_utc(datetime.strptime(data['created_date'], DATE_FORMAT))
 	if 'all_children' in data:
 		if 'program_id' in data:
 			for child in child_util.list_child_by_provider_program(request.session.get('user_id'), long(data['program_id'])):
 				provider = Provider.get_by_id(request.session.get('user_id'))
-				invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None, amount)
+				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount)
 				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 													  description, amount)
 		else:
 			for child_id in data['all_children']:
 				provider = Provider.get_by_id(request.session.get('user_id'))
 				child = Child.get_by_id(child_id)
-				invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None, amount)
+				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount)
 				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 					description, amount)
 	else:
@@ -67,7 +66,7 @@ def add_invoice(request):
 			program = ndb.Key('Provider', provider.key.id(), 'Program', program_id).get()
 			enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
 				provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
-			invoice = invoice_util.create_invoice(provider, child, created_date, due_date, enrollment.autopay_source_id,
+			invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id,
 												  amount, False)
 			invoice_util.create_invoice_line_item(
 				ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None,
@@ -75,7 +74,7 @@ def add_invoice(request):
 		else:
 			provider = Provider.get_by_id(request.session.get('user_id'))
 			child = Child.get_by_id(child_id)
-			invoice = invoice_util.create_invoice(provider, child, created_date, due_date, None,
+			invoice = invoice_util.create_invoice(provider, child, due_date, None,
 												  amount, False)
 			invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 				description, amount)
@@ -156,7 +155,7 @@ def viewInvoice(request):
 		note = provider.lateFeeInvoiceNote if invoice.is_over_due() else provider.generalInvoiceNote
 		data = {
 			'invoice_id': invoice.key.id(),
-			'invoice_date': datetime_util.utc_to_local(invoice.date_created).strftime('%m/%d/%Y'),
+			'invoice_date': datetime_util.utc_to_local(invoice.time_created).strftime('%m/%d/%Y'),
             'provider_street': provider.addressLine1 + (", %s" % provider.addressLine2) if provider.addressLine2 else provider.addressLine1,
 			'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.zipcode),
 			'provider_name': provider.schoolName,

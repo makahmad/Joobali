@@ -7,6 +7,10 @@ class ProviderStatus(ndb.Model):
     _POSSIBLE_STATUS = {'signup', 'active'}
     status = ndb.StringProperty()
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
 
 class FailedBetaLogins(ndb.Model):
     firstName = ndb.StringProperty()
@@ -18,6 +22,10 @@ class FailedBetaLogins(ndb.Model):
     date = ndb.DateProperty()
     IP = ndb.StringProperty()
     beta_code = ndb.StringProperty()
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
 class Provider(ndb.Model):
     firstName = ndb.StringProperty(required=True)
@@ -65,6 +73,9 @@ class Provider(ndb.Model):
     lateFeeInvoiceNote = ndb.StringProperty()
     generalInvoiceNote = ndb.StringProperty()
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
     @staticmethod
     def get_next_available_id():
@@ -88,11 +99,18 @@ class Provider(ndb.Model):
 class ProviderIdCounter(ndb.Model):
     current_available_id = ndb.IntegerProperty(required=True)  # increment it after use in a transaction
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
 # The parent is the corresponding user object
 class Unique(ndb.Model):
     # This is to be the id of Unique object
     email = ndb.StringProperty()
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
     # Reference to its attached object
     provider_key = ndb.KeyProperty(kind=Provider)

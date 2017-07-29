@@ -35,6 +35,10 @@ class Enrollment(ndb.Model):
         'inactive',
         'expired'}
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
     def can_resend_invitation(self):
         return self.status in {'initialized', 'invited'}
 

@@ -12,9 +12,17 @@ class ParentInvitation(ndb.Model):
     child_first_name = ndb.StringProperty()
     enrollment_key = ndb.KeyProperty()
 
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
+
 
 class ParentStatus(ndb.Model):
     status = ndb.StringProperty()
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
 
 class Parent(ndb.Model):
@@ -32,6 +40,10 @@ class Parent(ndb.Model):
 
     # Dwolla customer id
     customerId = ndb.StringProperty()
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
     @classmethod
     def generate_key(cls, parent_id):
@@ -54,3 +66,7 @@ class Parent(ndb.Model):
 
 class ParentIdCounter(ndb.Model):
     current_available_id = ndb.IntegerProperty(required=True)  # increment it after use in a transaction
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)

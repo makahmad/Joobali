@@ -6,3 +6,7 @@ class Referral(ndb.Model):
 	schoolPhone = ndb.StringProperty()
 	referrerName = ndb.StringProperty(required=True)
 	referrerEmail = ndb.StringProperty()
+
+	# Timestamps
+	time_created = ndb.DateTimeProperty(auto_now_add=True)
+	time_updated = ndb.DateTimeProperty(auto_now=True)

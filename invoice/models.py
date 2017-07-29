@@ -16,7 +16,6 @@ class Invoice(ndb.Model):
     child_last_name = ndb.StringProperty(required=True)
     parent_email= ndb.StringProperty(required=True)
     # other
-    date_created = ndb.DateTimeProperty(required=True)
     late_fee_enforced = ndb.BooleanProperty(default=True)
     status = ndb.StringProperty(required=True, default="NEW")
     # All possible status for a invoice
@@ -36,6 +35,10 @@ class Invoice(ndb.Model):
     pdf = ndb.BlobProperty()
 
     is_recurring = ndb.BooleanProperty(default=False) # is program recurring fee invoices
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
 
     # due date is 23:59:99 of that day, so add another day to the due date (which is 00:00:00 of that day)
     def is_over_due(self, grace_days=0):
@@ -61,3 +64,7 @@ class InvoiceLineItem(ndb.Model):
     description = ndb.StringProperty()
 
     payment_key = ndb.KeyProperty(kind=Payment)
+
+    # Timestamps
+    time_created = ndb.DateTimeProperty(auto_now_add=True)
+    time_updated = ndb.DateTimeProperty(auto_now=True)
