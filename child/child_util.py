@@ -106,6 +106,7 @@ def update_child(child_key, child_data):
         child.date_of_birth = datetime.strptime(child_data['date_of_birth'], "%m/%d/%Y").date()
     return child.put()
 
+
 def match_child(child1, child2):
     if child1.first_name == child2.first_name:
         if child1.last_name == child2.last_name:

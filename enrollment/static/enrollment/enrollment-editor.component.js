@@ -67,39 +67,6 @@ EnrollmentEditorController.prototype.getPossibleStatus = function() {
     }
 }
 
-EnrollmentEditorController.prototype.cancelEnrollment = function() {
-
-    if (!(this.enrollment.end_date == this.billing_end_date)) {
-        console.log("Invalid End Date check");
-        this.showWarning = true;
-        return ;
-    }
-    var enrollment_id = this.enrollment.id;
-    this.http_.post('/enrollment/cancelEnrollment', {'enrollment_id' : enrollment_id})
-    .then(angular.bind(this, function successCallback(response) {
-        console.log(response.data);
-        this.closeModal(true);
-    }), angular.bind(this, function errorCallback(response) {
-        console.log(response);
-    }));
-}
-
-EnrollmentEditorController.prototype.reactivateEnrollment = function() {
-    var enrollment_id = this.enrollment.id;
-    if (!(this.enrollment.end_date == this.billing_end_date)) {
-        console.log("Invalid End Date check");
-        this.showWarning = true;
-        return ;
-    }
-    this.http_.post('/enrollment/reactivateEnrollment', {'enrollment_id' : enrollment_id})
-    .then(angular.bind(this, function successCallback(response) {
-        console.log(response.data);
-        this.closeModal(true);
-    }), angular.bind(this, function errorCallback(response) {
-        console.log(response);
-    }));
-}
-
 EnrollmentEditorController.prototype.isEnrollmentActive = function() {
     return (this.enrollment.status == 'initialized'
         || this.enrollment.status == 'invited'
