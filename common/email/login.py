@@ -1,6 +1,6 @@
-from google.appengine.api import mail
 from django.template import Context, loader
 from os import environ
+from common.email.utils import send_email
 
 _forget_password_email_template = loader.get_template('login/forgot_password_email.html')
 _provider_email_verification_template = loader.get_template('verification/provider_email_verification.html')
@@ -26,29 +26,26 @@ def _send_reset_password_email(token, host, sender_address="Joobali <howdy@jooba
     http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     root_path = http_prefix + host
     reset_password_link = root_path + "/login/reset?t=" + token.token_id
-    message = mail.EmailMessage(
-        sender=sender_address,
-        subject="Joobali password reset for %s" % receiver_address)
 
-    message.to = "%s <%s>" % (receiver_name, receiver_address)
+    email_subject = "Joobali password reset for %s" % receiver_address
+    email_to = "%s <%s>" % (receiver_name, receiver_address)
+
     data = {
         'root_path': root_path,
         'reset_password_link': reset_password_link,
         'first_name': receiver_name,
         'host': http_prefix + host,
     }
-    message.html = _forget_password_email_template.render(Context(data))
-    message.send()
+    email_html_content = _forget_password_email_template.render(Context(data))
+
+    send_email(sender=sender_address, subject=email_subject, to=email_to, html_content=email_html_content)
 
 
 def send_provider_email_address_verification(verification_token, host, sender_address='Joobali <howdy@joobali.com>'):
-    # [START send_mail]
     provider = verification_token.provider_key.get()
-    message = mail.EmailMessage(
-        sender=sender_address,
-        subject="Joobali: Please confirm your email address")
 
-    message.to = "%s" % provider.email
+    email_subject = "Joobali: Please confirm your email address"
+    email_to = "%s" % provider.email
     http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     verification_link = http_prefix + host + '/verification/provideremail?t=' + verification_token.token_id
     data = {
@@ -56,7 +53,6 @@ def send_provider_email_address_verification(verification_token, host, sender_ad
         'verification_link': verification_link,
         'host': http_prefix + host,
     }
-    message.html = _provider_email_verification_template.render(Context(data))
-    message.send()
+    email_html_content = _provider_email_verification_template.render(Context(data))
 
-    # [END send_mail]
+    send_email(sender=sender_address, subject=email_subject, to=email_to, html_content=email_html_content)

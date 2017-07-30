@@ -44,7 +44,7 @@
 
 
                                                                 <img align="center" alt=""
-                                                                     src="{{ host }}/static/home/pics/logo/logo.png"
+                                                                     src="http://{{ host }}/static/home/pics/logo/logo.png"
                                                                      width="100"
                                                                      style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;"
                                                                      class="mcnImage">
@@ -114,9 +114,8 @@
 
                                                                 <div style="text-align: center;">&nbsp;</div>
 
-                                                                <div style="text-align: left;"><strong>{{ provider_school_name }}</strong> has invited you to
-                                                                    make payments and view invoices online for
-                                                                    <strong>{{ child_first_name }}.&nbsp;</strong></div>
+                                                                <div style="text-align: left;">
+                                                                    <strong>{{ provider_school_name }}</strong> has invited you to make payments and view invoices online for <strong>{{ child_first_name }}.&nbsp;</strong></div>
 
                                                             </td>
                                                         </tr>
@@ -156,8 +155,7 @@
                                                                 {% if is_unenroll_reminder %}
                                                                 <a class="mcnButton " title="Get Started"
                                                                    href="{{enrollment_detail_url}}" target="_self"
-                                                                   style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">View
-                                                                    Enrollment</a>
+                                                                   style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">View Enrollment</a>
                                                                 {% endif %}
                                                             </td>
                                                         </tr>
@@ -213,7 +211,6 @@
 
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
-
                                                                 <div style="text-align: left;">
                                                                     Child Name:&nbsp;<strong>{{ child_first_name }}</strong>
                                                                 </div>
@@ -226,7 +223,7 @@
                                                                     <br>
                                                                     {% if is_acceptance_reminder %}
                                                                     <em>Payment will be applied to services provided
-                                                                        from {{ start_date }} to {{ end_date }}.</em>
+                                                                        from {{ enrollment_start_date }}.</em>
                                                                 </div>
                                                                 {% endif %}
                                                             </td>
@@ -322,8 +319,7 @@
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                                                                 {% if is_acceptance_reminder %}
-                                                                Joobali is a service being provided to you by
-                                                                {{ provider_school_name }}. Please let us know if we can be
+                                                                Joobali is a service being provided to you by {{ provider_school_name }}. Please let us know if we can be
                                                                 of assistance!<br>
                                                                 {% endif %}
                                                                 <br>

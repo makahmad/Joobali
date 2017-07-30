@@ -1,15 +1,14 @@
 import logging
 from os import environ
 
-from google.appengine.api import mail
 from django.template import Context, loader
 from google.appengine.runtime.apiproxy_errors import OverQuotaError
 from common import datetime_util
+from common.email.utils import send_email
 
 from verification import verification_util
 
 logger = logging.getLogger(__name__)
-
 
 _enrollment_notification_template = loader.get_template('enrollment/enrollment_notification_template.html')
 _signup_notification_template = loader.get_template('enrollment/signup_invitation_template.html')
@@ -23,14 +22,12 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
     provider_name = provider.schoolName
     parent_email = parent.email
 
-    message = mail.EmailMessage(
-        sender=sender_address,
-        subject="Invitation from %s to make payments online." % provider_name)
-    message.to = "%s" % parent_email
+    email_subject = "Invitation from %s to make payments online." % provider_name
+    email_to = "%s" % parent_email
+
     http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     enrollment_detail_url = http_prefix + host + "/parent/#!/enrollmentview/" + ("%d/%d" % (
         provider.key.id(), enrollment.key.id()))
-
     rendering_data = {
         'host': host,
         'provider_school_name': provider.schoolName,
@@ -42,16 +39,18 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         'enrollment_detail_url': enrollment_detail_url,
         'is_unenroll_reminder': True
     }
-    message.html = _enrollment_notification_template.render(Context(rendering_data))
+    email_html_content = _enrollment_notification_template.render(Context(rendering_data))
+
     try:
-        message.send()
+        send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
         return True
     except OverQuotaError:
         logger.error("Getting over quota error when sending enrollmen")
         return False
 
 
-def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobali <howdy@joobali.com>", verification_token=None):
+def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobali <howdy@joobali.com>",
+                                        verification_token=None):
     provider = enrollment.key.parent().get()
     parent = enrollment.child_key.get().parent_key.get()
     program = enrollment.program_key.get()
@@ -62,11 +61,9 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
     http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
     provider_name = provider.schoolName
 
-    message = mail.EmailMessage(
-        sender=sender_address,
-        subject="Invitation from %s to make payments online." % provider_name)
+    email_subject = "Invitation from %s to make payments online." % provider_name
+    email_to = "%s" % parent_email
 
-    message.to = "%s" % parent_email
     if not is_parent_signup:
         if verification_token is None:
             verification_token = verification_util.get_parent_signup_verification_token(parent_key=parent.key)[0]
@@ -86,7 +83,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'program_billing_cycle': program.billingFrequency,
             'signup_url': signup_url,
         }
-        message.html = _signup_notification_template.render(Context(rendering_data))
+        email_html_content = _signup_notification_template.render(Context(rendering_data))
     else:
         logger.info('sending enrollment invitation to %s' % parent_email)
         enrollment_detail_url = http_prefix + host + "/parent/#!/enrollmentview/" + ("%d/%d" % (
@@ -106,9 +103,9 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
             'end_date': datetime_util.utc_to_local(enrollment.end_date).strftime('%m/%d/%Y') if enrollment.end_date else '',
         }
-        message.html = _enrollment_notification_template.render(Context(rendering_data))
+        email_html_content = _enrollment_notification_template.render(Context(rendering_data))
     try:
-        message.send()
+        send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
         return True
     except OverQuotaError:
         logger.error("Getting over quota error when sending enrollmen")
