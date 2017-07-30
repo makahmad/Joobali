@@ -9,7 +9,7 @@ from google.appengine.ext import ndb
 from datetime import datetime, date
 from datetime import timedelta
 from common.dwolla import parse_webhook_data
-from common.dwolla import get_funding_transfer, get_funded_transfer, get_funding_source
+from common.dwolla import get_bank_transfer, get_dwolla_transfer, get_funding_source
 from common.email.invoice import send_invoice_email
 from common.email.dwolla import send_payment_cancelled_email_to_provider, send_payment_success_email_to_provider, send_payment_failed_email_to_provider, send_payment_success_email, send_payment_failed_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
 from common.dwolla import start_webhook, clear_webhook, client
@@ -271,13 +271,13 @@ def dwolla_webhook(request):
     host = get_host_from_request(request.get_host())
     support_phone = '301-538-6558'
     if ('customer_transfer_created' in webhook_content['topic']):
-        funded_transfer = get_funded_transfer(webhook_data['resource_url'])
-        amount = funded_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
-        destination_customer_url = funded_transfer['destination_customer_url']
+        dwolla_transfer = get_dwolla_transfer(webhook_data['resource_url'])
+        amount = dwolla_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
-        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
+        source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(webhook_data['resource_url'])
         if invoice.status != Invoice._POSSIBLE_STATUS['PROCESSING']:
             invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
@@ -291,22 +291,22 @@ def dwolla_webhook(request):
             'amount': str(amount),
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
         send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
+        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-created.html')
         data = {
-            'first_name': provider.first_name if provider.first_name else '',
+            'first_name': provider.firstName if provider.firstName else '',
             'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': str(amount),
             'account_name': destination_funding_source['name'],
             'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
@@ -317,15 +317,16 @@ def dwolla_webhook(request):
         event.event_content = str(webhook_content)
         event.put()
     elif ('customer_bank_transfer_completed' in webhook_data['topic']):
-        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
-        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
-        amount = funded_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
-        destination_customer_url = funded_transfer['destination_customer_url']
+        bank_transfer = get_bank_transfer(webhook_data['resource_url'])
+        dwolla_transfer_url = bank_transfer['funding_transfer_url'] if bank_transfer['funding_transfer_url'] else bank_transfer['funded_transfer_url']
+        dwolla_transfer = get_dwolla_transfer(dwolla_transfer_url)
+        amount = dwolla_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
-        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
-        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
+        invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
         if invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']:
             invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
             invoice.put()
@@ -336,22 +337,23 @@ def dwolla_webhook(request):
             'amount': str(amount),
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
-            'support_phone': support_phone
+            'support_phone': support_phone,
+            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
         }
         send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
+        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-completed.html')
         data = {
-            'first_name': provider.first_name if provider.first_name else '',
+            'first_name': provider.firstName if provider.firstName else '',
             'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': str(amount),
             'account_name': destination_funding_source['name'],
             'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
@@ -363,15 +365,16 @@ def dwolla_webhook(request):
         event.put()
 
     elif ('customer_bank_transfer_cancelled' in webhook_data['topic']):
-        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
-        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
-        amount = funded_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
-        destination_customer_url = funded_transfer['destination_customer_url']
+        bank_transfer = get_bank_transfer(webhook_data['resource_url'])
+        dwolla_transfer_url = bank_transfer['funding_transfer_url'] if bank_transfer['funding_transfer_url'] else bank_transfer['funded_transfer_url']
+        dwolla_transfer = get_dwolla_transfer(dwolla_transfer_url)
+        amount = dwolla_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
-        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
-        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
+        invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
         if invoice.status != Invoice._POSSIBLE_STATUS['CANCELLED']:
             invoice.status = Invoice._POSSIBLE_STATUS['CANCELLED']
             # invoice.cancelled_transfer_ids.append(invoice.dwolla_transfer_id)
@@ -386,22 +389,22 @@ def dwolla_webhook(request):
             'amount': str(amount),
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
         send_payment_cancelled_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
+        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-cancelled.html')
         data = {
-            'first_name': provider.first_name if provider.first_name else '',
+            'first_name': provider.firstName if provider.firstName else '',
             'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': str(amount),
             'account_name': destination_funding_source['name'],
             'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
@@ -412,19 +415,20 @@ def dwolla_webhook(request):
         event.event_content = str(webhook_content)
         event.put()
     elif ('customer_bank_transfer_failed' in webhook_data['topic']):
-        funding_transfer = get_funding_transfer(webhook_data['resource_url'])
-        funded_transfer = get_funded_transfer(funding_transfer['funded_transfer_url'])
-        amount = funded_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(funded_transfer['source_customer_url'])
-        destination_customer_url = funded_transfer['destination_customer_url']
+        bank_transfer = get_bank_transfer(webhook_data['resource_url'])
+        dwolla_transfer_url = bank_transfer['funding_transfer_url'] if bank_transfer['funding_transfer_url'] else bank_transfer['funded_transfer_url']
+        dwolla_transfer = get_dwolla_transfer(dwolla_transfer_url)
+        amount = dwolla_transfer['amount']
+        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
 
-        invoice = invoice_util.get_invoice_by_transfer_id(funding_transfer['funded_transfer_url'])
+        invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
         if invoice.status != Invoice._POSSIBLE_STATUS['FAILED']:
             invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
             invoice.put()
 
-        source_funding_source = get_funding_source(funded_transfer['source_funding_url'])
+        source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         template = loader.get_template('funding/joobali-to-customer-transfer-failed.html')
         data = {
             'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
@@ -433,22 +437,22 @@ def dwolla_webhook(request):
             'amount': str(amount),
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
         send_payment_failed_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(funded_transfer['destination_funding_url'])
+        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
         template = loader.get_template('funding/joobali-to-provider-transfer-failed.html')
         data = {
-            'first_name': provider.first_name if provider.first_name else '',
+            'first_name': provider.firstName if provider.firstName else '',
             'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
             'transfer_type': 'Online',
             'amount': str(amount),
             'account_name': destination_funding_source['name'],
             'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': funded_transfer['created_date'],
+            'created_date': dwolla_transfer['created_date'],
             'host': host,
             'support_phone': support_phone
         }
