@@ -10,6 +10,12 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         'Is Auto pay ?'
     ];
 
+    this.enrollmentMap = {
+        'initialized':'Invited (but not accepted)',
+        'cancel':'Cancel',
+        'active':'Active',
+        'invited':'Invited'};
+
     self.openEnrollmentEditorModal = function(enrollment) {
 
         var modalInstance = $uibModal.open({

@@ -84,7 +84,7 @@
                         <option
                                 ng-selected="{{$ctrl.enrollment.status === status}}"
                                 ng-repeat="status in $ctrl.getPossibleStatus()" value="{{status}}">
-                            {{status}}
+                            {{$ctrl.enrollmentMap[status]}}
                         </option>
                     </select>
                 </div>
@@ -95,7 +95,7 @@
             <div class="panel panel-body">
                 <div ng-show="$ctrl.enrollment.status !== $ctrl.newEnrollment.status">
                     <h4 class="control-label">Enrollment Status:</h4>
-                    {{$ctrl.enrollment.status}} &rArr; {{$ctrl.newEnrollment.status}}
+                    {{$ctrl.enrollmentMap[$ctrl.enrollment.status]}} &rArr; {{$ctrl.enrollmentMap[$ctrl.newEnrollment.status]}}
                 </div>
                 <div ng-show="$ctrl.enrollment.start_date_str !== $ctrl.newEnrollment.start_date_str">
                     <h4 class="control-label">Enrollment start date:</h4>

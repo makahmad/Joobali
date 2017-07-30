@@ -7,7 +7,7 @@
         <tbody>
         <tr data-ng-repeat="enrollment in $ctrl.enrollments">
             <td>{{ enrollment.program.programName}}</td>
-            <td>{{ enrollment.enrollment.status }}</td>
+            <td>{{$ctrl.enrollmentMap[enrollment.enrollment.status]}}</td>
             <td>{{ enrollment.enrollment.start_date | date: 'MM/dd/yyyy': 'PST'}}</td>
             <td>{{ enrollment.enrollment.end_date | date: 'MM/dd/yyyy': 'PST'}}</td>
             <td>{{ enrollment.program.billingFrequency}}</td>

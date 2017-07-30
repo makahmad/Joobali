@@ -6,6 +6,7 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
     this.enrollment = enrollment;
     this.enrollment.start_date = moment(enrollment.start_date).toDate();
     this.enrollment.start_date_str = moment(enrollment.start_date).format("LL");
+    this.enrollmentMap = {'initialized':'Invited (but not accepted)', 'cancel':'Cancel','active':'Active','invited':'Invited'};
 
     if( enrollment.end_date!=null )
         this.enrollment.end_date_str = moment(enrollment.end_date).format("LL");
