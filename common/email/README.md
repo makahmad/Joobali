@@ -67,3 +67,10 @@ command line to work properly with local app-engine server
       --enable_sendmail
     ```
 2) Update the app_dev.yaml file with the overriding email in `OVERRIDING_EMAIL` enviornmental variable
+
+### Special Notes:
+It is possible that your first email will not be sent successfully, because google mail by default disable
+connection from you terminal. 
+
+You will get a warning mail with subject **Review blocked sign-in attempt**.
+Just follow the instruction to enable the 'un-safe access', and your next mail should be able to go through?
