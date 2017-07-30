@@ -131,7 +131,7 @@ def list_dwolla_payments(email):
     results = []
     for invoice in invoices:
         if invoice.dwolla_transfer_id:
-            transfer = dwolla.get_funded_transfer(invoice.dwolla_transfer_id)
+            transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
             amount = transfer['amount']
             source_customer_url = transfer['source_customer_url']
             status = transfer['status']
