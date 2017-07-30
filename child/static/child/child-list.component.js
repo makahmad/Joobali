@@ -5,6 +5,8 @@ ChildListController = function ChildListController($uibModal, $http, $routeParam
     this.location_ = $location;
     this.programId = this.routeParams_.programId;
     this.programs = [];
+    this.parent_emails = new Set();
+    this.children = [];
 }
 
 ChildListController.prototype.$onInit = function() {
@@ -25,8 +27,11 @@ ChildListController.prototype.refreshList = function() {
         // this callback will be called asynchronously
         // when the response is available
         this.children = [];
+        this.parent_emails = new Set();
         angular.forEach(response.data, angular.bind(this, function(child) {
-            this.children.push(JSON.parse(child));
+            child_object = JSON.parse(child);
+            this.children.push(child_object);
+            this.parent_emails.add(child_object.parent_email)
         }));
     }), angular.bind(this, function errorCallback(response) {
         // TODO(zilong): deal with error here
@@ -38,12 +43,18 @@ ChildListController.prototype.refreshList = function() {
 
 ChildListController.prototype.openAddChildModal = function() {
     console.log("Opening Add Enrollment Modal");
+    var self = this;
     if (this.checkRequirements()) { // Check prerequisites for provider to enroll a child
         var modalInstance = this.uibModal_.open({
             animation: true,
             templateUrl: '/static/child/child-form.template.html',
             controller: 'ChildFormController',
             controllerAs: '$ctrl',
+            resolve: {
+                parent_emails: function () {
+                  return self.parent_emails;
+                }
+            }
         }).closed.then(angular.bind(this, function() {
             this.refreshList();
         }));
