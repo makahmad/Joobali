@@ -364,6 +364,41 @@ def get_funding_transfer(transfer_url):
     #     u'status': u'failed',
     #     u'created': u'2017-03-10T06:31:33.503   Z'
     # }
+    # Another example:
+    # {
+    #     u'status': u'processed',
+    #     u'created': u'2017-07-27T14:16:51.940   Z',
+    #     u'clearing': {
+    #         u'destination': u'next-day'
+    #     },
+    #     u'amount': {
+    #         u'currency': u'usd',
+    #         u'value': u'1.00'
+    #     },
+    #     u'_links': {
+    #         u'source': {
+    #             u'resource-type': u'customer',
+    #             u'href': u'https://api.dwolla.com/customers/a91a1572-aad4-43b6-9092-a07ad843cede',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'self': {
+    #             u'resource-type': u'transfer',
+    #             u'href': u'https://api.dwolla.com/transfers/1bf34439-d672-e711-8105-02c4cfdff3c0',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'destination': {
+    #             u'resource-type': u'funding-source',
+    #             u'href': u'https://api.dwolla.com/funding-sources/e32a7bd4-9f11-4003-a4d2-797f480c0af3',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         },
+    #         u'funding-transfer': {
+    #             u'resource-type': u'transfer',
+    #             u'href': u'https://api.dwolla.com/transfers/fad625ed-7c6f-e711-8105-02c4cfdff3c0',
+    #             u'type': u'application/vnd.dwolla.v1.hal+json'
+    #         }
+    #     },
+    #     u'id': u'1bf34439-d672-e711-8105-02c4cfdff3c0'
+    # }
     transfer = create_account_token().get(transfer_url).body
     logger.info(transfer)
     result = {}
@@ -588,28 +623,118 @@ def get_fee_transfer(fee_transfer_url):
 
 def parse_webhook_data(webhook_json):
     # Example webhook event json:
-    # Transfer event
+    # Transfer event (transfer id = fad625ed-7c6f-e711-8105-02c4cfdff3c0)
+    # No.1 - customer is the sender
     # {
-    #     u'created': u'2017-03-10T06:32:13.529   Z',
-    #     u'resourceId': u'a877aa33-5b05-e711-80ee-0aa34a9b2388',
+    #     u'created': u'2017-07-23T08:00:05.074   Z',
+    #     u'resourceId': u'fad625ed-7c6f-e711-8105-02c4cfdff3c0',
     #     u'topic': u'customer_transfer_created',
     #     u'_links': {
     #         u'customer': {
-    #             u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'
+    #             u'href': u'https://api.dwolla.com/customers/f6b8af24-f1a1-48ee-a211-547f78bdfee6'
     #         },
     #         u'self': {
-    #             u'href': u'https://api-uat.dwolla.com/events/eb46bf79-9cb4-4e8c-a46e-950049f27e1c'
+    #             u'href': u'https://api.dwolla.com/events/775f875c-1b82-45ff-b4e8-f9fea23ac5ef'
     #         },
     #         u'resource': {
-    #             u'href': u'https://api-uat.dwolla.com/transfers/a877aa33-5b05-e711-80ee-0aa34a9b2388'
+    #             u'href': u'https://api.dwolla.com/transfers/fad625ed-7c6f-e711-8105-02c4cfdff3c0'
     #         },
     #         u'account': {
-    #             u'href': u'https://api-uat.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
     #         }
     #     },
-    #     u'timestamp': u'2017-03-10T06:32:13.529   Z',
-    #     u'id': u'eb46bf79-9cb4-4e8c-a46e-950049f27e1c'
+    #     u'timestamp': u'2017-07-23T08:00:05.074   Z',
+    #     u'id': u'775f875c-1b82-45ff-b4e8-f9fea23ac5ef'
     # }
+    #
+    # No.2 - customer is the receiver
+    # {
+    #     u'created': u'2017-07-23T08:00:04.993   Z',
+    #     u'resourceId': u'fad625ed-7c6f-e711-8105-02c4cfdff3c0',
+    #     u'topic': u'customer_transfer_created',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api.dwolla.com/customers/a91a1572-aad4-43b6-9092-a07ad843cede'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api.dwolla.com/events/3e7a2266-832b-4325-9207-2ff3c2eabe3e'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api.dwolla.com/transfers/fad625ed-7c6f-e711-8105-02c4cfdff3c0'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-07-23T08:00:04.993   Z',
+    #     u'id': u'3e7a2266-832b-4325-9207-2ff3c2eabe3e'
+    # }
+    # No.3 - customer is the receiver
+    # {
+    #     u'created': u'2017-07-27T14:16:32.625   Z',
+    #     u'resourceId': u'aa391733-d672-e711-8105-02c4cfdff3c0',
+    #     u'topic': u'customer_bank_transfer_created',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api.dwolla.com/customers/a91a1572-aad4-43b6-9092-a07ad843cede'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api.dwolla.com/events/69ee9ca2-53b9-4fd8-bb9e-dbfd8d4f46a8'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api.dwolla.com/transfers/aa391733-d672-e711-8105-02c4cfdff3c0'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-07-27T14:16:32.625   Z',
+    #     u'id': u'69ee9ca2-53b9-4fd8-bb9e-dbfd8d4f46a8'
+    # }
+    # No.4 - customer is the receiver
+    # {
+    #     u'created': u'2017-07-28T14:02:11.214   Z',
+    #     u'resourceId': u'aa391733-d672-e711-8105-02c4cfdff3c0',
+    #     u'topic': u'customer_bank_transfer_completed',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api.dwolla.com/customers/a91a1572-aad4-43b6-9092-a07ad843cede'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api.dwolla.com/events/637e03db-c474-4d60-9975-617edb0aaa35'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api.dwolla.com/transfers/aa391733-d672-e711-8105-02c4cfdff3c0'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-07-28T14:02:11.214   Z',
+    #     u'id': u'637e03db-c474-4d60-9975-617edb0aaa35'
+    # }
+    # {
+    #     u'created': u'2017-07-28T14:02:10.393   Z',
+    #     u'resourceId': u'1bf34439-d672-e711-8105-02c4cfdff3c0',
+    #     u'topic': u'customer_bank_transfer_completed',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api.dwolla.com/customers/a91a1572-aad4-43b6-9092-a07ad843cede'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api.dwolla.com/events/31026073-7152-4141-9067-47a513f271e3'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api.dwolla.com/transfers/1bf34439-d672-e711-8105-02c4cfdff3c0'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-07-28T14:02:10.393   Z',
+    #     u'id': u'31026073-7152-4141-9067-47a513f271e3'
+    # }
+    #
     # Funding source remove:
     # {u'created': u'2017-03-26T23:12:47.553Z', u'resourceId': u'a3f37a8e-8e8e-4ffe-9025-0d25df7f469e',
     #  u'topic': u'customer_funding_source_removed',
@@ -619,6 +744,7 @@ def parse_webhook_data(webhook_json):
     #                  u'href': u'https://api-uat.dwolla.com/funding-sources/a3f37a8e-8e8e-4ffe-9025-0d25df7f469e'},
     #              u'account': {u'href': u'https://api-uat.dwolla.com/accounts/aaa5e130-ce8d-4807-82db-90961f7f1240'}},
     #  u'timestamp': u'2017-03-26T23:12:47.553Z', u'id': u'f6071cba-6fc5-4b4e-86b1-68cb7ba509ff'}
+
     result = {}
     result['id'] = webhook_json['id']
     result['topic'] = webhook_json['topic']

@@ -142,6 +142,7 @@ A payment of ${{ amount }} from {{ sender }} for child {{ child_name }} has been
                             <strong>Child Name:&nbsp;</strong>{{ child_name }} <br>
                               <strong>Payer : </strong>{{ sender }}</div>
 
+{% comment %}
 <!-- TODO: only show following info if the invoice is associated with a program
 <div style="text-align: left;"><strong>Program Name: </strong><br>
 [[Program Name]]<br>
@@ -149,6 +150,7 @@ A payment of ${{ amount }} from {{ sender }} for child {{ child_name }} has been
 <strong>Payment Scheduled: </strong>[[Next Payment Due Date]]<br>
 <strong>Payment Frequency: [[</strong>One-Time/weekly/monthly]]</div>
 -->
+{% endcomment %}
                         </td>
                     </tr>
                 </tbody></table>

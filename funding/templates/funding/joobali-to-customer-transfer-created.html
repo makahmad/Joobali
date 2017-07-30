@@ -141,13 +141,15 @@ A payment of ${{ amount }} from "{{ account_name }}" to {{ recipient }} has been
 <strong>Payment Amount:&nbsp;</strong>${{ amount }}<br>
 <strong>Child Name:&nbsp;</strong> {{ child_name }}</div>
 
-<!-- TODO: only show following info if the invoice is associated with a program
+{% comment %}
+                            <!-- TODO: only show following info if the invoice is associated with a program
 <div style="text-align: left;"><strong>Program Name: </strong><br>
 {{ Program Name }}<br>
 <strong>Billing Period: </strong>[[Billing Start]] - [[Billing end]]<br>
 <strong>Payment Scheduled: </strong>[[Next Payment Due Date]]<br>
 <strong>Payment Frequency: [[</strong>One-Time/weekly/monthly]]</div>
 -->
+{% endcomment %}
                         </td>
                     </tr>
                 </tbody></table>
