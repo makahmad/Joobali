@@ -1,4 +1,5 @@
 <!doctype html>
+{% load humanize %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
         <center>
@@ -71,7 +72,7 @@
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;"> Hello {{ first_name }},<br>
                           <br>
                           <strong>Payment has been scheduled.</strong><br>
-A payment of ${{ amount }} from "{{ account_name }}" to {{ recipient }} has been scheduled. <br>
+A payment of ${{ amount | floatformat:2 | intcomma }} from "{{ account_name }}" to {{ recipient }} has been scheduled. <br>
 &nbsp; </td>
                     </tr>
                 </tbody></table>
@@ -138,7 +139,7 @@ A payment of ${{ amount }} from "{{ account_name }}" to {{ recipient }} has been
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             <div style="text-align: left;"><strong>Transfer Status:&nbsp;</strong><em>Payment Scheduled</em><br>
-<strong>Payment Amount:&nbsp;</strong>${{ amount }}<br>
+<strong>Payment Amount:&nbsp;</strong>${{ amount | floatformat:2 | intcomma }}<br>
 <strong>Child Name:&nbsp;</strong> {{ child_name }}</div>
 
 {% comment %}

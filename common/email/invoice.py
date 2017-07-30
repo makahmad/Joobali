@@ -18,7 +18,7 @@ Our records indicate you are signed up for Joobali AutoPay. Joobali AutoPay will
 """ % (invoice.due_date, start_date, end_date)
     email_subject = "Reminder: You have an invoice due."
     email_to = "%s" % parent_address
-    send_email(sender=sender_address, to=email_to, subject=email_subject, html=template, body=email_body)
+    send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=template, body=email_body)
 
     # [END send_mail]
 

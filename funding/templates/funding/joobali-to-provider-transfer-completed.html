@@ -1,4 +1,5 @@
 <!doctype html>
+{% load humanize %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
         <center>
@@ -73,7 +74,7 @@
                             Hello {{ first_name }},<br>
 <br>
 <strong>Payment Completed.&nbsp;</strong><br>
-The payment has been successfully transferred from {{ sender }} for child {{ child_name }} in the amount of ${{ amount }}<br>
+The payment has been successfully transferred from {{ sender }} for child {{ child_name }} in the amount of ${{ amount | floatformat:2 | intcomma }}<br>
 &nbsp;
                         </td>
                     </tr>

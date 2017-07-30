@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load humanize %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link type="text/css" rel="stylesheet" href="resources/sheet.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -242,8 +243,8 @@
                 <td class="s8"></td>
                 <td class="s20" dir="ltr" colspan="3">{{ item.description }}</td>
                 <td class="s21" dir="ltr">1</td>
-                <td class="s21" dir="ltr">${{ item.amount }}</td>
-                <td class="s22" dir="ltr">${{ item.amount }}</td>
+                <td class="s21" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
+                <td class="s22" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
                 <td class="s8"></td>
             </tr>
         {% endfor %}
@@ -252,7 +253,7 @@
             <td class="s30" dir="ltr">Notes:</td>
             <td class="s31" dir="ltr" colspan="3"></td>
             <td class="s32" dir="ltr">Subtotal</td>
-            <td class="s33">${{ total }}</td>
+            <td class="s33">${{ total | floatformat:2 | intcomma }}</td>
             <td class="s2"></td>
         </tr>
         <tr style="height:25px;">
@@ -266,7 +267,7 @@
         <tr style="height:39px;">
             <td class="s36"></td>
             <td class="s37"></td>
-            <td class="s38" colspan="2">${{ total }}</td>
+            <td class="s38" colspan="2">${{ total | floatformat:2 | intcomma}}</td>
             <td class="s36"></td>
         </tr>
 				<tr style="height:63px"><td colspan="8">&nbsp;</td></tr>
