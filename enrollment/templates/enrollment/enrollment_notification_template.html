@@ -108,14 +108,8 @@
                                                             <td valign="top" class="mcnTextContent"
                                                                 style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
 
-                                                                <div style="text-align: left;">You are invited to make
-                                                                    payments online.
-                                                                </div>
-
-                                                                <div style="text-align: center;">&nbsp;</div>
-
                                                                 <div style="text-align: left;">
-                                                                    <strong>{{ provider_school_name }}</strong> has invited you to make payments and view invoices online for <strong>{{ child_first_name }}.&nbsp;</strong></div>
+                                                                    <strong>{{ provider_school_name }}</strong> has enrolled <strong>{{ child_first_name }}</strong> in a program (<strong>{{ program_name }}</strong>). You must accept enrollment to begin making payments and to view your invoices online for <strong>{{ child_first_name }}.&nbsp;</strong></div>
 
                                                             </td>
                                                         </tr>
@@ -150,7 +144,7 @@
                                                                 {% if is_acceptance_reminder %}
                                                                 <a class="mcnButton " title="Get Started"
                                                                    href="{{enrollment_detail_url}}" target="_self"
-                                                                   style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Accept Enrollment Now</a>
+                                                                   style="font-weight: normal;letter-spacing: -0.5px;line-height: 100%;text-align: center;text-decoration: none;color: #339999;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;display: block;">Accept Enrollment</a>
                                                                 {% endif %}
                                                                 {% if is_unenroll_reminder %}
                                                                 <a class="mcnButton " title="Get Started"
@@ -222,8 +216,8 @@
                                                                     Payment Schedule:&nbsp;<strong>{{ program_billing_frequency }}</strong><br>
                                                                     <br>
                                                                     {% if is_acceptance_reminder %}
-                                                                    <em>Payment will be applied to services provided
-                                                                        from {{ enrollment_start_date }}.</em>
+                                                                    <em>NOTE: Payment will be applied to services provided
+                                                                        beginning on {{ enrollment_start_date }}.</em>
                                                                 </div>
                                                                 {% endif %}
                                                             </td>
