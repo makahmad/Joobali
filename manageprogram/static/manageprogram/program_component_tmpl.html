@@ -1,69 +1,69 @@
 <li class="programs item" ng-class="{highlightProgram: $ctrl.program.css==1}">
     <div class="programCard">
         <div class="container">
+            <div>
+                <table class="programTable grid">
+                    <tr>
+                        <td colspan="3">
+                            <div class="main">{{ $ctrl.program.programName }}</div>
+                        </td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">Fee:</td>
+                        <td class="theData">{{ $ctrl.program.fee | currency}}</td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">Frequency:</td>
+                        <td class="theData">{{ $ctrl.program.billingFrequency }}</td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">Start Date:</td>
+                        <td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">End Date:</td>
+                        <td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">Registration Fee:</td>
+                        <td class="theData">{{ $ctrl.program.registrationFee | currency}}</td>
+                    </tr>
+                    <tr class="programText">
+                        <td class="description" colspan="2">Late Fee:</td>
+                        <td class="theData">{{ $ctrl.program.lateFee | currency}}</td>
+                    </tr>
+                    <tr class="programActions">
+                        <td ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal">
+                            <a><i class="fa fa-pencil fa-lg"></i></a></td>
+                        <td><a href="/home/dashboard#!/child/list/{{ $ctrl.program.id }}"><i
+                                class="fa fa-child fa-lg"></i></a></td>
+                        <td ng-hide="{{ $ctrl.program.has_enrollment }}" ng-click="$ctrl.confirmDeleteComponentModal()"
+                            data-toggle="modal" data-target="#confirmDeleteModal"><a title="Delete a program"><i
+                                class="fa fa-trash fa-lg"></i></a></td>
+                        <td ng-show="{{ $ctrl.program.has_enrollment }}"><a
+                                title="Program cannot be deleted as there are children enrolled."><i
+                                class="fa fa-trash-o fa-lg"></i></a></td>
 
-			<!-- <div class="row editProgram">
-				<i class="fa fa-pencil fa-lg" style="float:left;"></i>
-			</div> -->
+                    </tr>
+                </table>
 
-						<div>
-							<table class="programTable grid">
-								<tr>
-									<td colspan="3"><div class="main">{{ $ctrl.program.programName }}</div></td>									
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">Fee:</td>
-									<td class="theData">{{ $ctrl.program.fee | currency}}</td>
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">Frequency:</td>
-									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">Start Date:</td>
-									<td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">End Date:</td>
-									<td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">Registration Fee:</td>
-									<td class="theData">{{ $ctrl.program.registrationFee | currency}}</td>
-								</tr>
-								<tr class="programText">
-									<td class="description" colspan="2">Late Fee:</td>
-									<td class="theData">{{ $ctrl.program.lateFee | currency}}</td>
-							  </tr>
-								<tr class="programActions">
-										<td ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal"><a><i class="fa fa-pencil fa-lg"></i></a></td>
-										<td><a href="/home/dashboard#!/child/list/{{ $ctrl.program.id }}" ><i class="fa fa-child fa-lg"></i></a></td>
-										<td ng-hide="{{ $ctrl.program.has_enrollment }}" ng-click="$ctrl.confirmDeleteComponentModal()" data-toggle="modal" data-target="#confirmDeleteModal"><a title="Delete a program"><i class="fa fa-trash fa-lg"></i></a></td>
-										<td ng-show="{{ $ctrl.program.has_enrollment }}"><a title="Program cannot be deleted as there are children enrolled."><i class="fa fa-trash-o fa-lg"></i></a></td>
-
-								</tr>
-							</table>
-							
-							<table class="programTable list">
-								<tr ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal">
-									<td class="theData"><div class="mainName">{{ $ctrl.program.programName }}</div></td>									
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
-									<td class="theData">{{ $ctrl.program.billingFrequency }}</td>
-									<td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
-									<td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.registrationFee }}</td>
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.lateFee }}</td>
-							  </tr>
-							</table>
-						</div>
-    </li>
-		<!-- <div class="programActions">
-			<ul>
-				<li><a href="http://www.google.com"><i class="fa fa-child fa-lg"></i></a></li>
-				<li><a href="http://www.google.com"><i class="fa fa-trash fa-lg" style="text-align:right;"></i></a></li>
-			</ul>
-		</div> -->
-
+                <table class="programTable list">
+                    <tr ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal">
+                        <td class="theData">
+                            <div class="mainName">{{ $ctrl.program.programName }}</div>
+                        </td>
+                        <td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
+                        <td class="theData">{{ $ctrl.program.billingFrequency }}</td>
+                        <td class="theData">{{ $ctrl.program.startDate | date:'MM/dd/yyyy' }}</td>
+                        <td class="theData">{{ $ctrl.program.endDate | date:'MM/dd/yyyy' }}</td>
+                        <td class="theData"><sup>$</sup>{{ $ctrl.program.registrationFee }}</td>
+                        <td class="theData"><sup>$</sup>{{ $ctrl.program.lateFee }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</li>
 
 
 
