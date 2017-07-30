@@ -100,6 +100,17 @@ def get_invoice_late_fee_added(invoice):
                 return True
     return False
 
+def get_invoice_snippet(invoice):
+    """ Gets a brief description of what the invoice involves """
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    program = get_invoice_program(invoice)
+    if program:
+        return program.programName
+    for lineItem in lineItems:
+        if 'Registration' in lineItem.description:
+            return lineItem.description
+    return ''
+
 def get_invoice_period(invoice):
     """ Gets the start and end date of current invoice billing period"""
     start_date = None

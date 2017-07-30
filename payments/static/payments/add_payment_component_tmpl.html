@@ -17,7 +17,7 @@
         <div class="form-group">
             <label class="control-label" for="invoice">Invoice</label>
             <select class="form-control" id="invoice"
-                    ng-options="invoice.id + '($' + invoice.amount + ')' for invoice in $ctrl.invoices track by invoice.id "
+                    ng-options="invoice.id + ' (' + invoice.snippet + ' - $' + invoice.amount + ')' for invoice in $ctrl.invoices track by invoice.id "
                     ng-model="$ctrl.newPayment.invoice"
                     ng-disabled="$ctrl.resolve.invoice" ng-required="true"></select>
         </div>
