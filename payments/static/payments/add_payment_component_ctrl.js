@@ -40,10 +40,14 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
                 // this callback will be called asynchronously
                 // when the response is available
                 this.invoices = [];
+                this.newPayment.invoice = null;
                 angular.forEach(response.data, angular.bind(this, function(invoice) {
                     inv = JSON.parse(invoice);
                     if (inv.amount > 0) {
                         this.invoices.push(inv);
+                    }
+                    if (!this.newPayment.invoice) {
+                        this.newPayment.invoice = inv;
                     }
                 }));
                 //this.newPayment.program = this.programs[0];
