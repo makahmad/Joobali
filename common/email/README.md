@@ -74,3 +74,5 @@ connection from you terminal.
 
 You will get a warning mail with subject **Review blocked sign-in attempt**.
 Just follow the instruction to enable the 'un-safe access', and your next mail should be able to go through?
+
+You may need to run `sudo postfix start` again after you restart your computer, but there should be no other configuration

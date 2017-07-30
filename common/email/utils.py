@@ -5,7 +5,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def send_email(sender, to, subject, html_content, body):
+def send_email(sender, to, subject, html_content, body=""):
     """
         Wrapper method that wrap the email sending process.
     :param sender: the sender address
