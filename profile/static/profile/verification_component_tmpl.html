@@ -145,7 +145,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" ng-hide="$ctrl.profile.dwolla_status == 'verified'">
+                <div class="form-group" ng-show="$ctrl.profile.dwolla_status == 'document'">
                     <label ng-hide="$ctrl.profile.docStatus"  class="control-label" for="verification_doc">Photo ID Upload:</label>
                     <div ng-hide="$ctrl.profile.docStatus" class="input-group">
 											<span class="input-group-addon"><i class="fa fa-file-image-o fa-lg"></i></span><input type="file" demo-file-model="$ctrl.profile.doc"  class="form-control" name="doc" id="verification_doc">
