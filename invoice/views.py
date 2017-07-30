@@ -19,7 +19,7 @@ from invoice import invoice_util
 from common.pdf import render_to_pdf
 from google.appengine.ext import ndb
 from os import environ
-from common.dwolla import get_funding_source, get_funded_transfer, cancel_transfer
+from common.dwolla import get_funding_source, get_dwolla_transfer, cancel_transfer
 from common.email.autopay import send_autopay_cancelled_email, send_autopay_scheduled_email
 from common import datetime_util
 from common.request import get_host_from_request
@@ -155,7 +155,7 @@ def viewInvoice(request):
 		note = provider.lateFeeInvoiceNote if invoice.is_over_due() else provider.generalInvoiceNote
 		data = {
 			'invoice_id': invoice.key.id(),
-			'invoice_date': datetime_util.utc_to_local(invoice.time_created).strftime('%m/%d/%Y'),
+			'invoice_date': datetime_util.utc_to_local(invoice.time_created).strftime('%m/%d/%Y') if invoice.time_created else '',
             'provider_street': provider.addressLine1 + (", %s" % provider.addressLine2) if provider.addressLine2 else provider.addressLine1,
 			'provider_city_state_postcode': '%s, %s, %s' % (provider.city, provider.state, provider.zipcode),
 			'provider_name': provider.schoolName,
@@ -247,9 +247,6 @@ def cancelAutopay(request):
 		enrollments = get_invoice_enrollments(invoice)
 		for enrollment in enrollments:
 			source = enrollment.autopay_source_id
-			enrollment.autopay_source_id = None
-			enrollment.pay_days_before = None
-			enrollment.put()
 
 			## Send Confirm Email
 			program = enrollment.program_key.get()
@@ -288,6 +285,10 @@ def cancelAutopay(request):
 					invoice.autopay_source_id = None
 					invoice.put()
 
+			enrollment.autopay_source_id = None
+			enrollment.pay_days_before = None
+			enrollment.put()
+
 	return HttpResponse("success")
 
 def cancelPayment(request):
@@ -297,7 +298,7 @@ def cancelPayment(request):
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		if invoice.dwolla_transfer_id:
-			funded_transfer = get_funded_transfer(invoice.dwolla_transfer_id)
+			funded_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
 			if 'cancel' in funded_transfer:
 				cancel_transfer(funded_transfer['cancel'])
 				invoice.status = invoice._POSSIBLE_STATUS['CANCELLED']
