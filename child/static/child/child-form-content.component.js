@@ -23,6 +23,7 @@ ChildFormContentController = function ChildFormContentController($http, Enrollme
         minDate: this.todayDate,
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
+
 }
 
 ChildFormContentController.prototype.whenSelectedProgramChange = function () {
@@ -124,4 +125,8 @@ ChildFormContentController.prototype.save = function() {
 
 ChildFormContentController.prototype.newParentToggle = function() {
     this.isAddNewParent = !this.isAddNewParent;
+}
+
+ChildFormContentController.prototype.cancel = function() {
+    this.onClose();
 }
