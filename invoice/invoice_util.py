@@ -4,6 +4,7 @@ from models import Invoice
 from common import key_util
 from datetime import datetime, date, timedelta
 from calendar import monthrange
+from common import datetime_util
 import logging
 
 logger = logging.getLogger(__name__)
@@ -29,7 +30,7 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
 
 def create_invoice(provider, child, due_date, autopay_source_id=None, amount=None, late_fee_enforced=True):
     """Creates a new Invoice"""
-    id = "%s-%s-%s-%%s" % (provider.key.id(), child.key.id(), date.today().strftime("%m%d%Y"))
+    id = "%s-%s-%s-%%s" % (provider.key.id(), child.key.id(), datetime_util.utc_to_local(datetime.now()).strftime("%m%d%Y"))
     index = 1
     while Invoice.get_by_id(id % index):
         index += 1
@@ -66,7 +67,7 @@ def sum_up_amount_due(invoice):
     return amount
 
 def sum_up_original_amount_due(invoice):
-    """Sums up all the payment amount due for this invoice"""
+    """Sums up all the payment amount due for this invoice except payment line items"""
     amount = 0
     # program related payment
     lineItems = InvoiceLineItem.query(ancestor = invoice.key).filter(InvoiceLineItem.payment_key == None)

@@ -8,6 +8,7 @@ ChildFormContentController = function ChildFormContentController($http, Enrollme
     this.dateFormat = 'MM/DD/YYYY';
     this.showSaveButton = true;
     this.disableSaveButton = false;
+    this.isAddNewParent = (this.emails.length == 0);
     this.newChildEnrollmentInfo = {};
     this.newChildEnrollmentInfo.error = {};
     this.enrollmentDateChecker_ = EnrollmentDateChecker;
@@ -119,4 +120,8 @@ ChildFormContentController.prototype.save = function() {
         this.enrollmentFailureReason = response.data;
         this.disableSaveButton = false;
     }));
+}
+
+ChildFormContentController.prototype.newParentToggle = function() {
+    this.isAddNewParent = !this.isAddNewParent;
 }

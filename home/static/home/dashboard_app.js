@@ -452,6 +452,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/child/child-form-content.template.html',
         controller: ['$http', 'EnrollmentDateChecker', ChildFormContentController],
         bindings: {
+            emails: '<',
             programs : '<',
             onSave : '&'
         }

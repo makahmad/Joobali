@@ -117,10 +117,13 @@ EnrollmentEditorController.prototype.isStartDateReadOnly = function() {
     var date = this.enrollment.start_date
     var enrollment = this.enrollment;
 
-    var startDate = moment([date.getFullYear(), date.getMonth(), date.getDate()]);
-    var currentDate = moment();
-    if (startDate <= currentDate) {
-        if (enrollment.status === 'active') {
+    if (enrollment.status === 'active') {
+        var startDate = moment([date.getFullYear(), date.getMonth(), date.getDate()]);
+        var currentDate = moment();
+        var dateDelta = startDate.diff(currentDate, 'days');
+        // start date is read-only if the enrollment start date is within 5 days of current date, because invoice may
+        // have been generated
+        if (dateDelta <= 5) {
             return true;
         }
     }

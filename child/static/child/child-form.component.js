@@ -1,5 +1,6 @@
-ChildFormController = function ChildFormController($uibModalInstance, $http) {
+ChildFormController = function ChildFormController($uibModalInstance, $http, parent_emails) {
 
+    this.parent_emails = Array.from(parent_emails);
     this.programs = {};
     this.http_ = $http;
     this.uibModalInstance_ = $uibModalInstance;
@@ -9,6 +10,7 @@ ChildFormController = function ChildFormController($uibModalInstance, $http) {
     this.doneButton.click = angular.bind(this, function() {
         this.closeModal();
     });
+    console.log(this.parent_emails);
 }
 
 

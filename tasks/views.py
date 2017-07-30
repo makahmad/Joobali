@@ -58,7 +58,8 @@ def invoice_calculation(request):
 
     logger.info("PAYMENT CALCULATION")
     # loop over invoices...
-    for invoice in Invoice.query().fetch():
+    query = Invoice.query().order(Invoice.time_created)
+    for invoice in query.fetch():
         if not invoice.is_paid() and not invoice.is_processing():
             logger.info("Considering payment for invoice: %s" % invoice)
             for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
@@ -329,6 +330,7 @@ def dwolla_webhook(request):
         invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
         if invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']:
             invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
+            invoice.amount = 0
             invoice.put()
 
         template = loader.get_template('funding/joobali-to-customer-transfer-completed.html')

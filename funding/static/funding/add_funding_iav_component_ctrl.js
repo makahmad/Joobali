@@ -11,7 +11,7 @@ AddFundingIavComponentController = function($location, $http) {
 	    // when the response is available
 	    this.iavToken = response.data;
 	    console.log('IAV token fetched: ' + this.iavToken);
-        dwolla.configure((window.location.hostname.indexOf('joobali-prod') != -1 || window.location.hostname.indexOf('joobali.com')) != -1 ? 'prod' : 'sandbox');
+        dwolla.configure((window.location.hostname.indexOf('joobali-prod') != -1 || window.location.hostname.indexOf('joobali.com') != -1) ? 'prod' : 'sandbox');
 	        // If element exists. Sometime if the user move to another tab before this callback is called, the iavContainer element will be absent.
         dwolla.iav.start(this.iavToken, {container: 'addFundingIavContainer'}, function(err, res) {
             console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));

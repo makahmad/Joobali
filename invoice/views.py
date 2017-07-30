@@ -129,7 +129,7 @@ def viewInvoice(request):
 		parent = Parent.query(Parent.email == invoice.parent_email).fetch(1)[0]
 		child = invoice.child_key.get()
 
-		lineItems = InvoiceLineItem.query(ancestor=invoice.key)
+		lineItems = InvoiceLineItem.query(ancestor=invoice.key).filter(InvoiceLineItem.payment_key == None)
 		total = 0
 		items = []
 		for lineItem in lineItems:
@@ -146,8 +146,6 @@ def viewInvoice(request):
 				'amount': lineItem.amount,
 			})
 			total += lineItem.amount
-		if total != invoice.amount:
-			HttpResponse("Something is wrong when retrieving the invoice.")
 
 		http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
 		root_path = http_prefix + request.get_host()
@@ -166,7 +164,7 @@ def viewInvoice(request):
 			'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else 'N/A',
 			'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
 			'parent_id': parent.key.id(),
-			'total': invoice.amount,
+			'total': total,
 			'items': items,
 			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()) if provider.logo else None,
 			'note': note,

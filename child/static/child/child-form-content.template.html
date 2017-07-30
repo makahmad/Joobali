@@ -33,10 +33,37 @@
         </p>
     </div>
     <div class="form-group"
-         ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}">
-        <label class="control-label">Parent's Email</label>
-        <input name="email" type="email"
-               class="form-control" required="true"
+         ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}"
+         ng-show="!$ctrl.isAddNewParent">
+
+
+        <label class="control-label">Select parent from existing</label>
+        <button class="btn btn-default btn-sm pull-right joobali"
+                ng-click="$ctrl.newParentToggle()"
+                formnovalidate>
+            Add new parent
+        </button>
+        <select class="form-control"
+                ng-required="!$ctrl.isAddNewParent"
+                ng-readonly="$ctrl.readOnly"
+                ng-options="email for email in $ctrl.emails"
+                ng-model="$ctrl.newChildEnrollmentInfo.child_parent_email"
+                ng-value="$ctrl.newChildEnrollmentInfo.child_parent_email">
+        </select>
+    </div>
+    <div class="form-group"
+         ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}"
+         ng-show="$ctrl.isAddNewParent">
+
+        <label class="control-label">Enter a new one Parent's Email</label>
+        <button class="btn btn-default btn-sm pull-right joobali"
+                ng-click="$ctrl.newParentToggle()"
+                formnovalidate>
+            Add existing parent
+        </button>
+        <input name="email"
+               type="email"
+               class="form-control" ng-required="$ctrl.isAddNewParent"
                ng-readonly="$ctrl.readOnly"
                ng-model="$ctrl.newChildEnrollmentInfo.child_parent_email">
     </div>
