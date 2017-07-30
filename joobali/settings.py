@@ -186,10 +186,10 @@ REST_FRAMEWORK = {
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True # turn to True when deploying to PROD. Set to False for UAT.
+CSRF_COOKIE_SECURE = False # turn to True when deploying to PROD. Set to False for UAT.
 
 SSLIFY_DISABLE_FOR_REQUEST = [
     lambda request: request.get_full_path().startswith('/tasks')
 ]
 # Comment this line before deploy to PROD. Uncomment for UAT.
-#SSLIFY_DISABLE = True
+SSLIFY_DISABLE = True
