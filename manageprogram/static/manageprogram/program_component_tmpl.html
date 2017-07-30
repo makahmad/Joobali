@@ -13,7 +13,7 @@
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Fee:</td>
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.fee }}</td>
+									<td class="theData">{{ $ctrl.program.fee | currency}}</td>
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Frequency:</td>
@@ -29,11 +29,11 @@
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Registration Fee:</td>
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.registrationFee }}</td>
+									<td class="theData">{{ $ctrl.program.registrationFee | currency}}</td>
 								</tr>
 								<tr class="programText">
 									<td class="description" colspan="2">Late Fee:</td>
-									<td class="theData"><sup>$</sup>{{ $ctrl.program.lateFee }}</td>
+									<td class="theData">{{ $ctrl.program.lateFee | currency}}</td>
 							  </tr>
 								<tr class="programActions">
 										<td ng-click="$ctrl.openComponentModal()" data-toggle="modal" data-target="#editProgramModal"><a><i class="fa fa-pencil fa-lg"></i></a></td>

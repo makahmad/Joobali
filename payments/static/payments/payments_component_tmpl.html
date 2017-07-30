@@ -88,11 +88,11 @@
           <td>{{ payment.child }}</td>
           <td>{{ payment.payer }}</td>
           <td>{{ payment.date }}</td>
-          <td>${{ payment.amount }}</td>
-          <td>${{ payment.balance }}</td>
+          <td>{{ payment.amount | currency}}</td>
+          <td>{{ payment.balance | currency}}</td>
           <td>{{ payment.type }}</td>
-          <td ng-show="$ctrl.isProvider == 'true'">${{ payment.provider_amount }}</td>
-          <td ng-show="$ctrl.isProvider == 'true'">${{ payment.fee }}</td>
+          <td ng-show="$ctrl.isProvider == 'true'">{{ payment.provider_amount | currency}}</td>
+          <td ng-show="$ctrl.isProvider == 'true'">{{ payment.fee | currency}}</td>
           <td>{{ payment.invoice }}</td>
           <td>{{ payment.note }}</td>
         </tr>
