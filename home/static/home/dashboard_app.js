@@ -454,7 +454,8 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         bindings: {
             emails: '<',
             programs : '<',
-            onSave : '&'
+            onSave : '&',
+            onClose : '&'
         }
     })
     .component('enrollmentList',{

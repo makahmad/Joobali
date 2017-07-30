@@ -37,7 +37,7 @@
          ng-show="!$ctrl.isAddNewParent">
 
 
-        <label class="control-label">Select parent from existing</label>
+        <label class="control-label">Select Existing Parent</label>
         <button class="btn btn-default btn-sm pull-right joobali"
                 ng-click="$ctrl.newParentToggle()"
                 formnovalidate>
@@ -55,7 +55,7 @@
          ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}"
          ng-show="$ctrl.isAddNewParent">
 
-        <label class="control-label">Enter a new one Parent's Email</label>
+        <label class="control-label">Parent's Email</label>
         <button class="btn btn-default btn-sm pull-right joobali"
                 ng-click="$ctrl.newParentToggle()"
                 formnovalidate>
