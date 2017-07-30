@@ -34,10 +34,10 @@ def send_payment_created_email_to_provider(provider_address, provider_name, pare
 
 def send_payment_success_email(parent_address, parent_name, school_name, amount, template,
                                sender_address="Joobali <howdy@joobali.com>"):
-    email_subject = "You have successfully paid <%s> $%s.""" % (school_name, amount)
+    email_subject = "You have successfully paid %s $%s.""" % (school_name, amount)
     email_to = "%s" % parent_address
     email_body = """Hi, %s
-    You've successfully paid <%s> with $%s.""" % (parent_name, school_name, amount)
+    You've successfully paid %s with $%s.""" % (parent_name, school_name, amount)
     email_html = template
 
     send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html, body=email_body)
@@ -58,7 +58,7 @@ def send_payment_failed_email(parent_address, parent_name, school_name, amount, 
     email_subject = "Your payment to %s failed.""" % (school_name)
     email_to = "%s" % parent_address
     email_body = """Hi, %s
-    Your payment of $%s to <%s> was denied by the bank. Please try again.""" % (parent_name, school_name, amount)
+    Your payment of $%s to %s was denied by the bank. Please try again.""" % (parent_name, school_name, amount)
     email_html = template
     send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html, body=email_body)
 
@@ -78,7 +78,7 @@ def send_payment_cancelled_email(parent_address, parent_name, school_name, amoun
     email_subject = "Your payment to %s was cancelled.""" % (school_name)
     email_to = "%s" % parent_address
     email_body = """Hi, %s
-    Your payment of $%s to <%s> is successfully cancelled.""" % (parent_name, school_name, amount)
+    Your payment of $%s to %s is successfully cancelled.""" % (parent_name, school_name, amount)
     email_html = template
     send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html, body=email_body)
 

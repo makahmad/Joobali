@@ -284,6 +284,7 @@ a.logoLink:hover {
 .navbar-default .navbar-toggle {
     border-color: transparent;
     color: #fff !important;
+		z-index:+1;
 }
 
 .providerName {
