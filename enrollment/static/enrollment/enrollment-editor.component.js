@@ -6,12 +6,14 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
     this.enrollment = enrollment;
     this.enrollment.start_date = moment(enrollment.start_date).toDate();
     this.enrollment.start_date_str = moment(enrollment.start_date).format("LL");
-    this.enrollmentMap = {'initialized':'Invited (but not accepted)', 'cancel':'Cancel','active':'Active','invited':'Invited'};
 
-    if( enrollment.end_date!=null )
+    if (enrollment.end_date) {
         this.enrollment.end_date_str = moment(enrollment.end_date).format("LL");
-    else
-        this.enrollment.end_date_str = null;
+    } else {
+        this.enrollment.end_date_str = "Never ends";
+    }
+
+    this.enrollment.end_date = moment(enrollment.end_date).toDate();
 
     this.newEnrollment = angular.copy(enrollment);
 
@@ -31,6 +33,8 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
         minDate: this.todayDate,
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
+
+    this.enrollmentMap = {'initialized':'Invited (but not accepted)', 'cancel':'Cancel','active':'Active','invited':'Invited'};
 }
 
 EnrollmentEditorController.prototype.renderEnrollmentEditor = function(enrollment) {
@@ -96,8 +100,11 @@ EnrollmentEditorController.prototype.changeStep = function(step) {
     if (step == 1) {
         this.newEnrollment.start_date_str = moment(this.newEnrollment.start_date).format('LL');
 
-        if( this.newEnrollment.end_date!=null )
+        if(this.newEnrollment.end_date) {
             this.newEnrollment.end_date_str = moment(this.newEnrollment.end_date).format('LL');
+        } else {
+            this.newEnrollment.end_date_str = "Never ends";
+        }
     }
     this.currentStep = step;
 }
@@ -139,8 +146,25 @@ EnrollmentEditorController.prototype.hasChange = function() {
         return true;
     }
 
-    if (this.enrollment.end_date!=null && this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
+    if (this.isEndDateChanged()) {
         return true;
+    }
+
+    return false;
+}
+
+EnrollmentEditorController.prototype.isEndDateChanged = function() {
+    if (this.enrollment.end_date == null) {
+        if(this.newEnrollment.end_date != null) {
+            return true;
+        }
+    } else {
+        if(!this.newEnrollment.end_date) {
+            return true;
+        }
+        if(this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
+            return true;
+        }
     }
     return false;
 }
@@ -155,8 +179,12 @@ EnrollmentEditorController.prototype.save = function() {
     if (this.enrollment.start_date.toString() !== this.newEnrollment.start_date.toString()) {
         request.start_date = moment(this.newEnrollment.start_date).format("MM/DD/YYYY");
     }
-    if (this.enrollment.end_date!=null && this.enrollment.end_date.toString() != this.newEnrollment.end_date.toString()) {
-        request.end_date = moment(this.newEnrollment.end_date).format("MM/DD/YYYY");
+    if (this.isEndDateChanged()) {
+        if(this.newEnrollment.end_date) {
+            request.end_date = moment(this.newEnrollment.end_date).format("MM/DD/YYYY");
+        } else {
+            request.end_date = '';
+        }
     }
     this.http_.post('/enrollment/update', request)
     .then(angular.bind(this, function successCallback(response) {
