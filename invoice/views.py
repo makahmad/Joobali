@@ -53,7 +53,7 @@ def add_invoice(request):
 			for child_id in data['all_children']:
 				provider = Provider.get_by_id(request.session.get('user_id'))
 				child = Child.get_by_id(child_id)
-				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount)
+				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount, False)
 				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 					description, amount)
 	else:
@@ -67,7 +67,7 @@ def add_invoice(request):
 			enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
 				provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
 			invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id,
-												  amount, False)
+												  amount)
 			invoice_util.create_invoice_line_item(
 				ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None,
 				description, amount)
@@ -150,7 +150,7 @@ def viewInvoice(request):
 		http_prefix = 'http://' if environ.get('IS_DEV') == 'True' else 'https://'
 		root_path = http_prefix + request.get_host()
 
-		note = provider.lateFeeInvoiceNote if invoice.is_over_due() else provider.generalInvoiceNote
+		note = invoice.late_fee_note if invoice.is_over_due() else invoice.general_note
 		data = {
 			'invoice_id': invoice.key.id(),
 			'invoice_date': datetime_util.utc_to_local(invoice.time_created).strftime('%m/%d/%Y') if invoice.time_created else '',

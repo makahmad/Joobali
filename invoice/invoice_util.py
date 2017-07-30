@@ -47,6 +47,8 @@ def create_invoice(provider, child, due_date, autopay_source_id=None, amount=Non
     invoice.amount = amount
     invoice.autopay_source_id = autopay_source_id
     invoice.late_fee_enforced = late_fee_enforced
+    invoice.general_note = provider.generalInvoiceNote
+    invoice.late_fee_note = provider.lateFeeInvoiceNote
     invoice.put()
     return invoice
 

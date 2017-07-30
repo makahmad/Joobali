@@ -433,7 +433,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: [$uibModal','$http', '$routeParams','$location', ChildListController],
+        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],
         bindings: {
             checkRequirements : '&',
             dwollaStatus : '@',
