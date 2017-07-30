@@ -329,6 +329,7 @@ def dwolla_webhook(request):
         invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
         if invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']:
             invoice.status = Invoice._POSSIBLE_STATUS['COMPLETED']
+            invoice.amount = 0
             invoice.put()
 
         template = loader.get_template('funding/joobali-to-customer-transfer-completed.html')
