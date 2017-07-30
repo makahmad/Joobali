@@ -58,7 +58,8 @@ def invoice_calculation(request):
 
     logger.info("PAYMENT CALCULATION")
     # loop over invoices...
-    for invoice in Invoice.query().fetch():
+    query = Invoice.query().order(Invoice.time_created)
+    for invoice in query.fetch():
         if not invoice.is_paid() and not invoice.is_processing():
             logger.info("Considering payment for invoice: %s" % invoice)
             for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
