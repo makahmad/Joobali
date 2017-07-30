@@ -21,8 +21,9 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
 
     this.scope_.changeView = function(view) {
-//        console.log("changeView(" + view + ")");
+       // console.log("changeView(" + view + ")");
         $location.path(view);
+
         this.module = view;
 
         $( "#myNavbar" ).removeClass('in');  //collapse mobile menu when switching pages
@@ -34,6 +35,7 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
             ga('send', 'pageview');
         }
     }
+
 
     this.scope_.openReferralComponentModal = function () {
         var modalInstance = $uibModal.open({
@@ -195,13 +197,13 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
              $routeProvider
                  .when('/programs', {templateUrl: '/static/home/programs_component_tmpl.html'})
                  .when('/program/:programId', {template: '<edit-program-component programs="programs"></edit-program-component>'})
-                 .when('/invoice', {template: '<invoice-component invoices="invoices" change-view="changeView()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></invoice-component>'})
+                 .when('/invoice', {template: '<invoice-component invoices="invoices" on-change-view="changeView(view)" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></invoice-component>'})
                  .when('/payments', {template: '<payment-component payments="payments"></payment-component>'})
                  .when('/profile', {template: '<profile-component profile="profile"></profile-component>'})
                  .when('/verification', {template: '<verification-component profile="profile"></verification-component>'})
                  .when('/billing', {template: '<billing-component fundings="fundings"></billing-component>'})
-                 .when('/child/list', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
-                 .when('/child/list/:programId', {template: '<child-list change-view="changeView()" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
+                 .when('/child/list', {template: '<child-list on-change-view="changeView(view)" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
+                 .when('/child/list/:programId', {template: '<child-list on-change-view="changeView(view)" check-requirements="checkRequirements()" dwolla-status="{{this.dwollaStatus}}" funding-sources="{{this.fundings.length}}"></child-list>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .when('/home', {templateUrl: '/static/home/home.html'})
                  .otherwise('/home');
@@ -351,7 +353,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         bindings: {
           invoices: '<',
           dwollaStatus : '@',
-          changeView : '&',
+          onChangeView : '&',
           fundingSources : '@'
         }
     })
@@ -431,11 +433,11 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],
+        controller: [$uibModal','$http', '$routeParams','$location', ChildListController],
         bindings: {
             checkRequirements : '&',
             dwollaStatus : '@',
-            changeView : '&',
+            onChangeView : '&',
             fundingSources : '@'
         }
     })
