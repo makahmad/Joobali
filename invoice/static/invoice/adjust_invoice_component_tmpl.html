@@ -1,13 +1,13 @@
 
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.closeModal()">x</button>
-<h4 class="modal-title">Make Invoice Adjustment (Downward):</h4>
+<h4 class="modal-title">Reduce Invoice Amount:</h4>
 </div>
 <div class="modal-body">
   <div class="col-centered adjustInvoiceForm">
     <form id="adjustInvoiceForm" name="adjustInvoiceForm" role="form" class="well">
         <div class="form-group">
-            <label class="control-label" for="amount">Amount:</label>
+            <label class="control-label" for="amount">Reduce Amount By:</label>
             <div class="input-group">
                 <span class="input-group-addon">$</span>
                 <input type="number" min="0" ng-max="$ctrl.resolve.clickedInvoice.amount" step="0.01" class="form-control" id="amount" name="amount"
@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="form-group">
-              <label class="control-label" for="reason">Adjustment Reason:</label>
+              <label class="control-label" for="reason">Reason:</label>
                <input class="form-control" type="text" id="reason" name="reason"
                    ng-required="true"  ng-model="$ctrl.reason">
               </input>
@@ -27,8 +27,8 @@
             <center>
                 <button type="button" class="btn btn-default btn-lg pull-right joobali"
                         ng-click="$ctrl.adjustInvoice()"
-                        ng-disabled="!adjustInvoiceForm.$valid">Adjust &raquo;</button>
-                <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.cancel()">&laquo; Cancel</a>
+                        ng-disabled="!adjustInvoiceForm.$valid">Save &raquo;</button>
+                <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false"  ng-click="$ctrl.closeModal()">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->
 <!-- <center><button id="saveButton" type="button" class="btn btn-default joobali" ng-click="$ctrl.handleSave()">Save</button></center> -->
