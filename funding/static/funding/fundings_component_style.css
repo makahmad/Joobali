@@ -32,3 +32,11 @@ tr:nth-child(even).fundingRow {
 	background-color: #E7E7E7 !important;
 	cursor: pointer;
 }
+
+.RemoveFundingButton {
+	color:darkgray;
+}
+
+.RemoveFundingButton:hover {
+	color:crimson;
+}

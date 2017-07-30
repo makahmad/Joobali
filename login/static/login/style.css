@@ -347,3 +347,7 @@ a.delete:hover {
     margin: 0px auto 10px;
 	}
 }
+
+.tooltip {
+	min-width:200px !important;
+}
