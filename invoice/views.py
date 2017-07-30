@@ -129,7 +129,7 @@ def viewInvoice(request):
 		parent = Parent.query(Parent.email == invoice.parent_email).fetch(1)[0]
 		child = invoice.child_key.get()
 
-		lineItems = InvoiceLineItem.query(ancestor=invoice.key)
+		lineItems = InvoiceLineItem.query(ancestor=invoice.key).filter(InvoiceLineItem.payment_key == None)
 		total = 0
 		items = []
 		for lineItem in lineItems:

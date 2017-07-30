@@ -66,7 +66,7 @@ def sum_up_amount_due(invoice):
     return amount
 
 def sum_up_original_amount_due(invoice):
-    """Sums up all the payment amount due for this invoice"""
+    """Sums up all the payment amount due for this invoice except payment line items"""
     amount = 0
     # program related payment
     lineItems = InvoiceLineItem.query(ancestor = invoice.key).filter(InvoiceLineItem.payment_key == None)
