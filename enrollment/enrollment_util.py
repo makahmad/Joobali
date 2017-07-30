@@ -21,11 +21,11 @@ def validate_enrollment_date(program, start_date, end_date):
     # Check start date
     start_date_delta = start_date - program.startDate
     if start_date_delta.days < 0:
-        raise JoobaliRpcException(client_viewable_message="enrollment start date earlier than program start date")
+        raise JoobaliRpcException(client_viewable_message="The enrollment start date is earlier than the program start date.")
     if program.endDate is not None:
         end_date_delta = program.endDate - end_date
         if end_date_delta.days < 0:
-            raise JoobaliRpcException(client_viewable_message="enrollment end date later than program end date")
+            raise JoobaliRpcException(client_viewable_message="The enrollment end date is set after this program ends.")
 
 
 def upsert_enrollment(enrollment_input):
