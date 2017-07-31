@@ -203,6 +203,11 @@
 	background:none;
 }
 
+th.ng-binding.ng-scope {
+	background:darkgray;
+	border:none;
+}
+
 @media (min-width: 982px) {
 	.stepsDiv {
 		width: 90%;
@@ -227,13 +232,37 @@
 		display:grid;
 	}
 	.child-card-container, .child-enrollment-container {
-		display: flex;
+		display: block;
     font-size: small;
+		width:98%;
 	}
+	.enrollmentList td {
+		display:block;
+		text-align: left;
+		border:none;
+	}
+	
+	.enrollmentList td:nth-of-type(1):before { content: "Program Name: "; font-weight:bold !important; }
+	.enrollmentList td:nth-of-type(2):before { content: "Status: "; }
+	.enrollmentList td:nth-of-type(3):before { content: "Start Date: "; }
+	.enrollmentList td:nth-of-type(4):before { content: "End Date: "; }
+	.enrollmentList td:nth-of-type(5):before { content: "Billing Frequency: "; }
+	.enrollmentList td:nth-of-type(6):before { content: "Autopay?: "; }
+	.enrollmentList td:nth-of-type(7):before { content: ;}
+	
 	.enrollmentList th {
 		max-width:40px;
 		text-overflow:ellipsis;
 		overflow:hidden;
+		display:none;
+	}
+	.addToProgram {
+	    margin: 10px;
+	    display: block;
+	    position: relative;
+	}
+	.enrollProgram {
+		float:none;
 	}
 }
 	
