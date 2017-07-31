@@ -23,12 +23,14 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
 
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
-        dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
+        dateDisabled: angular.bind(this, this.enrollmentDisabledDate),
+				showWeeks: false
     }
 
     this.enrollmentEndDatePickerOptions = {
         minDate: this.todayDate,
-        dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
+        dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate),
+			showWeeks: false
     }
 
     self.saveButton.click = function() {
