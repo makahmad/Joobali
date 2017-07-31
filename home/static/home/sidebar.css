@@ -216,6 +216,7 @@ html,body { height:100%;
     position: absolute;
     top: 0;
     left: 111px;
+		display:none;
 	}
  program-component {
 	 display: block;
