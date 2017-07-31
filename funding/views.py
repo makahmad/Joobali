@@ -109,8 +109,16 @@ def updateGeneralBilling(request):
 
     # provider general billing update
     provider = Provider.get_by_id(request.session['user_id'])
-    provider.lateFee = float(generalBilling['lateFee'])
-    provider.graceDays = int(generalBilling['graceDays'])
+
+    if generalBilling['lateFee']:
+        provider.lateFee = float(generalBilling['lateFee'])
+    else:
+        provider.lateFee = 0
+
+    if generalBilling['graceDays']:
+        provider.graceDays = int(generalBilling['graceDays'])
+    else:
+        provider.graceDays = 0
 
     try:
         provider.lateFeeInvoiceNote = generalBilling['lateFeeInvoiceNote']

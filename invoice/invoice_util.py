@@ -47,6 +47,8 @@ def create_invoice(provider, child, due_date, autopay_source_id=None, amount=Non
     invoice.amount = amount
     invoice.autopay_source_id = autopay_source_id
     invoice.late_fee_enforced = late_fee_enforced
+    invoice.general_note = provider.generalInvoiceNote
+    invoice.late_fee_note = provider.lateFeeInvoiceNote
     invoice.put()
     return invoice
 
@@ -97,6 +99,17 @@ def get_invoice_late_fee_added(invoice):
             if lineItem.description == 'Late Fee':
                 return True
     return False
+
+def get_invoice_snippet(invoice):
+    """ Gets a brief description of what the invoice involves """
+    lineItems = InvoiceLineItem.query(ancestor = invoice.key)
+    program = get_invoice_program(invoice)
+    if program:
+        return program.programName
+    for lineItem in lineItems:
+        if 'Registration' in lineItem.description:
+            return lineItem.description
+    return ''
 
 def get_invoice_period(invoice):
     """ Gets the start and end date of current invoice billing period"""

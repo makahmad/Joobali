@@ -1,4 +1,5 @@
 <!doctype html>
+{% load humanize %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
         <center>
@@ -144,12 +145,12 @@
 
                                 {% if is_recurring %}
 <strong>Program Name:&nbsp;</strong>{{ program_name }}<br>
-<strong>Program Fee:&nbsp;</strong>${{ amount }}<br>
+<strong>Program Fee:&nbsp;</strong>${{ amount | floatformat:2 | intcomma }}<br>
 <strong>Due Date:&nbsp;</strong>{{ due_date }}<br>
 <strong>Payment Frequency:&nbsp;</strong>{{ program_billing_frequency }}<br>
 <strong>Billing Period:&nbsp;</strong>{{ start_date }} -&nbsp;{{ end_date }}<br>
                                 {% else %}
-<strong>Amount Due:&nbsp;</strong>${{ amount }}<br>
+<strong>Amount Due:&nbsp;</strong>${{ amount | floatformat:2 | intcomma }}<br>
                                 {% endif %}
 &nbsp;</div>
 

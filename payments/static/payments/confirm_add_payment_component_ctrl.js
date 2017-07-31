@@ -24,8 +24,13 @@ ConfirmAddPaymentComponentController.prototype.addPayment = function() {
     var self = this;
 
     var invoice_id;
-    if (self.newPayment.invoice!=null)
+
+    if (self.newPayment.invoice) {
         invoice_id = self.newPayment.invoice.id;
+    } else {
+        bootbox.alert("A invoice must be selected for adding payment.");
+        return;
+    }
     console.log("addPayment is clicked");
     var data = {
         'child_id': self.newPayment.child.id,

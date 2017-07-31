@@ -30,10 +30,10 @@
                 </thead>
                 <tr>
                     <td>{{$ctrl.enrollmentDetail.program.programName}}</td>
-                    <td>${{$ctrl.enrollmentDetail.program.registrationFee}}</td>
-                    <td>${{$ctrl.enrollmentDetail.program.fee}}</td>
+                    <td>{{$ctrl.enrollmentDetail.program.registrationFee | currency}}</td>
+                    <td>{{$ctrl.enrollmentDetail.program.fee | currency }}</td>
                     <td>{{$ctrl.enrollmentDetail.program.billingFrequency}}</td>
-                    <td>${{$ctrl.enrollmentDetail.program.lateFee}}</td>
+                    <td>{{$ctrl.enrollmentDetail.program.lateFee | currency}}</td>
                     <td>{{$ctrl.enrollmentDetail.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>
                     <td>{{$ctrl.enrollmentDetail.enrollment.status}}</td>
                 </tr>

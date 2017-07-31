@@ -1,4 +1,5 @@
 <!doctype html>
+{% load humanize %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
     <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
         <center>
@@ -74,7 +75,7 @@
 &nbsp;</div>
 
 <div style="text-align: left;"><strong>Payment&nbsp;Failed.</strong><br>
-The payment of ${{ amount }} from {{ sender }} for child {{ child_name }} failed.<br>
+The payment of ${{ amount | floatformat:2 | intcomma }} from {{ sender }} for child {{ child_name }} failed.<br>
 <br></div>
 
 <div style="text-align: left;">&nbsp;</div>
@@ -129,7 +130,7 @@ The payment of ${{ amount }} from {{ sender }} for child {{ child_name }} failed
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             <div style="text-align: left;"><strong>Payment Status: </strong><em>Failed</em><br>
-                              <strong>Payment Amount: </strong>${{ amount }}<br>
+                              <strong>Payment Amount: </strong>${{ amount | floatformat:2 | intcomma }}<br>
   <strong>Date of Transfer: </strong> {{ created_date }}<br>
   <strong>Payer: </strong> {{ sender }}<br>
 </div>

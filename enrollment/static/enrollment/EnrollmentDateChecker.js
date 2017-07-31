@@ -42,11 +42,9 @@ angular.module('joobali.base', []).service('EnrollmentDateChecker', function($lo
   }
 
   this.isEnrollmentEndDateDisabled = function(dateAndMode, program, enrollmentStartDate) {
-    $log.info("dateAndMode: " + angular.toJson(dateAndMode) + ", enrollmentStartDate: " + angular.toJson(enrollmentStartDate));
     if (dateAndMode.mode === 'day') {
         var date = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
         if (enrollmentStartDate) {
-            $log.info(date <= enrollmentStartDate);
             if (date <= enrollmentStartDate) {
                 return true;
             }
