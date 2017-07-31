@@ -4,13 +4,16 @@
 </div>
 
 <div class="modal-body">
-    <div class="panel">
-        Do you want to resend notification to parent ?
-    </div>
-    <div class="panel panel-footer">
-        <button type="button" class="btn btn-danger" ng-click="$ctrl.resendEnrollmentInvitation()">Yes</button>
-        <button type="button" class="btn btn-primary" ng-click="$ctrl.closeModal()">No</button>
+    <div style="text-align:center;">
+        Are you sure you want to resend an enrollment notification email to the parent?
     </div>
 </div>
 
-<div class="modal-footer"></div>
+<div class="modal-footer">
+    <div class="formActions">
+        <center>
+	        <button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.resendEnrollmentInvitation()">Yes, resend &raquo;</button>
+	        <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false" ng-click="$ctrl.closeModal()">&laquo; Cancel</a>
+				</center>
+			</div>
+		</div>
