@@ -379,7 +379,7 @@ footer .glyphicon {
 		margin-left:10px;
 }
 
-.programHeader:hover {
+.programHeader:hover, .formInstructions:hover {
 	cursor:pointer;
 }
 
@@ -390,6 +390,30 @@ footer .glyphicon {
 	padding: 10px 20px;
 	margin:5px auto 0;
 	min-width: 80%
+}
+
+.programsHelp.pageInstructions{
+	text-align: left;
+  display: block;
+  margin: 5px;
+  width: 295px;
+	min-width:295px;
+  position: relative;
+  left: 0;
+  right: 0;
+  top: -4px;
+	font-size:14px;
+	color: #4F4837;
+}
+
+.programsHelp.pageInstructions:hover{
+	cursor: pointer;
+}
+
+@media screen and (max-width: 1170px) {
+	.programsHelp.pageInstructions {
+		min-width:100%;
+	}
 }
 
 .fa-question-circle-o:hover {

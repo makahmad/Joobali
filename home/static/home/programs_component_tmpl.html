@@ -1,7 +1,11 @@
 <div class="programHeader" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"><b>Programs</b> <sup><i class="fa fa-question-circle fa-lg"></i></sup></div>
-	<span class="pageInstructions" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; A program is a set dollar amount to bill parents on a weekly or monthly basis. Some common program names include <i>Full-time</i>, <i>Part-time</i>, and <i>Extended care</i>.</span>
+
 <div class="programsContainer">	
     <div class="programsDiv">
+			<span class="programsHelp pageInstructions" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; A program is a set dollar amount to bill parents on a weekly or monthly basis.</span>
+				<span class="programsHelp pageInstructions" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions">Some common program names include <i>Full-time</i>, <i>Part-time</i>, and <i>Extended care</i>. You can have an unlimited number of programs.</span>
+				<span class="programsHelp pageInstructions" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions">You can add multiple programs to a child. For example, a parent may be billed for both the <i>Full-time</i> and <i>Extended care</i> programs on one invoice. <!-- Think of programs as a line-item on an invoice. --></span>
+				
 		  <div class="well well-sm">
 			    <div class="buttonDiv">
 			        <a class="btn btn-default btn-lg pull-right programHeader joobali" data-toggle="modal" data-target="#addProgramModal"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Add a program</a>
