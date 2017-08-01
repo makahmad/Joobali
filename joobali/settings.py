@@ -125,6 +125,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -192,4 +193,4 @@ SSLIFY_DISABLE_FOR_REQUEST = [
     lambda request: request.get_full_path().startswith('/tasks')
 ]
 # Comment this line before deploy to PROD. Uncomment for UAT.
-#SSLIFY_DISABLE = True
+# SSLIFY_DISABLE = True

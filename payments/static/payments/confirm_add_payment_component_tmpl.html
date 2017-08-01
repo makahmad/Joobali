@@ -11,8 +11,8 @@
 											<b>{{$ctrl.newPayment.child.first_name}} {{$ctrl.newPayment.child.last_name}}</b>
 		            	</div>
 		            <div class="form-group">
-		                <label class="control-label" >Invoice (optional):</label>
-		                       <b>{{$ctrl.newPayment.invoice.invoiceDescription}}</b>
+		                <label class="control-label" >Invoice:</label>
+		                       <b>{{ $ctrl.newPayment.invoice.id + ' (' + $ctrl.newPayment.invoice.snippet + ' - $' + $ctrl.newPayment.invoice.amount + ')' }}</b>
 		            	</div>
 		            <div class="form-group">
 		                <label class="control-label" >Payer:</label>

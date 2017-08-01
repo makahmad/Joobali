@@ -22,6 +22,8 @@ from payments.models import Payment
 from common import datetime_util
 from common.request import get_host_from_request
 from tasks.models import DwollaTokens
+from funding.models import FeeRate
+from funding import funding_util
 import logging
 import json
 
@@ -35,6 +37,23 @@ def data_cleaning(request):
             invoice_line_item.key.delete()
 
     return HttpResponse(status=200)
+
+def process_fee(request):
+    now = datetime.now()
+
+    providers = Provider.query().fetch()
+    for provider in providers:
+        if provider.time_created:
+            if provider.time_created + timedelta(days=360) > now:
+                rate = funding_util.get_fee_rate(provider.key.id())
+                if not rate:
+                    fee_rate = FeeRate()
+                    fee_rate.provider_key = provider.key
+                    fee_rate.rate = 0.01 # 1% for everyone
+                    fee_rate.put()
+
+    return HttpResponse(status=200)
+
 
 def invoice_calculation(request):
     now = datetime.now()

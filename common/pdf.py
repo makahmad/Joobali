@@ -10,7 +10,7 @@ def render_to_pdf(template_src, context_dict):
     template = get_template(template_src)
     context = Context(context_dict)
     html  = template.render(context)
-    #return HttpResponse(html) # for debugging only.
+    return HttpResponse(html) # for debugging only.
     result = StringIO.StringIO()
 
     pdf = pisa.pisaDocument(StringIO.StringIO(html.encode("ISO-8859-1")), dest=result)

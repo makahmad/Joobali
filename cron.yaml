@@ -17,3 +17,6 @@ cron:
 - description: refresh dwolla access token
   url: /tasks/dwolla_token_refresh/
   schedule: every 30 minutes
+- description: add fee after free trial
+  url: /tasks/process_fee/
+  schedule: every day 09:00
