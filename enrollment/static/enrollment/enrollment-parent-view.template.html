@@ -1,6 +1,6 @@
 <div class="panel-group">
     <div class="panel panel-default">
-        <div class="panel-heading">Enrollment about child {{$ctrl.enrollmentDetail.child.first_name}}</div>
+        <div class="panel-heading">Enrollment for <strong>{{$ctrl.enrollmentDetail.child.first_name}}</strong></div>
         <div class="panel-body">
             <table class="table table-bordered table-hover specialCollapse">
                 <thead>
@@ -13,17 +13,17 @@
                 </tr>
             </table>
         </div>
-        <div class="panel-footer"></div>
+        <!-- <div class="panel-footer"></div> -->
     </div>
     <div class="panel panel-default">
         <div class="panel-heading">Enrollment and Program Details</div>
         <div class="panel-body">
-            <table class="table table-bordered table-hover specialCollapse">
+            <table class="table table-bordered table-hover specialCollapse enrollmentProgramDetails">
                 <thead>
                 <th>Program Name</th>
                 <th>Program Registration fee</th>
                 <th>Program fee</th>
-                <th>Program billing cycle type</th>
+                <th>Billing Frequency</th>
                 <th>Program late fee</th>
                 <th>Enrollment start date</th>
                 <th>Enrollment status</th>
