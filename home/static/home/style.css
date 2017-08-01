@@ -401,7 +401,7 @@ footer .glyphicon {
   position: relative;
   left: 0;
   right: 0;
-  top: -4px;
+  top: -20px;
 	font-size:14px;
 	color: #4F4837;
 }
@@ -636,21 +636,23 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 
 /* ----------------- Children Styles ------------------ */
 .addToProgram {
-	margin:0;
+  margin: -10px 2% 0 2%;
+  text-align: right;
+  padding: 0 0 2% 0;
+  width: 96%;
 }
 
 .enrollProgram {
-	float:right;
 	position:relative;
-	top:-15px;
-	right:0px;
 }
 
 .child-enrollment-container{
-	width:62%;
-	margin:10px 10px 0 0;
+/*	margin:10px;
   display: inline-block;
-  float: left;
+  float: left;*/
+  margin: 0 2% 0 2%;
+  width: 96%;
+  display: block;
 }
 
 .childrenListContainer {
@@ -676,8 +678,13 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 }
 
 .childrenList td, .childrenList th {
-    padding: 5px 12px;
+    padding: 5px 10px;
 	}
+	
+.childrenList th {
+	text-transform:uppercase;
+	font-size:smaller;
+}
 
 /* ----------------- Modals Override ----------------- */
 .modal-title {

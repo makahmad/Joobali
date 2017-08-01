@@ -7,7 +7,7 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         'Start Date',
         'End Date',
         'Billing Frequency',
-        'Is Auto pay ?'
+        'Autopay?'
     ];
 
     this.enrollmentMap = {

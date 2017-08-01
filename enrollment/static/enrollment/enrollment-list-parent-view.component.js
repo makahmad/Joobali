@@ -5,7 +5,7 @@ EnrollmentListParentViewController = function EnrollmentListParentViewController
         'Program Name',
         'Status',
         'Start Date',
-        'Is Auto Pay ?'
+        'Autopay?'
     ];
 }
 

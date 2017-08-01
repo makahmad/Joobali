@@ -17,7 +17,7 @@
   transition: 0.1s;
   background: white;
   box-shadow: 0 0px 67px 0 rgba(0,0,0,0.1);
-	display: flex;
+	display: block;
 }
 
 .child-card:hover {
@@ -32,9 +32,15 @@
 
 .child-card-container {
     padding: 2px 16px;
-    float: left;
-    display: inline-block;
-		width:35%;
+/*    float: left;
+    display: inline-block;*/
+		width:100%;
+    display: block;
+}
+
+.child-card-container tr td {
+	text-transform:uppercase;
+	font-size:smaller;
 }
 
 .child-list-filter-options {
@@ -205,7 +211,9 @@
 
 th.ng-binding.ng-scope {
 	background:darkgray;
+	color:#6E6E6E;
 	border:none;
+	text-align:center;
 }
 
 @media (min-width: 982px) {
@@ -249,6 +257,12 @@ th.ng-binding.ng-scope {
 	.enrollmentList td:nth-of-type(5):before { content: "Billing Frequency: "; }
 	.enrollmentList td:nth-of-type(6):before { content: "Autopay?: "; }
 	.enrollmentList td:nth-of-type(7):before { content: ;}
+	
+	.child-enrollment-container{
+		width:90%;
+		margin:10px 5% 0 5%;
+	  display: block;
+	}
 	
 	.enrollmentList th {
 		max-width:40px;
