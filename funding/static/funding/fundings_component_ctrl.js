@@ -7,14 +7,15 @@ FundingsComponentController = function($location, $http) {
 FundingsComponentController.prototype.removeFunding = function(funding) {
 
     bootbox.confirm({
-        message: "Are you sure you want to remove funding source - " + funding.name,
+        message: "Are you sure you want to remove this funding source - " + funding.name + "?",
         buttons: {
             confirm: {
                 label: 'Yes',
-                className: 'btn-success'
+                className: 'btn btn-default btn-lg pull-right joobali'
             },
             cancel: {
                 label: 'No',
+								className: 'btn btn-default btn-lg pull-right'
             }
         },
         callback: angular.bind(this, function(result) {
