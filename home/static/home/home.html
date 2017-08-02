@@ -10,9 +10,10 @@
 				<h4><a href="#!/billing">Add Your Bank Account</a></h4>
 				<!-- <div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-2x"></i> &nbsp;You will receive money from parents directly to this account. You may only need your bank login information; however, it wouldn’t hurt to have your account # and/or routing # available.</div> -->
 			</li>
-			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': dwollaStatus != 'verified'}">&nbsp;</span> 
+			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': dwollaStatus == 'verified'}">&nbsp;</span>
 				<i class="fa fa-check-circle-o fa-3x"></i>
-				<h4><a href="#!/verification">Verfy Your Bank Account</a></h4>
+				<h4 ng-show="dwollaStatus == 'verified'">Verfy Your Bank Account</h4>
+				<h4 ng-show="dwollaStatus != 'verified'"><a href="#!/verification">Verfy Your Bank Account</a></h4>
 			</li>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': programs.length > 0}">&nbsp;</span> 
 				<i class="fa fa-list-alt fa-3x"></i> 
