@@ -910,3 +910,50 @@ payments-component .table tr a, invoices-component .table tr a {
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
 	background:#ccc;
 }
+
+
+/*----------------- Getting Started Multi-step Guide ------------------*/
+
+.indicatorWrap {
+  border-radius: 50%;
+  color: #fff;
+  display: inline-block;
+  height: 3em;
+	width: 3em;
+  border: .61em solid #f2f2f2;
+}
+
+.indicatorFill {
+	background:#339999;
+}
+
+.step {
+	list-style:none;
+	margin:0 0 3em 0;
+}
+
+.step i {
+  position: relative;
+  top: .25em;
+  margin: 0 2%;
+}
+
+.step h4 {
+  display: inline-block;
+  position: relative;
+  top: .2em;
+  font-size: 1em;
+}
+.step .description {
+	text-align: left;
+  display: block;
+  background: #FFEAAD;
+  padding: .5em 1em;
+  margin: 5px auto 0;
+  min-width: 80%;
+}
+i.fa.fa-caret-up {
+    position: inherit;
+    top: inherit;
+    margin: auto;
+}
