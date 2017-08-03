@@ -124,7 +124,8 @@ def get_enrollment(provider_id, enrollment_id):
 
 
 def list_enrollment_by_provider_and_child(provider_key, child_key):
-    enrollment_query = Enrollment.query(Enrollment.child_key == child_key, ancestor=provider_key)
+    enrollment_query = Enrollment.query(Enrollment.child_key == child_key,
+                                        ancestor=provider_key).order(-Enrollment.start_date)
     enrollments = list()
     for enrollment in enrollment_query:
         enrollments.append(enrollment)
@@ -133,7 +134,7 @@ def list_enrollment_by_provider_and_child(provider_key, child_key):
 
 def list_enrollment_by_provider_and_child_and_program(provider_key, child_key, program_key):
     enrollment_query = Enrollment.query(Enrollment.child_key == child_key, Enrollment.program_key == program_key,
-                                        ancestor=provider_key)
+                                        ancestor=provider_key).order(-Enrollment.start_date)
 
     if enrollment_query is None:
         logger.info("enrollment_query is none")

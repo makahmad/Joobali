@@ -7,12 +7,13 @@
     <ul>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': fundings.length > 0}">&nbsp;</span> 
 				<i class="fa fa-institution fa-3x"></i>
-				<h4><a href="#!/billing">Add Your Bank Account</a></h4><sup><i class="fa fa-question-circle-o fa-2x"></i></sup>
+				<h4><a href="#!/billing">Add Your Bank Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
 				<!-- <div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-2x"></i> &nbsp;You will receive money from parents directly to this account. You may only need your bank login information; however, it wouldn’t hurt to have your account # and/or routing # available.</div> -->
 			</li>
-			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': dwollaStatus != 'verified'}">&nbsp;</span> 
+			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': dwollaStatus == 'verified'}">&nbsp;</span>
 				<i class="fa fa-check-circle-o fa-3x"></i>
-				<h4><a href="#!/verification">Verfy Your Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+				<h4 ng-show="dwollaStatus == 'verified'">Verfy Your Account</h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+				<h4 ng-show="dwollaStatus != 'verified'"><a href="#!/verification">Verfy Your Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
 			</li>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': programs.length > 0}">&nbsp;</span> 
 				<i class="fa fa-list-alt fa-3x"></i> 

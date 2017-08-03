@@ -167,7 +167,7 @@
                 <div class="form-group">
                     <label class="control-label" for="dateOfBirth">Date of Birth <small>(MM/DD/YYYY)</small>:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-birthday-cake fa-lg" aria-hidden="true"></i></span>
+											<span class="input-group-addon"><i class="fa fa-birthday-cake fa-lg" ng-click="$ctrl.openDateOfBirthPicker()" aria-hidden="true"></i></span>
                         <input id="dateOfBirth" name="dateOfBirth"
                                type="text" class="form-control"
                                datepicker-popup-template-url="/static/home/datepicker.template.html"
@@ -175,7 +175,6 @@
                                datepicker-options="{maxDate: $ctrl.today}"
                                ng-model="$ctrl.profile.dateOfBirth"
                                is-open="$ctrl.dateOfBirthPickerOpened"
-                               ng-click="$ctrl.openDateOfBirthPicker()"
                                close-text="Close"/>
                     </div>
                 </div>

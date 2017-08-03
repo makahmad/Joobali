@@ -70,6 +70,12 @@ def list_fundings(customer_url):
         #                            u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'}},
         #  u'status': u'unverified', u'type': u'bank', u'name': u'123', u'removed': True}
         if funding['type'] != 'balance' and funding['removed'] != True:
+            if funding['status'] == 'verified':
+                funding['status'] = 'Connected'
+
+            if funding['type'] == 'bank':
+                funding['type'] = 'Bank'
+
             fundings.append({
                 "status": funding['status'],
                 "type": funding['type'],
