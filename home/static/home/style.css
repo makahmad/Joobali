@@ -955,6 +955,6 @@ payments-component .table tr a, invoices-component .table tr a {
 }
 i.fa.fa-caret-up {
     position: inherit;
-    top: inherit;
+    /*top: inherit;*/
     margin: auto;
 }
