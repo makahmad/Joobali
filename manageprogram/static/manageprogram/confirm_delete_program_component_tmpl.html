@@ -15,13 +15,13 @@
 			            <div class="col-1">
 			                <label class="control-label" >Start Date:</label>
 			                <div class="input-group date">
-			                    {{$ctrl.program.startDate}}
+			                    {{$ctrl.program.startDate | date: 'MM/dd/yyyy':'PST'}}
 			                </div>
 			            </div>
 			            <div class="col-1">
 			                <label class="control-label">End Date:</label>
 			                <div class="input-group date">
-			                    {{$ctrl.program.endDate}}
+			                    {{$ctrl.program.endDate | date: 'MM/dd/yyyy':'PST'}}
 
 			                </div>
 			            </div>
