@@ -1,6 +1,6 @@
 var TIME_FORMAT =  'hh:mm A';
 
-EditProgramComponentController = function($uibModal,$http, $window, $location) {
+EditProgramComponentController = function($scope,$uibModal,$http, $window, $location) {
 //    console.log('EditProgramComponentController running');
 	this.http_ = $http;
 	this.window_ = $window;
@@ -9,28 +9,10 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 	this.newSession = {};
     this.showConflictLabel = false;
     this.location_ = $location;
+    this.dateFormat = "MM/DD/YYYY";
 
-//    TODO: add session editing
-//	$http({
-//		method: 'GET',
-//		url: '/manageprogram/listsessions',
-//		params: {id: this.programId}
-//	}).then(angular.bind(this, function successCallback(response) {
-//		// this callback will be called asynchronously
-//		// when the response is available
-//		console.log(response);
-//	    this.sessions = [];
-//	    angular.forEach(response.data, angular.bind(this, function(session) {
-//	    	this.sessions.push(JSON.parse(session));
-//	    }));
-//		console.log(this.sessions);
-//
-//	}), function errorCallback(response) {
-//		// called asynchronously if an error occurs
-//		// or server returns response with an error status.
-//		console.log(response);
-//	});
-	this.initializeTimePickers();
+
+//	this.initializeTimePickers();
 
     var $ctrl = this;
     this.program.showLastDayCheckbox = false;
@@ -54,32 +36,47 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
             // when the response is available
 
             this.program = JSON.parse(response.data[0]);
+            this.program.hasEnrollment = response.data[1].hasEnrollment;
 
             var startDate = moment(new Date(this.program.startDate));
 
-            //if day of start date is the last day of the month, show Last Day checkbox
-            if (startDate.format('D') == startDate.daysInMonth())
-            {
-                this.program.showLastDayCheckbox = true;
+            this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
+            this.dayOfMonthDisplayOnly = startDate.format('Do'); //change 1 to 1st, 2 to 2nd....
+            this.startDateDisplayOnly = startDate.format('MM/DD/YYYY');
 
-                //monthly bill day is "Last Day" check Last Day checkbox
-               if (this.program.monthlyBillDay=="Last Day")
-                    this.program.lastDay = true;
+            this.openStartDatePicker = false;
+            this.endDatePickerOpened = false;
+
+            this.showLastDayCheckbox = false;
+            this.disableLastDayCheckbox = false;
+
+
+            this.whenChangeEndDate();
+
+            this.startDatePickerOptions = {
+                minDate: moment().add(6, 'day')
             }
-            else
-                this.program.showLastDayCheckbox = false;
 
-            this.setProgramInfoDisplay(this.program);
-
-            this.program.startDate = moment(this.program.startDate).format('MM/DD/YYYY');
-
-            if (this.program.endDate)
-                this.program.endDate = moment(this.program.endDate).format('MM/DD/YYYY');
+            this.endDatePickerOptions = {
+                minDate: startDate.add(1, 'day'),
+                dateDisabled: angular.bind(this, this.disabledEndDate)
+            }
 
 
+            $ctrl.openStartDatePicker = function () {
+                this.startDatePickerOpened = true;
+            };
 
-//            if(this.program.monthlyBillDay!=null && this.program.monthlyBillDay!="Last Day")
-//                this.program.monthlyBillDay = parseInt(this.program.monthlyBillDay);
+            $ctrl.openEndDatePicker = function () {
+                this.endDatePickerOpened = true;
+            };
+
+            this.program.startDate = new Date(this.program.startDate);
+
+            if (!this.program.indefinite)
+                this.program.endDate = new Date(this.program.endDate);
+
+
 
         }), function errorCallback(response) {
             // called asynchronously if an error occurs
@@ -100,6 +97,117 @@ EditProgramComponentController = function($uibModal,$http, $window, $location) {
 
 };
 
+
+// Disable invalid choices for billing end date
+EditProgramComponentController.prototype.disabledEndDate = function(dateAndMode) {
+
+    var result = false;
+    var startDate = new Date(this.program.startDate);
+    if (dateAndMode.mode === 'day') {
+
+        if (this.program.billingFrequency != null) {
+
+            //if weekly billing then end date must fall on the same day of the week
+            if (this.program.billingFrequency === 'Weekly') {
+                result =  (dateAndMode.date<=this.program.startDate
+                || dateAndMode.date.getDay() != moment(startDate).format('d')
+                );
+            }
+
+            //if start date is last day of the month, then end date must be last day of the next month
+            else if (this.program.billingFrequency === 'Monthly' && this.program.lastDay) {
+                var daysInStartDateMonth = moment(startDate).daysInMonth();
+                var lastDayInStartDateMonth = moment(startDate).date(daysInStartDateMonth);
+                var daysInEndDateMonth = moment(dateAndMode.date).daysInMonth();
+
+                result = (dateAndMode.date<=lastDayInStartDateMonth
+                            || dateAndMode.date.getDate() != daysInEndDateMonth);
+            }
+
+            //if monthly billing and not last day of the month, then end date must fall on the same day of the month
+            else if (this.program.billingFrequency === 'Monthly') {
+                result = (dateAndMode.date<=this.program.startDate
+                            || dateAndMode.date.getDate() != moment(startDate).format('D'));
+            }
+        }
+    }
+    return result;
+
+}
+
+EditProgramComponentController.prototype.whenChangeStartDateOrFrequency = function() {
+    var startDate = moment(this.program.startDate);
+
+    this.dayOfWeekDisplayOnly = startDate.format('dddd'); //change 0 to Sunday, 1 to Monday....
+    this.dayOfMonthDisplayOnly = startDate.format('Do'); //change 1 to 1st, 2 to 2nd....
+    this.startDateDisplayOnly = startDate.format('MM/DD/YYYY');
+    this.disableLastDayCheckbox = false;
+
+    //if day of start date is the last day of the month, show Last Day checkbox
+    if (startDate.format('D') == startDate.daysInMonth())
+    {
+       this.program.showLastDayCheckbox = true;
+
+        //if day of last day is the 31st, then check the Last Day checbkox and make it read only
+       if (startDate.format('D') == 31)
+       {
+            this.program.lastDay = true;
+            this.disableLastDayCheckbox = true;
+       }
+    }
+    else
+    {
+        this.program.lastDay = false;
+        this.program.showLastDayCheckbox = false;
+    }
+
+    this.program.endDate = null;
+
+    this.whenChangeEndDate();
+}
+
+EditProgramComponentController.prototype.whenChangeEndDate = function() {
+
+    if(this.program.billingFrequency=='Monthly' && this.program.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the last day of '+
+        'each month starting '+this.startDateDisplayOnly;
+    else if(this.program.billingFrequency=='Monthly' && !this.program.lastDay)
+        this.programInfoDisplay = 'We will automatically collect fees for this program on the '+this.dayOfMonthDisplayOnly+
+                              ' day of each month starting '+this.startDateDisplayOnly;
+    else if(this.program.billingFrequency=='Weekly')
+        this.programInfoDisplay = 'We will automatically collect fees for this program weekly on '+this.dayOfWeekDisplayOnly+'s'+
+                              ' starting '+this.startDateDisplayOnly;
+
+    if(this.program.endDate)
+        this.programInfoDisplay += ' and ending on '+moment(this.program.endDate).format('MM/DD/YYYY')+'.';
+    else
+        this.programInfoDisplay += ' indefinitely.'
+}
+
+EditProgramComponentController.prototype.whenChangeLastDay = function() {
+
+    if (this.program.startDate && this.program.endDate)
+    {
+        var endDate = moment(this.program.endDate);
+        var startDate = moment(this.program.startDate);
+
+
+        //if last day is checked, and end date is not last day of a month, clear end date
+        if (this.program.lastDay && endDate.format('D') != endDate.daysInMonth())
+            this.program.endDate = null;
+
+        //if last day is unchecked, and end date is not the same day of a start month, clear end date
+        if (!this.program.lastDay && startDate.format('D')!=endDate.format('D'))
+            this.program.endDate = null;
+
+    }
+
+    this.whenChangeEndDate();
+
+}
+
+
+/*
 EditProgramComponentController.prototype.setProgramInfoDisplay = function(program) {
 //console.log(program);
     var startDate = moment(program.startDate);
@@ -149,7 +257,7 @@ EditProgramComponentController.prototype.initializeTimePickers = function() {
         this.program.dueDate = $('#dueDate').val();
     }));
 **/
-
+/*
     $('#startTime').datetimepicker({
         format: 'hh:mm A',
     })
@@ -186,9 +294,24 @@ EditProgramComponentController.prototype.rollUpEndTime = function() {
 		this.newSession.endTime = $('#endTime').val();
 	}
 };
-
+*/
 
 EditProgramComponentController.prototype.saveProgram = function() {
+
+
+
+    this.program.startDate =  moment(this.program.startDate).format('MM/DD/YYYY');
+
+    this.program.indefinite = false;
+    this.program.endDateStr = null;
+    if (this.program.endDate!=null)
+        this.program.endDate =  moment(this.program.endDate).format('MM/DD/YYYY');
+    else
+    {
+        this.program.endDateStr = "Indefinite";
+        this.program.indefinite = true;
+    }
+
 	this.http_({
 		method: 'POST',
 		url: '/manageprogram/updateprogram',
@@ -228,7 +351,7 @@ EditProgramComponentController.prototype.deleteProgram = function() {
 		}
 	);
 };
-
+/*
 EditProgramComponentController.prototype.addSession = function(session) {
 	session['programId'] = this.programId;
 	this.http_({
@@ -336,9 +459,7 @@ EditProgramComponentController.prototype.isSessionEditing = function() {
 	return false;
 };
 
-/**
- * TODO: refactor this method into a common helper class.
- */
+
 EditProgramComponentController.prototype.addNewSession = function() {
 	if (this.validateCurrentForm('#sessionForm')) {
 		var newSession = {};
@@ -372,6 +493,7 @@ EditProgramComponentController.prototype.addNewSession = function() {
  * NOTE: the {newSession} input must be fully populated.
  * TODO: refactor this method into a common helper class.
  */
+ /*
 EditProgramComponentController.prototype.validateNewSession = function(newSession) {
 
 	var dates = newSession.repeatOn.split(',');
@@ -408,7 +530,7 @@ EditProgramComponentController.prototype.validateNewSession = function(newSessio
 	}
 	return true;
 };
-
+*/
 
 EditProgramComponentController.prototype.validateCurrentForm = function(formSelector) {
 	var curContent = $(formSelector);

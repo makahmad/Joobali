@@ -122,7 +122,10 @@ AddProgramFormComponentController.prototype.whenChangeStartDateOrFrequency = fun
        }
     }
     else
+    {
+        this.newProgram.lastDay = false;
         this.newProgram.showLastDayCheckbox = false;
+    }
 
     this.newProgram.endDate = null;
 

@@ -7,6 +7,118 @@
   <div class="modal-body">
 		<div class="col-centered programOverviewForm">
 		    <form id="programForm"  name="programForm"  role="form" class="well">
+				
+				
+				
+				<div class="form-group">
+					<label class="control-label" for="programName">Name:</label>
+					<input type="text" class="form-control" id="programName" name="programName" ng-required="true"
+						   ng-model="$ctrl.program.programName">
+				</div>
+				<div class="form-group">
+					<label class="control-label" for="fee">Fee:</label>
+					<div class="input-group">
+						<span class="input-group-addon">$</span>
+						<input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee"
+							   ng-required="true" ng-model="$ctrl.program.fee" ng-disabled="$ctrl.program.hasEnrollment">
+						<span class="input-group-addon">
+					<label class="radio-inline"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
+													   ng-required="true" value="Weekly" ng-disabled="$ctrl.program.hasEnrollment">Weekly</label>
+					<label class="radio-inline"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
+													   ng-required="true" value="Monthly" ng-disabled="$ctrl.program.hasEnrollment">Monthly</label>
+				  </span>
+					</div>
+				</div>
+				
+								<div class="form-group">
+									<label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When is the first (or next) fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>(MM/DD/YYYY)</small></label>
+									<div class="input-group date">
+
+
+										<input name="startDate"
+											   type="text" class="form-control"
+                                               uib-datepicker-popup="MM/dd/yyyy"
+											   datepicker-popup-template-url="/static/home/datepicker.template.html"
+											   datepicker-options="$ctrl.startDatePickerOptions"
+											   ng-model="$ctrl.program.startDate"
+											   is-open="$ctrl.startDatePickerOpened"
+											   ng-required="true"
+                                               ng-disabled="$ctrl.program.hasEnrollment"
+											   ng-click="$ctrl.openStartDatePicker()"
+											   ng-change="$ctrl.whenChangeStartDateOrFrequency()"
+											   close-text="Close"/>
+										<span class="input-group-addon" style="padding:0px">
+
+
+													<button type="button" class="btn btn-default"
+															ng-click="$ctrl.openStartDatePicker()"  ng-disabled="$ctrl.program.hasEnrollment">
+																<i class="glyphicon glyphicon-calendar"></i></button>
+												</span>
+										 <span class="input-group-addon" style="padding:1px"  ng-disabled="$ctrl.program.hasEnrollment"
+											   ng-show="$ctrl.program.billingFrequency=='Monthly' && $ctrl.program.showLastDayCheckbox">
+																				Last day? <input name="last_day" type="checkbox"
+																required="false" ng-required="false"  ng-change="$ctrl.whenChangeLastDay()"
+																 ng-disabled="$ctrl.disableLastDayCheckbox||$ctrl.program.hasEnrollment"
+															 ng-model="$ctrl.program.lastDay">
+
+										</span>
+
+									</div>
+
+								   <div class="input-group" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen" >
+									  <span class="input-group-addon angular-with-newlines fee formInstructions" ng-hide="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp;{{$ctrl.programInfoDisplay}}</span>
+								   </div>
+
+								</div>
+				
+				
+				
+								<div class="form-group">
+									<label class="control-label">When is the last fee due? (optional) <small>(MM/DD/YYYY)</small></label>
+									<p class="input-group">
+										<input name="endDate"
+											   type="text" class="form-control"
+											   datepicker-popup-template-url="/static/home/datepicker.template.html"
+											   datepicker-options="$ctrl.endDatePickerOptions"
+											   ng-model="$ctrl.program.endDate"
+											   is-open="$ctrl.endDatePickerOpened"
+											   ng-click="$ctrl.openEndDatePicker()"
+                                               uib-datepicker-popup="MM/dd/yyyy"
+											   ng-change="$ctrl.whenChangeEndDate()"
+											   ng-disabled="$ctrl.program.hasEnrollment"
+											   close-text="Close"/>
+										<span class="input-group-btn">
+													<button type="button" class="btn btn-default" ng-disabled="$ctrl.program.hasEnrollment"
+															ng-click="$ctrl.openEndDatePicker()">
+														<i class="glyphicon glyphicon-calendar"></i></button></span>
+									</p>
+				
+								</div>
+				
+				
+				<div class="form-group">
+					<div class="col-1">
+						<label class="control-label" for="registrationFee">Registration Fee:</label>
+						<div class="input-group">
+							<span class="input-group-addon">$</span>
+							<input type="number" min="0" step="0.01" class="form-control" id="registrationFee" ng-disabled="$ctrl.program.hasEnrollment"
+								   name="registrationFee" ng-required="true" ng-model="$ctrl.program.registrationFee">
+						</div>
+					</div>
+					<div class="col-1">
+						<label class="control-label" for="lateFee">Late Fee:</label>
+						<div class="input-group">
+							<span class="input-group-addon">$</span>
+							<input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee" ng-disabled="$ctrl.program.hasEnrollment"
+								   ng-required="true" ng-model="$ctrl.program.lateFee">
+						</div>
+				
+					</div>
+					<div class="input-group" >
+					  <span class="input-group-addon angular-with-newlines fee formInstructions" >Late fee grace period can be set through invoice settings.</span>
+				   </div>
+				</div>
+				<!--
 		            <div class="form-group">
 		                <label class="control-label" for="programName">Name:</label>
 		                <input type="text" class="form-control" id="programName" name="programName" ng-required="true"
@@ -22,12 +134,12 @@
 		              <div class="input-group">
 		                  <span class="input-group-addon">$</span>
 		                  <input type="number" min="0" step="0.01" class="form-control" id="fee" name="fee"
-		                         required="true" ng-model="$ctrl.program.fee" ng-disabled="true">
+		                         required="true" ng-model="$ctrl.program.fee" ng-disabled="$ctrl.program.hasEnrollment">
 		                  <span class="input-group-addon">
-		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
-		                                                   value="Weekly" checked="checked" ng-disabled="true">Weekly</label>
-		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-model="$ctrl.program.billingFrequency"
-		                                                   value="Monthly" ng-disabled="true">Monthly</label>
+		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-change="$ctrl.whenChangeStartDateOrFrequency()" ng-model="$ctrl.program.billingFrequency"
+		                                                   value="Weekly" checked="checked" ng-disabled="$ctrl.program.hasEnrollment">Weekly</label>
+		                <label class="radio-inline"><input type="radio" name="billingFrequency" ng-change="$ctrl.whenChangeStartDateOrFrequency()"  ng-model="$ctrl.program.billingFrequency"
+		                                                   value="Monthly" ng-disabled="$ctrl.program.hasEnrollment">Monthly</label>
 		              </span>
 		              </div>
 		          </div>
@@ -36,14 +148,14 @@
 					<label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When is the first (or next) fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>(MM/DD/YYYY)</small></label>
 	                <div class="input-group date">
 	                    <input type="text" id="startDate" ng-required="true" class="form-control" name="startDate"
-	                           ng-model="$ctrl.program.startDate"  ng-disabled="true">
+	                           ng-model="$ctrl.program.startDate"  ng-disabled="$ctrl.program.hasEnrollment">
 	                    <span class="input-group-addon">
 	                        <span class="glyphicon glyphicon-calendar"></span>
 	                    </span>
 						<span class="input-group-addon" style="padding:1px"
                                ng-show="$ctrl.program.billingFrequency=='Monthly' && $ctrl.program.showLastDayCheckbox">
                                                                 Last day? <input name="last_day" type="checkbox"
-                                                 ng-disabled="true"
+                                                 ng-disabled="$ctrl.program.hasEnrollment"
                                              ng-model="$ctrl.program.lastDay">
 
                         </span>
@@ -60,7 +172,7 @@
 						<label class="control-label">When is the last fee due? (optional) <small>(MM/DD/YYYY)</small></label>
 						<div class="input-group date">
 						  <input type="text" id="endDate"  class="form-control" name="endDate"
-                                 ng-model="$ctrl.program.endDate"  ng-disabled="true">
+                                 ng-model="$ctrl.program.endDate"  ng-disabled="$ctrl.program.hasEnrollment">
 						  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
 						</div>
 		            </div>
@@ -83,14 +195,14 @@
 								<!--ng-model="$ctrl.program.monthlyBillDay" ng-disabled="true"></select>-->
 		              <!--</div>-->
 		          <!--</div>-->
-				
+				<!--
 		          <div class="form-group">
 								<div class="col-1">
 		              <label class="control-label" for="registrationFee">Registration Fee:</label>
 		              <div class="input-group">
 		                  <span class="input-group-addon">$</span>
 		                  <input type="number" min="0" step="0.01" class="form-control" id="registrationFee"
-		                         name="registrationFee" required="true" ng-model="$ctrl.program.registrationFee" ng-disabled="true">
+		                         name="registrationFee" required="true" ng-model="$ctrl.program.registrationFee" ng-disabled="$ctrl.program.hasEnrollment">
 		              </div>
 								</div>
 			          <div class="col-1">
@@ -98,12 +210,12 @@
 			                <div class="input-group">
 			                    <span class="input-group-addon">$</span>
 			                    <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee"
-			                           required="true" ng-model="$ctrl.program.lateFee" ng-disabled="true">
+			                           required="true" ng-model="$ctrl.program.lateFee" ng-disabled="$ctrl.program.hasEnrollment">
 			                </div>
 			            </div>
 
 		          </div>
-
+-->
 
 
 		    </form>

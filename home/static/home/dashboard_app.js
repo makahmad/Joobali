@@ -94,7 +94,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    angular.forEach(response.data, angular.bind(this, function(program) {
             program = JSON.parse(program);
             if(program.indefinite)
-                program.endDate = "Indefinite";
+                program.endDateStr = "Indefinite";
 	    	this.scope_.programs.push(program);
 	    }));
 

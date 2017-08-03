@@ -79,7 +79,8 @@ def getProgram(request):
     provider = Provider.get_by_id(user_id)
     # Must specify parent since id is not unique in DataStore
     program = models.Program.get_by_id(int(request.GET.get('id')), parent = provider.key)
-    return HttpResponse(json.dumps([JEncoder().encode(program)]), content_type="application/json")
+    program.has_enrollment = True if enrollment_util.list_active_enrollment_by_provider_program(user_id,int(request.GET.get('id'))) else False
+    return HttpResponse(json.dumps([JEncoder().encode(program),{'hasEnrollment':program.has_enrollment}]), content_type="application/json")
 
 def getDefaultLateFee(request):
     """Handles get program request. Returns the program with provided program ID"""
@@ -107,6 +108,31 @@ def updateProgram(request):
 
 
     program.programName = newProgram['programName']
+
+    program.registrationFee = newProgram['registrationFee']
+    program.fee = newProgram['fee']
+    program.lateFee = newProgram['lateFee']
+    program.billingFrequency = newProgram['billingFrequency']
+    program.startDate = datetime_util.local_to_utc(datetime.strptime(newProgram['startDate'], DATE_FORMAT))
+
+    if program.billingFrequency == 'Monthly':
+        # if program is monthly and last day of month is checked
+        try:
+            if newProgram['lastDay']:
+                program.monthlyBillDay = "Last Day"
+            else:
+                program.monthlyBillDay = str(program.startDate.day)
+        except KeyError:
+            None
+    else:
+        program.weeklyBillDay = day_name[program.startDate.weekday()]
+
+    if newProgram['endDate']:
+        program.endDate = datetime_util.local_to_utc(datetime.strptime(newProgram['endDate'], DATE_FORMAT))
+        program.indefinite = False
+    else:
+        program.indefinite = True
+        program.endDate = None
 
     program.put()
 
