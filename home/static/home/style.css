@@ -936,6 +936,7 @@ payments-component .table tr a, invoices-component .table tr a {
   position: relative;
   top: .25em;
   margin: 0 2%;
+	width: 1em;
 }
 
 .step h4 {

@@ -7,37 +7,21 @@
     <ul>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': fundings.length > 0}">&nbsp;</span> 
 				<i class="fa fa-institution fa-3x"></i>
-				<h4><a href="#!/billing">Add Your Bank Account</a></h4>
+				<h4><a href="#!/billing">Add Your Bank Account</a></h4><sup><i class="fa fa-question-circle-o fa-2x"></i></sup>
 				<!-- <div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-2x"></i> &nbsp;You will receive money from parents directly to this account. You may only need your bank login information; however, it wouldn’t hurt to have your account # and/or routing # available.</div> -->
 			</li>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': dwollaStatus != 'verified'}">&nbsp;</span> 
 				<i class="fa fa-check-circle-o fa-3x"></i>
-				<h4><a href="#!/verification">Verfy Your Bank Account</a></h4>
+				<h4><a href="#!/verification">Verfy Your Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
 			</li>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': programs.length > 0}">&nbsp;</span> 
 				<i class="fa fa-list-alt fa-3x"></i> 
-				<h4><a href="#!/programs">Add a Program</a></h4>
+				<h4><a href="#!/programs">Add a Program</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
 			</li>
 			<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': numberOfChildren > 0}">&nbsp;</span> 
 				<i class="fa fa-child fa-3x"></i>
-				<h4><a href="#!/child/list">Enroll a Child</a></h4>
+				<h4><a href="#!/child/list">Enroll a Child</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
 			</li>
 		</ul>
 	</div>
-				
-				<!-- <div ng-show="dwollaStatus == 'verified'">
-        1. Add your bank account in the <a href="#!/billing">funds tab</a> and verify you're you in the verification tab <i ng-show="fundings.length > 0" class="fa fa-check fa-2x"></i>
-    </div>
-    <div ng-show="dwollaStatus != 'verified'">
-        1. Add your bank account in the <a href="#!/billing">funds tab</a> and <a href="#!/verification">verify</a> you're you in the verification tab
-    </div>
-    <br>
-    <div>
-        2. Add a <a href="#!/programs">program</a> (or two or three) <i ng-show="programs.length > 0" class="fa fa-check fa-2x"></i>
-    </div>
-    <br>
-    <div>
-        3. <a href="#!/child/list">Enroll</a> children to your programs <i ng-show="numberOfChildren > 0" class="fa fa-check fa-2x"></i>
-    </div> -->
-
 </div>
