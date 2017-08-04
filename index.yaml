@@ -19,3 +19,9 @@ indexes:
   ancestor: yes
   properties:
   - name: startDate
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: startDate
+    direction: desc

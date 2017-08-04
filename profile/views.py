@@ -243,7 +243,7 @@ def dwolla_verify(request):
     # 	template.RequestContext(request)
     # )
 
-    return HttpResponse('success')
+    return HttpResponse('success: %s' % provider.dwolla_status)
 
 def updateLogo(request):
     """Updates the provider's logo"""

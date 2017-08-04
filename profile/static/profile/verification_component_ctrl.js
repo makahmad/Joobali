@@ -108,10 +108,19 @@ VerificationComponentController.prototype.dwollaVerify = function(markError) {
                 }).then(angular.bind(this, function successCallback(response) {
                     // this callback will be called asynchronously
                     // when the response is available
-                    if (response.data == 'success') {
-                        this.profile.dwolla_status = 'verified'
-                        bootbox.alert("Verification Succeeded.")
-                        location.reload();
+                    if (response.data.indexOf('success') !== -1) {
+                        this.profile.dwolla_status = response.data.substring(9) // "success: verified"
+                        if (this.profile.dwolla_status == 'verified') {
+                            bootbox.alert("Verification Succeeded.", function() {
+                                location.reload();
+                            });
+                        } else if (this.profile.dwolla_status == 'retry') {
+                            bootbox.alert("Something is wrong with your input. Please double check your input and retry.")
+                        } else if (this.profile.dwolla_status == 'document') {
+                            bootbox.alert("Additional document is needed for verification. Please upload one of the specified documents and we will manually verify it soon.", function() {
+                                location.reload();
+                            });
+                        }
                     } else {
                         bootbox.alert(response.data);
                     }
