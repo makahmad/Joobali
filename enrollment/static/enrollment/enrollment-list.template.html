@@ -13,11 +13,11 @@
             <td>{{ enrollment.program.billingFrequency}}</td>
             <td>{{ (enrollment.enrollment.autopay_source_id) ? 'yes' : 'no' }}</td>
             <td>
-                <a class="" ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)" alt="Edit Enrollment">
+                <a class="" ng-click="$ctrl.openEnrollmentEditorModal(enrollment.enrollment)" title="Edit Enrollment" alt="Edit Enrollment">
                     <i class="fa fa-pencil fa-1x"></i>
                 </a>
                 <a class="" ng-click="$ctrl.openEnrollmentResendInvitationModal(enrollment.enrollment)"
-                   ng-show="$ctrl.canResendEnrollmentInvitation(enrollment.enrollment)" alt="Resend Email Invitation">
+                   ng-show="$ctrl.canResendEnrollmentInvitation(enrollment.enrollment)" title="Resend Email Invitation" alt="Resend Email Invitation">
                     <i class="fa fa-refresh fa-1x"></i>
                 </a>
             </td>
