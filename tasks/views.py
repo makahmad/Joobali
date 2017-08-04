@@ -236,6 +236,11 @@ def autopay(request):
             try:
                 funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice, rate)
             except ValidationError as err:
+                logger.info("Autopay failed: %s" % err.body['_embedded']['errors'][0]['message'])
+
+                invoice.autopay_failure_message = err.body['_embedded']['errors'][0]['message']
+                invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
+                invoice.put()
                 return HttpResponse(err.body['_embedded']['errors'][0]['message'])
         else:
             logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice))
