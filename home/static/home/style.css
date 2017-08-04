@@ -958,3 +958,33 @@ i.fa.fa-caret-up {
     /*top: inherit;*/
     margin: auto;
 }
+
+/*----------------- Verification Page ------------------*/
+
+#verifyForm div.form-group {
+  margin: 15px;
+	width: 95%;
+  max-width: 600px;
+}
+
+.form-group.ssn {
+	padding:20px;
+	background:lightblue;
+}
+
+.ssn small {
+	color:black;
+}
+
+.why {
+	text-decoration:underline;
+	text-align:right;
+}
+
+.why:hover {
+	cursor:pointer;
+}
+
+#verifyForm .ssn div#pageInstructions {
+    margin-top: 10px;
+}

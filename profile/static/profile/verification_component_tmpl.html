@@ -14,17 +14,19 @@
         <form id="verifyForm" name="verifyForm" role="form" class="well" enctype="multipart/form-data">
             <div class="verifyContent">
                 <div class="form-group">
+									<div class="col-1">
 										<label class="control-label" for="firstName">First Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="firstName" name="firstName" ng-required="true"
                            ng-model="$ctrl.profile.firstName">
 										 </div>
-                 </div>
-                 <div class="form-group">
+									 </div>
+<div class="col-1">
 	                  <label class="control-label" for="lastName">Last Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
 										</div>
+									</div>
                 </div>
                 <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
@@ -51,15 +53,16 @@
 										</div>
                 </div>
                 <div class="form-group">
+									<div class="col-1">
                     <label class="control-label" for="city">City:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
+											<span class="input-group-addon"><i class="fa fa-map-marker fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
 										</div>
-                </div>
-                <div class="form-group">
+									</div>
+									<div class="col-1">
                     <label class="control-label" for="state">State:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span>
+											<span class="input-group-addon"><i class="fa fa-map-marker fa-lg"></i></span>
                         <select type="text" class="form-control dwolla-verify" id="state" name="state" ng-required="false" ng-model="$ctrl.profile.state">
                         	    <option value="AL">Alabama</option>
                                 <option value="AK">Alaska</option>
@@ -114,11 +117,12 @@
                                 <option value="WY">Wyoming</option>
                         </select>
 										</div>
+									</div>
                 </div>
                 <div class="form-group">
                     <label class="control-label" for="zipcode">Zipcode:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="number" class="form-control dwolla-verify" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
+											<span class="input-group-addon"><i class="fa fa-map-marker fa-lg"></i></span><input type="number" class="form-control dwolla-verify" id="zipcode" name="zipcode" ng-required="false" ng-model="$ctrl.profile.zipcode">
 										</div>
                 </div>
                 <div class="form-group">
@@ -136,12 +140,14 @@
                                close-text="Close"/>
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : profileForm.ssn.$invalid && !profileForm.ssn.$pristine }">
-                    <label class="control-label" for="ssn">Last 4 digits of SSN:</label>
+                <div class="form-group ssn" ng-class="{ 'has-error' : profileForm.ssn.$invalid && !profileForm.ssn.$pristine }">
+                    <label class="control-label" for="ssn">Last 4 digits of SSN: <small class="why" ng-click="isWhyInstructionsOpen = !isWhyInstructionsOpen">Why?</small></label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-id-card fa-lg" aria-hidden="true"></i></span><input type="number" ng-minlength="4" ng-maxlength="4" ng-pattern="/^[0-9]*$/" class="form-control dwolla-verify" id="ssn" name="ssn" ng-required="false"
                            ng-model="$ctrl.profile.ssn">
                     </div>
+										<div ng-click="isWhyInstructionsOpen = !isWhyInstructionsOpen" ng-show="isWhyInstructionsOpen" id="whyInstructions"><i class="fa fa-lock fa-1x"></i><small>
+										Joobali does not store this information. It is passed securely in compliance with federal laws (like the US Patriot Act) to verify that you are who you say you are. We require all <em>Provider</em> user accounts to be verified in order to make it easier for <em>parents</em> to pay you quickly, safely, and directly. <!-- Additional documentation (like a federally-issued photo ID) may sometimes be required by our security partners. --></small></div>
                 </div>
 
                 <div class="form-group" ng-show="$ctrl.profile.dwolla_status == 'document'">

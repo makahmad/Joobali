@@ -16,7 +16,8 @@ ChildFormContentController = function ChildFormContentController($http, Enrollme
     this.enrollmentStatus = '';
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
-        dateDisabled: angular.bind(this, this.enrollmentDisabledDate)
+        dateDisabled: angular.bind(this, this.enrollmentDisabledDate),
+				showWeeks: false
     }
 
     this.enrollmentEndDatePickerOptions = {
