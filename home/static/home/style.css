@@ -289,14 +289,19 @@ a.logoLink:hover {
 
 .providerName {
   color: white;
-  height: 50px;
+  height: 26px;
   float: left;
   margin: 24px 0 0px 60px;
-  line-height: 3.1px;
+  line-height: 12px;
   font-size: 12px;
   position: absolute;
-  top: 0;
+  top: -6px;
   left: 111px;
+  width: 39%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+	}
 }
 
 .dropdown, .dropdown-toggle {
@@ -836,14 +841,18 @@ a.delete:hover {
 @media (min-width: 768px) {
 	.providerName {
     color: white;
-    height: 50px;
+    height: 26px;
     float: left;
     margin: 24px 0 0px 60px;
-    line-height: 3.1px;
+    line-height: 12px;
     font-size: 17px;
     position: absolute;
-    top: 0;
+    top: -6px;
     left: 111px;
+    width: 39%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 	}
 }
 .tooltip-inner {
@@ -960,6 +969,9 @@ i.fa.fa-caret-up {
 }
 
 /*----------------- Verification Page ------------------*/
+verification-component .profile-title {
+	text-align:left;
+}
 
 #verifyForm div.form-group {
   margin: 15px;
