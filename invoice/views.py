@@ -326,7 +326,6 @@ def adjust_invoice(request):
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		invoice_util.adjust_invoice(invoice, amount, reason)
-		invoice.put()
 	return HttpResponse("success")
 
 def list_invoice_by_child(request):

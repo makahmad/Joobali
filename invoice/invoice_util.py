@@ -216,4 +216,6 @@ def adjust_invoice(invoice, amount, reason):
     create_invoice_line_item(None, invoice, None, None, None, reason,
                                           -amount, None)
     invoice.amount = invoice.amount - amount
+    if invoice.amount == 0:
+        invoice.status = Invoice._POSSIBLE_STATUS['MARKED_PAID']
     invoice.put()

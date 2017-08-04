@@ -19,10 +19,10 @@ AdjustInvoiceComponentController = function($uibModal, $location, $http) {
                 self.closeModal()
                 location.reload();
             } else {
-                bootbox.alert('something is wrong');
+                bootbox.alert(response.data);
             }
         }, function errorCallback(response) {
-            bootbox.alert('something is wrong');
+            bootbox.alert('something is wrong: %s' % response.data);
         });
     }
 
