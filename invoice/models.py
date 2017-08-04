@@ -30,6 +30,7 @@ class Invoice(ndb.Model):
     }
     email_sent = ndb.BooleanProperty(required=True, default=False)
     autopay_source_id = ndb.StringProperty() # come from enrollment
+    autopay_failure_message = ndb.StringProperty() # from dwolla
     dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment (funded_transfer)
     cancelled_transfer_ids = ndb.StringProperty(repeated=True) # The payments that were cancelled (funded_transfer)
     pdf = ndb.BlobProperty()

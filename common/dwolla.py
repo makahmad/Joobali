@@ -230,6 +230,7 @@ def list_documents(customer_url):
     return result
 
 def make_transfer(request_body):
+    logger.info("Making transfer: %s" % request_body)
     return create_account_token().post('transfers', request_body)
 
 def list_fundings(customer_url):
