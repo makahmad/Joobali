@@ -304,6 +304,10 @@ def resent_enrollment_invitation(request):
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
     logger.info("request.get_host() %s", request.get_host())
     send_parent_enrollment_notify_email(enrollment=enrollment, host=get_host_from_request(request.get_host()))
+
+    enrollment.resent_email_count += 1
+    enrollment.put();
+
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")
 
