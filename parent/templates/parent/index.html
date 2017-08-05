@@ -166,28 +166,28 @@
                 <!--</li>-->
 
                 <li data-target="#children" ng-click="changeView('/child/list')"
-                    ng-class="{active: module=='/child/list'}">
+                    ng-class="{active: isActive('/child/list')}">
                     <a ng-click="changeView('/child/list')"><i class="fa fa-child fa-2x"></i> &nbsp; Children </a>
                 </li>
 
-                <li ng-click="changeView('/due')" ng-class="{active: module=='/due'}">
+                <li ng-click="changeView('/due')" ng-class="{active: isActive('/due')}">
                     <a href="#!/due">
                         <i class="fa fa-paper-plane-o fa-2x"></i> &nbsp; Invoices
                     </a>
                 </li>
-                <li ng-click="changeView('/payments')" ng-class="{active: module=='/payments'}">
+                <li ng-click="changeView('/payments')" ng-class="{active: isActive('/payments')}">
                     <a href="#!/payments">
                         <i class="fa fa-money fa-2x"></i> &nbsp; Payments
                     </a>
                 </li>
-                <li ng-click="changeView('/funding')" ng-class="{active: module=='/funding'}">
+                <li ng-click="changeView('/funding')" ng-class="{active: isActive('/funding')}">
                     <a href="#!/funding">
                         <i class="fa fa-university fa-2x"></i> &nbsp; Bank Account
                     </a>
                 </li>
 
 
-                <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
+                <li ng-click="changeView('/profile')" ng-class="{active: isActive('/profile')}">
                     <a href="#!/profile">
                         <i class="fa fa-user fa-2x"></i> &nbsp; Profile
                     </a>

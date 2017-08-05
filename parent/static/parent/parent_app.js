@@ -16,10 +16,16 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
     if ($location.absUrl().split('?')[0].split('!')[1]!=undefined)
         this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
 
+    //controls highlighting of left hand menu items
+    this.scope_.isActive = function (viewLocation) {
+         var active = (viewLocation === $location.path());
+         return active;
+    };
+
     this.scope_.changeView = function(view) {
         console.log("changeView(" + view + ")");
         $location.path(view);
-        this.module=view;
+//        this.module=view;
 
         $( "#myNavbar" ).removeClass('in');  //collapse mobile menu when switching pages
 

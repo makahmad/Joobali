@@ -190,12 +190,12 @@
         <div class="menu-list">
 
             <ul id="myNavbar" class="menu-content collapse out">
-                <li ng-click="changeView('/home')"  ng-class="{active: module=='/home'}">
+                <li ng-click="changeView('/home')"  ng-class="{active: isActive('/home')}">
                     <a>
                         <i class="fa fa-home fa-2x"></i> &nbsp; Home
                     </a>
                 </li>
-                <li ng-click="changeView('/programs')" ng-class="{active: module=='/programs'}">
+                <li ng-click="changeView('/programs')" ng-class="{active: isActive('/programs')}">
                     <a>
 						<i class="fa fa-list-alt fa-2x"></i> &nbsp; Programs
 					</a>
@@ -207,35 +207,35 @@
                     <!--<li ng-class="{'active': program.selected}"  data-ng-repeat="program in programs" ng-click="dashboardCtrl.selectProgram(program)"  data-toggle="modal" data-target="#editProgramModal">{{ program.programName }}</li>-->
                 <!--</ul>-->
 
-                <li data-toggle="collapse" data-target="#children" class="collapsed" ng-click="changeView('/child/list')" ng-class="{active: module=='/child/list'}">
+                <li data-toggle="collapse" data-target="#children" class="collapsed" ng-click="changeView('/child/list')" ng-class="{active: isActive('/child/list')}">
                     <a><i class="fa fa-child fa-2x"></i> &nbsp; Children</a>
                 </li>
 
-                <li ng-click="changeView('/invoice')" ng-class="{active: module=='/invoice'}">
+                <li ng-click="changeView('/invoice')" ng-class="{active: isActive('/invoice')}">
                     <a>
 						<i class="fa fa-paper-plane-o fa-2x"></i> &nbsp; Invoices
 					</a>
                 </li>
 
-                <li ng-click="changeView('/payments')" ng-class="{active: module=='/payments'}">
+                <li ng-click="changeView('/payments')" ng-class="{active: isActive('/payments')}">
                     <a>
 						<i class="fa fa-money fa-2x"></i> &nbsp; Payments
 					</a>
                 </li>
 
-                <li ng-click="changeView('/billing')" ng-class="{active: module=='/billing'}">
+                <li ng-click="changeView('/billing')" ng-class="{active: isActive('/billing')}">
                     <a>
 						<i class="fa fa-university fa-2x"></i> &nbsp; Bank Account
 					</a>
                 </li>
 
-                <li ng-click="changeView('/profile')" ng-class="{active: module=='/profile'}">
+                <li ng-click="changeView('/profile')" ng-class="{active: isActive('/profile')}">
                     <a>
                         <i class="fa fa-user fa-2x"></i> &nbsp; Profile
                     </a>
                 </li>
 
-                <li  ng-hide="dwollaStatus == 'verified'" ng-click="changeView('/verification')" ng-class="{active: module=='/verification'}">
+                <li  ng-hide="dwollaStatus == 'verified'" ng-click="changeView('/verification')" ng-class="{active: isActive('/verification')}">
                     <a>
                         <i class="fa fa-user fa-2x"></i> &nbsp; Verify Account
                     </a>
