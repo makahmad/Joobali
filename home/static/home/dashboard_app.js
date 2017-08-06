@@ -10,24 +10,17 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.numberOfChildren = 0;
 	this.scope_.dwollaStatus = 'Unknown';
 	this.initialize($uibModal);
-	this.scope_.module = '/home'; //module is used to highlight active left hand nav selection
     this.animationsEnabled = true;
 
     self = this;
 
-    //IF URL = http://joobali.com/home/dashboard#!/programs GET /programs
-    //used for left hand nav menu highlighting
-    if ($location.absUrl().split('?')[0].split('!')[1]!=undefined)
-        this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
-
     //controls highlighting of left hand menu items
     this.scope_.isActive = function (viewLocation) {
-         var active = (viewLocation === $location.path());
+         var active = $location.path().indexOf(viewLocation) >=0;
          return active;
     };
 
     this.scope_.changeView = function(view) {
-
         $location.path(view);
 
         $( "#myNavbar" ).removeClass('in');  //collapse mobile menu when switching pages

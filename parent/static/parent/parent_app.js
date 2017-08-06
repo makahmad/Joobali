@@ -7,25 +7,17 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
-	this.scope_.module = '/due'; //module is used to highlight active left hand nav selection
 	this.initialize($uibModal);
     this.animationsEnabled = true;
 
-    //IF URL = http://joobali.com/home/dashboard#!/programs GET /programs
-    //used for left hand nav menu highlighting
-    if ($location.absUrl().split('?')[0].split('!')[1]!=undefined)
-        this.scope_.module = $location.absUrl().split('?')[0].split('!')[1];
-
     //controls highlighting of left hand menu items
     this.scope_.isActive = function (viewLocation) {
-         var active = (viewLocation === $location.path());
+         var active = $location.path().indexOf(viewLocation) >=0;
          return active;
     };
 
     this.scope_.changeView = function(view) {
-        console.log("changeView(" + view + ")");
         $location.path(view);
-//        this.module=view;
 
         $( "#myNavbar" ).removeClass('in');  //collapse mobile menu when switching pages
 
