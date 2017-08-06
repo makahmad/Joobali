@@ -6,6 +6,7 @@
 <div class="modal-body">
     <div style="text-align:center;">
         Are you sure you want to resend an enrollment notification email to the parent?
+        <div ng-show="$ctrl.enrollment_.resent_email_count>0">You have already re-sent the invitation {{$ctrl.enrollment_.resent_email_count}} time(s).</div>
     </div>
 </div>
 

@@ -8,12 +8,12 @@ EnrollmentResendInvitationDialogController = function EnrollmentResendInvitation
 EnrollmentResendInvitationDialogController.prototype.resendEnrollmentInvitation = function() {
     this.http_.post('/enrollment/resendInvitation', this.enrollment_).then(angular.bind(this, function successCallback(response) {
         console.log("new invitation email sent!");
-        this.closeModal();
+        this.closeModal(true);
     }), angular.bind(this, function errorCallback(response) {
     }));
 }
 
 
 EnrollmentResendInvitationDialogController.prototype.closeModal = function(refresh) {
-  this.uibModalInstance_.close();
+    this.uibModalInstance_.close({'refresh' : refresh});
 }

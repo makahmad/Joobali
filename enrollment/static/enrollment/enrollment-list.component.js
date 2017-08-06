@@ -67,12 +67,12 @@ EnrollmentListController.prototype.openEnrollmentResendInvitationModal = functio
     });
 
     modalInstance.result.then(function (data) {
-        $log.info(data);
+        console.log(data);
         if (data.refresh == true) {
             self.refreshEnrollment();
         }
     }, function () {
-        $log.info('Modal dismissed at: ' + new Date());
+        console.log('Modal dismissed at: ' + new Date());
     });
 }
 
