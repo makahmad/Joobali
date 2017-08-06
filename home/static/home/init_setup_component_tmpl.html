@@ -28,8 +28,10 @@
 							</li>
 							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.dwollaStatus == 'verified'}">&nbsp;</span>
 								<i class="fa fa-check-circle-o fa-3x"></i>
-								<h4 ng-show="$ctrl.dwollaStatus == 'verified'">Account Verified</h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
-								<h4 ng-show="$ctrl.dwollaStatus != 'verified'"><a href="#!/verification" ng-click="$ctrl.cancel()">Verfy Your Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+								<h4 ng-show="$ctrl.dwollaStatus == 'verified'">User Account Verified</h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+								<h4 ng-show="$ctrl.dwollaStatus != 'verified'"><a href="#!/verification" ng-click="$ctrl.cancel()">Verify Your User Account</a></h4><sup>
+					<i class="fa fa-question-circle-o fa-2x" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"></i></sup>
+				<div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-lg"></i>Only verified users can receive money. We require all Providers to be verified so parents can pay you quickly, safely, and directly.</div>
 							</li>
 							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.programs.length > 0}">&nbsp;</span> 
 								<i class="fa fa-list-alt fa-3x"></i> 
