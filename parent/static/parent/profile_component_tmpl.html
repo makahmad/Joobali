@@ -7,25 +7,27 @@
 
 <!-- <div class="profileFormContainer">
 	<div class="profileFormHeader"> -->
-		<h2 class="profile-title">Edit Your Profile</h2>
+		<h2 class="profile-title parent">Edit Your Profile</h2>
 	</div>
 	<!-- <div class="profileFormBody"> -->
     <div class="col-centered">
         <form id="profileForm" name="profileForm" role="form" class="well">
             <div class="">
                 <div class="form-group">
+									<div class="col-1">
 										<label class="control-label" for="firstName">First Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="firstName" name="firstName" required="true"
                            ng-model="$ctrl.profile.first_name">
 										 </div>
 									 </div>
-									 <div class="form-group">
+									 <div class="col-1">
 	                  <label class="control-label" for="lastName">Last Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control" id="lastName" name="lastName" required="true" ng-model="$ctrl.profile.last_name">
 										</div>
                 </div>
+							</div>
                 <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
                     <div class="input-group">

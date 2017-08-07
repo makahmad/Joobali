@@ -962,7 +962,8 @@ i.fa.fa-caret-up {
 
 /*----------------- Verification Page ------------------*/
 verification-component .profile-title,
-profile-component .profile-title {
+profile-component .profile-title,
+.profile-title.parent {
 	text-align:left;
 }
 
