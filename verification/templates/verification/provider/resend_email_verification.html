@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <title>Resend email verification</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css"/>
+    <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <style type="text/css">
+		body{
+			background: #E44D26; /* fallback for old browsers */
+			/*background: -webkit-linear-gradient(to top, #E44D26 , #F16529);*//* Chrome 10-25, Safari 5.1-6 */
+			/*background: linear-gradient(to top, #E44D26 , #F16529);*/ /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+		}
+
+
+    </style>
+    <script src="{{ STATIC_URL }}home/script.js"></script>
+</head>
+<body>
+<div class="container">
+    <a href="/home"><img src="{{ STATIC_URL }}home/pics/logo/logo.png" class="img-responsive logo col-centered"
+                         alt="Joobali Website Logo"></a>
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Resend email verification</h4>
+        </div> <!-- end modal-header -->
+        <div class="modal-body">
+            <div class="col-centered programOverviewForm">
+                <form role="form" class="well" action="/verification/provider/email/resend" method="POST">
+                    {% csrf_token %}
+                    {% if resend_result %}
+                        {% if resend_result.email_not_found or resend_result.provider_not_found %}
+                            <div class="form-group">
+                                <span class="label label-warning">We couldn't find an account using that email address.</span>
+                            </div>
+                        {% elif not resend_result.resend_status %}
+                            <div class="form-group">
+                                <span class="label label-warning">Failed to resend verification Email. Please contact Joobali</span>
+                            </div>
+                        {% else %}
+                            <div class="form-group">
+                                <span class="label label-success">Verification Email has been sent to {{ email }}</span>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <div class="form-group">
+                        <label class="control-label" for="email">Email:</label>
+                        <input type="email" class="form-control" id="email" name="email" required="true"
+                               value="{{ form.email.value|safe }}">
+                    </div>
+                    <center>
+                        <button type="submit" class="btn btn-default btn-lg joobali">Resend</button>
+                    </center>
+                    <div class="formActions">
+                        <p>Nevermind? Go <a href="/login">back</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal-footer">&nbsp;</div>
+
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -74,3 +74,12 @@ class VerificationToken(ndb.Model):
         token.parent_key = parent.key
         token.expiration_date = datetime.now() + timedelta(days=3)
         return token
+
+    @classmethod
+    def list_provider_email_token(cls, provider):
+        provider_key = provider.key
+        query = VerificationToken.query(VerificationToken.provider_key == provider_key,
+                                        VerificationToken.type == 'provider_email')
+        return query
+
+

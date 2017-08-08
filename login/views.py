@@ -344,6 +344,7 @@ def get_or_insert(email, form):
     provider.password = pwd_context.encrypt(provider.password)
     provider.put()
     unique = models.Unique(id=email)
+    unique.provider_key = provider.key
     unique.put()
     logger.info("INFO: successfully stored Provider :" + str(provider))
     return provider, True
