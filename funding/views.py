@@ -12,6 +12,7 @@ from funding import funding_util
 #from django.core.exceptions import ValidationError
 from common.session import check_session
 from common.dwolla import list_customers, get_iav_token, remove_funding
+from common import dwolla
 from dwollav2.error import ValidationError
 import json
 import logging
@@ -70,6 +71,25 @@ def makeTransfer(request):
     except ValidationError as err:
         return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     # print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'
+
+    return HttpResponse("success")
+
+def verify_micro_deposits(request):
+
+    data = json.loads(request.body)
+    funding_url = data['funding_url'] if 'funding_url' in data else None
+    first_amount = data['first_amount'] if 'first_amount' in data else None
+    second_amount = data['second_amount'] if 'second_amount' in data else None
+    if funding_url:
+        if first_amount and second_amount:
+            try:
+                result = dwolla.verify_micro_deposits(funding_url, first_amount, second_amount)
+            except ValidationError as err:
+                return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+        else:
+            return HttpResponse("Invalid amount")
+    else:
+        return HttpResponse("Invalid bank source")
 
     return HttpResponse("success")
 

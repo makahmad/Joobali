@@ -233,6 +233,24 @@ def make_transfer(request_body):
     logger.info("Making transfer: %s" % request_body)
     return create_account_token().post('transfers', request_body)
 
+def get_micro_deposits(url):
+    return create_account_token().get(url)
+
+def verify_micro_deposits(url, first_amount, second_amount):
+    logger.info("Verifying Micro Deposits: %s", url)
+    request_body = {
+        "amount1": {
+            "value": str(first_amount),
+            "currency": "USD"
+        },
+        "amount2": {
+            "value": str(second_amount),
+            "currency": "USD"
+        }
+    }
+    logger.info("Request: %s" % request_body)
+    return create_account_token().post('%s/micro-deposits' % url, request_body)
+
 def list_fundings(customer_url):
     return create_account_token().get('%s/funding-sources' % customer_url)
 

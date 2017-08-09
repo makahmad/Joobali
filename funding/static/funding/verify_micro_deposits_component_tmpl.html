@@ -1,0 +1,39 @@
+<!-- Modal content-->
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" ng-click="$ctrl.cancel()">&times;</button>
+    <h4 class="modal-title">Please enter the exact amount of the two micro-deposits you received.</h4>
+  </div>
+  <div class="modal-body">
+    <div class="col-centered">
+      <form id="verifyMicroDepositsForm" name="verifyMicroDepositsForm" role="form" class="well">
+        <div class="form-group">
+          <label class="control-label col-sm-2">First Amount:</label>
+
+          <div class="col-sm-10">
+            <input type="number" min="0.01" max="0.1" step="0.01" class="form-control" id="firstAmount" name="firstAmount"
+                     ng-required="true" ng-model="$ctrl.firstAmount">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="control-label col-sm-2">Second Amount:</label>
+
+          <div class="col-sm-10">
+            <input type="number" min="0.01" step="0.01" class="form-control" id="secondAmount" name="secondAmount"
+                     ng-required="true" ng-model="$ctrl.secondAmount">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <div class="formActions">
+        <div class="alert alert-success" ng-show="$ctrl.showVerifySuccessAlert">Congratulations! Your bank account has been verified.
+        </div>
+        <div class="alert alert-warning" ng-show="$ctrl.showVerifyFailureAlert">{{ $ctrl.verifyFailureMessage }}
+        </div>
+        <button id="verifyButton" type="button" class="btn btn-primary" ng-click="$ctrl.verify()" ng-show="!$ctrl.showCancel" ng-disabled="!verifyMicroDepositsForm.$valid && $ctrl.disableButton">Verify</button>
+        <button id="cancelButton" type="button" class="btn btn-primary" ng-click="$ctrl.cancel()" ng-show="$ctrl.showCancel">Close</button>
+      </div> <!-- end formActions -->
+    </div>
+  </div>
+</div>

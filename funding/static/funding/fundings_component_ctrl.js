@@ -1,7 +1,8 @@
-FundingsComponentController = function($location, $http) {
+FundingsComponentController = function($location, $http, $uibModal) {
     console.log('FundingsComponentController running');
     this.location_ = $location;
     this.http_ = $http;
+    this.uibModal_ = $uibModal;
 }
 
 FundingsComponentController.prototype.removeFunding = function(funding) {
@@ -47,4 +48,16 @@ FundingsComponentController.prototype.removeFunding = function(funding) {
             }
         })
     });
+}
+
+FundingsComponentController.prototype.verifyMicroDeposits = function(funding) {
+    var modalInstance = this.uibModal_.open({
+        animation: true,
+        component: 'verifyMicroDepositsComponent',
+            resolve: {
+                funding: function () {
+                   return funding;
+                }
+            }
+        });
 }

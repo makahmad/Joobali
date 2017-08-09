@@ -12,7 +12,10 @@
           <td class="type">{{ funding.type }}</td>
           <td class="status">{{ funding.status }}</td>
           <!-- <td>&nbsp;<button class="RemoveFundingButton btn btn-primary btn-sm" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" ng-show="funding.hover">Remove</button> -->
-						<td>&nbsp;<a class="RemoveFundingButton" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" alt="remove funding source"><i class="fa fa-remove fa-lg"></i></a>
+          <td>
+            <button class="VerifyMicroDepositsButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.verifyMicroDeposits(funding); $event.stopPropagation();" ng-show="funding['verify-micro-deposits']"><i class="fa fa-check-circle fa-lg"></i> &nbsp;Verify Micro-deposits</button>
+          </td>
+          <td>&nbsp;<a class="RemoveFundingButton" ng-click="$ctrl.removeFunding(funding); $event.stopPropagation();" alt="remove funding source"><i class="fa fa-remove fa-lg"></i></a>
           </td>
         </tr>
       </tbody>

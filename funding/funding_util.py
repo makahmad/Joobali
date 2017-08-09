@@ -69,6 +69,48 @@ def list_fundings(customer_url):
         #              u'customer': {u'type': u'application/vnd.dwolla.v1.hal+json', u'resource-type': u'customer',
         #                            u'href': u'https://api-uat.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e'}},
         #  u'status': u'unverified', u'type': u'bank', u'name': u'123', u'removed': True}
+
+        # Example funding for micro-deposit:
+        # {
+        #     u'id': u'fa7f4d01-df87-4256-bd41-30c20a7f38ac',
+        #     u'status': u'unverified',
+        #     u'created': u'2017-08-05T04:50:51.000      Z',
+        #     u'_links': {
+        #         # 'initiate-micro-deposits' if micro-deposit is not started.
+        #         u'micro-deposits': {
+        #             u'type': u'application/vnd.dwolla.v1.hal+json',
+        #             u'href': u'https://api-sandbox.dwolla.com/funding-sources/fa7f4d01-df87-4256-bd41-30c20a7f38ac/micro-deposits',
+        #             u'resource-type': u'micro-deposits'
+        #         },
+        #         u'on-demand-authorization': {
+        #             u'type': u'application/vnd.dwolla.v1.hal+json',
+        #             u'href': u'https://api-sandbox.dwolla.com/on-demand-authorizations/959b60d0-9979-e711-80f4-0aa34a9b2388',
+        #             u'resource-type': u'on-demand-authorization'
+        #         },
+        #         u'self': {
+        #             u'type': u'application/vnd.dwolla.v1.hal+json',
+        #             u'href': u'https://api-sandbox.dwolla.com/funding-sources/fa7f4d01-df87-4256-bd41-30c20a7f38ac',
+        #             u'resource-type': u'funding-source'
+        #         },
+        #         u'verify-micro-deposits': {
+        #             u'type': u'application/vnd.dwolla.v1.hal+json',
+        #             u'href': u'https://api-sandbox.dwolla.com/funding-sources/fa7f4d01-df87-4256-bd41-30c20a7f38ac/micro-deposits',
+        #             u'resource-type': u'micro-deposits'
+        #         },
+        #         u'customer': {
+        #             u'type': u'application/vnd.dwolla.v1.hal+json',
+        #             u'href': u'https://api-sandbox.dwolla.com/customers/255b92a7-300b-42fc-b72f-5301c0c6c42e',
+        #             u'resource-type': u'customer'
+        #         }
+        #     },
+        #     u'name': u'026009593',
+        #     u'bankName': u'SANDBOX TEST BANK',
+        #     u'type': u'bank',
+        #     u'removed': False,
+        #     u'channels': [
+        #         u'ach'
+        #     ]
+        # }
         if funding['type'] != 'balance' and funding['removed'] != True:
             if funding['status'] == 'verified':
                 funding['status'] = 'Connected'
@@ -82,6 +124,9 @@ def list_fundings(customer_url):
                 "name": funding['name'],
                 "id": funding['id'],
                 "url": funding['_links']['self']['href'],
+                'initiate-micro-deposits': funding['_links']['initiate-micro-deposits']['href'] if 'initiate-micro-deposits' in funding['_links'] else None,
+                'micro-deposits': funding['_links']['micro-deposits']['href'] if 'micro-deposits' in funding['_links'] else None,
+                'verify-micro-deposits': funding['_links']['verify-micro-deposits']['href'] if 'verify-micro-deposits' in funding['_links'] else None,
             })
     return fundings
 

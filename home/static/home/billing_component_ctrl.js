@@ -3,8 +3,10 @@ BillingComponentController = function($uibModal) {
     var self = this;
     self.openAddFundingModal = function () {
        $uibModal.open({
-            animation: true,
-            component: 'addFundingIavComponent',
+           animation: true,
+           component: 'addFundingIavComponent',
+           backdrop  : 'static',
+           keyboard  : false,
         });
     };
 };

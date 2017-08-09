@@ -30,14 +30,27 @@ InitSetupComponentController = function($http, $location) {
                 this.iavToken = response.data;
                 console.log('IAV token fetched: ' + this.iavToken);
                 dwolla.configure((window.location.hostname.indexOf('joobali-prod') != -1 || window.location.hostname.indexOf('joobali.com') != -1) ? 'prod' : 'sandbox');
-                dwolla.iav.start(this.iavToken, {container: 'initSetupIavContainer'}, angular.bind(this, function(err, res) {
-                    console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
-                    if (!err) {
-                        // Funding IAV successful
-                        $('#initSetupNextButton').show();
-                        $('#initSetupSkipButton').hide();
-                    }
-                }));
+                dwolla.iav.start(this.iavToken,
+                    {
+                      container: 'initSetupIavContainer',
+                      stylesheets: [
+                        'https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext',
+                      ],
+                      microDeposits: true,
+                      fallbackToMicroDeposits: true,
+                      backButton: true,
+                      subscriber: function(currentPage, error) {
+                          console.log('currentPage:', currentPage, 'error:', JSON.stringify(error))
+                      }
+                    },
+                    angular.bind(this, function(err, res) {
+                        console.log('Error: ' + JSON.stringify(err) + ' -- Response: ' + JSON.stringify(res));
+                        if (!err) {
+                            // Funding IAV successful
+                            $('#initSetupNextButton').show();
+                            $('#initSetupSkipButton').hide();
+                        }
+                    }));
             }), function errorCallback(response) {
                 // called asynchronously if an error occurs
                 // or server returns response with an error status.

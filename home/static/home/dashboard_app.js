@@ -431,6 +431,15 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
           dismiss: '&'
         }
     })
+    .component('verifyMicroDepositsComponent', {
+      templateUrl: '/static/funding/verify_micro_deposits_component_tmpl.html',
+      controller: VerifyMicroDepositsComponentController,
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
         controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],

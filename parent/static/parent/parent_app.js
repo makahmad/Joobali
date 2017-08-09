@@ -225,6 +225,15 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
             dismiss: '&'
         }
     })
+    .component('verifyMicroDepositsComponent', {
+      templateUrl: '/static/funding/verify_micro_deposits_component_tmpl.html',
+      controller: VerifyMicroDepositsComponentController,
+      bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
     .component('profile', {
         templateUrl: '/static/parent/profile_component_tmpl.html',
         controller: ProfileComponentController
