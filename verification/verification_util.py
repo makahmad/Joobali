@@ -9,6 +9,15 @@ def get_provider_email_verification_token(token_id):
     return _get_verification_token(token_id, 'provider_email')
 
 
+def list_provider_email_verification_token(provider_key):
+    return VerificationToken.list_provider_email_token(provider_key.get())
+
+
+def create_provider_email_verification_token(provider_key):
+    verification_token = VerificationToken.create_new_provider_email_token(provider_key.get())
+    verification_token.put()
+    return verification_token
+
 def get_parent_signup_verification_token(token_id=None, parent_key=None):
     """
     If token_id is specified, a unique VerificationToken with type 'parent_signup' will be returned.

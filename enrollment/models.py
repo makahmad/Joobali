@@ -22,6 +22,8 @@ class Enrollment(ndb.Model):
     end_date = ndb.DateTimeProperty()
     # Autopay funding source. If set, the related invoice will be automatically paid by this source.
     autopay_source_id = ndb.StringProperty()
+    # Number of resent emails sent for enrollment
+    resent_email_count = ndb.IntegerProperty(default=0)
     # Autopay # of days before the due date
     pay_days_before = ndb.IntegerProperty(default=0)
     # Whether to waive or not waive registration fee for the first invoice

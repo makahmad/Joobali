@@ -19,20 +19,25 @@
 											<span class="input-group-addon"><i class="fa fa-heart fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="schoolName" name="schoolName" ng-required="true"
 	                           ng-model="$ctrl.profile.schoolName">
 										 </div>
-                </div>
-                <div class="form-group">
-										<label class="control-label" for="firstName">First Name:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="firstName" name="firstName" ng-required="true"
-                           ng-model="$ctrl.profile.firstName">
-										 </div>
 									 </div>
-									 <div class="form-group">
-	                  <label class="control-label" for="lastName">Last Name:</label>
-                    <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
-										</div>
-                </div>
+								 <div class="form-group">
+								 <div class="col-1">
+									<label class="control-label" for="firstName">First Name:</label>
+                   <div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="firstName" name="firstName" ng-required="true"
+                          ng-model="$ctrl.profile.firstName">
+									 </div>
+								 </div>
+									 <div class="col-1">
+                  <label class="control-label" for="lastName">Last Name:</label>
+                   <div class="input-group">
+										<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
+									</div>
+								</div>
+									
+								 </div>
+                
+								</div>
                 <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
                     <div class="input-group">
@@ -88,12 +93,13 @@
 										</div>
                 </div>
                 <div class="form-group">
+									<div class="col-1">
                     <label class="control-label" for="city">City:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span><input type="text" class="form-control" id="city" name="city" ng-required="false" ng-model="$ctrl.profile.city">
 										</div>
                 </div>
-                <div class="form-group">
+                <div class="col-1">
                     <label class="control-label" for="state">State:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-address-book-o fa-lg"></i></span>
@@ -152,6 +158,7 @@
                         </select>
 										</div>
                 </div>
+							</div>
                 <div class="form-group">
                     <label class="control-label" for="zipcode">Zipcode:</label>
                     <div class="input-group">
@@ -221,8 +228,10 @@
                          <a ng-click="$ctrl.deleteLogo()">Delete Logo</a>
                      </div>
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Account Status: {{ $ctrl.profile.dwolla_status }}</label>
+                <div class="form-group ssn">
+                    <label class="control-label">Account Status: <strong>{{ $ctrl.profile.dwolla_status }}</strong> &nbsp; <small class="why" ng-click="isWhyInstructionsOpen = !isWhyInstructionsOpen">What is this?</small></label>
+										<div ng-click="isWhyInstructionsOpen = !isWhyInstructionsOpen" ng-show="isWhyInstructionsOpen" id="whyInstructions"><i class="fa fa-lock fa-1x"></i><small>
+										We require all <em>Provider</em> user accounts to be verified in order to make it easier for <em>parents</em> to pay you quickly, safely, and directly. <!-- Additional documentation (like a federally-issued photo ID) may sometimes be required by our security partners. --></small></div>
                 </div>
 
             </div>

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 def list_program_by_provider_user_id(user_id):
     """List all programs given a provider id"""
     provider = Provider.get_by_id(user_id)
-    programs = Program.query(ancestor=provider.key).order(-Program.startDate)
+    programs = Program.query(ancestor=provider.key).order(-Program.startDate, Program.programName)
     return programs
 
 def get_first_bill_due_date(program):

@@ -1,7 +1,8 @@
 <!-- Modal content-->
 <div class="modal-content">
   <div class="modal-header">
-    <button type="button"  ng-click="$ctrl.cancel()">&times;</button>
+		<a type="button" ng-click="$ctrl.cancel()" class="pull-right"><i class="fa fa-close fa-lg"></i></a>
+    <!-- <button type="button"  ng-click="$ctrl.cancel()">&times;</button> -->
     <h4 class="modal-title">Let's begin:</h4>
     <div class="stepsDiv">
       <ul class="nav nav-pills nav-wizard">
@@ -17,26 +18,37 @@
         <div id="initSetupIavContainer"></div>
       </div>
       <div id="step2" class="init-setup form-content">
-        <div style="margin-left:20px">
-            <h2>Joobali in 3 easy steps</h2>
 
-            <div ng-show="$ctrl.dwollaStatus == 'verified'">
-                1. Add your bank account in the <a href="#!/billing">funds tab</a> and verify you're you in the verification tab <i ng-show="$ctrl.fundings.length > 0" class="fa fa-check fa-2x"></i>
-            </div>
-            <div ng-show="$ctrl.dwollaStatus != 'verified'">
-                1. Add your bank account in the <a href="#!/billing">funds tab</a> and <a href="#!/verification">verify</a> you're you in the verification tab
-            </div>
-            <br>
-            <div>
-                2. Add a <a href="#!/programs">program</a> (or two or three) <i ng-show="$ctrl.programs.length > 0" class="fa fa-check fa-2x"></i>
-            </div>
-            <br>
-            <div>
-                3. <a href="#!/child/list">Enroll</a> children to your programs <i ng-show="$ctrl.numberOfChildren > 0" class="fa fa-check fa-2x"></i>
-            </div>
-
-        </div>
+						<div class="multiStepDash">
+				    <ul>
+							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.fundings.length > 0}">&nbsp;</span> 
+								<i class="fa fa-institution fa-3x"></i>
+								<h4><a href="#!/billing" ng-click="$ctrl.cancel()">Add Your Bank Account</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+								<!-- <div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-2x"></i> &nbsp;You will receive money from parents directly to this account. You may only need your bank login information; however, it wouldn’t hurt to have your account # and/or routing # available.</div> -->
+							</li>
+							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.dwollaStatus == 'verified'}">&nbsp;</span>
+								<i class="fa fa-check-circle-o fa-3x"></i>
+								<h4 ng-show="$ctrl.dwollaStatus == 'verified'">User Account Verified</h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+								<h4 ng-show="$ctrl.dwollaStatus != 'verified'"><a href="#!/verification" ng-click="$ctrl.cancel()">Verify Your User Account</a></h4><sup>
+					<i class="fa fa-question-circle-o fa-2x" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen"></i></sup>
+				<div class="description" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-show="isPageInstructionsOpen" id="pageInstructions"><i class="fa fa-caret-up fa-lg"></i>Only verified users can receive money. We require all Providers to be verified so parents can pay you quickly, safely, and directly.</div>
+							</li>
+							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.programs.length > 0}">&nbsp;</span> 
+								<i class="fa fa-list-alt fa-3x"></i> 
+								<h4><a href="#!/programs" ng-click="$ctrl.cancel()">Add a Program</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+							</li>
+							<li class="step"><span class="indicatorWrap" ng-class="{'indicatorFill': $ctrl.numberOfChildren > 0}">&nbsp;</span> 
+								<i class="fa fa-child fa-3x"></i>
+								<h4><a href="#!/child/list" ng-click="$ctrl.cancel()">Enroll a Child</a></h4><!-- <sup><i class="fa fa-question-circle-o fa-2x"></i></sup> -->
+							</li>
+						</ul>
+					</div>
+	
       </div>
+			
+			
+			
+			
     </div>
     </div>
     <div class="modal-footer">

@@ -772,46 +772,38 @@ a.delete:hover {
 /* see init_setup_component_style.css */
 
 /* ------------ Profile Page Styling ------------------ */
-#profileForm .formActions {
+/*#profileForm .formActions {
   display: table;
   width: 100%;
-  /*margin: 24px auto;
-  border-top: 1px solid #e5e5e5;*/
   padding: 24px 0;
 	margin: 24px auto;
 }
+*/
 
-.profileFormContainer{
+/*.profileFormContainer{
 	position: relative;
-  /*background-color: #fff;*/
   -webkit-background-clip: padding-box;
   background-clip: padding-box;
-	/*border: 1px solid #999;
-  border: 1px solid rgba(0,0,0,.2);*/
   border-radius: 6px;
   outline: 0;
 	width:90%;
 	min-width:525px;
-  /*-webkit-box-shadow: 0 3px 9px rgba(0,0,0,.15);
-  -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.15);
-	box-shadow: 0 3px 9px rgba(0,0,0,.15);*/
 	margin:auto;
 }
-
-.profileFormHeader {
+*/
+/*.profileFormHeader {
   padding: 15px;
-  /*border-bottom: 1px solid #e5e5e5;*/
 }
+*/
 
-.profileFormBody {
+/*.profileFormBody {
 	background: #F5F5F5;
-  /*margin: 24px;*/
   border-top: 1px solid #e3e3e3;
   border-radius: 4px;
   padding: 15px;
   position: relative;
 }
-
+*/
 .profile-title {
   font-size: 30px;
   padding: 26px 0 5px 0;
@@ -844,7 +836,7 @@ a.delete:hover {
     height: 26px;
     float: left;
     margin: 24px 0 0px 60px;
-    line-height: 12px;
+    line-height: 14px;
     font-size: 17px;
     position: absolute;
     top: -6px;
@@ -969,11 +961,16 @@ i.fa.fa-caret-up {
 }
 
 /*----------------- Verification Page ------------------*/
-verification-component .profile-title {
+verification-component .profile-title,
+profile-component .profile-title,
+.profile-title.parent {
 	text-align:left;
 }
 
-#verifyForm div.form-group {
+#verifyForm div.form-group, 
+#profileForm div.form-group, 
+#verifyForm .formActions, 
+#profileForm .formActions  {
   margin: 15px;
 	width: 95%;
   max-width: 600px;

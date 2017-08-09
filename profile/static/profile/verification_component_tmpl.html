@@ -26,7 +26,7 @@
                            ng-model="$ctrl.profile.firstName">
 										 </div>
 									 </div>
-<div class="col-1">
+									 <div class="col-1">
 	                  <label class="control-label" for="lastName">Last Name:</label>
                     <div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span><input type="text" class="form-control dwolla-verify" id="lastName" name="lastName" ng-required="true" ng-model="$ctrl.profile.lastName">
@@ -177,7 +177,9 @@
             </div>
 		        </form>
 						<div class="formActions">
+							<div class="form-group">
 								<button type="button" class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.dwollaVerify(true)" ng-disabled="(verifyForm.email.$dirty && verifyForm.email.$invalid)||verifyForm.$invalid">Verify &raquo;</button>
+							</div>
 						</div> <!-- end formActions -->
     </div>
 <!-- </div></div> --></div></div>
