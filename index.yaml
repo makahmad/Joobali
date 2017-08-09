@@ -32,3 +32,10 @@ indexes:
   properties:
   - name: startDate
     direction: desc
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: startDate
+    direction: desc
+  - name: programName
