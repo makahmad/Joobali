@@ -31,7 +31,7 @@
         </div>
         <div class="alert alert-warning" ng-show="$ctrl.showVerifyFailureAlert">{{ $ctrl.verifyFailureMessage }}
         </div>
-        <button id="verifyButton" type="button" class="btn btn-primary" ng-click="$ctrl.verify()" ng-show="!$ctrl.showCancel" ng-disabled="!verifyMicroDepositsForm.$valid && $ctrl.disableButton">Verify</button>
+        <button id="verifyButton" type="button" class="btn btn-primary" ng-click="$ctrl.verify()" ng-show="!$ctrl.showCancel" ng-disabled="!verifyMicroDepositsForm.$valid || $ctrl.disableButton">Verify</button>
         <button id="cancelButton" type="button" class="btn btn-primary" ng-click="$ctrl.cancel()" ng-show="$ctrl.showCancel">Close</button>
       </div> <!-- end formActions -->
     </div>
