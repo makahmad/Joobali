@@ -4,6 +4,8 @@ import logging
 from os import environ
 from tasks.models import DwollaTokens
 from google.appengine.api import urlfetch
+from datetime import datetime
+from common import datetime_util
 logger = logging.getLogger(__name__)
 
 # Client constants
@@ -17,6 +19,9 @@ ENVIRONMENT_UAT = 'sandbox'
 
 # WEBHOOK SECRET
 WEBHOOK_SECRET = 'joobali_webhook_secret_fb2onpb23nbv-9834t-9nv3-4thg49896-34'
+
+UTC_ISO_8601_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
+JOOBALI_OUTPUT_FORMAT = '%m/%d/%Y'
 
 client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' else CLIENT_ID_PROD,
                          secret=CLIENT_SECRET_UAT if environ.get('IS_DEV') == 'True' else CLIENT_SECRET_PROD,
@@ -145,7 +150,7 @@ def get_funding_source(funding_source_url):
     result['status'] = source['status']
     result['type'] = source['type']
     result['removed'] = source['removed']
-    result['created_date'] = source['created'][0:10]
+    result['created_date'] = time_string_from_dwolla_to_joobali(source['created'])
     result['customer_url'] = source['_links']['customer']['href']
     return result
 
@@ -429,7 +434,7 @@ def get_bank_transfer(transfer_url):
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href'] if 'funding-transfer' in transfer['_links'] else None
     result['funded_transfer_url'] = transfer['_links']['funded-transfer']['href'] if 'funded-transfer' in transfer['_links'] else None
     result['status'] = transfer['status']
-    result['created_date'] = transfer['created'][0:10]
+    result['created_date'] = time_string_from_dwolla_to_joobali(transfer['created'])
     return result
 
 def get_dwolla_transfer(transfer_url):
@@ -538,7 +543,7 @@ def get_dwolla_transfer(transfer_url):
     result['funding_transfer_url'] = transfer['_links']['funding-transfer']['href'] if 'funding-transfer' in transfer['_links'] else None
     result['fee_transfer_url'] = transfer['_links']['fees']['href'] if 'fees' in transfer['_links'] else None
     result['status'] = transfer['status']
-    result['created_date'] = transfer['created'][0:10]
+    result['created_date'] = time_string_from_dwolla_to_joobali(transfer['created'])
     if 'cancel' in transfer['_links']:
         result['cancel'] = transfer['_links']['cancel']['href']
     return result
@@ -638,7 +643,7 @@ def get_fee_transfer(fee_transfer_url):
     result['amount'] = fee_transfer['_embedded']['fees'][0]['amount']['value']
     result['currency'] = fee_transfer['_embedded']['fees'][0]['amount']['currency']
     result['status'] = fee_transfer['_embedded']['fees'][0]['status']
-    result['created_date'] = fee_transfer['_embedded']['fees'][0]['created'][0:10]
+    result['created_date'] = time_string_from_dwolla_to_joobali(fee_transfer['_embedded']['fees'][0]['created'])
     return result
 
 def parse_webhook_data(webhook_json):
@@ -795,5 +800,11 @@ def parse_webhook_data(webhook_json):
     result['event_url'] = webhook_json['_links']['self']['href']
     result['resource_url'] = webhook_json['_links']['resource']['href']
     result['account_url'] = webhook_json['_links']['account']['href']
-    result['event_date'] = webhook_json['timestamp'][0:10]
+    result['event_date'] = time_string_from_dwolla_to_joobali(webhook_json['timestamp'])
     return result
+
+
+def time_string_from_dwolla_to_joobali(dwolla_timestamp):
+    ''' Parse dwolla UTC timestamp, convert to PST, and output in joobali time format. '''
+    timestamp = datetime.strptime(dwolla_timestamp, UTC_ISO_8601_TIME_FORMAT)
+    return datetime_util.utc_to_local(timestamp).strftime(JOOBALI_OUTPUT_FORMAT)
