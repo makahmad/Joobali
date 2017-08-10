@@ -14,14 +14,11 @@ import random
 
 
 def index(request):
-    loggedIn = False
-    if request.session.get('email'):
-        loggedIn = True
 
     return render_to_response(
         'home/index.html',
         {
-            'loggedIn': loggedIn,
+            'loggedIn': check_session(request),
             'email': request.session.get('email'),
             'home_url': 'https://www.joobali.com'
         },

@@ -21,6 +21,19 @@ from google.appengine.ext import ndb
 logger = logging.getLogger(__name__)
 
 
+def care(request):
+
+    return render_to_response(
+        'parent/care.html',
+        {
+            'loggedIn': check_session(request),
+            'email': request.session.get('email'),
+            'home_url': 'https://www.joobali.com'
+        },
+        template.RequestContext(request)
+    )
+
+
 def index(request):
     if not check_session(request) or request.session['is_provider'] is True:
         return HttpResponseRedirect('/login')
