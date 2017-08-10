@@ -1,4 +1,5 @@
 <!doctype html>
+{% load humanize %}
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
       xmlns:o="urn:schemas-microsoft-com:office:office">
 <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
@@ -215,7 +216,7 @@
                                                                 <div style="text-align: left;">Program
                                                                     Name:&nbsp;<strong>{{program_name}}</strong><br>
                                                                     Program
-                                                                    Fee:&nbsp;<strong>${{program_fee}}</strong><br>
+                                                                    Fee:&nbsp;<strong>${{ program_fee | floatformat:2 | intcomma }}</strong><br>
                                                                     Payment Schedule:&nbsp;<strong>{{program_billing_cycle}}</strong><br>
                                                                     Payment Due Date:&nbsp;<strong>{{enrollment_start_date}}</strong><br>
                                                                     <br>
