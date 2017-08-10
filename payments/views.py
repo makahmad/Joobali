@@ -135,8 +135,7 @@ def list_dwolla_payments(email):
             amount = transfer['amount']
             source_customer_url = transfer['source_customer_url']
             status = transfer['status']
-            list = transfer['created_date'].split('-') # 2017-04-01
-            date = '%s/%s/%s' % (list[1], list[2], list[0])
+            date = transfer['created_date']
             parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
 
             fee_amount = 0

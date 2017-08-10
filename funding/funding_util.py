@@ -50,7 +50,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=
     transfer = dwolla.make_transfer(request_body)
 
     if invoice:
-        invoice.dwolla_transfer_id = transfer.headers['location'] # funded_transfer url
+        invoice.dwolla_transfer_id = transfer.headers['location'] # dwolla_transfer url
         invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
         invoice.put()
 

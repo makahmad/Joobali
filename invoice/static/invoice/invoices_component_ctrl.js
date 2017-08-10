@@ -168,7 +168,7 @@ InvoicesComponentController.prototype.getButtonText = function(invoice) {
     } else {
         if (!invoice.paid && !invoice.processing) {
             return "Make Payment";
-        } else if (invoice.processing && !invoice.paid) {
+        } else if ( !invoice.paid && invoice.processing) {
             return "Cancel Payment";
         }
     }

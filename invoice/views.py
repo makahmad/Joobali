@@ -96,7 +96,7 @@ def listInvoices(request):
 
 	results = []
 	for invoice in invoices:
-		results.append({
+		data = {
 			'id': invoice.key.id(),
 			'invoice_id': invoice.key.id(),
             'provider': invoice.provider_key.get().schoolName,
@@ -112,7 +112,12 @@ def listInvoices(request):
             'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
 			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
 			'snippet': invoice_util.get_invoice_snippet(invoice)
-        })
+        }
+		if invoice.is_processing() and invoice.dwolla_transfer_id:
+			dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
+			if 'cancel' in dwolla_transfer:
+				data['cancel'] = dwolla_transfer['cancel']
+		results.append(data)
 	return HttpResponse(json.dumps(results))
 
 def viewInvoice(request):
@@ -297,9 +302,9 @@ def cancelPayment(request):
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
 		if invoice.dwolla_transfer_id:
-			funded_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
-			if 'cancel' in funded_transfer:
-				cancel_transfer(funded_transfer['cancel'])
+			dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
+			if 'cancel' in dwolla_transfer:
+				cancel_transfer(dwolla_transfer['cancel'])
 				invoice.status = invoice._POSSIBLE_STATUS['CANCELLED']
 				invoice.put()
 			else:
