@@ -14,6 +14,14 @@ indexes:
   ancestor: yes
   properties:
   - name: child_key
+  - name: program_key
+  - name: start_date
+    direction: desc
+
+- kind: Enrollment
+  ancestor: yes
+  properties:
+  - name: child_key
   - name: start_date
     direction: desc
 
