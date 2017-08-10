@@ -7,6 +7,12 @@ EnrollmentListParentViewController = function EnrollmentListParentViewController
         'Start Date',
         'Autopay?'
     ];
+
+    this.enrollmentMap = {
+    'initialized':'Invited (but not accepted)',
+    'cancel':'Canceled',
+    'active':'Active',
+    'invited':'Invited (but not accepted)'};
 }
 
 EnrollmentListParentViewController.prototype.viewDetail = function(enrollment) {

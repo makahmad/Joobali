@@ -9,7 +9,7 @@
             ng-click="$ctrl.viewDetail(enrollment)">
             <td>{{ enrollment.provider.schoolName}}</td>
             <td>{{ enrollment.program.programName }}</td>
-            <td>{{ enrollment.enrollment.status }}</td>
+            <td>{{$ctrl.enrollmentMap[enrollment.enrollment.status]}}</td>
             <td>{{ enrollment.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>
             <td>{{ (enrollment.enrollment.autopay_source_id) ? 'yes' : 'no' }}</td>
         </tr>

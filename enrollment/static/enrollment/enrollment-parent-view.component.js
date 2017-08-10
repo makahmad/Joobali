@@ -9,6 +9,12 @@ EnrollmentParentViewController = function EnrollmentParentViewController($uibMod
     this.showSuccessAlert = false;
     this.showFailureAlert = false;
     this.counter = 5;
+
+    this.enrollmentMap = {
+    'initialized':'Invited (but not accepted)',
+    'cancel':'Canceled',
+    'active':'Active',
+    'invited':'Invited (but not accepted)'};
 }
 
 EnrollmentParentViewController.prototype.getEnrollmentDetail = function() {

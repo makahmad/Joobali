@@ -35,7 +35,7 @@
                     <td>{{$ctrl.enrollmentDetail.program.billingFrequency}}</td>
                     <td>{{$ctrl.enrollmentDetail.program.lateFee | currency}}</td>
                     <td>{{$ctrl.enrollmentDetail.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>
-                    <td>{{$ctrl.enrollmentDetail.enrollment.status}}</td>
+                    <td>{{$ctrl.enrollmentMap[$ctrl.enrollmentDetail.enrollment.status]}}</td>
                 </tr>
             </table>
         </div>
