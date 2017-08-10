@@ -21,7 +21,7 @@ ENVIRONMENT_UAT = 'sandbox'
 WEBHOOK_SECRET = 'joobali_webhook_secret_fb2onpb23nbv-9834t-9nv3-4thg49896-34'
 
 UTC_ISO_8601_TIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%fZ"
-JOOBALI_OUTPUT_FORMAT = '%d/%m/%Y'
+JOOBALI_OUTPUT_FORMAT = '%m/%d/%Y'
 
 client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' else CLIENT_ID_PROD,
                          secret=CLIENT_SECRET_UAT if environ.get('IS_DEV') == 'True' else CLIENT_SECRET_PROD,
