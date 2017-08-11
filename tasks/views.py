@@ -11,7 +11,7 @@ from datetime import timedelta
 from common.dwolla import parse_webhook_data
 from common.dwolla import get_bank_transfer, get_dwolla_transfer, get_funding_source
 from common.email.invoice import send_invoice_email
-from common.email.dwolla import send_payment_cancelled_email_to_provider, send_payment_success_email_to_provider, send_payment_failed_email_to_provider, send_payment_success_email, send_payment_failed_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
+from common.email.dwolla import send_funding_source_micro_deposits_completed_email, send_payment_cancelled_email_to_provider, send_payment_success_email_to_provider, send_payment_failed_email_to_provider, send_payment_success_email, send_payment_failed_email, send_funding_source_removal_email, send_funding_source_addition_email, send_payment_created_email, send_payment_created_email_to_provider, send_payment_cancelled_email
 from common.dwolla import start_webhook, clear_webhook, client
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
@@ -288,6 +288,28 @@ def dwolla_webhook(request):
     #     u'timestamp': u'2017-06-05T03:32:03.943   Z',
     #     u'id': u'3c2e2daa-8fe3-4b81-9ca4-e964ae4186b3'
     # }
+    # Another example:
+    # {
+    #     u'created': u'2017-08-10T14:00:56.058   Z',
+    #     u'resourceId': u'f20aa389-8223-41ae-b796-fd4f64e3c410',
+    #     u'topic': u'customer_microdeposits_completed',
+    #     u'_links': {
+    #         u'customer': {
+    #             u'href': u'https://api.dwolla.com/customers/56e1b292-2d6c-4df3-a6ee-c97adff481d7'
+    #         },
+    #         u'self': {
+    #             u'href': u'https://api.dwolla.com/events/d697cf3a-07f1-48c8-8152-48ced5d613dd'
+    #         },
+    #         u'resource': {
+    #             u'href': u'https://api.dwolla.com/funding-sources/f20aa389-8223-41ae-b796-fd4f64e3c410'
+    #         },
+    #         u'account': {
+    #             u'href': u'https://api.dwolla.com/accounts/6d081097-35f7-4119-9c4e-530d35de2711'
+    #         }
+    #     },
+    #     u'timestamp': u'2017-08-10T14:00:56.058   Z',
+    #     u'id': u'd697cf3a-07f1-48c8-8152-48ced5d613dd'
+    # }
     logger.info(webhook_content)
     webhook_data = parse_webhook_data(webhook_content)
     if DwollaEvent.get_by_id(webhook_data['id']) != None:
@@ -546,6 +568,36 @@ def dwolla_webhook(request):
             'support_phone': support_phone
         }
         send_funding_source_removal_email(email, first_name, funding_source['name'], template.render(data))
+
+        event = DwollaEvent(id = webhook_data['id'])
+        event.event_id = webhook_data['id']
+        event.event_content = str(webhook_content)
+        event.put()
+    elif 'customer_microdeposits_completed' in webhook_data['topic']:
+        funding_source = get_funding_source(webhook_data['resource_url'])
+        first_name = None
+        last_name = None
+        email = None
+        parent = parent_util.get_parent_by_dwolla_id(webhook_data['customer_url'])
+        if not parent:
+            provider = provider_util.get_provider_by_dwolla_id(webhook_data['customer_url'])
+            first_name = provider.firstName
+            last_name = provider.lastName
+            email = provider.email
+        else:
+            first_name = parent.first_name
+            last_name = parent.last_name
+            email = parent.email
+
+        template = loader.get_template('funding/joobali-to-customer-funding-source-micro-deposits-completed.html')
+        data = {
+            'first_name': first_name,
+            'bank_name': funding_source['bank_name'],
+            'account_name': funding_source['name'],
+            'host': host,
+            'support_phone': support_phone
+        }
+        send_funding_source_micro_deposits_completed_email(email, first_name, funding_source['name'], template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
