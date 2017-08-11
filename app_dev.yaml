@@ -28,4 +28,4 @@ builtins:
 
 env_variables:
   IS_DEV: "True"
-  OVERRIDING_EMAIL: "" # Non-empty if you have enable_sendmail
+  OVERRIDING_EMAIL: "mak@joobali.com" # Non-empty if you have enable_sendmail
