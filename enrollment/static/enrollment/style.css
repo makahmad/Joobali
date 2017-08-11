@@ -14,7 +14,7 @@
 
 .enrollmentRow:hover {
     cursor: pointer;
-    background-color: #9f9 !important;
+    background-color: lightblue !important;
 }
 
 .enrollmentEditor {
