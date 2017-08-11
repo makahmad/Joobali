@@ -2,15 +2,21 @@
 	<!-- <span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Children instructions here.</span> -->
 <div class="programsContainer">
 	<div class="programsDiv">
-		<div class="buttonDiv addChildButtonDiv pull-left">
-
-			<button type="button" ng-disabled="$ctrl.dwollaStatus!='verified' || $ctrl.fundingSources==0"
-                 class="btn btn-default btn-lg pull-right programHeader joobali"
-					ng-click="$ctrl.openAddChildModal()"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Enroll a new child
-             </button>
+		
+		<div class="full" ng-show="$ctrl.fundingSources==0"><br>You need to <a href="#!/billing">add a bank account</a> before enrolling children.
 		</div>
-		<div ng-show="$ctrl.dwollaStatus!='verified' && $ctrl.fundingSources>0"><br><a href="#!/verification">Verify</a> your account<br>before enrolling.</div>
-		<div ng-show="$ctrl.fundingSources==0"><br>Add a <a href="#!/billing">funding source</a> to your account<br>before enrolling.</div>
+				
+		<div class="buttonDiv addChildButtonDiv pull-left">
+			<button type="button" ng-disabled="$ctrl.dwollaStatus!='verified' || $ctrl.fundingSources==0"
+			         class="btn btn-default btn-lg pull-right programHeader joobali"
+				ng-click="$ctrl.openAddChildModal()"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Enroll a new child
+			</button>
+		</div>
+		
+		<div ng-show="$ctrl.dwollaStatus!='verified' && $ctrl.fundingSources>0">
+			<br><a href="#!/verification">Verify</a> your account<br>before enrolling.
+		</div>
+				
 		<div class="child-list-filter-options pull-right">
 			<span class="label label-default">Filter by Program</span>
 			<select class="form-control"

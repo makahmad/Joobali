@@ -639,6 +639,17 @@ tr:nth-child(odd).invoiceRow:hover, tr:nth-child(even).invoiceRow:hover {
 	cursor:pointer;
 }
 
+.one-third {
+	width:33.333333333333333%;
+	float:left;
+	display:inline-block;
+}
+
+.full {
+	width:100%;
+	display:block;
+}
+
 /* ----------------- Children Styles ------------------ */
 .addToProgram {
   margin: -10px 2% 0 2%;
@@ -908,8 +919,16 @@ payments-component .table tr a, invoices-component .table tr a {
 
 /*----------------- Bootstrap Datepicker overrides ------------------*/
 
-.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+.btn.disabled, 
+.btn[disabled], 
+fieldset[disabled] .btn, 
+.btn.disabled:hover,
+.btn[disabled]:hover,
+fieldset[disabled] .btn:hover {
 	background:#ccc;
+	color:darkgray;
+	border-color:darkgray;
+	cursor:not-allowed;
 }
 
 

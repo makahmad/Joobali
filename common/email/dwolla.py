@@ -98,19 +98,10 @@ def send_payment_cancelled_email_to_provider(provider_address, provider_name, pa
 
 def send_funding_source_removal_email(email_address, name, funding_source_name, template,
                                       sender_address="Joobali <howdy@joobali.com>"):
-    email_subject = "Joobali: You have successfully removed bank account - %s." % funding_source_name
+    email_subject = "Joobali: You have successfully removed a bank account - %s." % funding_source_name
     email_to = "%s" % email_address
     email_body = """Hi, %s
     You have successfully removed bank account - %s.""" % (name, funding_source_name)
-    email_html = template
-    send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html, body=email_body)
-
-def send_funding_source_micro_deposits_completed_email(email_address, name, funding_source_name, template,
-                                      sender_address="Joobali <howdy@joobali.com>"):
-    email_subject = "Joobali: Micro deposits have been completed for your bank account - %s." % funding_source_name
-    email_to = "%s" % email_address
-    email_body = """Hi, %s
-    The micro deposits have been posted to your bank account - %s. Please log into Joobali to verify your bank account.""" % (name, funding_source_name)
     email_html = template
     send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html, body=email_body)
 
