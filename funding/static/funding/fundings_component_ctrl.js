@@ -8,7 +8,7 @@ FundingsComponentController = function($location, $http, $uibModal) {
 FundingsComponentController.prototype.removeFunding = function(funding) {
 
     bootbox.confirm({
-        message: "Are you sure you want to remove this funding source - " + funding.name + "?",
+        message: "Are you sure you want to remove this account (" + funding.name + ")?",
         buttons: {
             confirm: {
                 label: 'Yes',
