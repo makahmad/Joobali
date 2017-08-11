@@ -16,7 +16,7 @@ FundingsComponentController.prototype.removeFunding = function(funding) {
             },
             cancel: {
                 label: 'No',
-								className: 'btn btn-default btn-lg pull-right'
+				className: 'btn btn-default btn-lg pull-right'
             }
         },
         callback: angular.bind(this, function(result) {
@@ -36,8 +36,9 @@ FundingsComponentController.prototype.removeFunding = function(funding) {
                         if (response.data !== 'success') {
                             bootbox.alert(response.data);
                         } else {
-                            bootbox.alert('Removal succeeded.')
-                            location.reload();
+                            bootbox.alert('Removal succeeded.', function() {
+                                location.reload();
+                            });
                         }
                     },
                     function(response){
