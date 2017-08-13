@@ -156,6 +156,26 @@ def deleteProgram(request):
     program.key.delete()
     return HttpResponse("success")
 
+def copyProgram(request):
+    """Deletes the program with provided program ID"""
+    user_id = request.session.get('user_id')
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    data = json.loads(request.body)
+
+    programId = data['id']
+    if not programId:
+        raise Exception('no program id is provided')
+
+    provider = Provider.get_by_id(user_id)
+
+    program = models.Program.get_by_id(int(programId), parent=provider.key)
+    new_program = program_util.clone_entity(program, parent=provider.key)
+    new_program.put()
+
+    return HttpResponse("success")
+
 def addProgram(request):
     """Adds a new program along with associated sessions to the logged in user"""
     user_id = request.session.get('user_id')

@@ -43,7 +43,8 @@
                         <td ng-show="{{ $ctrl.program.has_enrollment }}"><a
                                 title="Program cannot be deleted as there are children enrolled."><i
                                 class="fa fa-trash-o fa-lg"></i></a></td>
-
+                        <td ng-click="$ctrl.confirmCopyComponentModal()" data-toggle="modal" data-target="#copyProgramModal">
+                            <a><i class="fa fa-files-o fa-lg"></i></a></td>
                     </tr>
                 </table>
 

@@ -323,6 +323,16 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         dismiss: '&'
       }
     })
+    .component('confirmCopyProgramComponent', {
+      templateUrl: '/static/manageprogram/confirm_copy_program_component_tmpl.html',
+      controller: ConfirmCopyProgramComponentController,
+      bindings: {
+        programs: '<',
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+      }
+    })
     .component('addPaymentComponent', {
       templateUrl: '/static/payments/add_payment_component_tmpl.html',
       controller: AddPaymentController,

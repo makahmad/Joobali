@@ -9,6 +9,7 @@ urlpatterns = [
 	url(r'^getprogram', views.getProgram, name='getProgram'),
 	url(r'^updateprogram', views.updateProgram, name='updateProgram'),
 	url(r'^deleteprogram', views.deleteProgram, name='deleteProgram'),
+	url(r'^copyprogram', views.copyProgram, name='copyProgram'),
 	# url(r'^addsession', views.addSession, name='addSession'),
 	# url(r'^listsessions', views.listSessions, name='listSessions'),
 	# url(r'^updatesession', views.updateSession, name='updateSession'),

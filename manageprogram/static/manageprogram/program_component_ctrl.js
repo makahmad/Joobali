@@ -49,6 +49,26 @@ ProgramComponentController = function($uibModal, $log, $location) {
                   $log.info('modal-component dismissed at: ' + new Date());
                 });
           };
+
+
+          $ctrl.confirmCopyComponentModal = function () {
+                var modalInstance = $uibModal.open({
+                  animation: $ctrl.animationsEnabled,
+                  component: 'confirmCopyProgramComponent',
+                   resolve: {
+                    programId: function () {
+                      return $ctrl.program.id;
+                    }
+                  }
+                });
+
+                modalInstance.result.then(function (selectedProgram) {
+                  $ctrl.program = selectedProgram;
+                }, function () {
+                  $log.info('modal-component dismissed at: ' + new Date());
+                });
+          };
+
 }
 
 

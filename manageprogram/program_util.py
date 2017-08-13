@@ -1,3 +1,4 @@
+from google.appengine.ext import ndb
 from models import Program
 from login.models import Provider
 from datetime import timedelta
@@ -7,11 +8,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+def clone_entity(e, **extra_args):
+  klass = e.__class__
+  props = dict((v._code_name, v.__get__(e, klass)) for v in klass._properties.itervalues() if type(v) is not ndb.ComputedProperty)
+  props.update(extra_args)
+  return klass(**props)
+
+
 def list_program_by_provider_user_id(user_id):
     """List all programs given a provider id"""
     provider = Provider.get_by_id(user_id)
     programs = Program.query(ancestor=provider.key).order(-Program.startDate, Program.programName)
     return programs
+
 
 def get_first_bill_due_date(program):
     """ Gets the first bill due date after the program starts. """
@@ -47,6 +56,7 @@ def get_first_bill_due_date(program):
                 if bill_day >= start_day:
                     return start_date.replace(day=bill_day)
                 else:
-                    return start_date.replace(day=bill_day) + timedelta(days=monthrange(start_date.year, start_date.month)[1])
+                    return start_date.replace(day=bill_day) + timedelta(
+                        days=monthrange(start_date.year, start_date.month)[1])
     # if everything fall through, just return progrma start date.
     return start_date
