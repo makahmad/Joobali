@@ -54,6 +54,13 @@
                                 <i class="glyphicon glyphicon-calendar"></i></button></span>
             </p>
         </div>
+        <div class="form-group">
+            <label class="control-label">Send email notification to parent?
+                <input name="send_email_notification" type="checkbox"
+                       ng-required="false"
+                       ng-model="$ctrl.newInvoice.send_email">
+            </label>
+        </div>
     </form>
   </div>
 <div class="modal-footer">

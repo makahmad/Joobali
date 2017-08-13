@@ -5,7 +5,9 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
     var self = this;
     self.programs = [];
     self.children = [];
-    self.newInvoice = {};
+    self.newInvoice = {
+        'send_email': true,
+    };
     self.createButton = {};
     self.createSuccessLabel = {};
     self.createFailLabel = {};
@@ -27,6 +29,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                     'description': self.newInvoice.description,
                     'amount': self.newInvoice.amount,
                     'created_date': moment().format('MM/DD/YYYY'),
+                    'send_email': self.newInvoice.send_email,
                 };
             } else {
                 data = {
@@ -35,6 +38,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                     'description': self.newInvoice.description,
                     'amount': self.newInvoice.amount,
                     'created_date': moment().format('MM/DD/YYYY'),
+                    'send_email': self.newInvoice.send_email,
                 };
             }
         } else {
@@ -50,6 +54,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                     'description': self.newInvoice.description,
                     'amount': self.newInvoice.amount,
                     'created_date': moment().format('MM/DD/YYYY'),
+                    'send_email': self.newInvoice.send_email,
                 };
             } else {
                 data = {
@@ -58,6 +63,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                     'description': self.newInvoice.description,
                     'amount': self.newInvoice.amount,
                     'created_date': moment().format('MM/DD/YYYY'),
+                    'send_email': self.newInvoice.send_email,
                 };
             }
         }

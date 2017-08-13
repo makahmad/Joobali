@@ -188,7 +188,7 @@ def invoice_notification(request):
     # loop over invoices...
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
-        if not invoice.email_sent and invoice.amount > 0:
+        if invoice.send_email and not invoice.email_sent and invoice.amount > 0:
             logger.info("Sending notification for invoice: %s" % invoice)
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
             enrollment = invoice_util.get_invoice_enrollment(invoice)

@@ -29,6 +29,7 @@ class Invoice(ndb.Model):
         'PAID_OFFLINE': 'PAID_OFFLINE', # paid offline with case/check
     }
     email_sent = ndb.BooleanProperty(required=True, default=False)
+    send_email = ndb.BooleanProperty(required=True, default=True) # whether a email should be sent for this invoice
     autopay_source_id = ndb.StringProperty() # come from enrollment
     autopay_failure_message = ndb.StringProperty() # from dwolla
     dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment (funded_transfer)

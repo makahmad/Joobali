@@ -40,20 +40,21 @@ def add_invoice(request):
 	data = json.loads(request.body)
 
 	description = data['description']
+	send_email = data['send_email']
 	amount = data['amount']
 	due_date = datetime_util.local_to_utc(datetime.strptime(data['due_date'], DATE_FORMAT))
 	if 'all_children' in data:
 		if 'program_id' in data:
 			for child in child_util.list_child_by_provider_program(request.session.get('user_id'), long(data['program_id'])):
 				provider = Provider.get_by_id(request.session.get('user_id'))
-				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount)
+				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount, True, send_email)
 				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 													  description, amount)
 		else:
 			for child_id in data['all_children']:
 				provider = Provider.get_by_id(request.session.get('user_id'))
 				child = Child.get_by_id(child_id)
-				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount, False)
+				invoice = invoice_util.create_invoice(provider, child, due_date, None, amount, False, send_email)
 				invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 					description, amount)
 	else:
@@ -67,7 +68,7 @@ def add_invoice(request):
 			enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
 				provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
 			invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id,
-												  amount)
+												  amount, True, send_email)
 			invoice_util.create_invoice_line_item(
 				ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None,
 				description, amount)
@@ -75,7 +76,7 @@ def add_invoice(request):
 			provider = Provider.get_by_id(request.session.get('user_id'))
 			child = Child.get_by_id(child_id)
 			invoice = invoice_util.create_invoice(provider, child, due_date, None,
-												  amount, False)
+												  amount, False, send_email)
 			invoice_util.create_invoice_line_item(None, invoice, None, None, None,
 				description, amount)
 
