@@ -7,14 +7,6 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-
-def clone_entity(e, **extra_args):
-  klass = e.__class__
-  props = dict((v._code_name, v.__get__(e, klass)) for v in klass._properties.itervalues() if type(v) is not ndb.ComputedProperty)
-  props.update(extra_args)
-  return klass(**props)
-
-
 def list_program_by_provider_user_id(user_id):
     """List all programs given a provider id"""
     provider = Provider.get_by_id(user_id)

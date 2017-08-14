@@ -171,7 +171,19 @@ def copyProgram(request):
     provider = Provider.get_by_id(user_id)
 
     program = models.Program.get_by_id(int(programId), parent=provider.key)
-    new_program = program_util.clone_entity(program, parent=provider.key)
+    
+    new_program = models.Program(parent=provider.key)
+    new_program.programName = program.programName + ' Copy'
+    new_program.fee = program.fee
+    new_program.registrationFee = program.registrationFee
+    new_program.fee = program.fee
+    new_program.startDate = program.startDate
+    new_program.lateFee = program.lateFee
+    new_program.billingFrequency = program.billingFrequency
+    new_program.monthlyBillDay = program.monthlyBillDay
+    new_program.weeklyBillDay = program.weeklyBillDay
+    new_program.endDate = program.endDate
+    new_program.indefinite = program.indefinite
     new_program.put()
 
     return HttpResponse("success")
