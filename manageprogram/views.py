@@ -171,7 +171,7 @@ def copyProgram(request):
     provider = Provider.get_by_id(user_id)
 
     program = models.Program.get_by_id(int(programId), parent=provider.key)
-    
+
     new_program = models.Program(parent=provider.key)
     new_program.programName = program.programName + ' Copy'
     new_program.fee = program.fee
