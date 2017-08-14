@@ -33,3 +33,11 @@
 #initSetupDoneButton {
 	display: none;
 }
+
+.closeBtn {
+	color:lightgray;
+}
+
+.closeBtn:hover {
+	cursor:pointer;
+}

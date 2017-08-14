@@ -80,6 +80,7 @@ i.fa.fa-trash-o.fa-lg {
 
 .programActions td {
 	padding: 7px 0 !important;
+	width:25%;
 }
 
 tr.programActions td:first-child {
@@ -182,6 +183,7 @@ program-component:hover .programActions {
   width: 63%;
   padding-right: 15px;
   line-height: 3;
+	white-space:nowrap;
 }
 
 .main {
