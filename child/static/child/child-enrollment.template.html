@@ -115,6 +115,16 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
                 </div>
+
+                <div class="form-group"
+                     ng-class="{'has-error': addEnrollmentForm.fee.$invalid && addEnrollmentForm.fee.$touched}"
+                     ng-show="$ctrl.newEnrollment.program">
+                    <label class="control-label">How much to charge every billing cycle ?
+                    </label>
+                    <input type="number" min="0" class="form-control" id="fee" name="fee"
+                           ng-required="true" ng-model="$ctrl.newEnrollment.fee" ng-readonly="true">
+
+                </div>
                 <div class="form-group">
                     <label class="control-label">Waive registration fee?
                         <input name="waive_registration" type="checkbox"

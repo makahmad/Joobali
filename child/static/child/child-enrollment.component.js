@@ -56,7 +56,8 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
             'program_id': self.newEnrollment.program.id,
             'start_date': moment(self.newEnrollment.start_date).format('MM/DD/YYYY'),
             'end_date' : self.newEnrollment.end_date ? moment(self.newEnrollment.end_date).format('MM/DD/YYYY') : "",
-            'waive_registration': self.newEnrollment.waive_registration
+            'waive_registration': self.newEnrollment.waive_registration,
+            'fee': self.newEnrollment.fee,
         };
 
         $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
@@ -112,8 +113,10 @@ ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
     if (this.newEnrollment.program) {
         this.log_.info("computing: " + moment(this.newEnrollment.program.startDate));
         this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate).toDate();
+        this.newEnrollment.fee = this.newEnrollment.program.fee;
     } else {
         this.newEnrollment.start_date = "";
+        this.newEnrollment.fee = 0;
     }
     this.log_.info("setting the start date to be: " + angular.toJson(this.newEnrollment.start_date));
     this.whenChangeStartDate();

@@ -35,8 +35,10 @@ ChildFormContentController.prototype.whenSelectedProgramChange = function () {
         } else {
             this.newChildEnrollmentInfo.end_date = "";
         }
+        this.newChildEnrollmentInfo.fee = this.newChildEnrollmentInfo.program.fee;
     } else {
         this.newChildEnrollmentInfo.start_date = null;
+        this.newChildEnrollmentInfo.fee = 0;
     }
     this.whenChangeStartDate();
 }
