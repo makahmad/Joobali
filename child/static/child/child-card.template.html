@@ -5,11 +5,20 @@
             <!-- <th><td></td></th> -->
             <tr>
                 <td>Name:</td>
-                <td><strong>{{$ctrl.child.first_name}} {{$ctrl.child.last_name}}</strong></td>
+                <td><strong><a  href="#" editable-text="$ctrl.child.first_name" e-required e-formclass="enrollProgram" onaftersave="$ctrl.updateChild()">{{ $ctrl.child.first_name || 'Missing' }}</a> <a href="#" editable-text="$ctrl.child.last_name"  e-required e-formclass="enrollProgram"  onaftersave="$ctrl.updateChild()">{{ $ctrl.child.last_name || 'Missing' }}</a></strong></td>
+
             </tr>
             <tr>
                 <td>Birthday:</td>
-                <td>{{$ctrl.child.date_of_birth}}</td>
+                <td><a href="#" editable-bsdate="$ctrl.child.date_of_birth"
+                       e-datepicker-popup="MM/dd/yyyy"
+                       e-readonly="true"
+                       e-show-button-bar="false"
+                       e-required
+                       e-datepicker-options="{maxDate: $ctrl.todayDate}"
+                       e-is-open="opened.$data" e-ng-click="open($event,'$data')"
+                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Missing'}}</a>
+                </td>
             </tr>
             <tr>
                 <td>Age:</td>

@@ -23,7 +23,6 @@ from enrollment import enrollment_util
 
 logger = logging.getLogger(__name__)
 
-
 def list_child(request):
     if not session.check_session(request):
         return HttpResponseRedirect('/login')
@@ -129,4 +128,13 @@ def get_child(request):
 
 
 def update_child(request):
-    raise NotImplementedError()
+    if not session.check_session(request):
+        return HttpResponseRedirect('/login')
+
+    new_child = json.loads(request.body)
+    child_key = Child.generate_key(new_child['id'])
+    child_util.update_child(child_key, {'first_name': new_child['first_name'],
+                                        'last_name': new_child['last_name'],
+                                        'date_of_birth': new_child['date_of_birth']})
+
+    return HttpResponse("success")

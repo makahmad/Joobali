@@ -104,6 +104,10 @@ def update_child(child_key, child_data):
     child = child_key.get()
     if 'date_of_birth' in child_data:
         child.date_of_birth = datetime.strptime(child_data['date_of_birth'], "%m/%d/%Y").date()
+
+    child.first_name = child_data['first_name']
+    child.last_name = child_data['last_name']
+
     return child.put()
 
 

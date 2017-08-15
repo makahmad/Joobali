@@ -89,7 +89,7 @@ ChildListController.prototype.updateFilteringProgram = function() {
 }
 
 ChildListController.prototype.setDefaultFilteringProgram = function() {
-    console.log("running set default filtering program");
+//    console.log("running set default filtering program");
     angular.forEach(this.programs, angular.bind(this, function(program) {
         if (program.id == this.programId) {
             this.selectedFilteringProgram = program;

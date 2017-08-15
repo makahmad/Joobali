@@ -5,12 +5,25 @@ ChildCardController = function ChildCardController($uibModal, $scope, $http, $ro
     this.routeParams_ = $routeParams;
     this.location_ = $location;
     this.enrollmentDateChecker_ = EnrollmentDateChecker;
+    this.todayDate = new Date();
+
+    $scope.opened = {};
+	$scope.open = function($event, elementOpened) {
+		$event.preventDefault();
+		$event.stopPropagation();
+
+		$scope.opened[elementOpened] = !$scope.opened[elementOpened];
+	};
 }
 
 ChildCardController.prototype.$onInit = function() {
     this.getEnrollmentData();
     var currentDate = moment(new Date());
     var dateDiff = moment.duration(currentDate.diff(moment(this.child.date_of_birth, "MM/DD/YYYY")));
+
+    if (this.child.date_of_birth!=null)
+        this.child.date_of_birth = new Date(this.child.date_of_birth);
+
     diff_str = "";
     if (dateDiff.years() > 0) {
         diff_str += dateDiff.years() + " years, "
@@ -22,6 +35,26 @@ ChildCardController.prototype.$onInit = function() {
         diff_str += dateDiff.days() + " days"
     }
     this.child.age = diff_str;
+};
+
+ChildCardController.prototype.updateChild = function(data) {
+
+    if (this.child.date_of_birth!=null)
+        this.child.date_of_birth =  moment(this.child.date_of_birth).format('MM/DD/YYYY');
+    else
+        return "Date of birth is required";
+
+    this.http_({
+        method: 'POST',
+        url: '/child/update',
+        data: JSON.stringify(this.child)
+    }).then(angular.bind(this, function successCallback(response) {
+            this.$onInit();
+    }), angular.bind(this, function errorCallback(response){
+            console.log('post failed');
+            bootbox.alert("Something is wrong with the saving. Please try again later");
+    }));
+
 };
 
 ChildCardController.prototype.openEnrollmentModal = function() {

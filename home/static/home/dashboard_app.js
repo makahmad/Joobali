@@ -182,7 +182,10 @@ DashboardController.prototype.selectProgram = function(program) {
 }
 
 
-app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency', 'joobali.base'])
+app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency', 'joobali.base','xeditable'])
+    .run(function(editableOptions) {
+          editableOptions.theme = 'bs3';
+        })
     .config(['$httpProvider',
         function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';

@@ -1016,3 +1016,16 @@ profile-component .profile-title,
 #verifyForm .ssn div#pageInstructions {
     margin-top: 10px;
 }
+
+
+/*----------------- Editable click ------------------*/
+.editable-click, a.editable-click {
+    text-decoration: none;
+    color: #1E988A;
+    border-bottom: none;
+}
+
+.editable-buttons button {
+    background-color: #1E988A;
+    color: #FFFFFF;
+}
