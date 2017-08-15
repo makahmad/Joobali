@@ -154,6 +154,10 @@ a.delete:hover {
 	padding: 24px 49px 0 49px;
 }
 
+.formActions h3 {
+	text-align:center;
+}
+
 /*--------------- Sign Up Page -------------------*/
 #signUp .container {
 	margin:0px auto;
