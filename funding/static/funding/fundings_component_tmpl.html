@@ -7,7 +7,8 @@
         <th>Status</th>
       </thead>
       <tbody>
-        <tr class='fundingRow'  ng-class="{fundingMouseOver: funding.hover}"  data-ng-repeat="funding in $ctrl.fundings track by $index" ng-mouseover="funding.hover = true" ng-mouseleave="funding.hover = false">
+        <!-- <tr class='fundingRow'  ng-class="{fundingMouseOver: funding.hover}"  data-ng-repeat="funding in $ctrl.fundings track by $index" ng-mouseover="funding.hover = true" ng-mouseleave="funding.hover = false"> -->
+				<tr class='fundingRow' data-ng-repeat="funding in $ctrl.fundings track by $index">
           <td class="name">{{ funding.name }}</td>
           <td class="type">{{ funding.type }}</td>
           <td class="status">{{ funding.status }}</td>
