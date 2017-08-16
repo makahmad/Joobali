@@ -13,6 +13,7 @@ ChildFormContentController = function ChildFormContentController($http, Enrollme
     this.newChildEnrollmentInfo.error = {};
     this.enrollmentDateChecker_ = EnrollmentDateChecker;
 
+
     this.enrollmentStatus = '';
     this.enrollmentDatePickerOptions = {
         minDate: this.todayDate,
@@ -25,6 +26,17 @@ ChildFormContentController = function ChildFormContentController($http, Enrollme
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
 
+
+    this.paymentTypes = [{
+      id: 'Cash',
+      label: 'Cash'
+    }, {
+      id: 'Check',
+      label: 'Check'
+    }, {
+      id: 'Other',
+      label: 'Other'
+    }];
 }
 
 ChildFormContentController.prototype.whenSelectedProgramChange = function () {
@@ -78,6 +90,10 @@ ChildFormContentController.prototype.openEndDatePicker = function() {
     this.endDatePickerOpened = ! this.endDatePickerOpened;
 };
 
+ChildFormContentController.prototype.openPaymentDatePicker = function() {
+    this.paymentDatePickerOpened = true;
+}
+
 ChildFormContentController.prototype.save = function() {
     isValid = true;
     angular.forEach(addChildForm, angular.bind(this, function(value, key) {
@@ -103,6 +119,15 @@ ChildFormContentController.prototype.save = function() {
     console.log(submittingForm.child_date_of_birth);
     submittingForm.start_date = moment(submittingForm.start_date).format("MM/DD/YYYY");
     submittingForm.end_date = submittingForm.end_date ? moment(submittingForm.end_date).format("MM/DD/YYYY") : "";
+
+    if (submittingForm.payment_date) {
+        submittingForm.payment_date = moment(submittingForm.payment_date).format("MM/DD/YYYY");
+    } else {
+        submittingForm.payment_date = '';
+    }
+    if (submittingForm.payment_type) {
+        submittingForm.payment_type = submittingForm.payment_type.id;
+    }
 
     this.disableSaveButton = true;
     this.http_.post('/child/add', submittingForm).then(angular.bind(this, function successCallback(response) {

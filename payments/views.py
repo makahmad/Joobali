@@ -26,6 +26,7 @@ from common import datetime_util
 
 import json
 import logging
+from payments import payments_util
 
 DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
@@ -59,22 +60,11 @@ def add_payment(request):
     provider = Provider.get_by_id(request.session.get('user_id'))
     child = Child.get_by_id(child_id)
 
-    newPayment = Payment(provider_key=provider.key,child_key=child.key)
-
     if invoice_id:
-        newPayment.invoice_key = ndb.Key('Invoice', invoice_id)
+        invoice_key = ndb.Key('Invoice', invoice_id)
 
-    newPayment.amount = amount
-    newPayment.balance = amount
-    newPayment.payer = payer
-    newPayment.provider_email = provider.email
-    newPayment.type = payment_type
-    newPayment.note = note
-    newPayment.date = payment_date
-    newPayment.put()
+    payments_util.add_payment_maybe_for_invoice(provider, child, amount, payer, payment_date, payment_type, note, invoice_key.get() if invoice_key else None)
 
-    if newPayment.invoice_key:
-        invoice_util.pay(newPayment.invoice_key.get(), newPayment)
     return HttpResponse('success')
 
 

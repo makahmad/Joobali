@@ -56,7 +56,19 @@ def upsert_enrollment(enrollment_input):
     validate_enrollment_date(program, enrollment.start_date, enrollment.end_date)
 
     enrollment.put()
-    return enrollment
+
+    # Create registration invoice, and payment if already paid.
+    invoice = None
+    if not enrollment.waive_registration and program.registrationFee > 0:
+        provider = provider_key.get()
+        child = child_key.get()
+        due_date = datetime.now()  # Registration due right at when it's created.
+        invoice = invoice_util.create_invoice(provider, child, due_date, None, program.registrationFee,
+                                              False)
+        invoice_util.create_invoice_line_item(enrollment.key, invoice, program, None, None, "Registration Fee",
+                                              program.registrationFee)
+
+    return enrollment, invoice
 
 
 def cancel_enrollment(provider_id, enrollment_id, host):
@@ -100,15 +112,16 @@ def accept_enrollment(provider_id, enrollment_id, parent_id):
     if enrollment.status == 'invited' or enrollment.status == 'initialized':
         enrollment.status = 'active'
         enrollment.put()
-        program = enrollment.program_key.get()
-        if not enrollment.waive_registration and program.registrationFee > 0:
-            provider = enrollment.program_key.parent().get()
-            child = enrollment.child_key.get()
-            due_date = datetime.now() # Registration due right at when it's created.
-            invoice = invoice_util.create_invoice(provider, child, due_date, None, program.registrationFee,
-                                                  False)
-            invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee",
-                                                  program.registrationFee)
+        # DON'T CREATE INVOICE AT ENROLLMENT ACCEPTANCE ANYMORE, CREATE AT ENROLLMENT CREATION...
+        # program = enrollment.program_key.get()
+        # if not enrollment.waive_registration and program.registrationFee > 0:
+        #     provider = enrollment.program_key.parent().get()
+        #     child = enrollment.child_key.get()
+        #     due_date = datetime.now() # Registration due right at when it's created.
+        #     invoice = invoice_util.create_invoice(provider, child, due_date, None, program.registrationFee,
+        #                                           False)
+        #     invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee",
+        #                                           program.registrationFee)
         return True
     else:
         return False

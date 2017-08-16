@@ -86,7 +86,7 @@ def add_enrollment(request):
         }
         logger.info("enrollment is %s", enrollment_input)
         try:
-            enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+            enrollment, invoice = enrollment_util.upsert_enrollment(enrollment_input)
             send_parent_enrollment_notify_email(enrollment=enrollment, host=get_host_from_request(request.get_host()))
             status = "success"
         except JoobaliRpcException as e:

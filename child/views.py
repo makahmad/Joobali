@@ -18,9 +18,13 @@ from parent import parent_util
 from parent.models import Parent
 from login.models import Provider
 from enrollment import enrollment_util
+from payments import payments_util
+from datetime import datetime
+from common import datetime_util
 
 # Create your views here.
 
+DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
 
 def list_child(request):
@@ -62,6 +66,9 @@ def add_child(request):
             waive_registration = False if 'waive_registration' not in request_content else request_content[
                 'waive_registration']
 
+            registration_fee_paid = False if 'registration_fee_paid' not in request_content else request_content[
+                'registration_fee_paid']
+
             # Setup Parent entity for child
             provider_key = Provider.generate_key(session.get_provider_id(request))
             (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
@@ -73,14 +80,14 @@ def add_child(request):
             existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
             if existing_child is not None:
                 return HttpResponse(json.dumps(response), content_type="application/json")
-            existing_child = child_util.add_child(to_be_added_child, parent.key)
+            new_child = child_util.add_child(to_be_added_child, parent.key)
             provider_key = ndb.Key('Provider', session.get_provider_id(request))
-            child_util.add_provider_child_view(child_key=existing_child.key, provider_key=provider_key)
+            child_util.add_provider_child_view(child_key=new_child.key, provider_key=provider_key)
 
             # Setup first enrollment for child
             program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
             enrollment_input = {
-                'child_key': existing_child.key,
+                'child_key': new_child.key,
                 'provider_key': provider_key,
                 'program_key': program_key,
                 'status': 'initialized',
@@ -88,7 +95,17 @@ def add_child(request):
                 'end_date': billing_end_date,
                 'waive_registration': waive_registration
             }
-            enrollment = enrollment_util.upsert_enrollment(enrollment_input)
+            enrollment, invoice = enrollment_util.upsert_enrollment(enrollment_input)
+
+
+            if registration_fee_paid:
+                payer = request_content['payer'] if 'payer' in request_content else ''
+                payment_date = datetime_util.local_to_utc(datetime.strptime(request_content['payment_date'], DATE_FORMAT))
+                payment_type = request_content['payment_type'] if 'payment_type' in request_content else ''
+                note = request_content['note'] if 'note' in request_content else ''
+                payments_util.add_payment_maybe_for_invoice(provider_key.get(), new_child, invoice.amount,
+                                                            payer, payment_date, payment_type, note, invoice)
+
             if parent.status is 'active':
                 # The parent already signup
                 send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()))

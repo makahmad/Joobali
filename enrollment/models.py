@@ -44,6 +44,9 @@ class Enrollment(ndb.Model):
     def can_resend_invitation(self):
         return self.status in {'initialized', 'invited'}
 
+    def is_active(self):
+        return self.status in {'active'}
+
     @classmethod
     def generate_key(cls, provider_id, enrollment_id):
         return ndb.Key(Provider.__name__, int(provider_id), cls.__name__, int(enrollment_id))

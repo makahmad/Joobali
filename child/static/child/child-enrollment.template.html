@@ -83,7 +83,8 @@
 
                     <div class="input-group">
                         <span class="input-group-addon angular-with-newlines fee formInstructions"
-                              ng-hide="isFeeFormInstructionsOpen" id="formInstructions" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen"><i
+                              ng-hide="isFeeFormInstructionsOpen" id="formInstructions"
+                              ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen"><i
                                 class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a future due date that corresponds with the selected program.</span>
                     </div>
 
@@ -125,8 +126,8 @@
                            ng-required="true" ng-model="$ctrl.newEnrollment.fee" ng-readonly="true">
 
                 </div>
-                <div class="form-group">
-                    <label class="control-label">Waive registration fee?
+                <div class="form-group" ng-show="$ctrl.newEnrollment.program">
+                    <label class="control-label">Waive registration fee (${{ $ctrl.newEnrollment.program.registrationFee }})?
                         <input name="waive_registration" type="checkbox"
                                ng-required="false" ng-readonly="$ctrl.readOnly"
                                ng-model="$ctrl.newEnrollment.waive_registration">

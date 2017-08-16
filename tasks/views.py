@@ -189,9 +189,12 @@ def invoice_notification(request):
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
         if invoice.send_email and not invoice.email_sent and invoice.amount > 0:
+            enrollment = invoice_util.get_invoice_enrollment(invoice)
+            if enrollment and not enrollment.is_active():
+                logger.info("Enrollment not active - Skipping notification for invoice: %s" % invoice)
+                continue
             logger.info("Sending notification for invoice: %s" % invoice)
             (start_date, end_date) = invoice_util.get_invoice_period(invoice)
-            enrollment = invoice_util.get_invoice_enrollment(invoice)
             program = None
             if enrollment:
                 program = enrollment.program_key.get()

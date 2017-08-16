@@ -127,7 +127,7 @@ class EnrollmentUtilTestCase(unittest.TestCase):
             'waive_registration': True
         }
 
-        new_enrollment = enrollment_util.upsert_enrollment(test_enrollment_input)
+        new_enrollment, invoice = enrollment_util.upsert_enrollment(test_enrollment_input)
         self.assertEqual('initialized', new_enrollment.status)
 
 

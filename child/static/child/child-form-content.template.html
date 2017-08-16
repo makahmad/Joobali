@@ -162,12 +162,61 @@
                ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.fee" ng-readonly="true">
 
     </div>
-    <div class="form-group">
-        <label class="control-label">Waive registration fee?
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.program">
+        <label class="control-label">Waive registration fee (${{ $ctrl.newChildEnrollmentInfo.program.registrationFee }})?
             <input name="waive_registration" type="checkbox"
                    ng-required="false" ng-readonly="$ctrl.readOnly"
                    ng-model="$ctrl.newChildEnrollmentInfo.waive_registration">
         </label>
+    </div>
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.program && !$ctrl.newChildEnrollmentInfo.waive_registration">
+        <label class="control-label">Registration fee already paid?
+            <input name="registration_fee_paid" type="checkbox"
+                   ng-required="false" ng-readonly="$ctrl.readOnly"
+                   ng-model="$ctrl.newChildEnrollmentInfo.registration_fee_paid">
+        </label>
+    </div>
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+        <label class="control-label" for="payer">Payer:</label>
+        <div class="input-group" style="width:100%;">
+            <input class="form-control" type="text" id="payer" name="payer"
+                   ng-required="true"  ng-model="$ctrl.newChildEnrollmentInfo.payer">
+            </input>
+        </div>
+    </div>
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+        <label class="control-label">Payment Date <small>(MM/DD/YYYY)</small></label>
+        <p class="input-group">
+            <input name="payment_date"
+                   type="text" class="form-control"
+                   uib-datepicker-popup="MM/dd/yyyy"
+                   datepicker-popup-template-url="/static/home/datepicker.template.html"
+                   datepicker-options="{maxDate: $ctrl.todayDate}"
+                   ng-model="$ctrl.newChildEnrollmentInfo.payment_date"
+                   is-open="$ctrl.paymentDatePickerOpened"
+                   ng-click="$ctrl.openPaymentDatePicker()"
+                   ng-required="true"
+                   close-text="Close"/>
+            <span class="input-group-btn">
+                            <button type="button" class="btn btn-default"
+                                    ng-click="$ctrl.openPaymentDatePicker()">
+                                <i class="glyphicon glyphicon-calendar"></i></button></span>
+        </p>
+    </div>
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+        <label class="control-label" for="payment_type">Payment Type</label>
+        <select class="form-control" id="payment_type"  ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.payment_type"
+                ng-options="paymentType as paymentType.label for paymentType in $ctrl.paymentTypes track by paymentType.id">
+        </select>
+    </div>
+    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration && ($ctrl.newChildEnrollmentInfo.payment_type.id=='Other' || $ctrl.newChildEnrollmentInfo.payment_type.id=='Check')">
+        <label  ng-show="$ctrl.newChildEnrollmentInfo.payment_type.id=='Other'"
+                class="control-label" for="note">Note (required if payment type is Other)</label>
+        <label  ng-show="$ctrl.newChildEnrollmentInfo.payment_type.id=='Check'"
+                class="control-label" for="note">Check #</label>
+        <input class="form-control" type="text" id="note" name="note"
+               ng-required="$ctrl.newChildEnrollmentInfo.payment_type.id=='Other'"  ng-model="$ctrl.newChildEnrollmentInfo.note">
+        </input>
     </div>
     <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enrollment success.</div>
     <div class="alert alert-danger" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed.

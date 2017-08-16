@@ -60,6 +60,7 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
             'fee': self.newEnrollment.fee,
         };
 
+        console.log(submittingForm);
         $http.post('/enrollment/add', submittingForm).then(function successCallback(response) {
             var isSaveSuccess = false;
             if (response.data.status == 'success') {
