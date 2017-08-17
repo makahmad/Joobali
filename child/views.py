@@ -69,6 +69,17 @@ def add_child(request):
             registration_fee_paid = False if 'registration_fee_paid' not in request_content else request_content[
                 'registration_fee_paid']
 
+            # Validate enrollment start date and end date
+            program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
+            start_date = datetime_util.local_to_utc(
+                datetime.strptime(billing_start_date, "%m/%d/%Y"))
+            end_date = datetime_util.local_to_utc(
+                datetime.strptime(billing_end_date, "%m/%d/%Y")) if billing_end_date else None
+            program_object = program_key.get()
+            if end_date is None and program_object.endDate is not None:
+                end_date = program_object.endDate
+            enrollment_util.validate_enrollment_date(program_object, start_date, end_date)
+
             # Setup Parent entity for child
             provider_key = Provider.generate_key(session.get_provider_id(request))
             (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
@@ -88,7 +99,6 @@ def add_child(request):
             child_util.add_provider_child_view(child_key=new_child.key, provider_key=provider_key)
 
             # Setup first enrollment for child
-            program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
             enrollment_input = {
                 'child_key': new_child.key,
                 'provider_key': provider_key,
