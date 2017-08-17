@@ -79,7 +79,8 @@ def add_child(request):
             to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
             existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
             if existing_child is not None:
-                return HttpResponse(json.dumps(response), content_type="application/json")
+                logger.warning("Child already existed: %s", existing_child)
+                return HttpResponse("This child was already registered in the system.")
 
             logger.info("Adding new child: %s", to_be_added_child)
             new_child = child_util.add_child(to_be_added_child, parent.key)
@@ -121,6 +122,7 @@ def add_child(request):
                                                     verification_token=verification_token)
             response['status'] = 'success'
     except JoobaliRpcException as e:
+        logger.error(e.get_client_messasge())
         return HttpResponse(status=e.get_http_error_code(), content=e.get_client_messasge())
 
     return HttpResponse(json.dumps(response), content_type="application/json")

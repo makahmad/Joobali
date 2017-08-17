@@ -141,6 +141,7 @@ ChildFormContentController.prototype.save = function() {
             this.onSave({'isSaved': false});
             this.readOnly = false;
             this.disableSaveButton = false;
+            this.enrollmentFailureReason = response.data;
         }
     }), angular.bind(this, function errorCallback(response) {
         this.enrollmentStatus = 'failure';
