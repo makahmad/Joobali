@@ -80,6 +80,8 @@ def add_child(request):
             existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
             if existing_child is not None:
                 return HttpResponse(json.dumps(response), content_type="application/json")
+
+            logger.info("Adding new child: %s", to_be_added_child)
             new_child = child_util.add_child(to_be_added_child, parent.key)
             provider_key = ndb.Key('Provider', session.get_provider_id(request))
             child_util.add_provider_child_view(child_key=new_child.key, provider_key=provider_key)
@@ -95,6 +97,8 @@ def add_child(request):
                 'end_date': billing_end_date,
                 'waive_registration': waive_registration
             }
+
+            logger.info("Adding new enrollment: %s", enrollment_input)
             enrollment, invoice = enrollment_util.upsert_enrollment(enrollment_input)
 
 
