@@ -176,7 +176,7 @@
                    ng-model="$ctrl.newChildEnrollmentInfo.registration_fee_paid">
         </label>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+    <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
         <label class="control-label" for="payer">Payer:</label>
         <div class="input-group" style="width:100%;">
             <input class="form-control" type="text" id="payer" name="payer"
@@ -184,7 +184,7 @@
             </input>
         </div>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+    <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
         <label class="control-label">Payment Date <small>(MM/DD/YYYY)</small></label>
         <p class="input-group">
             <input name="payment_date"
@@ -203,13 +203,13 @@
                                 <i class="glyphicon glyphicon-calendar"></i></button></span>
         </p>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
+    <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
         <label class="control-label" for="payment_type">Payment Type</label>
         <select class="form-control" id="payment_type"  ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.payment_type"
                 ng-options="paymentType as paymentType.label for paymentType in $ctrl.paymentTypes track by paymentType.id">
         </select>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration && ($ctrl.newChildEnrollmentInfo.payment_type.id=='Other' || $ctrl.newChildEnrollmentInfo.payment_type.id=='Check')">
+    <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration && ($ctrl.newChildEnrollmentInfo.payment_type.id=='Other' || $ctrl.newChildEnrollmentInfo.payment_type.id=='Check')">
         <label  ng-show="$ctrl.newChildEnrollmentInfo.payment_type.id=='Other'"
                 class="control-label" for="note">Note (required if payment type is Other)</label>
         <label  ng-show="$ctrl.newChildEnrollmentInfo.payment_type.id=='Check'"
@@ -220,7 +220,7 @@
     </div>
     <div class="alert alert-success" ng-show="$ctrl.enrollmentStatus=='success'">Enrollment success.</div>
     <div class="alert alert-danger" ng-show="$ctrl.enrollmentStatus=='failure'">Enrollment failed.
-        {{$ctrl.enrollmentFailureReason}}.
+        {{$ctrl.enrollmentFailureReason}}
     </div>
 		
     <div class="modal-footer">

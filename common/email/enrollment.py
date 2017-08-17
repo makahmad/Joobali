@@ -39,7 +39,7 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         'enrollment_detail_url': enrollment_detail_url,
         'is_unenroll_reminder': True
     }
-    email_html_content = _enrollment_notification_template.render(Context(rendering_data))
+    email_html_content = _enrollment_notification_template.render(rendering_data)
 
     try:
         send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
@@ -83,7 +83,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'program_billing_cycle': program.billingFrequency,
             'signup_url': signup_url,
         }
-        email_html_content = _signup_notification_template.render(Context(rendering_data))
+        email_html_content = _signup_notification_template.render(rendering_data)
     else:
         logger.info('sending enrollment invitation to %s' % parent_email)
         enrollment_detail_url = http_prefix + host + "/parent/#!/enrollmentview/" + ("%d/%d" % (
@@ -103,7 +103,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
             'end_date': datetime_util.utc_to_local(enrollment.end_date).strftime('%m/%d/%Y') if enrollment.end_date else '',
         }
-        email_html_content = _enrollment_notification_template.render(Context(rendering_data))
+        email_html_content = _enrollment_notification_template.render(rendering_data)
     try:
         send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
         return True

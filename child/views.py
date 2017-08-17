@@ -69,6 +69,17 @@ def add_child(request):
             registration_fee_paid = False if 'registration_fee_paid' not in request_content else request_content[
                 'registration_fee_paid']
 
+            # Validate enrollment start date and end date
+            program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
+            start_date = datetime_util.local_to_utc(
+                datetime.strptime(billing_start_date, "%m/%d/%Y"))
+            end_date = datetime_util.local_to_utc(
+                datetime.strptime(billing_end_date, "%m/%d/%Y")) if billing_end_date else None
+            program_object = program_key.get()
+            if end_date is None and program_object.endDate is not None:
+                end_date = program_object.endDate
+            enrollment_util.validate_enrollment_date(program_object, start_date, end_date)
+
             # Setup Parent entity for child
             provider_key = Provider.generate_key(session.get_provider_id(request))
             (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
@@ -79,13 +90,15 @@ def add_child(request):
             to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
             existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
             if existing_child is not None:
-                return HttpResponse(json.dumps(response), content_type="application/json")
+                logger.warning("Child already existed: %s", existing_child)
+                return HttpResponse("This child was already registered in the system.")
+
+            logger.info("Adding new child: %s", to_be_added_child)
             new_child = child_util.add_child(to_be_added_child, parent.key)
             provider_key = ndb.Key('Provider', session.get_provider_id(request))
             child_util.add_provider_child_view(child_key=new_child.key, provider_key=provider_key)
 
             # Setup first enrollment for child
-            program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
             enrollment_input = {
                 'child_key': new_child.key,
                 'provider_key': provider_key,
@@ -95,6 +108,8 @@ def add_child(request):
                 'end_date': billing_end_date,
                 'waive_registration': waive_registration
             }
+
+            logger.info("Adding new enrollment: %s", enrollment_input)
             enrollment, invoice = enrollment_util.upsert_enrollment(enrollment_input)
 
 
@@ -117,6 +132,7 @@ def add_child(request):
                                                     verification_token=verification_token)
             response['status'] = 'success'
     except JoobaliRpcException as e:
+        logger.error(e.get_client_messasge())
         return HttpResponse(status=e.get_http_error_code(), content=e.get_client_messasge())
 
     return HttpResponse(json.dumps(response), content_type="application/json")
