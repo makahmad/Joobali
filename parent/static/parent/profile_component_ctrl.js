@@ -7,7 +7,7 @@ ProfileComponentController = function($scope, $http, $window, $sce) {
 	this.disableSave = false;
 	this.scope_ = $scope;
     this.scope_.htmlTooltip = $sce.trustAsHtml('<p>Valid Password:</p><ul><li>Min length 8</li>'+
-    '<li>Special Character</li><li>Digit</li><li>Capital Letter</li></ul>');
+    '<li>Special Character</li><li>Digit</li><li>Lowercase Letter</li><li>Capital Letter</li></ul>');
 
     if (angular.equals(this.profile, {})) {
     	$http({
