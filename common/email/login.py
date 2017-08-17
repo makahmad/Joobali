@@ -36,7 +36,7 @@ def _send_reset_password_email(token, host, sender_address="Joobali <howdy@jooba
         'first_name': receiver_name,
         'host': http_prefix + host,
     }
-    email_html_content = _forget_password_email_template.render(Context(data))
+    email_html_content = _forget_password_email_template.render(data)
 
     send_email(sender=sender_address, subject=email_subject, to=email_to, html_content=email_html_content)
 
@@ -53,6 +53,6 @@ def send_provider_email_address_verification(verification_token, host, sender_ad
         'verification_link': verification_link,
         'host': http_prefix + host,
     }
-    email_html_content = _provider_email_verification_template.render(Context(data))
+    email_html_content = _provider_email_verification_template.render(data)
 
     send_email(sender=sender_address, subject=email_subject, to=email_to, html_content=email_html_content)
