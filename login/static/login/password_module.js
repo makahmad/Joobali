@@ -40,11 +40,11 @@ angular.module('password_module', [ 'ui.bootstrap'])
           '<div class="progress-bar progress-bar-warning" style="width: {{strength >= 3 ? 25 : 0}}%"></div>' +
           '<div class="progress-bar progress-bar-success" style="width: {{strength >= 5 ? 25 : 0}}%"></div>' +
           '</div>Valid Password:'+
-          '<div><small>Minimum Length of 8</small> <i ng-show="minEightChars==1" class="fa fa-check-circle-o"></i><i ng-show="minEightChars==0" class="fa fa-circle-o"></i></div>'+
-          '<div><small>1 Special Character</small> <i ng-show="minSpecial==1" class="fa fa-check-circle-o"></i><i ng-show="minSpecial==0" class="fa fa-circle-o"></i></div>'+
-          '<div><small>1 Number</small> <i ng-show="minDigit==1" class="fa fa-check-circle-o"></i><i ng-show="minDigit==0" class="fa fa-circle-o"></i></div>'+
-          '<div><small>1 Lowercase Letter</small> <i ng-show="minLower==1" class="fa fa-check-circle-o"></i><i ng-show="minLower==0" class="fa fa-circle-o"></i></div>'+
-          '<div><small>1 Capital Letter</small> <i ng-show="minCapital==1" class="fa fa-check-circle-o"></i><i ng-show="minCapital==0" class="fa fa-circle-o"></i></div>'
+          '<div><i ng-show="minEightChars==1" class="fa fa-check-circle-o"></i><i ng-show="minEightChars==0" class="fa fa-circle-o"></i> <small>Minimum Length of 8</small></div>'+
+          '<div><i ng-show="minSpecial==1" class="fa fa-check-circle-o"></i><i ng-show="minSpecial==0" class="fa fa-circle-o"></i> <small>1 Special Character</small></div>'+
+          '<div><i ng-show="minDigit==1" class="fa fa-check-circle-o"></i><i ng-show="minDigit==0" class="fa fa-circle-o"></i> <small>1 Number</small></div>'+
+          '<div><i ng-show="minLower==1" class="fa fa-check-circle-o"></i><i ng-show="minLower==0" class="fa fa-circle-o"></i> <small>1 Lowercase Letter</small></div>'+
+          '<div><i ng-show="minCapital==1" class="fa fa-check-circle-o"></i><i ng-show="minCapital==0" class="fa fa-circle-o"></i> <small>1 Capital Letter</small></div>'
       }
     }
   ])
