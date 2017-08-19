@@ -36,6 +36,18 @@ InitSetupComponentController = function($http) {
                 if (!err) {
                     // Funding IAV successful
                     $('#initSetupNextButton').show();
+		            $("#initSetupSkipButton").hide();
+
+
+                    this.http_({
+                      method: 'POST',
+                      url: '/login/setinitsetupfinished'
+                    }).then(angular.bind(this, function successCallback(response) {
+                    }), function errorCallback(response) {
+                        // called asynchronously if an error occurs
+                        // or server returns response with an error status.
+                        console.log(response);
+                    });
                 }
             }));
     }), function errorCallback(response) {
