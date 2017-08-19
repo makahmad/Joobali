@@ -131,12 +131,12 @@ def updateProfile(request):
     # provider profile update
     provider = Provider.get_by_id(request.session['user_id'])
 
-    if request.session['email'] != profile['email']:
-        query = Provider.query().filter(Provider.email == profile['email'])
+    if request.session['email'] != profile['email'].lower():
+        query = Provider.query().filter(Provider.email == profile['email'].lower())
         result = query.fetch(1)
         if result:
             return HttpResponseServerError('email already exists')
-        request.session['email'] = profile['email']
+        request.session['email'] = profile['email'].lower()
 
     if provider is not None:
         if 'currentPassword' in profile and 'newPassword' in profile:
@@ -155,7 +155,7 @@ def updateProfile(request):
         provider.city = profile['city']
         provider.state = profile['state']
         provider.zipcode = str(profile['zipcode'])
-        provider.email = profile['email']
+        provider.email = profile['email'].lower()
         provider.phone = profile['phone']
         provider.website = profile['website']
         provider.license = profile['license']
@@ -192,18 +192,18 @@ def dwolla_verify(request):
     # provider profile update
     provider = Provider.get_by_id(request.session['user_id'])
 
-    if request.session['email'] != profile['email']:
-        query = Provider.query().filter(Provider.email == profile['email'])
+    if request.session['email'] != profile['email'].lower():
+        query = Provider.query().filter(Provider.email == profile['email'].lower())
         result = query.fetch(1)
         if result:
             return HttpResponseServerError('email already exists')
-        request.session['email'] = profile['email']
+        request.session['email'] = profile['email'].lower()
 
     if provider is not None:
         request_body = {
             'firstName': profile['firstName'],
             'lastName': profile['lastName'],
-            'email': profile['email'],
+            'email': profile['email'].lower(),
             'type': 'personal', # TODO support business type
             'address1': profile['addressLine1'],
             'city': profile['city'],
@@ -224,13 +224,13 @@ def dwolla_verify(request):
         provider.firstName = profile['firstName']
         provider.lastName = profile['lastName']
 
-        unique_util.update_provider(provider.email, profile['email'], provider.key)
+        unique_util.update_provider(provider.email, profile['email'].lower(), provider.key)
         provider.addressLine1 = profile['addressLine1']
         provider.addressLine2 = profile['addressLine2']
         provider.city = profile['city']
         provider.state = profile['state']
         provider.zipcode = str(profile['zipcode'])
-        provider.email = profile['email']
+        provider.email = profile['email'].lower()
         #provider.ssn = str(profile['ssn'])
         provider.dateOfBirth = datetime.strptime(profile['dateOfBirth'], DATE_FORMAT).date()
         if customer and 'status' in customer.body:

@@ -90,12 +90,12 @@ def updateProfile(request):
     # provider profile update
     parent = Parent.get_by_id(request.session['user_id'])
 
-    if request.session['email'] != profile['email']:
-        query = Parent.query().filter(Parent.email == profile['email'])
+    if request.session['email'] != profile['email'].lower():
+        query = Parent.query().filter(Parent.email == profile['email'].lower())
         result = query.fetch(1)
         if result:
             return HttpResponseServerError('email already exists')
-        request.session['email'] = profile['email']
+        request.session['email'] = profile['email'].lower()
 
     if parent is not None:
         if 'currentPassword' in profile and 'newPassword' in profile:
@@ -106,8 +106,8 @@ def updateProfile(request):
         parent.first_name = profile['first_name']
         parent.last_name = profile['last_name']
 
-        unique_util.update_parent(parent.email, profile['email'], parent.key)
-        parent.email = profile['email']
+        unique_util.update_parent(parent.email, profile['email'].lower(), parent.key)
+        parent.email = profile['email'].lower()
         parent.phone = profile['phone']
         parent.put()
 
