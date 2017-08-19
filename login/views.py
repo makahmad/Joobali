@@ -334,6 +334,7 @@ def set_init_setup_finished(request):
 
 @ndb.transactional(xg=True)
 def get_or_insert(email, form):
+    email = email.lower()
     result = models.Unique.get_by_id(email)
     if result is not None:
         return result, False

@@ -5,6 +5,7 @@ from home.models import InitSetupStatus
 
 @ndb.transactional(xg=True)
 def upsert_parent(email, parent_key, overwrite=True):
+    email = email.lower()
     unique = Unique.get_by_id(email)
     if unique is not None:
         if not overwrite:
@@ -18,6 +19,8 @@ def upsert_parent(email, parent_key, overwrite=True):
 
 @ndb.transactional(xg=True)
 def update_provider(old_email, new_email, provider_key):
+    old_email = old_email.lower()
+    new_email = new_email.lower()
     old_unique = Unique.get_by_id(old_email)
     if old_unique is None:
         raise RuntimeError("Error: not previous Unique object for email (%s) " % (old_email))
@@ -36,6 +39,8 @@ def update_provider(old_email, new_email, provider_key):
 
 @ndb.transactional(xg=True)
 def update_parent(old_email, new_email, parent_key):
+    old_email = old_email.lower()
+    new_email = new_email.lower()
     old_unique = Unique.get_by_id(old_email)
     if old_unique is None:
         raise RuntimeError("Error: not previous Unique object for email (%s) " % (old_email))
@@ -53,6 +58,8 @@ def update_parent(old_email, new_email, parent_key):
     new_unique.put()
 
 def update_init_setup_status(old_email, new_email):
+    old_email = old_email.lower()
+    new_email = new_email.lower()
     setup_done = False
     old_init_setup = InitSetupStatus.get_by_id(old_email)
     if old_init_setup:
