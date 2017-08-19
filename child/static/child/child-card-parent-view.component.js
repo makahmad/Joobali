@@ -16,4 +16,21 @@ ChildCardParentViewController.prototype.getEnrollmentData = function() {
 
 ChildCardParentViewController.prototype.$onInit = function() {
     this.getEnrollmentData();
+    var currentDate = moment(new Date());
+    var dateDiff = moment.duration(currentDate.diff(moment(this.child.date_of_birth, "MM/DD/YYYY")));
+
+    if (this.child.date_of_birth!=null)
+        this.child.date_of_birth = new Date(this.child.date_of_birth);
+
+    diff_str = "";
+    if (dateDiff.years() > 0) {
+        diff_str += dateDiff.years() + " years, "
+    }
+    if (dateDiff.months() > 0) {
+        diff_str += dateDiff.months() + " months, "
+    }
+    if (dateDiff.days() > 0) {
+        diff_str += dateDiff.days() + " days"
+    }
+    this.child.age = diff_str;
 }
