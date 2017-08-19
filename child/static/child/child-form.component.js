@@ -10,7 +10,7 @@ ChildFormController = function ChildFormController($uibModalInstance, $http, par
     this.doneButton.click = angular.bind(this, function() {
         this.closeModal();
     });
-    console.log(this.parent_emails);
+//    console.log(this.parent_emails);
 }
 
 

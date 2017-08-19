@@ -146,7 +146,7 @@ def provider_signup(request):
         # Remove above snippet once we are out of Beta
 
         if form.validate() and captcha_results['success']:
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()
 
             (provider, created) = get_or_insert(email, form)
             if created:

@@ -58,7 +58,7 @@ def add_child(request):
             child_first_name = request_content['child_first_name']
             child_last_name = request_content['child_last_name']
             date_of_birth = request_content['child_date_of_birth']
-            parent_email = request_content['child_parent_email']
+            parent_email = request_content['child_parent_email'].lower()
             program = request_content['program']
             billing_start_date = request_content['start_date']
             billing_end_date = request_content['end_date']
@@ -82,7 +82,7 @@ def add_child(request):
 
             # Setup Parent entity for child
             provider_key = Provider.generate_key(session.get_provider_id(request))
-            (parent, verification_token) = parent_util.setup_parent_for_child(email=request_content['child_parent_email'],
+            (parent, verification_token) = parent_util.setup_parent_for_child(email=parent_email,
                                                                               provider_key=provider_key,
                                                                               child_first_name=child_first_name)
 
