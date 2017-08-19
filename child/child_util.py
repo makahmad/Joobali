@@ -72,8 +72,12 @@ def get_existing_child(child, parent_key):
 def list_child_by_provider(provider_key):
     provider_children_views = get_provider_child_view(provider_key=provider_key)
     children = list()
+
     for view in provider_children_views:
-        children.append(view.child_key.get())
+        child = view.child_key.get().to_dict()
+        child['id'] = view.child_key.get().key.id()
+        child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
+        children.append(child)
     return children
 
 
@@ -84,7 +88,10 @@ def list_child_by_provider_program(provider_id, program_id):
     enrollments = enrollment_util.list_enrollment_by_provider_program(provider_id=provider_id, program_id=program_id)
     children = list()
     for enrollment in enrollments:
-        children.append(enrollment.child_key.get())
+        child = enrollment.child_key.get().to_dict()
+        child['id'] = enrollment.child_key.get().key.id()
+        child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
+        children.append(child)
     return children
 
 
