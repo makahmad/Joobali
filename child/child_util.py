@@ -76,7 +76,9 @@ def list_child_by_provider(provider_key):
     for view in provider_children_views:
         child = view.child_key.get().to_dict()
         child['id'] = view.child_key.get().key.id()
-        child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
+        child['parent_name'] = None
+        if view.child_key.get().parent_key.get().first_name or view.child_key.get().parent_key.get().last_name:
+            child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
         children.append(child)
     return children
 
@@ -90,7 +92,10 @@ def list_child_by_provider_program(provider_id, program_id):
     for enrollment in enrollments:
         child = enrollment.child_key.get().to_dict()
         child['id'] = enrollment.child_key.get().key.id()
-        child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
+        child['parent_name'] = None
+        if enrollment.child_key.get().parent_key.get().first_name or enrollment.child_key.get().parent_key.get().last_name:
+            child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
+
         children.append(child)
     return children
 
