@@ -239,7 +239,7 @@ def parent_signup(request):
         form = ParentForm(request.POST)
 
         if form.validate():
-            email = request.POST.get('email')
+            email = request.POST.get('email').lower()
             password = request.POST.get('password')
             first_name = request.POST.get('first_name')
             last_name = request.POST.get('last_name')
@@ -357,7 +357,7 @@ def forgot(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         form.validate()
-        email = request.POST.get('email')
+        email = request.POST.get('email').lower()
 
         if email:
             query = models.Provider.query().filter(models.Provider.email == email)
@@ -451,7 +451,7 @@ def login(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         form.validate()
-        email = request.POST.get('email')
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
         login_result = provider_login(email, password)
         if login_result.is_succeeded() is False:
