@@ -61,7 +61,7 @@ def admin(request):
         return HttpResponseRedirect('/login')
 
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email').lower()
 
         query = Provider.query().filter(Provider.email == email)
         provider = query.get()
