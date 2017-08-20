@@ -27,6 +27,7 @@ class Invoice(ndb.Model):
         'CANCELLED': 'CANCELLED',
         'MARKED_PAID': 'MARKED_PAID', # marked paid by provider
         'PAID_OFFLINE': 'PAID_OFFLINE', # paid offline with case/check
+        'DELETED': 'DELETED', # deleted by the provider
     }
     email_sent = ndb.BooleanProperty(required=True, default=False)
     send_email = ndb.BooleanProperty(required=True, default=True) # whether a email should be sent for this invoice
@@ -56,6 +57,9 @@ class Invoice(ndb.Model):
 
     def is_processing(self):
         return self.status == Invoice._POSSIBLE_STATUS['PROCESSING'] and self.dwolla_transfer_id != None
+
+    def is_deleted(self):
+        return self.status == Invoice._POSSIBLE_STATUS['DELETED']
 
 
 class InvoiceLineItem(ndb.Model):

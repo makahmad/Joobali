@@ -167,7 +167,9 @@ def get_enrollment_invoices(enrollment):
     lineItems = InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment.key)
     results = []
     for lineItem in lineItems:
-        results.append(lineItem.key.parent().get())
+        invoice = lineItem.key.parent().get()
+        if not invoice.is_deleted(): # deleted invoices are ignored
+            results.append(lineItem.key.parent().get())
     return results
 
 def get_next_due_date(due_date, billing_freq):

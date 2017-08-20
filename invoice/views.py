@@ -97,28 +97,29 @@ def listInvoices(request):
 
 	results = []
 	for invoice in invoices:
-		data = {
-			'id': invoice.key.id(),
-			'invoice_id': invoice.key.id(),
-            'provider': invoice.provider_key.get().schoolName,
-            'provider_customer_id': invoice.provider_key.get().customerId,
-			'child_id': invoice.child_key.id(),
-            'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
-			'original_amount': invoice_util.sum_up_original_amount_due(invoice),
-            'amount' : invoice.amount,
-            'is_recurring' : invoice.is_recurring,
-            'due_date' : datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
-            'paid' : invoice.is_paid(),
-			'processing': invoice.is_processing(),
-            'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
-			'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
-			'snippet': invoice_util.get_invoice_snippet(invoice)
-        }
-		if invoice.is_processing() and invoice.dwolla_transfer_id:
-			dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
-			if 'cancel' in dwolla_transfer:
-				data['cancel'] = dwolla_transfer['cancel']
-		results.append(data)
+		if not invoice.is_deleted(): # deleted invoice are ignored
+			data = {
+				'id': invoice.key.id(),
+				'invoice_id': invoice.key.id(),
+				'provider': invoice.provider_key.get().schoolName,
+				'provider_customer_id': invoice.provider_key.get().customerId,
+				'child_id': invoice.child_key.id(),
+				'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
+				'original_amount': invoice_util.sum_up_original_amount_due(invoice),
+				'amount' : invoice.amount,
+				'is_recurring' : invoice.is_recurring,
+				'due_date' : datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
+				'paid' : invoice.is_paid(),
+				'processing': invoice.is_processing(),
+				'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
+				'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
+				'snippet': invoice_util.get_invoice_snippet(invoice)
+			}
+			if invoice.is_processing() and invoice.dwolla_transfer_id:
+				dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
+				if 'cancel' in dwolla_transfer:
+					data['cancel'] = dwolla_transfer['cancel']
+			results.append(data)
 	return HttpResponse(json.dumps(results))
 
 def viewInvoice(request):
@@ -334,6 +335,18 @@ def adjust_invoice(request):
 		invoice_util.adjust_invoice(invoice, amount, reason)
 	return HttpResponse("success")
 
+def delete_invoice(request):
+	data = json.loads(request.body)
+	invoice_id = data['invoice_id']
+	if invoice_id:
+		invoice = Invoice.get_by_id(invoice_id)
+		if not invoice.is_paid() and not invoice.is_processing():
+			invoice.status = Invoice._POSSIBLE_STATUS['DELETED']
+			invoice.put()
+		else:
+			return HttpResponse("This invoice can not be deleted now.")
+	return HttpResponse("success")
+
 def list_invoice_by_child(request):
     status = "failure"
     if not check_session(request):
@@ -346,12 +359,13 @@ def list_invoice_by_child(request):
     all_invoices = invoice_util.list_invoice_by_provider_and_child(provider_key=provider_key, child_key=child_key)
     invoices = []
     for invoice in all_invoices:
-		snippet = invoice_util.get_invoice_snippet(invoice)
-		if not invoice.is_paid() or not invoice.is_processing():
-			invoice_dict = invoice.to_dict()
-			invoice_dict['id'] = invoice.key.id()
-			invoice_dict['snippet'] = snippet
-			invoices.append(invoice_dict)
+		if not invoice.is_deleted(): # deleted invoices are ignored
+			snippet = invoice_util.get_invoice_snippet(invoice)
+			if not invoice.is_paid() or not invoice.is_processing():
+				invoice_dict = invoice.to_dict()
+				invoice_dict['id'] = invoice.key.id()
+				invoice_dict['snippet'] = snippet
+				invoices.append(invoice_dict)
     response = HttpResponse(json.dumps([JEncoder().encode(invoice) for invoice in invoices]))
     logger.info("response is %s" % response)
     return response

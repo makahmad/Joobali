@@ -61,31 +61,33 @@ def invoice_calculation(request):
     logger.info("LATE FEE CALCULATION")
     # loop over invoices...
     for invoice in Invoice.query().fetch():
-        provider = invoice.provider_key.get()
-        if invoice.late_fee_enforced and not invoice.is_paid() and invoice.is_over_due(provider.graceDays if provider.graceDays >= 0 else 0) and not invoice_util.get_invoice_late_fee_added(invoice):
-            logger.info("Considering late fee for invoice: %s" % invoice)
-            program = invoice_util.get_invoice_program(invoice)
-            enrollment = invoice_util.get_invoice_enrollment(invoice)
-            provider = provider_util.get_provider_by_email(invoice.provider_email)
-            lateFee = program.lateFee if program and program.lateFee else provider.lateFee
-            if lateFee != 0:
-                logger.info("Adding late fee with program: %s" % program)
-                invoice_util.create_invoice_line_item(enrollment.key if enrollment else None, invoice, program, None, None, "Late Fee", lateFee)
+        if not invoice.is_deleted(): # ignore deleted invoices
+            provider = invoice.provider_key.get()
+            if invoice.late_fee_enforced and not invoice.is_paid() and invoice.is_over_due(provider.graceDays if provider.graceDays >= 0 else 0) and not invoice_util.get_invoice_late_fee_added(invoice):
+                logger.info("Considering late fee for invoice: %s" % invoice)
+                program = invoice_util.get_invoice_program(invoice)
+                enrollment = invoice_util.get_invoice_enrollment(invoice)
+                provider = provider_util.get_provider_by_email(invoice.provider_email)
+                lateFee = program.lateFee if program and program.lateFee else provider.lateFee
+                if lateFee != 0:
+                    logger.info("Adding late fee with program: %s" % program)
+                    invoice_util.create_invoice_line_item(enrollment.key if enrollment else None, invoice, program, None, None, "Late Fee", lateFee)
 
-            invoice.amount = invoice_util.sum_up_amount_due(invoice)
-            invoice.put()
+                invoice.amount = invoice_util.sum_up_amount_due(invoice)
+                invoice.put()
 
     logger.info("PAYMENT CALCULATION")
     # loop over invoices...
     query = Invoice.query().order(Invoice.time_created)
     for invoice in query.fetch():
-        if not invoice.is_paid() and not invoice.is_processing():
-            logger.info("Considering payment for invoice: %s" % invoice)
-            for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
-                if not payment.invoice_key or payment.invoice_key and payment.invoice_key == invoice.key:
-                    if payment.balance > 0:
-                        logger.info("Making payment with: %s" % payment)
-                        invoice_util.pay(invoice, payment)
+        if not invoice.is_deleted(): # ignore deleted invoices
+            if not invoice.is_paid() and not invoice.is_processing():
+                logger.info("Considering payment for invoice: %s" % invoice)
+                for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
+                    if not payment.invoice_key or payment.invoice_key and payment.invoice_key == invoice.key:
+                        if payment.balance > 0:
+                            logger.info("Making payment with: %s" % payment)
+                            invoice_util.pay(invoice, payment)
 
 
     logger.info("INVOICE CALCULATION")
@@ -141,6 +143,7 @@ def invoice_calculation(request):
                 should_proceed = True
                 for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()
+                    # Note: This can be a deleted invoice, if a auto-created invoice is deleted, we will not create it again.
                     if invoice and invoice.due_date == due_date:
                         # if there is a existing invoice for this enrollment that have the same due date
                         # only proceed if current enrollment haven't yield a invoice for current billing cycle
@@ -188,36 +191,37 @@ def invoice_notification(request):
     # loop over invoices...
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
-        if invoice.send_email and not invoice.email_sent and invoice.amount > 0:
-            enrollment = invoice_util.get_invoice_enrollment(invoice)
-            if enrollment and not enrollment.is_active():
-                logger.info("Enrollment not active - Skipping notification for invoice: %s" % invoice)
-                continue
-            logger.info("Sending notification for invoice: %s" % invoice)
-            (start_date, end_date) = invoice_util.get_invoice_period(invoice)
-            program = None
-            if enrollment:
-                program = enrollment.program_key.get()
-            parent = parent_util.get_parents_by_email(invoice.parent_email)
-            template = loader.get_template('invoice/invoice_invite.html')
-            data = {
-                'is_recurring': invoice.is_recurring,
-                'host': get_host_from_request(request.get_host()),
-                'invoice_id': invoice.key.id(),
-                'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
-                'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
-                'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
-                'school_name': invoice.provider_key.get().schoolName,
-                'program_name': program.programName if program else '',
-                'program_billing_frequency': program.billingFrequency if program else '',
-                'amount': invoice.amount,
-                'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
-                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-            }
-            send_invoice_email(invoice.parent_email, invoice, datetime_util.utc_to_local(start_date), datetime_util.utc_to_local(end_date), template.render(data))
-            invoice.email_sent = True
-            invoice.put()
-            # break # temporary only sent out one email as our quota is limited
+        if not invoice.is_deleted(): # ignore deleted invoices
+            if invoice.send_email and not invoice.email_sent and invoice.amount > 0:
+                enrollment = invoice_util.get_invoice_enrollment(invoice)
+                if enrollment and not enrollment.is_active():
+                    logger.info("Enrollment not active - Skipping notification for invoice: %s" % invoice)
+                    continue
+                logger.info("Sending notification for invoice: %s" % invoice)
+                (start_date, end_date) = invoice_util.get_invoice_period(invoice)
+                program = None
+                if enrollment:
+                    program = enrollment.program_key.get()
+                parent = parent_util.get_parents_by_email(invoice.parent_email)
+                template = loader.get_template('invoice/invoice_invite.html')
+                data = {
+                    'is_recurring': invoice.is_recurring,
+                    'host': get_host_from_request(request.get_host()),
+                    'invoice_id': invoice.key.id(),
+                    'start_date': datetime_util.utc_to_local(start_date).strftime('%m/%d/%Y') if start_date else '',
+                    'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else '',
+                    'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
+                    'school_name': invoice.provider_key.get().schoolName,
+                    'program_name': program.programName if program else '',
+                    'program_billing_frequency': program.billingFrequency if program else '',
+                    'amount': invoice.amount,
+                    'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
+                    'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+                }
+                send_invoice_email(invoice.parent_email, invoice, datetime_util.utc_to_local(start_date), datetime_util.utc_to_local(end_date), template.render(data))
+                invoice.email_sent = True
+                invoice.put()
+                # break # temporary only sent out one email as our quota is limited
 
     return HttpResponse(status=200)
 
@@ -229,24 +233,25 @@ def autopay(request):
     # loop over invoices...
     invoices = Invoice.query(Invoice.status != Invoice._POSSIBLE_STATUS['COMPLETED']).fetch()
     for invoice in invoices:
-        (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
-        pay_days_before = 0 if pay_days_before == None else pay_days_before
-        # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-        if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
-            logger.info("Autopaying for invoice: %s" % invoice)
-            provider = invoice.provider_key.get()
-            rate = funding_util.get_fee_rate(provider.key.id())
-            try:
-                funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice, rate)
-            except ValidationError as err:
-                logger.info("Autopay failed: %s" % err.body['_embedded']['errors'][0]['message'])
+        if not invoice.is_deleted(): # ignore deleted invoices
+            (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
+            pay_days_before = 0 if pay_days_before == None else pay_days_before
+            # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
+            if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
+                logger.info("Autopaying for invoice: %s" % invoice)
+                provider = invoice.provider_key.get()
+                rate = funding_util.get_fee_rate(provider.key.id())
+                try:
+                    funding_util.make_transfer(provider.customerId, autopay_source_id, invoice.amount, invoice, rate)
+                except ValidationError as err:
+                    logger.info("Autopay failed: %s" % err.body['_embedded']['errors'][0]['message'])
 
-                invoice.autopay_failure_message = err.body['_embedded']['errors'][0]['message']
-                invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
-                invoice.put()
-                return HttpResponse(err.body['_embedded']['errors'][0]['message'])
-        else:
-            logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice))
+                    invoice.autopay_failure_message = err.body['_embedded']['errors'][0]['message']
+                    invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
+                    invoice.put()
+                    return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+            else:
+                logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice))
 
     return HttpResponse(status=200)
 

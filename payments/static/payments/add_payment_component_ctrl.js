@@ -45,9 +45,9 @@ AddPaymentController = function AddPaymentController($uibModal, $http, $scope) {
                     inv = JSON.parse(invoice);
                     if (inv.amount > 0) {
                         this.invoices.push(inv);
-                    }
-                    if (!this.newPayment.invoice) {
-                        this.newPayment.invoice = inv;
+                        if (!this.newPayment.invoice) {
+                            this.newPayment.invoice = inv;
+                        }
                     }
                 }));
                 //this.newPayment.program = this.programs[0];

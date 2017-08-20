@@ -12,4 +12,5 @@ urlpatterns = [
 	url(r'^addinvoice', views.add_invoice, name='addInvoice'),
 	url(r'^listinvoicebychild', views.list_invoice_by_child, name='list_invoice_by_child'),
 	url(r'^adjustinvoice', views.adjust_invoice, name='adjust_invoice'),
+	url(r'^deleteinvoice', views.delete_invoice, name='delete invoice'),
 ]

@@ -122,6 +122,47 @@ InvoicesComponentController.prototype.adjustButtonClicked = function(clicked_inv
     }
 }
 
+InvoicesComponentController.prototype.deleteButtonClicked = function(clicked_invoice) {
+    bootbox.confirm({
+        message: "Do you really want to cancel the autopay?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'No',
+            }
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+                var data = {
+                    'invoice_id': clicked_invoice.invoice_id
+                }
+                this.http_({
+                  method: 'POST',
+                  url: '/invoice/deleteinvoice',
+                  data: JSON.stringify(data)
+                })
+                .then(
+                    function(response){
+                        if (response.data !== 'success') {
+                            bootbox.alert(response.data);
+                        } else {
+                            bootbox.alert('Invoice deleted successfully.', function() {
+                                location.reload();
+                            });
+                        }
+                    },
+                    function(response){
+                        bootbox.alert('Invoice deletion failed. Please try again later.');
+                    }
+                 );
+            }
+        })
+    });
+}
+
 InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_invoice) {
         bootbox.confirm({
             message: "Do you really want to cancel the autopay?",
@@ -149,8 +190,9 @@ InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_in
                             if (response.data !== 'success') {
                                 bootbox.alert(response.data);
                             } else {
-                                bootbox.alert('Autopay cancelled successfully.')
-                                location.reload();
+                                bootbox.alert('Autopay cancelled successfully.', function() {
+                                    location.reload();
+                                });
                             }
                         },
                         function(response){
