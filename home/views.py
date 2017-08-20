@@ -63,7 +63,7 @@ def admin(request):
     if request.method == 'POST':
         email = request.POST.get('email').lower()
 
-        query = Provider.query().filter(Provider.email == email)
+        query = Provider.query().filter(Provider.email == email, Provider.status.status == 'active')
         provider = query.get()
 
         redirect = ''
@@ -71,13 +71,13 @@ def admin(request):
             redirect = '/#!' + request.POST.get('url').split('#!')[1]
 
         if provider is None:
-            query = Parent.query().filter(Parent.email == email)
+            query = Parent.query().filter(Parent.email == email, Parent.status.status == 'active')
             parent = query.get()
             if parent is None:
                 return render_to_response(
                     'home/admin.html',
                     {
-                        'error': 'User does not exist'
+                        'error': 'User does not exist or has not confirmed signup yet.'
                     },
                     template.RequestContext(request)
                 )
