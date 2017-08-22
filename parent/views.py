@@ -8,6 +8,9 @@ from passlib.apps import custom_app_context as pwd_context
 from common.email.referral import send_parent_referral_email
 from models import Parent
 from referral import models
+from child import child_util
+from enrollment import enrollment_util
+from child.models import ProviderChildView
 from funding import funding_util
 from django.http import HttpResponse
 import logging
@@ -169,7 +172,6 @@ def get_autopay_data(request):
 
     return HttpResponse(json.dumps([JEncoder().encode(data)]))
 
-
 def parentReferral(request):
     """A form function to handle internal referral form POST requests"""
     if not check_session(request):
@@ -204,3 +206,35 @@ def parentReferral(request):
                             emailTemplate.render(data), "Joobali <howdy@joobali.com>")
         response['status'] = 'success'
     return HttpResponse(json.dumps(response), content_type="application/json")
+
+
+def has_enrollment(request):
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if request.session['is_provider']:
+        return HttpResponseRedirect('/login')
+
+    has_enrollment = False
+
+    parent_id = request.session['user_id']
+
+    parent_key = Parent.generate_key(parent_id)
+    children = child_util.list_child_by_parent(parent_key=parent_key)
+    for child in children:
+
+        if parent_key != child.parent_key:
+            return
+        provider_child_view_query = ProviderChildView.query_by_child_id(child.key.id())
+
+        enrollments = list()
+        for provider_child_view in provider_child_view_query:
+            provider_key = provider_child_view.provider_key
+            child_key = provider_child_view.child_key
+            enrollments += enrollment_util.list_enrollment_by_provider_and_child(provider_key=provider_key,
+                                                                                 child_key=child_key)
+            for enrollment in enrollments:
+                if enrollment.status == 'active':
+                    has_enrollment = True
+
+    return HttpResponse(json.dumps(has_enrollment), content_type="application/json")

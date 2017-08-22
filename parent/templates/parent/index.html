@@ -161,11 +161,11 @@
         <div class="menu-list">
 
             <ul id="myNavbar" class="menu-content collapse out">
-                <!--<li ng-click="changeView('#')" ng-class="{active: module=='#'}">-->
-                    <!--<a href="#">-->
-                        <!--<i class="fa fa-home fa-lg"></i> Joobali-->
-                    <!--</a>-->
-                <!--</li>-->
+                <li ng-click="changeView('/home')"  ng-class="{active: isActive('/home')}">
+                    <a href="#">
+                        <i class="fa fa-home fa-2x"></i> Home
+                    </a>
+                </li>
 
                 <li data-target="#children" ng-click="changeView('/child/list')"
                     ng-class="{active: isActive('/child/list') || isActive('/enrollmentview')}">

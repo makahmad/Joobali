@@ -10,4 +10,5 @@ urlpatterns = [
 	url(r'^validateemail', views.validateEmail, name='validateEmail'),
     url(r'^getautopaydata', views.get_autopay_data, name='getAutopayData'),
 	url(r'^parentreferral', views.parentReferral, name='parentReferral'),
+	url(r'^hasenrollment', views.has_enrollment, name='hasEnrollment')
 ]

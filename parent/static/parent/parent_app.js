@@ -7,6 +7,7 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
+	this.scope_.hasEnrollment = false;
 	this.initialize($uibModal);
     this.animationsEnabled = true;
 
@@ -105,6 +106,19 @@ ParentController.prototype.initialize = function($uibModal) {
 	    // or server returns response with an error status.
 	    console.log(response);
 	  });
+	this.http_({
+	  method: 'GET',
+	  url: '/parent/hasenrollment'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    this.scope_.hasEnrollment = response.data;
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
 }
 
 app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency'])
@@ -124,7 +138,8 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
                  .when('/child/list', {template: '<child-list-parent-view></child-list-parent-view>'})
                  .when('/child/edit/:childId', {template: '<child-editor></child-editor>'})
                  .when('/enrollmentview/:providerId/:enrollmentId', {template: '<enrollment-parent-view></enrollment-parent-view>'})
-                 .otherwise('/due'); //.otherwise('/index');
+                 .when('/home', {templateUrl: '/static/parent/home.html'})
+                 .otherwise('/home'); //.otherwise('/index');
           }])
     .controller('ParentCtrl', ParentController)
     .controller('EnrollmentAcceptanceDialogController', EnrollmentAcceptanceDialogController)
