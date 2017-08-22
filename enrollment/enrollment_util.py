@@ -55,6 +55,11 @@ def upsert_enrollment(enrollment_input):
     # Validate enrollment start date and end date
     validate_enrollment_date(program, enrollment.start_date, enrollment.end_date)
 
+    if 'billing_fee' not in enrollment_input or enrollment_input['billing_fee'] is None:
+        enrollment.billing_fee = program.fee
+    else:
+        enrollment.billing_fee = enrollment_input['billing_fee']
+
     enrollment.put()
 
     # Create registration invoice, and payment if already paid.

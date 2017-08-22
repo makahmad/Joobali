@@ -69,6 +69,8 @@ def add_child(request):
             registration_fee_paid = False if 'registration_fee_paid' not in request_content else request_content[
                 'registration_fee_paid']
 
+            overriding_billing_fee = None if 'fee' not in request_content else request_content['fee']
+
             # Validate enrollment start date and end date
             program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
             start_date = datetime_util.local_to_utc(
@@ -106,7 +108,8 @@ def add_child(request):
                 'status': 'initialized',
                 'start_date': billing_start_date,
                 'end_date': billing_end_date,
-                'waive_registration': waive_registration
+                'waive_registration': waive_registration,
+                'billing_fee': overriding_billing_fee
             }
 
             logger.info("Adding new enrollment: %s", enrollment_input)

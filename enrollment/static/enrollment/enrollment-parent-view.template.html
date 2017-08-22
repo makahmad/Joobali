@@ -32,8 +32,9 @@
                     <td>{{$ctrl.enrollmentDetail.program.programName}}</td>
                     <td ng-show="$ctrl.enrollmentDetail.enrollment.waive_registration">{{$ctrl.enrollmentDetail.program.registrationFee | currency}} (Waived)</td>
                     <td ng-hide="$ctrl.enrollmentDetail.enrollment.waive_registration">{{$ctrl.enrollmentDetail.program.registrationFee | currency}}</td>
-
-                    <td>{{$ctrl.enrollmentDetail.program.fee | currency }}</td>
+                    <td>{{ ($ctrl.enrollmentDetail.enrollment.billing_fee) ?
+                        $ctrl.enrollmentDetail.enrollment.billing_fee : $ctrl.enrollmentDetail.program.fee | currency }}
+                    </td>
                     <td>{{$ctrl.enrollmentDetail.program.billingFrequency}}</td>
                     <td>{{$ctrl.enrollmentDetail.program.lateFee | currency}}</td>
                     <td>{{$ctrl.enrollmentDetail.enrollment.start_date| date: 'MM/dd/yyyy': 'PST'}}</td>

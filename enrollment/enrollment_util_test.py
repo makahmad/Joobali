@@ -129,6 +129,23 @@ class EnrollmentUtilTestCase(unittest.TestCase):
 
         new_enrollment, invoice = enrollment_util.upsert_enrollment(test_enrollment_input)
         self.assertEqual('initialized', new_enrollment.status)
+        self.assertEqual(10, new_enrollment.billing_fee)
+
+    def test_upsert_enrollment_overriding_fee(self):
+        test_enrollment_input = {
+            'provider_key': self.test_provider.key,
+            'child_key': self.test_child.key,
+            'program_key': self.test_program.key,
+            'status': 'initialized',
+            'start_date': '05/25/2017',
+            'end_date': '',
+            'waive_registration': True,
+            'billing_fee': 30
+        }
+
+        new_enrollment, invoice = enrollment_util.upsert_enrollment(test_enrollment_input)
+        self.assertEqual('initialized', new_enrollment.status)
+        self.assertEqual(30, new_enrollment.billing_fee)
 
 
 if __name__ == '__main__':

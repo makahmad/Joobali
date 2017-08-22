@@ -68,6 +68,8 @@ def add_enrollment(request):
     waive_registration = False if 'waive_registration' not in request_body_dict else request_body_dict[
         'waive_registration']
 
+    overriding_billing_fee = None if 'fee' not in request_body_dict else request_body_dict['fee']
+
     if child is None:
         logger.info("child does not exist")
     elif program is None:
@@ -82,7 +84,8 @@ def add_enrollment(request):
             'status': 'initialized',
             'start_date': request_body_dict['start_date'],
             'end_date': request_body_dict['end_date'],
-            'waive_registration': waive_registration
+            'waive_registration': waive_registration,
+            'billing_fee': overriding_billing_fee
         }
         logger.info("enrollment is %s", enrollment_input)
         try:
