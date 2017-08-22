@@ -1029,3 +1029,11 @@ profile-component .profile-title,
     background-color: #1E988A;
     color: #FFFFFF;
 }
+
+
+/*----------------- General bootstrap overrides ------------------*/
+
+a {
+	cursor:pointer;
+	color: #1E988A;
+}
