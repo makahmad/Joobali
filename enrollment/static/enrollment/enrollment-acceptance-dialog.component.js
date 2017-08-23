@@ -23,7 +23,7 @@ EnrollmentAcceptanceDialogController.prototype.acceptEnrollment = function () {
         request['date_of_birth'] = moment(this.child_date_of_birth).format('MM/DD/YYYY');
     }
 
-    if (this.enableAutopay && this.autopayData.bankAccounts.length > 0) {
+    if (this.enableAutopay && this.autopayData && this.autopayData.bankAccounts.length > 0) {
         request['autopay_source_id'] = this.autopayData.bankAccounts[0].id;
         request['pay_days_before'] = '0';
     }
