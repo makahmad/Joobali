@@ -164,7 +164,7 @@ def get_autopay_data(request):
         'providerName': provider.schoolName,
         'programName': program.programName,
         'childFirstName': child.first_name,
-        'paymentAmount': '%s / %s' % (program.fee, program.billingFrequency[:-2]),
+        'paymentAmount': '%s / %s' % (enrollment.billing_fee if enrollment.billing_fee else program.fee, program.billingFrequency[:-2]),
         'billingFrequency': program.billingFrequency,
         'dueDate': due_date_text,
         'bankAccounts': funding_util.list_fundings(request.session['dwolla_customer_url'])

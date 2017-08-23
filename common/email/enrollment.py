@@ -34,7 +34,7 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         'program_name': program.programName,
         'child_first_name': child.first_name,
         'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
-        'program_fee': program.fee,
+        'program_fee': enrollment.billing_fee if enrollment.billing_fee else program.fee,
         'program_billing_frequency': program.billingFrequency,
         'enrollment_detail_url': enrollment_detail_url,
         'is_unenroll_reminder': True
@@ -79,7 +79,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
             'start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
             'end_date': datetime_util.utc_to_local(enrollment.end_date).strftime('%m/%d/%Y') if enrollment.end_date else '',
-            'program_fee': program.fee,
+            'program_fee': enrollment.billing_fee if enrollment.billing_fee else program.fee,
             'program_billing_cycle': program.billingFrequency,
             'signup_url': signup_url,
         }
@@ -99,7 +99,7 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
             'program_billing_frequency': program.billingFrequency,
             'is_acceptance_reminder': True,
             'due_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
-            'amount': program.fee,
+            'amount': enrollment.billing_fee if enrollment.billing_fee else program.fee,
             'start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
             'end_date': datetime_util.utc_to_local(enrollment.end_date).strftime('%m/%d/%Y') if enrollment.end_date else '',
         }
