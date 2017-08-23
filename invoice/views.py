@@ -201,7 +201,7 @@ def setupAutopay(request):
 
 			## Send Confirm Email
 			program = enrollment.program_key.get()
-			amount = program.fee
+			amount = enrollment.billing_fee if enrollment.billing_fee else program.fee
 			schedule = None
 			if program.billingFrequency == 'Weekly':
 				schedule = program.weeklyBillDay + ' every week'
@@ -256,7 +256,7 @@ def cancelAutopay(request):
 
 			## Send Confirm Email
 			program = enrollment.program_key.get()
-			amount = program.fee
+			amount = enrollment.billing_fee if enrollment.billing_fee else program.fee
 			schedule = None
 			if program.billingFrequency == 'Weekly':
 				schedule = program.weeklyBillDay + ' every week'
