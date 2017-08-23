@@ -214,7 +214,7 @@ a.delete:hover {
 
 #signUp h3 {
 	font-size:8em;
-	margin:0;
+	margin:5px 0 0 0;
 }
 
 #signUp h3 sup {
@@ -242,6 +242,19 @@ a.delete:hover {
 
 #signUp .featureList li:last-of-type {
 	border-bottom:none;
+}
+
+#signUp .regPricing ul {
+	background:#D0D3D7;
+}
+
+#signUp .regPricing ul li {
+	display:inline-block;
+}
+
+#signUp .regPricing ul li.vertRule {
+  border-right: 1px solid #7F8183;
+  padding-right: 20%;
 }
 
 /*---------------- Responsive Stuff ------------------*/
