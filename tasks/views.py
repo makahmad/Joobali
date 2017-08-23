@@ -138,10 +138,9 @@ def invoice_calculation(request):
             # if due_date == program_util.get_first_bill_due_date(program):
             #     should_add_registration_fee = True
 
-            enrollment_key = ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id())
             if due_date - timedelta(days=5) <= now: # 5 days ahead billing before due date
                 should_proceed = True
-                for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment_key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
+                for invoice_line_item in InvoiceLineItem.query(InvoiceLineItem.enrollment_key == enrollment.key, InvoiceLineItem.start_date != None).fetch(): # line item without start date are adjustments
                     invoice = invoice_line_item.key.parent().get()
                     # Note: This can be a deleted invoice, if a auto-created invoice is deleted, we will not create it again.
                     if invoice and invoice.due_date == due_date:
@@ -172,7 +171,7 @@ def invoice_calculation(request):
                     invoice.is_recurring = True
                     #invoice_dict[provider_child_pair_key] = invoice
                     invoice_dict[invoice.key.id()] = invoice
-                invoice_util.create_invoice_line_item(enrollment_key, invoice, program, due_date, cycle_end_date)
+                invoice_util.create_invoice_line_item(enrollment.key, invoice, program, due_date, cycle_end_date)
                 # if should_add_registration_fee:
                 #     invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
 

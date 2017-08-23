@@ -15,10 +15,18 @@ def create_invoice_line_item(enrollment_key, invoice, program, start_date=None, 
     invoice_line_item = InvoiceLineItem(parent=invoice.key)
     invoice_line_item.enrollment_key = enrollment_key
     invoice_line_item.invoice_key = invoice.key
+
     if amount is not None and amount != 0:
         invoice_line_item.amount = amount
     else:
-        invoice_line_item.amount = program.fee if program else 0.0
+        if enrollment_key:
+            enrollment = enrollment_key.get()
+            if enrollment and enrollment.billing_fee:
+                invoice_line_item.amount = enrollment.billing_fee
+        elif program and program.fee:
+            invoice_line_item.amount = program.fee
+        else:
+            invoice_line_item.amount = 0.0
     invoice_line_item.program_name = program.programName if program else ''
     invoice_line_item.start_date = start_date
     invoice_line_item.end_date = end_date
