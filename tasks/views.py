@@ -334,6 +334,8 @@ def dwolla_webhook(request):
 
         customer_url = webhook_data['customer_url']
 
+        to_provider = False
+        to_parent = False
         if customer_url == destination_customer_url:
             to_provider = True
         if customer_url == source_customer_url:
@@ -392,6 +394,8 @@ def dwolla_webhook(request):
 
         customer_url = webhook_data['customer_url']
 
+        to_provider = False
+        to_parent = False
         if customer_url == destination_customer_url:
             to_provider = True
         if customer_url == source_customer_url:
