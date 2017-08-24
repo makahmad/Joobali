@@ -36,7 +36,7 @@
                 <div class="form-group"  ng-class="{ 'has-error' : (profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError }">
                     <label class="control-label" for="email">Email:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control dwolla-verify" id="email" name="email" ng-required="true"
+											<span class="input-group-addon"><i class="fa fa-envelope fa-lg"></i></span><input type="email" class="form-control dwolla-verify" id="email" name="email" ng-required="true" readonly
                            ng-model="$ctrl.profile.email"  ng-change="$ctrl.validateEmail()">
 										 </div>
                     <span style="color:red" ng-show="(profileForm.email.$dirty && profileForm.email.$invalid) || $ctrl.emailError">

@@ -327,9 +327,17 @@ def dwolla_webhook(request):
     if ('customer_transfer_created' in webhook_content['topic']):
         dwolla_transfer = get_dwolla_transfer(webhook_data['resource_url'])
         amount = dwolla_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        source_customer_url = dwolla_transfer['source_customer_url']
+        parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
         destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+
+        customer_url = webhook_data['customer_url']
+
+        if customer_url == destination_customer_url:
+            to_provider = True
+        if customer_url == source_customer_url:
+            to_parent = True
 
         source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(webhook_data['resource_url'])
@@ -337,34 +345,36 @@ def dwolla_webhook(request):
             invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
             invoice.put()
 
-        template = loader.get_template('funding/joobali-to-customer-transfer-created.html')
-        data = {
-            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-            'first_name': parent.first_name if parent.first_name else '',
-            'transfer_type': 'Online',
-            'amount': str(amount),
-            'account_name': source_funding_source['name'],
-            'recipient': provider.schoolName,
-            'created_date': dwolla_transfer['created_date'],
-            'host': host,
-            'support_phone': support_phone
-        }
-        send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
+        if to_parent:
+            template = loader.get_template('funding/joobali-to-customer-transfer-created.html')
+            data = {
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+                'first_name': parent.first_name if parent.first_name else '',
+                'transfer_type': 'Online',
+                'amount': str(amount),
+                'account_name': source_funding_source['name'],
+                'recipient': provider.schoolName,
+                'created_date': dwolla_transfer['created_date'],
+                'host': host,
+                'support_phone': support_phone
+            }
+            send_payment_created_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
-        template = loader.get_template('funding/joobali-to-provider-transfer-created.html')
-        data = {
-            'first_name': provider.firstName if provider.firstName else '',
-            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-            'transfer_type': 'Online',
-            'amount': str(amount),
-            'account_name': destination_funding_source['name'],
-            'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': dwolla_transfer['created_date'],
-            'host': host,
-            'support_phone': support_phone
-        }
-        send_payment_created_email_to_provider(provider.email, provider.firstName, '%s %s' % (parent.first_name, parent.last_name), provider.schoolName, amount, template.render(data))
+        if to_provider:
+            destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
+            template = loader.get_template('funding/joobali-to-provider-transfer-created.html')
+            data = {
+                'first_name': provider.firstName if provider.firstName else '',
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+                'transfer_type': 'Online',
+                'amount': str(amount),
+                'account_name': destination_funding_source['name'],
+                'sender': '%s %s' % (parent.first_name, parent.last_name),
+                'created_date': dwolla_transfer['created_date'],
+                'host': host,
+                'support_phone': support_phone
+            }
+            send_payment_created_email_to_provider(provider.email, provider.firstName, '%s %s' % (parent.first_name, parent.last_name), provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
@@ -375,9 +385,17 @@ def dwolla_webhook(request):
         dwolla_transfer_url = bank_transfer['funding_transfer_url'] if bank_transfer['funding_transfer_url'] else bank_transfer['funded_transfer_url']
         dwolla_transfer = get_dwolla_transfer(dwolla_transfer_url)
         amount = dwolla_transfer['amount']
-        parent = parent_util.get_parent_by_dwolla_id(dwolla_transfer['source_customer_url'])
+        source_customer_url = dwolla_transfer['source_customer_url']
+        parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
         destination_customer_url = dwolla_transfer['destination_customer_url']
         provider = provider_util.get_provider_by_dwolla_id(destination_customer_url)
+
+        customer_url = webhook_data['customer_url']
+
+        if customer_url == destination_customer_url:
+            to_provider = True
+        if customer_url == source_customer_url:
+            to_parent = True
 
         source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
@@ -386,33 +404,35 @@ def dwolla_webhook(request):
             invoice.amount = 0
             invoice.put()
 
-        template = loader.get_template('funding/joobali-to-customer-transfer-completed.html')
-        data = {
-            'transfer_type': 'Online',
-            'amount': str(amount),
-            'account_name': source_funding_source['name'],
-            'recipient': provider.schoolName,
-            'created_date': dwolla_transfer['created_date'],
-            'host': host,
-            'support_phone': support_phone,
-            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-        }
-        send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
+        if to_parent:
+            template = loader.get_template('funding/joobali-to-customer-transfer-completed.html')
+            data = {
+                'transfer_type': 'Online',
+                'amount': str(amount),
+                'account_name': source_funding_source['name'],
+                'recipient': provider.schoolName,
+                'created_date': dwolla_transfer['created_date'],
+                'host': host,
+                'support_phone': support_phone,
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+            }
+            send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
-        destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
-        template = loader.get_template('funding/joobali-to-provider-transfer-completed.html')
-        data = {
-            'first_name': provider.firstName if provider.firstName else '',
-            'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-            'transfer_type': 'Online',
-            'amount': str(amount),
-            'account_name': destination_funding_source['name'],
-            'sender': '%s %s' % (parent.first_name, parent.last_name),
-            'created_date': dwolla_transfer['created_date'],
-            'host': host,
-            'support_phone': support_phone
-        }
-        send_payment_success_email_to_provider(provider.email, provider.firstName, '%s %s' % (parent.first_name, parent.last_name), provider.schoolName, amount, template.render(data))
+        if to_provider:
+            destination_funding_source = get_funding_source(dwolla_transfer['destination_funding_url'])
+            template = loader.get_template('funding/joobali-to-provider-transfer-completed.html')
+            data = {
+                'first_name': provider.firstName if provider.firstName else '',
+                'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+                'transfer_type': 'Online',
+                'amount': str(amount),
+                'account_name': destination_funding_source['name'],
+                'sender': '%s %s' % (parent.first_name, parent.last_name),
+                'created_date': dwolla_transfer['created_date'],
+                'host': host,
+                'support_phone': support_phone
+            }
+            send_payment_success_email_to_provider(provider.email, provider.firstName, '%s %s' % (parent.first_name, parent.last_name), provider.schoolName, amount, template.render(data))
 
         event = DwollaEvent(id = webhook_data['id'])
         event.event_id = webhook_data['id']
