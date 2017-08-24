@@ -79,6 +79,7 @@ def list_child_by_provider(provider_key):
         child['parent_name'] = None
         if view.child_key.get().parent_key.get().first_name or view.child_key.get().parent_key.get().last_name:
             child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
+            child['parent_phone'] = view.child_key.get().parent_key.get().phone
         children.append(child)
     return children
 
@@ -95,6 +96,7 @@ def list_child_by_provider_program(provider_id, program_id):
         child['parent_name'] = None
         if enrollment.child_key.get().parent_key.get().first_name or enrollment.child_key.get().parent_key.get().last_name:
             child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
+            child['parent_phone'] = enrollment.child_key.get().parent_key.get().phone
 
         children.append(child)
     return children
