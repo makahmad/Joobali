@@ -248,8 +248,11 @@ def list_program_by_child(request):
     provider_key = Provider.generate_key(provider_id)
     enrollments = enrollment_util.list_enrollment_by_provider_and_child(provider_key=provider_key, child_key=child_key)
     programs = []
+
     for enrollment in enrollments:
-        programs.append(enrollment.program_key.get())
+        if enrollment.status != 'cancel':
+            programs.append(enrollment.program_key.get())
+
     response = HttpResponse(json.dumps([JEncoder().encode(program) for program in programs]))
     logger.info("response is %s" % response)
     return response
