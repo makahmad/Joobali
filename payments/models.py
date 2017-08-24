@@ -14,6 +14,8 @@ class Payment(ndb.Model):
     note = ndb.StringProperty(required=False) # Check number if payment = Check, Note if payment type = Other
     balance = ndb.FloatProperty(required=True)
 
+    is_deleted = ndb.BooleanProperty(default=False)
+
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
     time_updated = ndb.DateTimeProperty(auto_now=True)

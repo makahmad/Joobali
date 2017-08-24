@@ -14,6 +14,7 @@ from parent.models import Parent
 from child.models import Child
 from child import child_util
 from enrollment import enrollment_util
+from payments.models import Payment
 from django.template import loader
 from invoice import invoice_util
 from common.pdf import render_to_pdf
@@ -343,6 +344,10 @@ def delete_invoice(request):
 		if not invoice.is_paid() and not invoice.is_processing():
 			invoice.status = Invoice._POSSIBLE_STATUS['DELETED']
 			invoice.put()
+			payments = Payment.query(Payment.invoice_key == invoice.key)
+			for payment in payments:
+				payment.is_deleted = True
+				payment.put()
 		else:
 			return HttpResponse("This invoice can not be deleted now.")
 	return HttpResponse("success")

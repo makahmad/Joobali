@@ -86,18 +86,19 @@ def listPayments(request):
 
     results = []
     for payment in payments:
-        results.append({
-            'child': '%s %s' % (payment.child_key.get().first_name, payment.child_key.get().last_name),
-            'amount': float(payment.amount),
-            'balance': float(payment.balance),
-            'date': datetime_util.utc_to_local(payment.date).strftime('%m/%d/%Y'),
-            'type': payment.type,
-            'payer': payment.payer,
-            'provider_amount': float(payment.amount),
-            'fee': 0,
-            'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
-            'note': payment.note,
-        })
+        if not payment.is_deleted:
+            results.append({
+                'child': '%s %s' % (payment.child_key.get().first_name, payment.child_key.get().last_name),
+                'amount': float(payment.amount),
+                'balance': float(payment.balance),
+                'date': datetime_util.utc_to_local(payment.date).strftime('%m/%d/%Y'),
+                'type': payment.type,
+                'payer': payment.payer,
+                'provider_amount': float(payment.amount),
+                'fee': 0,
+                'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
+                'note': payment.note,
+            })
     results.extend(list_dwolla_payments(email))
     return HttpResponse(json.dumps(results))
 
@@ -120,7 +121,7 @@ def list_dwolla_payments(email):
     logger.info("Retrieving Dwolla Payments... Invoices: %s" % invoices)
     results = []
     for invoice in invoices:
-        if invoice.dwolla_transfer_id:
+        if not invoice.is_deleted() and invoice.dwolla_transfer_id:
             transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
             amount = transfer['amount']
             source_customer_url = transfer['source_customer_url']

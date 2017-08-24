@@ -83,7 +83,7 @@ def invoice_calculation(request):
         if not invoice.is_deleted(): # ignore deleted invoices
             if not invoice.is_paid() and not invoice.is_processing():
                 logger.info("Considering payment for invoice: %s" % invoice)
-                for payment in Payment.query(Payment.child_key==invoice.child_key).fetch():
+                for payment in Payment.query(Payment.child_key==invoice.child_key, Payment.is_deleted==False).fetch():
                     if not payment.invoice_key or payment.invoice_key and payment.invoice_key == invoice.key:
                         if payment.balance > 0:
                             logger.info("Making payment with: %s" % payment)
