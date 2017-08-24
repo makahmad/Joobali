@@ -124,7 +124,7 @@ InvoicesComponentController.prototype.adjustButtonClicked = function(clicked_inv
 
 InvoicesComponentController.prototype.deleteButtonClicked = function(clicked_invoice) {
     bootbox.confirm({
-        message: "Do you really want to cancel the autopay?",
+        message: "Are you sure you want to delete this invoice?",
         buttons: {
             confirm: {
                 label: 'Yes',
@@ -165,7 +165,7 @@ InvoicesComponentController.prototype.deleteButtonClicked = function(clicked_inv
 
 InvoicesComponentController.prototype.cancelAutopayClicked = function(clicked_invoice) {
         bootbox.confirm({
-            message: "Do you really want to cancel the autopay?",
+            message: "Are you sure you want to cancel autopay?",
             buttons: {
                 confirm: {
                     label: 'Yes',
