@@ -77,10 +77,10 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
                 </div>
-                <div class="form-group" ng-hide="$ctrl.isStartDateReadOnly() && $ctrl.newEnrollment.billing_fee==null">
+                <div class="form-group" ng-hide="$ctrl.isActive() && $ctrl.newEnrollment.billing_fee==null">
                     <label class="control-label">Override Program Cost for this Child?</label>
                     <input type="number" min="0" class="form-control" id="billing_fee" name="billing_fee"
-                           ng-readonly="$ctrl.isStartDateReadOnly()"
+                           ng-readonly="$ctrl.isActive()"
                            ng-required="true" ng-model="$ctrl.newEnrollment.billing_fee">
                 </div>
                 <div class="form-group" ng-show="$ctrl.getPossibleStatus().length > 1">

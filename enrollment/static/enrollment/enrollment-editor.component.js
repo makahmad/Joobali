@@ -137,6 +137,15 @@ EnrollmentEditorController.prototype.isStartDateReadOnly = function() {
     return false;
 }
 
+EnrollmentEditorController.prototype.isActive = function() {
+    var enrollment = this.enrollment;
+
+    if (enrollment.status === 'active')
+        return true;
+
+    return false;
+}
+
 EnrollmentEditorController.prototype.hasChange = function() {
     if (this.enrollment.status !== this.newEnrollment.status) {
         return true;
