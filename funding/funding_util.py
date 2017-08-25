@@ -114,6 +114,8 @@ def list_fundings(customer_url):
         if funding['type'] != 'balance' and funding['removed'] != True:
             if funding['status'] == 'verified':
                 funding['status'] = 'Connected'
+            elif funding['status'] == 'unverified':
+                funding['status'] = 'Pending micro deposit confirmation'
 
             if funding['type'] == 'bank':
                 funding['type'] = 'Bank'
