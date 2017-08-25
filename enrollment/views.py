@@ -281,13 +281,16 @@ def update_enrollment(request):
     else:
         if 'status' in request_body_dict:
             enrollment.status = request_body_dict['status']
-        elif 'start_date' in request_body_dict:
+        if 'start_date' in request_body_dict:
             enrollment.start_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['start_date'], "%m/%d/%Y"))
-        elif 'end_date' in request_body_dict:
+        if 'end_date' in request_body_dict:
             if request_body_dict['end_date']:
                 enrollment.end_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['end_date'], "%m/%d/%Y"))
             else:
                 enrollment.end_date = None
+        if 'billing_fee' in request_body_dict:
+            enrollment.billing_fee = request_body_dict['billing_fee']
+
         enrollment.put()
         return HttpResponse(status=200)
 

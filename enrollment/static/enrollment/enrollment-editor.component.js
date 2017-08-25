@@ -142,6 +142,10 @@ EnrollmentEditorController.prototype.hasChange = function() {
         return true;
     }
 
+    if (this.enrollment.billing_fee !== this.newEnrollment.billing_fee) {
+        return true;
+    }
+
     if (this.enrollment.start_date.toString() !== this.newEnrollment.start_date.toString()) {
         return true;
     }
@@ -173,6 +177,9 @@ EnrollmentEditorController.prototype.isEndDateChanged = function() {
 EnrollmentEditorController.prototype.save = function() {
     request = {}
     request.id = this.newEnrollment.id;
+    if (this.enrollment.billing_fee !== this.newEnrollment.billing_fee) {
+        request.billing_fee = this.newEnrollment.billing_fee;
+    }
     if (this.enrollment.status !== this.newEnrollment.status) {
         request.status = this.newEnrollment.status;
     }
