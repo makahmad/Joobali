@@ -1037,3 +1037,9 @@ a {
 	cursor:pointer;
 	color: #1E988A;
 }
+
+
+.tooltip {
+	min-width:200px !important;
+	    color: #fff;
+}

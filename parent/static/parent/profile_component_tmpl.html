@@ -61,7 +61,7 @@
                 <div class="form-group pwChange" ng-class="{ 'has-error' : profileForm.newPassword.$error.required}" ng-show="showChangePassword">
                     <label class="control-label" for="newPassword">New Password:</label>
                     <div class="input-group">
-											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" class="form-control" id="newPassword" name="newPassword"
+											<span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span><input type="password"  uib-tooltip-html="htmlTooltip" tooltip-trigger="'focus'" class="form-control" id="newPassword" name="newPassword"
                            ng-model="$ctrl.profile.newPassword"  ng-required='$ctrl.profile.currentPassword.length>0 && showChangePassword' ng-model-options="{allowInvalid: true}" pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})">
 
                     </div>

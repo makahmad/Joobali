@@ -128,15 +128,14 @@
                         </div>
                         {% endif %}
                         <div class="form-group">
-                            <label class="control-label" for="password">Password: <sup><i
-                                    class="fa fa-question-circle-o" uib-tooltip-html="htmlTooltip"></i></sup> </label>
+                            <label class="control-label" for="password">Password: </label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-lock fa-lg"></i></span>
                                 <input type="password" class="form-control" ng-model="password"
+                                       uib-tooltip-html="htmlTooltip" tooltip-trigger="'focus'"
                                        pattern-validator="((?=.*\d)(?=.*[A-Z])(?=.*\W).{8,8})" id="password"
                                        name="password" required="true" value="{{ loginForm.password.data|safe }}">
                             </div>
-                            <password-strength ng-model="password"></password-strength>
 
                         </div>
 
