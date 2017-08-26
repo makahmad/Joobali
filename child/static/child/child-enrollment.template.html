@@ -123,7 +123,7 @@
                     <label class="control-label">Override Program Cost for this Child?
                     </label>
                     <input type="number" min="0" class="form-control" id="fee" name="fee"
-                           ng-required="true" ng-model="$ctrl.newEnrollment.fee">
+                           ng-required="true" ng-model="$ctrl.newEnrollment.fee" ng-readonly="$ctrl.readOnly">
 
                 </div>
                 <div class="form-group" ng-show="$ctrl.newEnrollment.program">

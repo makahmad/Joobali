@@ -158,7 +158,7 @@
          ng-show="$ctrl.newChildEnrollmentInfo.program">
         <label class="control-label">Override Program Cost for this Child?
         </label>
-        <input type="number" min="0" class="form-control" id="fee" name="fee"
+        <input type="number" min="0" class="form-control" id="fee" name="fee" ng-readonly="$ctrl.readOnly"
                ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.fee">
 
     </div>
@@ -179,7 +179,7 @@
     <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
         <label class="control-label" for="payer">Payer:</label>
         <div class="input-group" style="width:100%;">
-            <input class="form-control" type="text" id="payer" name="payer"
+            <input class="form-control" type="text" id="payer" name="payer" ng-readonly="$ctrl.readOnly"
                    ng-required="true"  ng-model="$ctrl.newChildEnrollmentInfo.payer">
             </input>
         </div>
@@ -196,6 +196,7 @@
                    is-open="$ctrl.paymentDatePickerOpened"
                    ng-click="$ctrl.openPaymentDatePicker()"
                    ng-required="true"
+                   ng-readonly="$ctrl.readOnly"
                    close-text="Close"/>
             <span class="input-group-btn">
                             <button type="button" class="btn btn-default"
@@ -206,6 +207,7 @@
     <div class="form-group" ng-if="$ctrl.newChildEnrollmentInfo.registration_fee_paid && !$ctrl.newChildEnrollmentInfo.waive_registration">
         <label class="control-label" for="payment_type">Payment Type</label>
         <select class="form-control" id="payment_type"  ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.payment_type"
+                ng-readonly="$ctrl.readOnly"
                 ng-options="paymentType as paymentType.label for paymentType in $ctrl.paymentTypes track by paymentType.id">
         </select>
     </div>
@@ -214,7 +216,7 @@
                 class="control-label" for="note">Note (required if payment type is Other)</label>
         <label  ng-show="$ctrl.newChildEnrollmentInfo.payment_type.id=='Check'"
                 class="control-label" for="note">Check #</label>
-        <input class="form-control" type="text" id="note" name="note"
+        <input class="form-control" type="text" id="note" name="note" ng-readonly="$ctrl.readOnly"
                ng-required="$ctrl.newChildEnrollmentInfo.payment_type.id=='Other'"  ng-model="$ctrl.newChildEnrollmentInfo.note">
         </input>
     </div>

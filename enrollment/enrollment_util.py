@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime
 
 from google.appengine.ext import ndb
 
@@ -10,8 +9,7 @@ from manageprogram.models import Program
 from models import Enrollment
 from invoice import invoice_util
 from parent.models import Parent
-from datetime import datetime, date
-from manageprogram import program_util
+from datetime import datetime
 from common import datetime_util
 
 logger = logging.getLogger(__name__)
@@ -27,6 +25,9 @@ def validate_enrollment_date(program, start_date, end_date):
         if end_date_delta.days < 0:
             raise JoobaliRpcException(client_viewable_message="The enrollment end date is set after this program ends.")
 
+        end_start_date_delta = end_date - start_date
+        if end_start_date_delta.days < 0:
+            raise JoobaliRpcException(client_viewable_message="The enrollment end date must be after enrollment start date.")
 
 def upsert_enrollment(enrollment_input):
     """Upserts an enrollment"""
@@ -37,7 +38,7 @@ def upsert_enrollment(enrollment_input):
     if len(existing_enrollments) > 0:
         raise JoobaliRpcException(
             error_message="Existing enrollment between this child_key %s and program_key %s" % (child_key, program_key),
-            client_viewable_message="There is already an similar existing enrollment")
+            client_viewable_message="There is already a similar existing enrollment")
     enrollment = Enrollment(parent=provider_key)
     enrollment.child_key = child_key
     enrollment.program_key = program_key
