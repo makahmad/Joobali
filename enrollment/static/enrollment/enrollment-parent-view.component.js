@@ -27,7 +27,14 @@ EnrollmentParentViewController.prototype.getEnrollmentDetail = function() {
         .post('/enrollment/get', request)
         .then(angular.bind(this, function successCallback(response) {
             this.enrollmentDetail = angular.fromJson(response.data)[0];
-            console.log(this.enrollmentDetail);
+
+            if (this.enrollmentDetail.enrollment==null)
+            {
+                bootbox.alert("The program does not exist or has been removed by the provider."+
+                    "<br>Please go to the Children page and review your child's other programs.");
+                this.location_.path('/child/list');
+			}
+
         }), function errorCallback(response) {})
 }
 
@@ -85,6 +92,7 @@ EnrollmentParentViewController.prototype.redirectToFirstInvoice = function () {
 
 EnrollmentParentViewController.prototype.isWaitingAcceptance = function() {
     return (this.enrollmentDetail == null
+            || this.enrollmentDetail.enrollment == null
             || this.enrollmentDetail.enrollment.status == 'initialized'
             || this.enrollmentDetail.enrollment.status == 'invited');
 }

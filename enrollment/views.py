@@ -238,30 +238,42 @@ def get_enrollment(request):
             provider_id = int(enrollment['provider_id'])
             enrollment_id = int(enrollment['id'])
             enrollment = Enrollment.generate_key(provider_id, enrollment_id).get()
+
             logger.info('getting enrollment %s' % enrollment)
+
             if filtering_provider_id is not None:
                 if filtering_provider_id != provider_id:
                     logger.warning('provider_id %s try to access {provider_id: %s, enrollment_id: %s}' % (
                         filtering_provider_id, provider_id, enrollment_id))
                     continue
-            child = enrollment.child_key.get()
-            if filtering_parent_id is not None:
-                if filtering_parent_id != child.parent_key.id():
-                    logger.warning('parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
-                        filtering_parent_id, provider_id, enrollment_id, child.key.id()))
-                    continue
-            program = enrollment.program_key.get()
-            enrollment_detail = {
-                'enrollment': enrollment,
-                'child': child,
-                'program': {
-                    'programName': program.programName,
-                    'registrationFee': program.registrationFee,
-                    'fee': program.fee,
-                    'lateFee': program.lateFee,
-                    'billingFrequency': program.billingFrequency
+
+            if enrollment:
+                child = enrollment.child_key.get()
+
+
+                if filtering_parent_id is not None:
+                    if filtering_parent_id != child.parent_key.id():
+                        logger.warning('parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
+                            filtering_parent_id, provider_id, enrollment_id, child.key.id()))
+                        continue
+
+                program = enrollment.program_key.get()
+
+                enrollment_detail = {
+                    'enrollment': enrollment,
+                    'child': child,
+                    'program': {
+                        'programName': program.programName,
+                        'registrationFee': program.registrationFee,
+                        'fee': program.fee,
+                        'lateFee': program.lateFee,
+                        'billingFrequency': program.billingFrequency
+                    }
                 }
-            }
+            else:
+                enrollment_detail = {
+                    'enrollment': enrollment
+                }
             enrollments_details.append(enrollment_detail)
         return HttpResponse(json.dumps(JEncoder().encode(enrollments_details)), content_type='application/json')
 
