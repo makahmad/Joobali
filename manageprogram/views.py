@@ -6,7 +6,6 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from datetime import datetime
 from calendar import day_name
-from child import child_util
 from child.models import Child
 from enrollment import enrollment_util
 from login.models import Provider
@@ -146,12 +145,15 @@ def deleteProgram(request):
 
     data = json.loads(request.body)
 
-    programId = data['id']
-    if not programId:
+    program_id = data['id']
+    if not program_id:
         raise Exception('no program id is provided')
 
     provider = Provider.get_by_id(user_id)
-    program = models.Program.get_by_id(int(programId), parent = provider.key)
+    program = models.Program.get_by_id(int(program_id), parent = provider.key)
+    enrollments = enrollment_util.list_enrollment_by_provider_program(user_id, program_id)
+    for enrollment in enrollments:
+        print enrollment.key.delete()
 
     program.key.delete()
     return HttpResponse("success")
