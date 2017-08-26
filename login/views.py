@@ -120,29 +120,29 @@ def provider_signup(request):
             captcha_results['success'] = True
 
         # Remove below snippet once we are out of Beta
-        # beta_code = request.POST.get('beta_code')
-        # if beta_code != 'joobali143':
-        #     failedBetaLogins = FailedBetaLogins()
-        #     failedBetaLogins.IP = get_client_ip(request)
-        #     failedBetaLogins.email = request.POST.get('email')
-        #     failedBetaLogins.firstName = request.POST.get('firstName')
-        #     failedBetaLogins.schoolName = request.POST.get('schoolName')
-        #     failedBetaLogins.lastName = request.POST.get('lastName')
-        #     failedBetaLogins.phone = request.POST.get('phone')
-        #     failedBetaLogins.license = request.POST.get('license')
-        #     failedBetaLogins.date = datetime.now()
-        #     failedBetaLogins.beta_code = request.POST.get('beta_code')
-        #     failedBetaLogins.put()
-        #
-        #     return render_to_response(
-        #         'login/provider_signup.html',
-        #         {'form': form,
-        #          'host': get_host_from_request(request.get_host()),
-        #          'captcha': captcha_results['success'],
-        #          'beta_error': True,
-        #          'home_url': 'https://www.joobali.com'},
-        #         template.RequestContext(request)
-        #     )
+        beta_code = request.POST.get('beta_code')
+        if beta_code != 'joobali143':
+            failedBetaLogins = FailedBetaLogins()
+            failedBetaLogins.IP = get_client_ip(request)
+            failedBetaLogins.email = request.POST.get('email')
+            failedBetaLogins.firstName = request.POST.get('firstName')
+            failedBetaLogins.schoolName = request.POST.get('schoolName')
+            failedBetaLogins.lastName = request.POST.get('lastName')
+            failedBetaLogins.phone = request.POST.get('phone')
+            failedBetaLogins.license = request.POST.get('license')
+            failedBetaLogins.date = datetime.now()
+            failedBetaLogins.beta_code = request.POST.get('beta_code')
+            failedBetaLogins.put()
+
+            return render_to_response(
+                'login/provider_signup.html',
+                {'form': form,
+                 'host': get_host_from_request(request.get_host()),
+                 'captcha': captcha_results['success'],
+                 'beta_error': True,
+                 'home_url': 'https://www.joobali.com'},
+                template.RequestContext(request)
+            )
         # Remove above snippet once we are out of Beta
 
         if form.validate() and captcha_results['success']:
