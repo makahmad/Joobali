@@ -6,6 +6,7 @@ from django.shortcuts import render
 from common.email.login import send_provider_email_address_verification
 from common.request import get_host_from_request
 from login.models import Unique
+from datetime import datetime
 from verification_util import get_provider_email_verification_token, list_provider_email_verification_token, \
     create_provider_email_verification_token
 
@@ -26,6 +27,7 @@ def verify_provider_email(request):
     if token is not None:
         provider = token.provider_key.get()
         provider.status.status = 'active'
+        provider.time_email_verified = datetime.now()
         provider.put()
         token.key.delete()
         context["status"] = 'successful'

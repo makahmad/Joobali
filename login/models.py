@@ -76,6 +76,7 @@ class Provider(ndb.Model):
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
     time_updated = ndb.DateTimeProperty(auto_now=True)
+    time_email_verified = ndb.DateTimeProperty()
 
     @staticmethod
     def get_next_available_id():
