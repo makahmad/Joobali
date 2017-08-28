@@ -38,6 +38,8 @@ class Parent(ndb.Model):
 
     tos_pp_accepted = ndb.BooleanProperty(default=False) # joobali/dwolla terms of service and privacy policy accepted
 
+    is_deleted = ndb.BooleanProperty(default=False)
+
     # Dwolla customer id
     customerId = ndb.StringProperty()
 

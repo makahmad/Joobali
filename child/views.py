@@ -21,6 +21,7 @@ from enrollment import enrollment_util
 from payments import payments_util
 from datetime import datetime
 from common import datetime_util
+from invoice import invoice_util
 
 # Create your views here.
 
@@ -130,6 +131,8 @@ def add_child(request):
             else:
                 # The parent has not yet signup
                 parent.invitation.enrollment_key = enrollment.key
+                parent.invitation.child_first_name = child_first_name
+                parent.invitation.provider_key = provider_key
                 parent.put()
                 send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()),
                                                     verification_token=verification_token)
@@ -172,5 +175,55 @@ def update_child(request):
     child_util.update_child(child_key, {'first_name': new_child['first_name'],
                                         'last_name': new_child['last_name'],
                                         'date_of_birth': new_child['date_of_birth']})
+
+    return HttpResponse("success")
+
+
+def remove_child(request):
+    if not session.check_session(request):
+        return HttpResponseRedirect('/login')
+
+    new_child = json.loads(request.body)
+    child_key = Child.generate_key(new_child['id'])
+
+    child = child_key.get()
+    parent = child.parent_key.get()
+    if parent.status.status == 'active':
+        logger.warning("Parent active. Child not removeable: %s", new_child['id'])
+        return HttpResponse(
+            "The child of this parent has already signed up. Please contact us to remove this child.")
+
+    if session.is_provider(request):
+        provider_id = session.get_provider_id(request)
+        provider_key = Provider.generate_key(provider_id)
+        can_remove = True
+        for enrollment in enrollment_util.list_enrollment_by_provider_and_child(provider_key, child_key):
+            if enrollment.is_active():
+                can_remove = False
+        if can_remove:
+            # can_remove_parent = True
+            # for other_child in child_util.list_child_by_parent(parent.key):
+            #     if other_child != child and child_util.get_provider_child_view(child_key=other_child.key, provider_key=provider_key):
+            #         can_remove_parent = False
+
+            invited_enrollment_key = None
+            if parent.invitation:
+                invited_enrollment_key = parent.invitation.enrollment_key
+            for enrollment in enrollment_util.list_enrollment_by_provider_and_child(provider_key, child_key):
+                for invoice in invoice_util.get_enrollment_invoices(enrollment):
+                    invoice_util.force_delete_invoice(invoice) # delete all related invoices and payments (mostly the registration fee). It's safe because the parent haven't signed up.
+                if invited_enrollment_key == enrollment.key:
+                    parent.invitation = None # Delete the invitation if we remove the child.
+                    parent.put()
+                enrollment_util.cancel_enrollment(provider_id, enrollment.key.id(), request.get_host())
+            children_views = child_util.get_provider_child_view(child_key=child_key, provider_key=provider_key)
+
+            for view in children_views:
+                view.key.delete()
+
+        else:
+            logger.warning("Active enrollment. Child not removeable: %s", new_child['id'])
+            return HttpResponse("This child is actively enrolled. Please unenroll and try again.")
+
 
     return HttpResponse("success")

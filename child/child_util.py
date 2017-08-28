@@ -64,7 +64,7 @@ def get_child_key(child_id):
 def get_existing_child(child, parent_key):
     children = list_child_by_parent(parent_key=parent_key)
     for existing_child in children:
-        if match_child(child, existing_child):
+        if not existing_child.is_deleted and match_child(child, existing_child):
             return existing_child
     return None
 
@@ -75,12 +75,14 @@ def list_child_by_provider(provider_key):
 
     for view in provider_children_views:
         child = view.child_key.get().to_dict()
-        child['id'] = view.child_key.get().key.id()
-        child['parent_name'] = None
-        if view.child_key.get().parent_key.get().first_name or view.child_key.get().parent_key.get().last_name:
-            child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
-            child['parent_phone'] = view.child_key.get().parent_key.get().phone
-        children.append(child)
+        if not child['is_deleted']:
+            child['id'] = view.child_key.get().key.id()
+            child['parent_name'] = None
+            child['parent_status'] = view.child_key.get().parent_key.get().status.status
+            if view.child_key.get().parent_key.get().first_name or view.child_key.get().parent_key.get().last_name:
+                child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
+                child['parent_phone'] = view.child_key.get().parent_key.get().phone
+            children.append(child)
     return children
 
 
@@ -92,13 +94,13 @@ def list_child_by_provider_program(provider_id, program_id):
     children = list()
     for enrollment in enrollments:
         child = enrollment.child_key.get().to_dict()
-        child['id'] = enrollment.child_key.get().key.id()
-        child['parent_name'] = None
-        if enrollment.child_key.get().parent_key.get().first_name or enrollment.child_key.get().parent_key.get().last_name:
-            child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
-            child['parent_phone'] = enrollment.child_key.get().parent_key.get().phone
-
-        children.append(child)
+        if not child['is_deleted']:
+            child['id'] = enrollment.child_key.get().key.id()
+            child['parent_name'] = None
+            if enrollment.child_key.get().parent_key.get().first_name or enrollment.child_key.get().parent_key.get().last_name:
+                child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
+                child['parent_phone'] = enrollment.child_key.get().parent_key.get().phone
+            children.append(child)
     return children
 
 
@@ -107,7 +109,8 @@ def list_child_by_parent(parent_key):
     query = Child.query(Child.parent_key == parent_key)
     children = list()
     for child in query:
-        children.append(child)
+        if child.is_deleted is not None and child.is_deleted == False:
+            children.append(child)
     return children
 
 

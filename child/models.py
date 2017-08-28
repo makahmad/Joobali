@@ -15,6 +15,8 @@ class Child(ndb.Model):
     date_of_birth = ndb.DateProperty(required=False)
     parent_key = ndb.KeyProperty(kind=Parent, required=True)
 
+    is_deleted = ndb.BooleanProperty(default=False)
+
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
     time_updated = ndb.DateTimeProperty(auto_now=True)

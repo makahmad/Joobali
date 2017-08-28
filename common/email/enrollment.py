@@ -34,7 +34,7 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         'program_name': program.programName,
         'child_first_name': child.first_name,
         'enrollment_start_date': datetime_util.utc_to_local(enrollment.start_date).strftime('%m/%d/%Y'),
-        'program_fee': enrollment.billing_fee if enrollment.billing_fee else program.fee,
+        'amount': enrollment.billing_fee if enrollment.billing_fee else program.fee,
         'program_billing_frequency': program.billingFrequency,
         'enrollment_detail_url': enrollment_detail_url,
         'is_unenroll_reminder': True

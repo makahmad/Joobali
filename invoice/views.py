@@ -341,14 +341,7 @@ def delete_invoice(request):
 	invoice_id = data['invoice_id']
 	if invoice_id:
 		invoice = Invoice.get_by_id(invoice_id)
-		if not invoice.is_paid() and not invoice.is_processing():
-			invoice.status = Invoice._POSSIBLE_STATUS['DELETED']
-			invoice.put()
-			payments = Payment.query(Payment.invoice_key == invoice.key)
-			for payment in payments:
-				payment.is_deleted = True
-				payment.put()
-		else:
+		if not invoice_util.delete_invoice(invoice):
 			return HttpResponse("This invoice can not be deleted now.")
 	return HttpResponse("success")
 

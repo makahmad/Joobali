@@ -5,6 +5,7 @@ from common import key_util
 from datetime import datetime, date, timedelta
 from calendar import monthrange
 from common import datetime_util
+from payments.models import Payment
 import logging
 
 logger = logging.getLogger(__name__)
@@ -230,3 +231,23 @@ def adjust_invoice(invoice, amount, reason):
     if invoice.amount == 0:
         invoice.status = Invoice._POSSIBLE_STATUS['MARKED_PAID']
     invoice.put()
+
+def delete_invoice(invoice):
+    if not invoice.is_paid() and not invoice.is_processing():
+        invoice.status = Invoice._POSSIBLE_STATUS['DELETED']
+        invoice.put()
+        payments = Payment.query(Payment.invoice_key == invoice.key)
+        for payment in payments:
+            payment.is_deleted = True
+            payment.put()
+        return True
+    else:
+        return False
+
+def force_delete_invoice(invoice):
+    invoice.status = Invoice._POSSIBLE_STATUS['DELETED']
+    invoice.put()
+    payments = Payment.query(Payment.invoice_key == invoice.key)
+    for payment in payments:
+        payment.is_deleted = True
+        payment.put()
