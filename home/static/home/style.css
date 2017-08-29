@@ -1043,3 +1043,7 @@ a {
 	min-width:200px !important;
 	    color: #fff;
 }
+
+.table-responsive{
+overflow-x: inherit;
+}
