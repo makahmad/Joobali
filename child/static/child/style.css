@@ -282,10 +282,11 @@ child-list-parent-view th, child-list-parent-view td, enrollment-parent-view th,
 	
 	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(1):before { content: "Program: ";}
 	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(2):before { content: "Program Registration Fee: ";}
-	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(3):before { content: "Billing Frequency: ";}
-	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(4):before { content: "Late Fee: ";}
-	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(5):before { content: "Enrollment Start: ";}
-	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(6):before { content: "Enrollment Status: ";}
+	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(3):before { content: "Program Fee: ";}
+	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(4):before { content: "Billing Frequency: ";}
+	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(5):before { content: "Late Fee: ";}
+	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(6):before { content: "Enrollment Start: ";}
+	enrollment-parent-view .enrollmentProgramDetails td:nth-of-type(7):before { content: "Enrollment Status: ";}
 		
 	.child-enrollment-container{
 		width:90%;
