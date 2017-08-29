@@ -269,8 +269,9 @@ child-list-parent-view th, child-list-parent-view td, enrollment-parent-view th,
 	.enrollmentList td:nth-of-type(3):before { content: "Start Date: ";}
 	.enrollmentList td:nth-of-type(4):before { content: "End Date: "; }
 	.enrollmentList td:nth-of-type(5):before { content: "Billing Frequency: ";}
-	.enrollmentList td:nth-of-type(6):before { content: "Autopay?: ";}
-	.enrollmentList td:nth-of-type(7):before { content: ;}
+	.enrollmentList td:nth-of-type(6):before { content: "Billing Fee: ";}
+	.enrollmentList td:nth-of-type(7):before { content: "Autopay?: ";}
+	.enrollmentList td:nth-of-type(8):before { content: ;}
 	
 	.enrollmentList td:before, enrollment-parent-view td:before {text-transform:uppercase; font-size:smaller; font-weight:bold;}
 	
