@@ -246,6 +246,7 @@ def parent_signup(request):
             phone = request.POST.get('phone')
             token_id = request.POST.get('invitation_token')
             child_date_of_birth = request.POST.get('child_date_of_birth')
+            tos_pp_accepted = request.POST.get('tos_pp_accepted') == 'on'
 
             verification_token = get_parent_signup_verification_token(token_id)
 
@@ -258,7 +259,7 @@ def parent_signup(request):
                 salted_password = pwd_context.encrypt(password)
                 parent = parent_util.signup_invited_parent(email=email, salted_password=salted_password,
                                                            phone=phone,
-                                                           first_name=first_name, last_name=last_name)
+                                                           first_name=first_name, last_name=last_name, tos_pp_accepted=tos_pp_accepted)
 
                 child = parent.invitation.enrollment_key.get().child_key.get()
                 child.date_of_birth = datetime.strptime(child_date_of_birth, DATE_FORMAT).date()

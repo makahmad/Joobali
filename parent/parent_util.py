@@ -57,7 +57,7 @@ def setup_parent_for_child(email, provider_key, child_first_name):
         return existing_parent, None
 
 
-def signup_invited_parent(email, salted_password, phone, first_name, last_name):
+def signup_invited_parent(email, salted_password, phone, first_name, last_name, tos_pp_accepted):
     parent = get_parents_by_email(email)
     parent.password = salted_password
     parent.first_name = first_name
@@ -65,6 +65,7 @@ def signup_invited_parent(email, salted_password, phone, first_name, last_name):
     parent.phone = phone
     logger.info("setting the parent %s status to active" % email)
     parent.status.status = 'active'
+    parent.tos_pp_accepted = tos_pp_accepted
     parent.put()
     return parent
 
