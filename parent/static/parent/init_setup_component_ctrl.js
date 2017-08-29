@@ -99,7 +99,20 @@ InitSetupComponentController.prototype.handleNext = function(skip) {
 
     console.log(skip);
     if (curNav.attr('id') === "navStep1") {
-        this.getAutopayData();
+        if (skip) {
+            this.http_({
+              method: 'POST',
+              url: '/login/setinitsetupfinished'
+            }).then(angular.bind(this, function successCallback(response) {
+                this.cancel();
+            }), function errorCallback(response) {
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log(response);
+            });
+        } else {
+            this.getAutopayData();
+        }
     }
     if (!skip && curNav.attr('id') === "navStep2") {
         // TODO(rongjian): add logic to setup autopay.
