@@ -15,14 +15,14 @@
 			            <div class="col-1">
 			                <label class="control-label" >Start Date:</label>
 			                <div class="input-group date">
-			                    {{$ctrl.program.startDate | date: 'MM/dd/yyyy':'PST'}}
+			                    {{$ctrl.program.startDate | date: 'MM/dd/yyyy'}}
 			                </div>
 			            </div>
 			            <div class="col-1">
 			                <label class="control-label">End Date:</label>
 			                <div class="input-group date">
 								<div ng-show="$ctrl.program.endDate==null">Indefinite</div>
-			                    {{$ctrl.program.endDate | date: 'MM/dd/yyyy':'PST'}}
+			                    {{$ctrl.program.endDate | date: 'MM/dd/yyyy'}}
 
 			                </div>
 			            </div>

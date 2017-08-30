@@ -45,12 +45,10 @@
                             <b>{{$ctrl.newEnrollment.program.monthlyBillDay}}</b>
                         </div>
                         <div>
-                            <label>Start date:</label> <b>{{$ctrl.newEnrollment.program.startDate | date: 'MM/dd/yyyy':
-                            'PST'}}</b>
+                            <label>Start date:</label> <b>{{$ctrl.newEnrollment.program.startDate | date: 'MM/dd/yyyy'}}</b>
                         </div>
                         <div ng-show="$ctrl.newEnrollment.program.indefinite != true">
-                            <label>End date:</label> <b>{{$ctrl.newEnrollment.program.endDate | date: 'MM/dd/yyyy':
-                            'PST'}}</b>
+                            <label>End date:</label> <b>{{$ctrl.newEnrollment.program.endDate | date: 'MM/dd/yyyy'}}</b>
                         </div>
                     </div>
                 </div>
