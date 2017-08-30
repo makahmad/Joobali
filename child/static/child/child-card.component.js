@@ -55,22 +55,39 @@ ChildCardController.prototype.isRemovable = function() {
 ChildCardController.prototype.removeChild = function() {
     console.log(this.child);
 
-    this.http_({
-        method: 'POST',
-        url: '/child/remove',
-        data: JSON.stringify(this.child)
-    }).then(angular.bind(this, function successCallback(response) {
-            if (response.data == 'success') {
-                bootbox.alert("Child removed successfully.", function() {
-                    location.reload();
-                })
-            } else {
-                bootbox.alert(response.data);
+    bootbox.confirm({
+        message: "Are you sure you want to remove this child (" + this.child.first_name + ")?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn btn-default btn-lg pull-right joobali'
+            },
+            cancel: {
+                label: 'No',
+				className: 'btn btn-default btn-lg pull-right'
             }
-    }), angular.bind(this, function errorCallback(response){
-            console.log('post failed');
-            bootbox.alert("Something wrong happened. Please try again later");
-    }));
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+                this.http_({
+                    method: 'POST',
+                    url: '/child/remove',
+                    data: JSON.stringify(this.child)
+                }).then(angular.bind(this, function successCallback(response) {
+                        if (response.data == 'success') {
+                            bootbox.alert("Child removed successfully.", function() {
+                                location.reload();
+                            })
+                        } else {
+                            bootbox.alert(response.data);
+                        }
+                }), angular.bind(this, function errorCallback(response){
+                        console.log('post failed');
+                        bootbox.alert("Something wrong happened. Please try again later");
+                }));
+            }
+        })
+    });
 };
 
 ChildCardController.prototype.updateChild = function(data) {
