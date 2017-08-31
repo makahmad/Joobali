@@ -115,8 +115,12 @@ def list_fundings(customer_url):
             if funding['status'] == 'verified':
                 funding['status'] = 'Connected'
             elif funding['status'] == 'unverified':
-                funding['status'] = 'Pending micro-deposit confirmation'
-
+                if 'initiate-micro-deposits' in funding['_links']:
+                    funding['status'] = 'Pending micro-deposit initiation'
+                elif 'verify-micro-deposits' in funding['_links']:
+                    funding['status'] = 'Pending micro-deposit verification'
+                elif 'micro-deposits' in funding['_links']:
+                    funding['status'] = 'Micro-deposit in progress'
             if funding['type'] == 'bank':
                 funding['type'] = 'Bank'
 

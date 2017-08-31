@@ -10,5 +10,6 @@ urlpatterns = [
 	url(r'^getiavtoken', views.getIAVToken, name='getIAVToken'),
 	url(r'^updategeneralbilling', views.updateGeneralBilling, name='updateGeneralBilling'),
 	url(r'^getgeneralbilling', views.getGeneralBilling, name='getGeneralBilling'),
-	url(r'^verifymicrodeposits', views.verify_micro_deposits, name='verifyMicroDeposits')
+	url(r'^verifymicrodeposits', views.verify_micro_deposits, name='verifyMicroDeposits'),
+	url(r'^initiatemicrodeposits', views.initiate_micro_deposits, name='initiateMicroDeposits')
 ]
