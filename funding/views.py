@@ -14,6 +14,7 @@ from common.session import check_session
 from common.dwolla import list_customers, get_iav_token, remove_funding
 from common import dwolla
 from dwollav2.error import ValidationError, Error
+from enrollment.models import Enrollment
 import json
 import logging
 from os import environ
@@ -115,10 +116,22 @@ def removeFunding(request):
     funding_source_id = data['funding_source_id']
     funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_id)
 
-    try:
-        remove_funding(funding_source_url)
-    except ValidationError as err:
-        return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+    removable = True
+    # TODO: make query more efficient
+    for enrollment in Enrollment.query(Enrollment.autopay_source_id == funding_source_id):
+        removable = False
+    for invoice in Invoice.query(Invoice.autopay_source_id == funding_source_id):
+        if not invoice.is_paid():
+            removable = False
+
+    if removable == True:
+        try:
+            remove_funding(funding_source_url)
+        except ValidationError as err:
+            return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+    else:
+        return HttpResponse("Can't remove right now. This account is still on autopay or there are still unpaid invoices scheduled to be auto-paid by this account.")
+
     return HttpResponse("success")
 
 def getGeneralBilling(request):
