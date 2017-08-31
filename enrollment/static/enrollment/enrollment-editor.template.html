@@ -70,6 +70,7 @@
                                ng-readonly="$ctrl.readOnly"
                                is-open="$ctrl.endDatePickerOpened"
                                close-text="Close"
+                               ng-required="false"
                                ng-click="$ctrl.openEndDatePicker()"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -77,11 +78,11 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
                     </p>
                 </div>
-                <div class="form-group" ng-hide="$ctrl.isActive() && $ctrl.newEnrollment.billing_fee==null">
-                    <label class="control-label">Override Program Cost for this Child?</label>
+                <div class="form-group" ng-hide="$ctrl.isActive()">
+                    <label class="control-label">Billing Fee</label>
                     <input type="number" min="0" class="form-control" id="billing_fee" name="billing_fee"
                            ng-readonly="$ctrl.isActive()"
-                           ng-required="true" ng-model="$ctrl.newEnrollment.billing_fee">
+                           ng-model="$ctrl.newEnrollment.billing_fee">
                 </div>
                 <div class="form-group" ng-show="$ctrl.getPossibleStatus().length > 1">
                     <label class="control-label">Status</label>

@@ -114,7 +114,7 @@ ChildEnrollmentController.prototype.whenSelectedProgramChange = function () {
     if (this.newEnrollment.program) {
         this.log_.info("computing: " + moment(this.newEnrollment.program.startDate));
         this.newEnrollment.start_date = moment(this.newEnrollment.program.startDate).toDate();
-        this.newEnrollment.fee = this.newEnrollment.program.fee;
+        //this.newEnrollment.fee = this.newEnrollment.program.fee;
     } else {
         this.newEnrollment.start_date = "";
         this.newEnrollment.fee = 0;

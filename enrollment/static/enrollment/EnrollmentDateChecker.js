@@ -10,12 +10,12 @@ angular.module('joobali.base', []).service('EnrollmentDateChecker', function($lo
         'Saturday': 6
   };
 
-  this.isEnrollmentDateDisabled = function(dateAndMode, program) {
+  this.isEnrollmentDateDisabled = function(dateAndMode, program, endDateCheck = false) {
     var result = false;
     if (dateAndMode.mode === 'day') {
         var today = moment(new Date());
         var date = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
-        if (date.diff(today, 'days') < 5) {
+        if (!endDateCheck && date.diff(today, 'days') < 5) {
             return true;
         }
         if (program != null && program.billingFrequency != null) {
@@ -65,6 +65,6 @@ angular.module('joobali.base', []).service('EnrollmentDateChecker', function($lo
             }
         }
     }
-    return this.isEnrollmentDateDisabled(dateAndMode, program);
+    return this.isEnrollmentDateDisabled(dateAndMode, program, true);
   };
 });

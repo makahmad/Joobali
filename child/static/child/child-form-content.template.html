@@ -159,7 +159,7 @@
         <label class="control-label">Override Program Cost for this Child?
         </label>
         <input type="number" min="0" class="form-control" id="fee" name="fee" ng-readonly="$ctrl.readOnly"
-               ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.fee">
+                ng-model="$ctrl.newChildEnrollmentInfo.fee">
 
     </div>
     <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.program">
@@ -228,7 +228,7 @@
     <div class="modal-footer">
         <div class="formActions">
             <center>
-                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" ng-disabled="$ctrl.disableSaveButton">Enroll</button>
+                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" ng-disabled="!addChildForm.$valid || $ctrl.disableSaveButton">Enroll</button>
                 <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false" ng-click="$ctrl.cancel()" ng-show="$ctrl.enrollmentStatus!='success'">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->
