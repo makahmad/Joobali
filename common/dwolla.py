@@ -256,6 +256,10 @@ def verify_micro_deposits(url, first_amount, second_amount):
     logger.info("Request: %s" % request_body)
     return create_account_token().post('%s/micro-deposits' % url, request_body)
 
+def initiate_micro_deposits(url):
+    logger.info("Initiating Micro Deposits: %s", url)
+    return create_account_token().post('%s/micro-deposits' % url)
+
 def list_fundings(customer_url):
     return create_account_token().get('%s/funding-sources' % customer_url)
 

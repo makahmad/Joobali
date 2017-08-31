@@ -62,3 +62,44 @@ FundingsComponentController.prototype.verifyMicroDeposits = function(funding) {
             }
         });
 }
+
+FundingsComponentController.prototype.initiateMicroDeposits = function(funding) {
+
+    bootbox.confirm({
+        message: "Are you sure you want to initiate micro-deposit for this account (" + funding.name + ")?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn btn-default btn-lg pull-right joobali'
+            },
+            cancel: {
+                label: 'No',
+				className: 'btn btn-default btn-lg pull-right'
+            }
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+                data = {
+                  'funding_url': funding.url,
+                }
+                this.http_({
+                  method: 'POST',
+                  url: '/funding/initiatemicrodeposits',
+                  data: JSON.stringify(data)
+                })
+                .then(
+                    angular.bind(this, function(response){
+                        if (response.data !== 'success') {
+                            bootbox.alert(response.data);
+                        } else {
+                            bootbox.alert("Micro-deposit initiation succeeded.");
+                        }
+                    }),
+                    angular.bind(this, function(response){
+                        bootbox.alert(response.data);
+                    })
+                 );
+            }
+        })
+    });
+}

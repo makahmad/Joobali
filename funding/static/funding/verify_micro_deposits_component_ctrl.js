@@ -18,9 +18,6 @@ VerifyMicroDepositsComponentController = function($http) {
     }
     self.verify = function() {
       funding = self.resolve.funding;
-      console.log(funding);
-      console.log(self.firstAmount);
-      console.log(self.secondAmount);
       data = {
         'funding_url': funding.url,
         'first_amount': self.firstAmount,

@@ -13,7 +13,7 @@ from funding import funding_util
 from common.session import check_session
 from common.dwolla import list_customers, get_iav_token, remove_funding
 from common import dwolla
-from dwollav2.error import ValidationError
+from dwollav2.error import ValidationError, Error
 import json
 import logging
 from os import environ
@@ -71,6 +71,23 @@ def makeTransfer(request):
     except ValidationError as err:
         return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     # print transfer.headers['location'] # => 'https://api.dwolla.com/transfers/74c9129b-d14a-e511-80da-0aa34a9b2388'
+
+    return HttpResponse("success")
+
+def initiate_micro_deposits(request):
+
+    data = json.loads(request.body)
+    funding_url = data['funding_url'] if 'funding_url' in data else None
+
+    if funding_url:
+        try:
+            result = dwolla.initiate_micro_deposits(funding_url)
+        except ValidationError as err:
+            return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+        except Error as err:
+            return HttpResponse(err.message)
+    else:
+        return HttpResponse("Invalid bank source")
 
     return HttpResponse("success")
 
