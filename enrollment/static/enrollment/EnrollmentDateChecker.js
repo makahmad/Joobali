@@ -32,7 +32,7 @@ angular.module('joobali.base', []).service('EnrollmentDateChecker', function($lo
 
         if (program) {
             var programStartDate = moment(program.startDate);
-            if (date < programStartDate) {
+            if ( date.isBefore(programStartDate) ) {
                 return true;
             }
         }
@@ -43,9 +43,10 @@ angular.module('joobali.base', []).service('EnrollmentDateChecker', function($lo
 
   this.isEnrollmentEndDateDisabled = function(dateAndMode, program, enrollmentStartDate) {
     if (dateAndMode.mode === 'day') {
+        enrollmentStartDate = moment(enrollmentStartDate).startOf('day');
         var date = moment([dateAndMode.date.getFullYear(), dateAndMode.date.getMonth(), dateAndMode.date.getDate()]);
         if (enrollmentStartDate) {
-            if (date <= enrollmentStartDate) {
+            if (date.isBefore(enrollmentStartDate)) {
                 return true;
             }
         }
