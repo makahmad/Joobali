@@ -92,7 +92,9 @@ FundingsComponentController.prototype.initiateMicroDeposits = function(funding) 
                         if (response.data !== 'success') {
                             bootbox.alert(response.data);
                         } else {
-                            bootbox.alert("Micro-deposit initiation succeeded.");
+                            bootbox.alert("Micro-deposit initiation succeeded.", function() {
+                                location.reload();
+                            });
                         }
                     }),
                     angular.bind(this, function(response){
