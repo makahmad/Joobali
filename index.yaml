@@ -11,6 +11,11 @@ indexes:
 # your application using appcfg.py.
 
 - kind: Enrollment
+  properties:
+  - name: status
+  - name: end_date
+
+- kind: Enrollment
   ancestor: yes
   properties:
   - name: child_key

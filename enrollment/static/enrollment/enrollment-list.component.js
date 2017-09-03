@@ -16,7 +16,8 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
         'cancel':'Canceled',
         'inactive':'Inactive',
         'active':'Active',
-        'invited':'Invited (but not accepted)'};
+        'invited':'Invited (but not accepted)',
+        'inactive': 'Inactive'};
 
     self.openEnrollmentEditorModal = function(enrollment) {
 

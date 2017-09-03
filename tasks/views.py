@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from enrollment import enrollment_util
+from enrollment.models import Enrollment
 from invoice import invoice_util
 from parent import parent_util
 from login import provider_util
@@ -660,4 +661,15 @@ def dwolla_token_refresh(request):
     else:
         tokens[0].access_token = application_token.access_token
         tokens[0].put()
+    return HttpResponse(status=200)
+
+
+def enrollment_status_update_by_time_passage(request):
+    logger.info("Updating enrollment from active to inactive passing the enrollment end date")
+    current_date = datetime.utcnow()
+    enrollments = Enrollment.query(Enrollment.status == 'active', Enrollment.end_date <= current_date)
+    for enrollment in enrollments:
+        logger.info(enrollment)
+        enrollment.status = 'inactive'
+        enrollment.put()
     return HttpResponse(status=200)
