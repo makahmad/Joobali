@@ -34,7 +34,7 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
 
-    this.enrollmentMap = {'initialized':'Invited (but not accepted)', 'cancel':'Cancel','active':'Active','invited':'Invited (but not accepted)'};
+    this.enrollmentMap = {'initialized':'Invited (but not accepted)','inactive':'Inactive','cancel':'Cancel','active':'Active','invited':'Invited (but not accepted)'};
 }
 
 EnrollmentEditorController.prototype.renderEnrollmentEditor = function(enrollment) {

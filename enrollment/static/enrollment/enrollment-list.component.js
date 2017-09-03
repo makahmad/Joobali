@@ -14,6 +14,7 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
     this.enrollmentMap = {
         'initialized':'Invited (but not accepted)',
         'cancel':'Canceled',
+        'inactive':'Inactive',
         'active':'Active',
         'invited':'Invited (but not accepted)'};
 
