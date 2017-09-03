@@ -20,3 +20,6 @@ cron:
 - description: add fee after free trial
   url: /tasks/process_fee/
   schedule: every day 09:00
+- description: update expired enrollment status
+  url: /tasks/enrollment_status_update/
+  schedule: every day 00:00

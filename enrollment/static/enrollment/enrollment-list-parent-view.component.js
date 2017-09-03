@@ -12,7 +12,8 @@ EnrollmentListParentViewController = function EnrollmentListParentViewController
     'initialized':'Invited (but not accepted)',
     'cancel':'Canceled',
     'active':'Active',
-    'invited':'Invited (but not accepted)'};
+    'invited':'Invited (but not accepted)',
+    'inactive': 'Inactive'};
 }
 
 EnrollmentListParentViewController.prototype.viewDetail = function(enrollment) {

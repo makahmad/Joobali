@@ -36,8 +36,7 @@ class Enrollment(ndb.Model):
         'invited',
         'active',
         'payment resolve pending',
-        'inactive',
-        'expired'}
+        'inactive'}
 
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
