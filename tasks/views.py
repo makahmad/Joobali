@@ -164,14 +164,19 @@ def invoice_calculation(request):
                 # for a single day, only generate one invoice per provider-child-duedate pair.
                 # the single invoices can have multiple line items if the child enrolled in multiple programs.
                 # NOTE: disable this for launch. One invoice for each program of the child.
-                if False: # provider_child_pair_key in invoice_dict:
-                    invoice = invoice_dict[provider_child_pair_key]
-                else:
-                    invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
-                    invoice.is_recurring = True
-                    #invoice_dict[provider_child_pair_key] = invoice
-                    invoice_dict[invoice.key.id()] = invoice
-                invoice_util.create_invoice_line_item(enrollment.key, invoice, program, due_date, cycle_end_date)
+                try:
+                    if False: # provider_child_pair_key in invoice_dict:
+                        invoice = invoice_dict[provider_child_pair_key]
+                    else:
+                        invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id, 0) # put a placeholder amount (0) for now, will calculate total amount after
+                        logger.info("INVOICE CREATED: %s" % invoice)
+                        invoice.is_recurring = True
+                        #invoice_dict[provider_child_pair_key] = invoice
+                        invoice_dict[invoice.key.id()] = invoice
+                    invoice_line_item = invoice_util.create_invoice_line_item(enrollment.key, invoice, program, due_date, cycle_end_date)
+                    logger.info("INVOICE LINE ITEM CREATED: %s" % invoice_line_item)
+                except Exception as e:
+                    logger.error(e)
                 # if should_add_registration_fee:
                 #     invoice_util.create_invoice_line_item(enrollment_key, invoice, program, None, None, "Registration Fee", program.registrationFee)
 
