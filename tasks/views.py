@@ -253,9 +253,11 @@ def autopay(request):
                     invoice.autopay_failure_message = err.body['_embedded']['errors'][0]['message']
                     invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
                     invoice.put()
-                    return HttpResponse(err.body['_embedded']['errors'][0]['message'])
+                    logger.error(err.body['_embedded']['errors'][0]['message'])
+                except Exception as e:
+                    logger.error(e)
             else:
-                logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice))
+                logger.info("Skipping autopay (autopay_source_id: %s; pay_days_before: %s; now: %s) for invoice: %s" % (autopay_source_id, pay_days_before, invoice, now))
 
     return HttpResponse(status=200)
 
