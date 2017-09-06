@@ -8,7 +8,15 @@
 			</tr>
 			<tr>
 				<td>Birthday:</td>
-				<td>{{$ctrl.child.date_of_birth| date:"MM/dd/yyyy"}}</td>
+				<td><a href="#" editable-bsdate="$ctrl.child.date_of_birth"
+                       e-datepicker-popup="MM/dd/yyyy"
+                       e-readonly="true"
+                       e-show-button-bar="false"
+                       e-required
+                       e-datepicker-options="{maxDate: $ctrl.todayDate}"
+                       e-is-open="opened.$data" e-ng-click="open($event,'$data')"
+                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Missing'}}</a>
+                </td>
 			</tr>
 			<tr>
 				<td>Age:</td>

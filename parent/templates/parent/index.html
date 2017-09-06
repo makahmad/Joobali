@@ -11,6 +11,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.8.0/css/xeditable.min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}home/sidebar.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}parent/init_setup_component_style.css">
@@ -46,7 +47,7 @@
     <script src="https://cdn.dwolla.com/1/dwolla.min.js"></script>
 
     <script src="https://aguirrel.github.io/ng-currency/dist/ng-currency.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-xeditable/0.8.0/js/xeditable.min.js"></script>
 
     <!-- Invoice Related JS -->
     <script src="{{ STATIC_URL }}invoice/invoices_component_ctrl.js"></script>
@@ -128,8 +129,14 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if loggedIn %}
 								<li><a ng-href="/login/?z=1" target="_blank"><i class="fa fa-life-ring fa-2x"></i> &nbsp; &nbsp;<span style="position: relative; top: -9px;">Help Center</span></a></li>
-                <!--<li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li>-->
-                <!-- <li class="dropdown"><a href=""><i class="fa fa-bell-o fa-2x"></i></a></li> -->
+				<!--{% verbatim %}-->
+                     <!--<li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell-o fa-2x"></i>{{announcementCount}}</a>-->
+
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li ng-click="openReferralComponentModal()" data-toggle="modal" data-target="#referralModal"><a>Refer</a></li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+                <!--{% endverbatim %}-->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown">
                         {{ email }}

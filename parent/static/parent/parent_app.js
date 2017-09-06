@@ -7,6 +7,7 @@ ParentController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
+//	this.scope_.announcementCount = 4; TODO mak testing announcements
 	this.scope_.hasEnrollment = false;
 	this.initialize($uibModal);
     this.animationsEnabled = true;
@@ -121,7 +122,10 @@ ParentController.prototype.initialize = function($uibModal) {
 	  });
 }
 
-app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency'])
+app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency','xeditable'])
+    .run(function(editableOptions) {
+          editableOptions.theme = 'bs3';
+        })
     .config(['$httpProvider',
         function($httpProvider) {
             $httpProvider.defaults.xsrfCookieName = 'csrftoken';
@@ -261,7 +265,7 @@ app = angular.module('parentApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ng
     })
     .component('childCardParentView', {
         templateUrl: '/static/child/child-card-parent-view.template.html',
-        controller : ['$http', ChildCardParentViewController],
+        controller : ['$scope', '$http', ChildCardParentViewController],
         bindings: {
           child: '<',
           index: '<'
