@@ -82,4 +82,9 @@ class VerificationToken(ndb.Model):
                                         VerificationToken.type == 'provider_email')
         return query
 
-
+    @classmethod
+    def list_parent_signup_token(cls, parent):
+        parent_key = parent.key
+        query = VerificationToken.query(VerificationToken.parent_key == parent_key,
+                                        VerificationToken.type == 'parent_signup')
+        return query

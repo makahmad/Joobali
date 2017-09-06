@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from google.appengine.ext import ndb
 from wtforms_appengine.ndb import model_form
 
+from common.email.enrollment import send_parent_enrollment_notify_email
 from common.session import check_session, is_provider, is_parent
 from common.dwolla import create_customer
 from common.email.login import send_reset_password_email_for_provider, send_reset_password_email_for_parent, \
@@ -17,6 +18,7 @@ from login.login_util import provider_login, parent_login
 from login.models import ProviderStatus, Provider, FailedBetaLogins
 from parent.models import Parent
 from parent import parent_util
+from parent.parent_util import get_parents_by_email
 from verification.models import VerificationToken
 from verification import verification_util
 from dwollav2.error import ValidationError
@@ -209,31 +211,34 @@ def parent_signup(request):
         return HttpResponseRedirect("/parent")
 
     if request.method == 'GET':
-        token_id = request.GET['t']
-        verification_token = get_parent_signup_verification_token(token_id)
-        if verification_token is not None:
-            parent = verification_token.parent_key.get()
-            provider_school_name = parent.invitation.provider_key.get().schoolName
-            child_first_name = parent.invitation.child_first_name
+        if 't' in request.GET:
+            token_id = request.GET['t']
+            verification_token = get_parent_signup_verification_token(token_id)
+            if verification_token is not None:
+                parent = verification_token.parent_key.get()
+                provider_school_name = parent.invitation.provider_key.get().schoolName
+                child_first_name = parent.invitation.child_first_name
 
-            child_dob = parent.invitation.enrollment_key.get().child_key.get().date_of_birth
-            if child_dob:
-                child_dob = child_dob.strftime('%m/%d/%Y')
-            else:
-                child_dob = ''
+                child_dob = parent.invitation.enrollment_key.get().child_key.get().date_of_birth
+                if child_dob:
+                    child_dob = child_dob.strftime('%m/%d/%Y')
+                else:
+                    child_dob = ''
 
-            return render_to_response(
-                'login/parent_signup.html',
-                {'parent_email': parent.email,
-                 'invitation_token': token_id,
-                 'child_first_name': child_first_name,
-                 'child_dob': child_dob,
-                 'provider_school_name': provider_school_name,
-		          'home_url': 'https://www.joobali.com'},
-                template.RequestContext(request)
-            )
-        else:
-            return HttpResponse("Need a valid token id for parent to signup")
+                return render_to_response(
+                    'login/parent_signup.html',
+                    {'parent_email': parent.email,
+                     'invitation_token': token_id,
+                     'child_first_name': child_first_name,
+                     'child_dob': child_dob,
+                     'provider_school_name': provider_school_name,
+                     'home_url': 'https://www.joobali.com'},
+                    template.RequestContext(request)
+                )
+        return render_to_response('login/parent_proactive_signup.html',
+                                  {'submitted': False,
+                                   'errors': False},
+                                  template.RequestContext(request))
 
     if request.method == 'POST':
         form = ParentForm(request.POST)
@@ -298,7 +303,36 @@ def parent_signup(request):
                 verification_token.key.delete()
                 return HttpResponseRedirect('/parent')
         else:
-            logger.info("form.errors %s" % form.errors)
+            if 'email' in request.POST:
+                email = request.POST.get('email').lower()
+                parent = get_parents_by_email(email)
+                if parent is not None:
+                    if parent.invitation is not None:
+                        if parent.invitation.enrollment_key is not None:
+                            if parent.status.status != 'active':
+                                send_parent_enrollment_notify_email(parent.invitation.enrollment_key.get(),
+                                                                    get_host_from_request(
+                                                                        request_host=request.get_host()))
+                                return render_to_response('login/parent_proactive_signup.html',
+                                                          {'submitted': True,
+                                                    'errors': False},
+                                                   template.RequestContext(request))
+                            else:
+                                errors = ("parent %s is already active, no need for extra signup" % email)
+                        else:
+                            errors = ("parent %s does not have a pending enrollment" % email)
+                    else:
+                        errors = ("parent %s is not invited anymore" % email)
+                else:
+                    errors = ("parent %s is not found" % email)
+            else:
+                errors = "invalid request"
+            return render_to_response('login/parent_proactive_signup.html',
+                                      {'submitted': False,
+                                       'errors': errors},
+                                      template.RequestContext(request))
+
+
 
 
 def create_new_init_setup_status(email):
