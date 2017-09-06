@@ -318,9 +318,9 @@ def parent_signup(request):
                                                     'errors': False},
                                                    template.RequestContext(request))
                             else:
-                                errors = ("parent %s is already active, no need for extra signup" % email)
+                                errors = ("parent %s is already active, no need to signup again" % email)
                         else:
-                            errors = ("parent %s does not have a pending enrollment" % email)
+                            errors = ("parent %s does not have an invitation" % email)
                     else:
                         errors = ("parent %s is not invited anymore" % email)
                 else:
