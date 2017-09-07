@@ -68,7 +68,7 @@ def add_invoice(request):
 			program = ndb.Key('Provider', provider.key.id(), 'Program', program_id).get()
 			enrollment = enrollment_util.list_enrollment_by_provider_and_child_and_program(
 				provider_key=provider.key, child_key=ndb.Key('Child', child_id), program_key=program.key)[0]
-			invoice = invoice_util.create_invoice(provider, child, due_date, enrollment.autopay_source_id,
+			invoice = invoice_util.create_invoice(provider, child, due_date, None,
 												  amount, True, send_email)
 			invoice_util.create_invoice_line_item(
 				ndb.Key("Provider", provider.key.id(), "Enrollment", enrollment.key.id()), invoice, program, None, None,
