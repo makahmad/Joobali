@@ -134,7 +134,7 @@ def list_dwolla_payments(email):
                 fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
                 fee_amount = fee_transfer['amount']
 
-            if parent:
+            if parent and not(status == 'cancelled' and date == '09/07/2017'): #condition is due to a bug that was fixed but dwolla could not remove payment
                 results.append({
                     'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
                     'amount': float(amount),
@@ -142,7 +142,7 @@ def list_dwolla_payments(email):
                     'provider_amount': float(amount) - float(fee_amount),
                     'fee': fee_amount,
                     'date': date,
-                    'type': 'Online Transfer',
+                    'type': 'Online Transfer ('+status+')',
                     'payer': '%s %s' % (parent.first_name, parent.last_name),
                     'invoice': invoice.key.id() if invoice else 'NA',
                     'note': '',
