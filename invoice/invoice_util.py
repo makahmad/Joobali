@@ -156,9 +156,9 @@ def get_autopay_info(invoice):
         if lineItem.enrollment_key:
             enrollment = lineItem.enrollment_key.get()
             if enrollment:
-                if enrollment.pay_days_before != None and enrollment.autopay_source_id != None:
-                    return (enrollment.pay_days_before, enrollment.autopay_source_id)
-    return (None, None)
+                if enrollment.pay_days_before != None:
+                    return (enrollment.pay_days_before, invoice.autopay_source_id)
+    return (None, invoice.autopay_source_id)
 
 def get_invoice_enrollments(invoice):
     """ Gets all unique enrollments contributing to the line items of this invoice"""
