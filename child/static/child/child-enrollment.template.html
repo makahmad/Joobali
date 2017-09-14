@@ -71,7 +71,8 @@
                                ng-required="true"
                                ng-change="$ctrl.whenChangeStartDate()"
                                ng-click="$ctrl.openStartDatePicker()"
-                               ng-readonly="$ctrl.readOnly"
+                               ng-readonly="true"
+                               style="background-color: white"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
@@ -106,7 +107,8 @@
                                ng-model="$ctrl.newEnrollment.end_date"
                                is-open="$ctrl.endDatePickerOpened"
                                ng-click="$ctrl.openEndDatePicker()"
-                               ng-readonly="$ctrl.readOnly"
+                               ng-readonly="true"
+                               style="background-color: white"
                                close-text="Close"/>
                         <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
