@@ -116,12 +116,19 @@ def removeFunding(request):
     funding_source_id = data['funding_source_id']
     funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_id)
 
+    is_provider = request.session['is_provider']
+
     removable = True
-    # TODO: make query more efficient
-    for enrollment in Enrollment.query(Enrollment.autopay_source_id == funding_source_id):
-        removable = False
-    for invoice in Invoice.query(Invoice.autopay_source_id == funding_source_id):
-        if not invoice.is_paid():
+    if not is_provider:
+        # TODO: make query more efficient
+        for enrollment in Enrollment.query(Enrollment.autopay_source_id == funding_source_id):
+            removable = False
+        for invoice in Invoice.query(Invoice.autopay_source_id == funding_source_id):
+            if not invoice.is_paid():
+                removable = False
+    else:
+        provider = Provider.get_by_id(request.session['user_id'])
+        for invoice in Invoice.query(Invoice.provider_key == provider.key, Invoice.status == Invoice._POSSIBLE_STATUS['PROCESSING']):
             removable = False
 
     if removable == True:
@@ -130,7 +137,10 @@ def removeFunding(request):
         except ValidationError as err:
             return HttpResponse(err.body['_embedded']['errors'][0]['message'])
     else:
-        return HttpResponse("Can't remove right now. This account is still on autopay or there are still unpaid invoices scheduled to be auto-paid by this account.")
+        if is_provider:
+            return HttpResponse("Can't remove right now. There are still processing invoices potentially associated with this account")
+        else:
+            return HttpResponse("Can't remove right now. This account is still on autopay or there are still unpaid invoices scheduled to be auto-paid by this account.")
 
     return HttpResponse("success")
 
