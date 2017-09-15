@@ -242,7 +242,7 @@ def autopay(request):
             (pay_days_before, autopay_source_id) = invoice_util.get_autopay_info(invoice)
             pay_days_before = 0 if pay_days_before == None else pay_days_before
             # if the invoice contains autopay data, and today is within the range, and the invoice is not paid
-            if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date and not invoice.is_paid() and not invoice.is_processing():
+            if autopay_source_id != None and pay_days_before != None and now + timedelta(days=pay_days_before) >= invoice.due_date - timedelta(days=1) and not invoice.is_paid() and not invoice.is_processing():
                 logger.info("Autopaying for invoice: %s" % invoice)
                 provider = invoice.provider_key.get()
                 rate = funding_util.get_fee_rate(provider.key.id())
