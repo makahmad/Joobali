@@ -242,8 +242,13 @@
                 <td class="s8"></td>
                 <td class="s20" dir="ltr" colspan="3">{{ item.description }}</td>
                 <td class="s21" dir="ltr">1</td>
-                <td class="s21" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
-                <td class="s22" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
+                {% if item.negative %}
+                    <td class="s21" dir="ltr">-${{ item.amount | floatformat:2 | intcomma}}</td>
+                    <td class="s22" dir="ltr">-${{ item.amount | floatformat:2 | intcomma}}</td>
+                {% else %}
+                    <td class="s21" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
+                    <td class="s22" dir="ltr">${{ item.amount | floatformat:2 | intcomma}}</td>
+                {% endif %}
                 <td class="s8"></td>
             </tr>
         {% endfor %}

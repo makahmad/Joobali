@@ -152,7 +152,8 @@ def viewInvoice(request):
 					description = lineItem.description
 			items.append({
 				'description': description,
-				'amount': lineItem.amount,
+				'amount': abs(lineItem.amount),
+				'negative': lineItem.amount < 0,
 			})
 			total += lineItem.amount
 
