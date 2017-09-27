@@ -135,6 +135,10 @@ Your payment&nbsp;of ${{ amount | floatformat:2 | intcomma }} from {{ account_na
 <div style="text-align: left;"><strong>Account Name:&nbsp;</strong>{{ account_name }}<br>
 <strong>Date Cancelled:&nbsp;</strong>{{ created_date }}<br>
 <strong>Recipient of transfer:&nbsp;</strong> {{ recipient }}<br>
+
+{% if invoice_id %}
+    <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+{% endif %}
 &nbsp;</div>
 
                         </td>

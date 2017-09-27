@@ -141,7 +141,11 @@ A payment of ${{ amount | floatformat:2 | intcomma }} from {{ sender }} for chil
                             <div style="text-align: left;"><strong>Transfer Status:&nbsp;</strong><em>Payment Scheduled</em><br>
                             <strong>Payment Amount:&nbsp;</strong>${{ amount | floatformat:2 | intcomma }}<br>
                             <strong>Child Name:&nbsp;</strong>{{ child_name }} <br>
-                              <strong>Payer : </strong>{{ sender }}</div>
+                            <strong>Payer: </strong>{{ sender }}</div> <br>
+
+                            {% if invoice_id %}
+                                <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+                            {% endif %}
 
 {% comment %}
 <!-- TODO: only show following info if the invoice is associated with a program

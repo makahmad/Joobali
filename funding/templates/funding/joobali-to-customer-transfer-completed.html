@@ -142,8 +142,11 @@ Your payment has been successfully transferred from "{{ account_name }}" to {{ r
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             <div style="text-align: left;"><strong>Payment Status:&nbsp;</strong><em>Completed</em><br>
-<strong>Child Name:&nbsp;</strong>{{ child_name }}</div>
+<strong>Child Name:&nbsp;</strong>{{ child_name }}</div> <br>
 
+{% if invoice_id %}
+    <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+{% endif %}
 
 {% comment %}
 <!-- TODO: only show following info if the invoice is associated with a program

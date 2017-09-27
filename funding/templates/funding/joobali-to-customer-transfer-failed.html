@@ -135,6 +135,10 @@ Potential reasons for failure may include insufficient funds in the account asso
 <div style="text-align: left;"><strong>Account Name: </strong>{{ account_name }}<br>
   <strong>Date of Transfer: </strong>{{ created_date }}<br>
   <strong>Intended Recipient of Payment: </strong> {{ recipient }}<br>
+
+    {% if invoice_id %}
+        <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+    {% endif %}
 </div>
 
                         </td>

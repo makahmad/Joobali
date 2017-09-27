@@ -133,6 +133,10 @@ The payment of ${{ amount | floatformat:2 | intcomma }} from {{ sender }} for ch
                               <strong>Payment Amount: </strong>${{ amount | floatformat:2 | intcomma }}<br>
   <strong>Date of Transfer: </strong> {{ created_date }}<br>
   <strong>Payer: </strong> {{ sender }}<br>
+
+    {% if invoice_id %}
+        <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+    {% endif %}
 </div>
 
                         </td>

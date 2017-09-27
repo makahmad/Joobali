@@ -143,8 +143,11 @@ The payment has been successfully transferred from {{ sender }} for child {{ chi
                         
                             <div style="text-align: left;"><strong>Payment Status:&nbsp;</strong><em>Completed</em><br>
                                 <strong>Child Name:&nbsp;</strong>{{ child_name }} <br>
-                              <strong>Payer : </strong>{{ sender }}</div>
+                              <strong>Payer: </strong>{{ sender }}</div> <br>
 
+                            {% if invoice_id %}
+                                <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+                            {% endif %}
 <!-- TODO: only show following info if the invoice is associated with a program
 <div style="text-align: left;"><strong>Program Name:&nbsp;</strong>[[Program Name]]<br>
 <strong>Program Fee:&nbsp;</strong>{{amount }}<br>
