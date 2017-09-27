@@ -102,8 +102,8 @@ def invoice_calculation(request):
         enrollments = enrollment_util.list_enrollment_object_by_provider(provider.key.id())
         for enrollment in enrollments:
             if enrollment.status != 'active':
-                logger.info("Enrollment not active. Skipping invoice calc: %s" % enrollment)
-                continue
+                logger.info("Enrollment not active. Still proceed invoice calculation: %s" % enrollment)
+                #continue
             logger.info("Calculating invoice for enrollment: %s" % enrollment)
 
             child_key = enrollment.child_key
