@@ -114,12 +114,9 @@ def listInvoices(request):
 				'processing': invoice.is_processing(),
 				'status' : "Payment Processing" if invoice.is_processing() else ("Paid" if invoice.is_paid() else 'Unpaid'),
 				'autopay_source_id': invoice.autopay_source_id if invoice.autopay_source_id else None,
-				'snippet': invoice_util.get_invoice_snippet(invoice)
+				'snippet': invoice_util.get_invoice_snippet(invoice),
+				'cancel': invoice.cancel_payment_link
 			}
-			if invoice.is_processing() and invoice.dwolla_transfer_id:
-				dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
-				if 'cancel' in dwolla_transfer:
-					data['cancel'] = dwolla_transfer['cancel']
 			results.append(data)
 	return HttpResponse(json.dumps(results))
 

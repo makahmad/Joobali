@@ -30,6 +30,17 @@ import json
 
 logger = logging.getLogger(__name__)
 
+def data_updating(request):
+    for invoice in Invoice.query(Invoice.dwolla_transfer_id != None, Invoice.cancel_payment_link == None).fetch():
+
+        if invoice.is_processing():
+            dwolla_transfer = get_dwolla_transfer(invoice.dwolla_transfer_id)
+            if 'cancel' in dwolla_transfer:
+                invoice.cancel_payment_link = dwolla_transfer['cancel']
+                invoice.put()
+
+    return HttpResponse(status=200)
+
 def data_cleaning(request):
     for invoice_line_item in InvoiceLineItem.query().fetch():
         invoice = invoice_line_item.key.parent().get()

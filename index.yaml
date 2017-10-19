@@ -30,6 +30,11 @@ indexes:
   - name: start_date
     direction: desc
 
+- kind: Invoice
+  properties:
+  - name: cancel_payment_link
+  - name: dwolla_transfer_id
+
 - kind: InvoiceLineItem
   properties:
   - name: enrollment_key

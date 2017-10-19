@@ -3,6 +3,7 @@ from django.conf.urls import url
 from tasks import views
 
 urlpatterns = [
+	url(r'^dataupdating/', views.data_updating, name='dataUpdating'),
 	url(r'^datacleaning/', views.data_cleaning, name='dataCleaning'),
 	url(r'^invoicecalc/', views.invoice_calculation, name='invoiceCalculation'),
 	url(r'^invoicenoti/', views.invoice_notification, name='invoiceNotification'),

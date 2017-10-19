@@ -1,4 +1,7 @@
 cron:
+- description: data updating
+  url: /tasks/dataupdating/
+  schedule: every 30 minutes
 - description: data cleaning
   url: /tasks/datacleaning/
   schedule: every day 01:00
