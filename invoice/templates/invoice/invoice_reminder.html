@@ -72,10 +72,19 @@
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
                             Hello {{ parent_name }},<br>
-<br>
-<strong>Your invoice is now available to view and pay online.</strong><br>
-                            Please sign up and make a payment via Joobali on or before the due date indicated. If you do not pay online, please be sure to provide check or cash payment directly to <strong>{{ school_name }}</strong>. Don't forget, late fees may be incurred if payments are not made on time.&nbsp;<br>
+                             <br>
+
+                            {% if not autopay_setup %}
+
+                            <strong>Your invoice is now available to view and pay online.</strong><br>
+                            Please sign up and make a payment via Joobali on or before the due date indicated. If you do not pay online, please be sure to provide check or cash payment directly to <strong>{{ school_name }}</strong>. Don't forget, late fees may be incurred if payments are not made on time.<br>
 &nbsp;
+                            {% else %}
+
+                            A new invoice is available for the billing period below. <br />
+                            <br/><strong>No action is required</strong>. Your payment will occur as scheduled since you setup Joobali AutoPay.<br>
+
+                            {% endif %}
                         </td>
                     </tr>
                 </tbody></table>
@@ -141,6 +150,7 @@
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
+                            <div style="text-align: left;"><strong>Invoice Id:&nbsp;</strong>{{ invoice_id }}<br>
                             <div style="text-align: left;"><strong>Child Name:&nbsp;</strong>{{ child_name }}<br>
 
                                 {% if is_recurring %}

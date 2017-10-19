@@ -208,8 +208,9 @@ def invoice_notification(request):
                 if enrollment:
                     program = enrollment.program_key.get()
                 parent = parent_util.get_parents_by_email(invoice.parent_email)
-                template = loader.get_template('invoice/invoice_invite.html')
+                template = loader.get_template('invoice/invoice_reminder.html')
                 data = {
+                    'autopay_setup': True if invoice.autopay_source_id else False,
                     'is_recurring': invoice.is_recurring,
                     'host': get_host_from_request(request.get_host()),
                     'invoice_id': invoice.key.id(),
@@ -220,7 +221,7 @@ def invoice_notification(request):
                     'program_name': program.programName if program else '',
                     'program_billing_frequency': program.billingFrequency if program else '',
                     'amount': invoice.amount,
-                    'parent_name': '%s %s' % (parent.first_name, parent.last_name) if parent else '',
+                    'parent_name': parent.first_name if parent else '',
                     'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
                 }
                 send_invoice_email(invoice.parent_email, invoice, datetime_util.utc_to_local(start_date), datetime_util.utc_to_local(end_date), template.render(data))
