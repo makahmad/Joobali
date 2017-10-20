@@ -35,6 +35,11 @@ indexes:
   - name: cancel_payment_link
   - name: dwolla_transfer_id
 
+- kind: Invoice
+  properties:
+  - name: is_payment_cancellable
+  - name: dwolla_transfer_id
+
 - kind: InvoiceLineItem
   properties:
   - name: enrollment_key

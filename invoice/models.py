@@ -42,7 +42,7 @@ class Invoice(ndb.Model):
 
     is_recurring = ndb.BooleanProperty(default=False) # is program recurring fee invoices
 
-    cancel_payment_link = ndb.StringProperty() # The link to cancel the associated payment for this invoice. If present, that means the payment is potentially cancellable now.
+    is_payment_cancellable = ndb.BooleanProperty(default=True) # Whether the transfer is cancellable now.
 
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
