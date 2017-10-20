@@ -92,64 +92,65 @@ def listPayments(request):
                 'amount': float(payment.amount),
                 'balance': float(payment.balance),
                 'date': datetime_util.utc_to_local(payment.date).strftime('%m/%d/%Y'),
-                'type': payment.type,
+                'type': payment.type + ' (' + payment.status + ')' if payment.status in ('cancelled', 'failed') else payment.type,
                 'payer': payment.payer,
                 'provider_amount': float(payment.amount),
-                'fee': 0,
+                'fee': float(payment.fee),
                 'invoice': payment.invoice_key.id() if payment.invoice_key else 'NA',
                 'note': payment.note,
             })
-    results.extend(list_dwolla_payments(email))
+    # Deprecated
+    # results.extend(list_dwolla_payments(email))
     return HttpResponse(json.dumps(results))
 
-
-def list_dwolla_payments(email):
-    """Returns dwolla payments associated with the logged in user (provider or parent)"""
-    invoices = []
-
-    unique_customer = Unique.get_by_id(email)
-    logger.info("Retrieving Dwolla Payments...")
-    if unique_customer:
-        if unique_customer.provider_key:
-            for invoice in Invoice.query(Invoice.provider_key == unique_customer.provider_key).fetch():
-                invoices.append(invoice)
-        elif unique_customer.parent_key:
-            for invoice in Invoice.query(Invoice.parent_email == email).fetch():
-                invoices.append(invoice)
-
-
-    logger.info("Retrieving Dwolla Payments... Invoices: %s" % invoices)
-    results = []
-    for invoice in invoices:
-        if not invoice.is_deleted() and invoice.dwolla_transfer_id:
-            transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
-            amount = transfer['amount']
-            source_customer_url = transfer['source_customer_url']
-            status = transfer['status']
-            date = transfer['created_date']
-            parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
-            payment_type = 'Online Transfer'
-            fee_amount = 0
-
-            if transfer['fee_transfer_url']:
-                fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
-                fee_amount = fee_transfer['amount']
-
-            if status in ('cancelled', 'failed'):
-                payment_type = payment_type + ' ('+status+')'
-
-            if parent and not(status == 'cancelled' and date in ('09/07/2017','09/08/2017') ): #condition is due to a bug that was fixed but dwolla could not remove payment
-                results.append({
-                    'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
-                    'amount': float(amount),
-                    'balance': float(0),
-                    'provider_amount': float(amount) - float(fee_amount),
-                    'fee': fee_amount,
-                    'date': date,
-                    'type': payment_type,
-                    'payer': '%s %s' % (parent.first_name, parent.last_name),
-                    'invoice': invoice.key.id() if invoice else 'NA',
-                    'note': '',
-                })
-
-    return results
+# Deprecated
+# def list_dwolla_payments(email):
+#     """Returns dwolla payments associated with the logged in user (provider or parent)"""
+#     invoices = []
+#
+#     unique_customer = Unique.get_by_id(email)
+#     logger.info("Retrieving Dwolla Payments...")
+#     if unique_customer:
+#         if unique_customer.provider_key:
+#             for invoice in Invoice.query(Invoice.provider_key == unique_customer.provider_key).fetch():
+#                 invoices.append(invoice)
+#         elif unique_customer.parent_key:
+#             for invoice in Invoice.query(Invoice.parent_email == email).fetch():
+#                 invoices.append(invoice)
+#
+#
+#     logger.info("Retrieving Dwolla Payments... Invoices: %s" % invoices)
+#     results = []
+#     for invoice in invoices:
+#         if not invoice.is_deleted() and invoice.dwolla_transfer_id:
+#             transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
+#             amount = transfer['amount']
+#             source_customer_url = transfer['source_customer_url']
+#             status = transfer['status']
+#             date = transfer['created_date']
+#             parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
+#             payment_type = 'Online Transfer'
+#             fee_amount = 0
+#
+#             if transfer['fee_transfer_url']:
+#                 fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
+#                 fee_amount = fee_transfer['amount']
+#
+#             if status in ('cancelled', 'failed'):
+#                 payment_type = payment_type + ' ('+status+')'
+#
+#             if parent and not(status == 'cancelled' and date in ('09/07/2017','09/08/2017') ): #condition is due to a bug that was fixed but dwolla could not remove payment
+#                 results.append({
+#                     'child': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+#                     'amount': float(amount),
+#                     'balance': float(0),
+#                     'provider_amount': float(amount) - float(fee_amount),
+#                     'fee': fee_amount,
+#                     'date': date,
+#                     'type': payment_type,
+#                     'payer': '%s %s' % (parent.first_name, parent.last_name),
+#                     'invoice': invoice.key.id() if invoice else 'NA',
+#                     'note': '',
+#                 })
+#
+#     return results

@@ -2,11 +2,18 @@
 from common import dwolla
 from invoice.models import Invoice
 from login.models import Provider
+from login import provider_util
 import logging
 from os import environ
 from funding.models import FeeRate
+from parent import parent_util
+from payments import payments_util
+from datetime import datetime
+from common import datetime_util
 
 logger = logging.getLogger(__name__)
+
+DATE_FORMAT = '%m/%d/%Y'
 
 def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=None):
     """Make Dwolla Money Transfer"""
@@ -32,7 +39,9 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=
         }
     }
 
+    fee = 0
     if rate and rate <= 0.1: # 0.1 is a sane upper limit
+        fee = round(amount * rate, 2)
         request_body['fees'] =  [
             {
                 '_links': {
@@ -41,19 +50,35 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=
                     }
                 },
                 'amount': {
-                    'value': round(amount * rate, 2),
+                    'value': fee,
                     'currency': 'USD'
                 }
             }
         ]
 
-    transfer = dwolla.make_transfer(request_body)
+    transfer_response = dwolla.make_transfer(request_body)
 
     if invoice:
-        invoice.dwolla_transfer_id = transfer.headers['location'] # dwolla_transfer url
+        invoice.dwolla_transfer_id = transfer_response.headers['location'] # dwolla_transfer url
         invoice.is_payment_cancellable = True
         invoice.status = Invoice._POSSIBLE_STATUS['PROCESSING']
         invoice.put()
+
+        if transfer_response and transfer_response.headers['location']:
+            transfer = dwolla.get_dwolla_transfer(transfer_response.headers['location'])
+            amount = float(transfer['amount'])
+            # source_customer_url = transfer['source_customer_url']
+            status = transfer['status']
+            date = transfer['created_date']
+            provider = invoice.provider_key.get()
+            parent = parent_util.get_parents_by_email(invoice.parent_email)
+            payment_type = 'Online Transfer'
+            fee_amount = fee
+
+            if parent:
+                payment_date = datetime_util.local_to_utc(datetime.strptime(date, DATE_FORMAT))
+                payments_util.add_payment_maybe_for_invoice(provider, invoice.child_key.get(), amount, parent.full_name(), payment_date, payment_type,
+                                                            None, invoice, status, fee_amount)
 
 def list_fundings(customer_url):
     fundings = []

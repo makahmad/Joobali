@@ -78,6 +78,9 @@ class Provider(ndb.Model):
     time_updated = ndb.DateTimeProperty(auto_now=True)
     time_email_verified = ndb.DateTimeProperty()
 
+    def full_name(self):
+        return '%s %s' % (self.firstName, self.lastName)
+
     @staticmethod
     def get_next_available_id():
         counter = ProviderIdCounter.get_by_id("ProviderIdCounter")

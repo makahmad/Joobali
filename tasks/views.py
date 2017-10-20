@@ -21,14 +21,18 @@ from dwollav2.error import ValidationError
 from models import DwollaEvent
 from payments.models import Payment
 from common import datetime_util
+from common import dwolla
 from common.request import get_host_from_request
 from tasks.models import DwollaTokens
 from funding.models import FeeRate
 from funding import funding_util
+from payments import payments_util
 import logging
 import json
 
 logger = logging.getLogger(__name__)
+
+DATE_FORMAT = '%m/%d/%Y'
 
 def data_updating(request):
     for invoice in Invoice.query(Invoice.dwolla_transfer_id != None, Invoice.is_payment_cancellable == True).fetch():
@@ -48,6 +52,25 @@ def data_cleaning(request):
             logger.info("Deleting dangling invoice line item: %s" % invoice_line_item)
             invoice_line_item.key.delete()
 
+    for invoice in Invoice.query(Invoice.dwolla_transfer_id != None).fetch():
+        if not Payment.query(Payment.invoice_key == invoice.key).fetch():
+            transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
+            amount = float(transfer['amount'])
+            source_customer_url = transfer['source_customer_url']
+            status = transfer['status']
+            date = transfer['created_date']
+            provider = invoice.provider_key.get()
+            parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
+            payment_type = 'Online Transfer'
+            fee_amount = 0
+            if transfer['fee_transfer_url']:
+                fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
+                fee_amount = float(fee_transfer['amount'])
+
+            if parent and not(status == 'cancelled' and date in ('09/07/2017','09/08/2017')):
+                payment_date = datetime_util.local_to_utc(datetime.strptime(date, DATE_FORMAT))
+                payments_util.add_payment_maybe_for_invoice(provider, invoice.child_key.get(), amount, parent.full_name(), payment_date, payment_type,
+                                                            None, invoice, status, fee_amount)
     return HttpResponse(status=200)
 
 def process_fee(request):

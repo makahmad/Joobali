@@ -8,11 +8,14 @@ class Payment(ndb.Model):
     provider_email = ndb.StringProperty(required=True)
     invoice_key = ndb.KeyProperty(required=False)
     amount = ndb.FloatProperty(required=True)
+    fee = ndb.FloatProperty(required=True, default=0.0) # for online transfer
     payer = ndb.StringProperty(required=True)
     type = ndb.StringProperty(required=False)
     date = ndb.DateTimeProperty(required=True)
     note = ndb.StringProperty(required=False) # Check number if payment = Check, Note if payment type = Other
     balance = ndb.FloatProperty(required=True)
+
+    status = ndb.StringProperty(required=False) # status for online payments
 
     is_deleted = ndb.BooleanProperty(default=False)
 

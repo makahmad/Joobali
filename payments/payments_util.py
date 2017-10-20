@@ -7,7 +7,7 @@ from invoice import invoice_util
 logger = logging.getLogger(__name__)
 
 
-def add_payment_maybe_for_invoice(provider, child, amount, payer, payment_date, payment_type, note, invoice=None):
+def add_payment_maybe_for_invoice(provider, child, amount, payer, payment_date, payment_type, note, invoice=None, status=None, fee=0):
 
     newPayment = Payment(provider_key=provider.key,child_key=child.key)
 
@@ -21,6 +21,8 @@ def add_payment_maybe_for_invoice(provider, child, amount, payer, payment_date, 
     newPayment.type = payment_type
     newPayment.note = note
     newPayment.date = payment_date
+    newPayment.status = status
+    newPayment.fee = fee
     newPayment.put()
 
     if newPayment.invoice_key:

@@ -47,6 +47,9 @@ class Parent(ndb.Model):
     time_created = ndb.DateTimeProperty(auto_now_add=True)
     time_updated = ndb.DateTimeProperty(auto_now=True)
 
+    def full_name(self):
+        return '%s %s' % (self.first_name, self.last_name)
+
     @classmethod
     def generate_key(cls, parent_id):
         return ndb.Key(cls.__name__, parent_id)
