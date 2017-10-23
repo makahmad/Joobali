@@ -78,7 +78,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=
             if parent:
                 payment_date = datetime_util.local_to_utc(datetime.strptime(date, DATE_FORMAT))
                 payments_util.add_payment_maybe_for_invoice(provider, invoice.child_key.get(), amount, parent.full_name(), payment_date, payment_type,
-                                                            None, invoice, status, fee_amount)
+                                                            None, invoice, status, fee_amount, transfer_response.headers['location'])
 
 def list_fundings(customer_url):
     fundings = []

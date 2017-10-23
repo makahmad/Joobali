@@ -10,11 +10,12 @@ class Payment(ndb.Model):
     amount = ndb.FloatProperty(required=True)
     fee = ndb.FloatProperty(required=True, default=0.0) # for online transfer
     payer = ndb.StringProperty(required=True)
-    type = ndb.StringProperty(required=False)
+    type = ndb.StringProperty(required=False) # 'Oneline Transfer', "Check", "Cash" e.t.c.
     date = ndb.DateTimeProperty(required=True)
     note = ndb.StringProperty(required=False) # Check number if payment = Check, Note if payment type = Other
     balance = ndb.FloatProperty(required=True)
 
+    dwolla_transfer_id = ndb.StringProperty() # The money transfer for the payment (funded_transfer)
     status = ndb.StringProperty(required=False) # status for online payments
 
     is_deleted = ndb.BooleanProperty(default=False)

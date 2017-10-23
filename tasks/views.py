@@ -51,26 +51,6 @@ def data_cleaning(request):
         if not invoice:
             logger.info("Deleting dangling invoice line item: %s" % invoice_line_item)
             invoice_line_item.key.delete()
-
-    for invoice in Invoice.query(Invoice.dwolla_transfer_id != None).fetch():
-        if not Payment.query(Payment.invoice_key == invoice.key).fetch():
-            transfer = dwolla.get_dwolla_transfer(invoice.dwolla_transfer_id)
-            amount = float(transfer['amount'])
-            source_customer_url = transfer['source_customer_url']
-            status = transfer['status']
-            date = transfer['created_date']
-            provider = invoice.provider_key.get()
-            parent = parent_util.get_parent_by_dwolla_id(source_customer_url)
-            payment_type = 'Online Transfer'
-            fee_amount = 0
-            if transfer['fee_transfer_url']:
-                fee_transfer = dwolla.get_fee_transfer(transfer['fee_transfer_url'])
-                fee_amount = float(fee_transfer['amount'])
-
-            if parent and not(status == 'cancelled' and date in ('09/07/2017','09/08/2017')):
-                payment_date = datetime_util.local_to_utc(datetime.strptime(date, DATE_FORMAT))
-                payments_util.add_payment_maybe_for_invoice(provider, invoice.child_key.get(), amount, parent.full_name(), payment_date, payment_type,
-                                                            None, invoice, status, fee_amount)
     return HttpResponse(status=200)
 
 def process_fee(request):
@@ -501,11 +481,17 @@ def dwolla_webhook(request):
 
         source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         invoice = invoice_util.get_invoice_by_transfer_id(dwolla_transfer_url)
+
         if invoice.status != Invoice._POSSIBLE_STATUS['CANCELLED']:
             invoice.status = Invoice._POSSIBLE_STATUS['CANCELLED']
             # invoice.cancelled_transfer_ids.append(invoice.dwolla_transfer_id)
             invoice.dwolla_transfer_id = None
             invoice.put()
+
+        for payment in Payment.query(Payment.invoice_key == invoice.key).fetch():
+            if payment.type == 'Online Transfer' and payment.dwolla_transfer_id == invoice.dwolla_transfer_id:
+                payment.status = dwolla_transfer['status']
+                payment.put()
 
         template = loader.get_template('funding/joobali-to-customer-transfer-cancelled.html')
         data = {
@@ -555,6 +541,11 @@ def dwolla_webhook(request):
         if invoice.status != Invoice._POSSIBLE_STATUS['FAILED']:
             invoice.status = Invoice._POSSIBLE_STATUS['FAILED']
             invoice.put()
+
+        for payment in Payment.query(Payment.invoice_key == invoice.key).fetch():
+            if payment.type == 'Online Transfer' and payment.dwolla_transfer_id == invoice.dwolla_transfer_id:
+                payment.status = dwolla_transfer['status']
+                payment.put()
 
         source_funding_source = get_funding_source(dwolla_transfer['source_funding_url'])
         template = loader.get_template('funding/joobali-to-customer-transfer-failed.html')
