@@ -26,7 +26,7 @@
                             <td class="mcnImageContent" valign="top" style="padding-right: 0px;padding-left: 0px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                                 
                                     
-                                        <img align="center" alt="" src="https://gallery.mailchimp.com/56217a752cdc41df10a7232a0/images/f25d2897-fd60-4352-9803-76092de252de.png" width="100" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
+                                        <img align="center" alt="" src="{{ host }}/static/home/pics/logo/logo.png" width="100" style="max-width: 200px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
                                     
                                 
                             </td>
@@ -140,12 +140,29 @@ Your payment has been successfully transferred from "{{ account_name }}" to {{ r
                     <tbody><tr>
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
-                        
-                            <div style="text-align: left;"><strong>Payment Status:&nbsp;</strong><em>Completed</em><br>
-<strong>Child Name:&nbsp;</strong>{{ child_name }}</div> <br>
+	                        <div style="text-align: left; padding:3px; margin:3px; font-size: 2em;">Receipt</div>
+	                        <br>
+							{% if invoice_id %}
+                           <div style="text-align: left; background:#f1f1f1; padding:3px; margin:3px;"><strong>Invoice No:&nbsp;</strong><em>{{ invoice_id }}</em></div>
+                            {% endif %}
+                            
+                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Date Paid:&nbsp;</strong><em>[[ date_paid ]]</em></div>
+                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Paid By:&nbsp;</strong><em>[[ parent_name ]]</em></div>
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>Child Name:&nbsp;</strong><em>{{ child_name }}</em></div>
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>Description:&nbsp;</strong><em>[[ program_name ]]</em></div>
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>Notes:&nbsp;</strong><em>[[ invoice_notes ]]</em></div>
+						<br>
+							<div style="text-align: left; background:#f1f1f1; padding:3px; margin:3px;"><strong>Paid to:&nbsp;</strong><br></div>
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>[[ provider_name ]]</strong><br>
+									<em>[[ provider_phone ]]</em><br>
+									<em>[[ provider_street ]]</em><br>
+									<em>[[ provider_city_state_zipcode ]]<br>
+									<em>TIN: [[ provider_TIN ]]<br>							
+							</div>
+							<div style="text-align: left; padding:3px; margin:3px; font-size: 2em;">Total: <sup>$</sup>[[ 800.00 ]]</div>
 
-{% if invoice_id %}
-    <strong>Invoice Id: </strong>{{ invoice_id }}</div>
+{% comment %}
+</div>
 {% endif %}
 
 {% comment %}

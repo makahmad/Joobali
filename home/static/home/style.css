@@ -5,7 +5,7 @@ body {
 }
 
 .jumbotron {
-    background: #fa5d26 url("./pics/img_headerbg2.jpg") no-repeat top center;
+    background: #f1f1f1 url("./pics/img_headerbg2.jpg") no-repeat top center;
 		background-size:100%;
     color: #ffffff;
     padding: 150px 25px;
