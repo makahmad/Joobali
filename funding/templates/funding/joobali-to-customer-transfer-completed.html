@@ -146,20 +146,34 @@ Your payment has been successfully transferred from "{{ account_name }}" to {{ r
                            <div style="text-align: left; background:#f1f1f1; padding:3px; margin:3px;"><strong>Invoice No:&nbsp;</strong><em>{{ invoice_id }}</em></div>
                             {% endif %}
                             
-                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Date Paid:&nbsp;</strong><em>[[ date_paid ]]</em></div>
-                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Paid By:&nbsp;</strong><em>[[ parent_name ]]</em></div>
+                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Date Paid:&nbsp;</strong><em>{{ date_paid }}</em></div>
+                            <div style="text-align: left; padding:3px; margin:3px;"><strong>Paid By:&nbsp;</strong><em>{{ parent_name }}</em></div>
 							<div style="text-align: left; padding:3px; margin:3px;"><strong>Child Name:&nbsp;</strong><em>{{ child_name }}</em></div>
-							<div style="text-align: left; padding:3px; margin:3px;"><strong>Description:&nbsp;</strong><em>[[ program_name ]]</em></div>
-							<div style="text-align: left; padding:3px; margin:3px;"><strong>Notes:&nbsp;</strong><em>[[ invoice_notes ]]</em></div>
+
+							{% if invoice_description %}
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>Description:&nbsp;</strong><em>{{ invoice_description }}</em></div>
+                            {% endif %}
 						<br>
 							<div style="text-align: left; background:#f1f1f1; padding:3px; margin:3px;"><strong>Paid to:&nbsp;</strong><br></div>
-							<div style="text-align: left; padding:3px; margin:3px;"><strong>[[ provider_name ]]</strong><br>
-									<em>[[ provider_phone ]]</em><br>
-									<em>[[ provider_street ]]</em><br>
-									<em>[[ provider_city_state_zipcode ]]<br>
-									<em>TIN: [[ provider_TIN ]]<br>							
+							<div style="text-align: left; padding:3px; margin:3px;"><strong>{{ recipient }}</strong><br>
+
+							{% if provider_phone %}
+									<em>{{ provider_phone }}</em><br>
+                            {% endif %}
+
+							{% if provider_street %}
+									<em>{{ provider_street }}</em><br>
+                            {% endif %}
+
+							{% if provider_city_state_zipcode %}
+									<em>{{ provider_city_state_zipcode }}</em><br>
+                            {% endif %}
+
+							{% if provider_tin %}
+									<em>TIN: {{ provider_tin }}</em><br>
+                            {% endif %}
 							</div>
-							<div style="text-align: left; padding:3px; margin:3px; font-size: 2em;">Total: <sup>$</sup>[[ 800.00 ]]</div>
+							<div style="text-align: left; padding:3px; margin:3px; font-size: 2em;">Total: ${{ amount | floatformat:2 | intcomma }}</div>
 
 {% comment %}
 </div>

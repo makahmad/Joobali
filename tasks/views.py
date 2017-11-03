@@ -445,6 +445,19 @@ def dwolla_webhook(request):
                 'host': host,
                 'support_phone': support_phone,
                 'child_name': '%s %s' % (invoice.child_first_name, invoice.child_last_name),
+
+                'date_paid': datetime_util.utc_to_local(invoice.time_updated).strftime(
+                    '%m/%d/%Y') if invoice.time_updated else '',
+                'invoice_description': invoice_util.get_invoice_snippet(invoice),
+
+                'first_name': parent.first_name if parent.first_name else '',
+                'provider_street': provider.addressLine1 + (
+                    ", %s" % provider.addressLine2) if provider.addressLine2 else provider.addressLine1,
+                'provider_city_state_zipcode': '%s, %s, %s' % (provider.city, provider.state, provider.zipcode) if provider.city and provider.state and provider.zipcode else None,
+                'provider_name': provider.schoolName,
+                'provider_phone': provider.phone if provider.phone else None,
+                'parent_name': '%s %s' % (parent.first_name, parent.last_name),
+                'provider_tin': provider.tin if provider.tin else None,
             }
             send_payment_success_email(parent.email, parent.first_name, provider.schoolName, amount, template.render(data))
 
