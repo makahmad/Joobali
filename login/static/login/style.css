@@ -368,3 +368,7 @@ a.delete:hover {
 .tooltip {
 	min-width:200px !important;
 }
+
+.tooltip.in {
+	opacity: 1;
+}

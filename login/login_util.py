@@ -71,7 +71,7 @@ def parent_login(email, password):
     parent = query.get()
 
     if parent is None:
-        login_result.error_msg = 'Error: user with that email does not exist'
+        login_result.error_msg = 'Can not find a user with this email, have you confirmed your account?'
         return login_result
 
     if parent.status.status != 'active':
