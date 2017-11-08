@@ -35,8 +35,10 @@ class Enrollment(ndb.Model):
         'initialized',
         'invited',
         'active',
+        'cancel', # the enrollment is cancelled.
         'payment resolve pending',
-        'inactive'}
+        'inactive' # the enrollment ended.
+    }
 
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)
