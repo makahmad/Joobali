@@ -107,7 +107,7 @@ def listInvoices(request):
 				'child_id': invoice.child_key.id(),
 				'child': '%s %s' % (invoice.child_key.get().first_name, invoice.child_key.get().last_name),
 				'original_amount': invoice_util.sum_up_original_amount_due(invoice),
-				'amount' : invoice.amount,
+				'amount' : "%.2f" % round(invoice.amount,2),
 				'is_recurring' : invoice.is_recurring,
 				'due_date' : datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
 				'paid' : invoice.is_paid(),
@@ -149,7 +149,7 @@ def viewInvoice(request):
 					description = lineItem.description
 			items.append({
 				'description': description,
-				'amount': abs(lineItem.amount),
+				'amount': str("%.2f" % round(abs(lineItem.amount),2)),
 				'negative': lineItem.amount < 0,
 			})
 			total += lineItem.amount
@@ -171,7 +171,7 @@ def viewInvoice(request):
 			'end_date': datetime_util.utc_to_local(end_date).strftime('%m/%d/%Y') if end_date else 'N/A',
 			'due_date': datetime_util.utc_to_local(invoice.due_date).strftime('%m/%d/%Y'),
 			'parent_id': parent.key.id(),
-			'total': total,
+			'total': "%.2f" % round(total,2),
 			'items': items,
 			'logo_url': root_path + '/profile/getproviderlogo?id=' + str(provider.key.id()) if provider.logo else None,
 			'note': note,
@@ -225,7 +225,7 @@ def setupAutopay(request):
 				'program_name': program.programName if program.programName else '',
 				'first_name': provider.firstName if provider.firstName else '',
 				'transfer_type': 'Online',
-				'amount': '$' + str(amount),
+				'amount': '$' + str("%.2f" % round(amount,2)),
 				'account_name': source_funding_source['name'],
 				'recipient': provider.schoolName,
 				'schedule': schedule,
@@ -275,7 +275,7 @@ def cancelAutopay(request):
 				'program_name': program.programName if program.programName else '',
 				'first_name': provider.firstName if provider.firstName else '',
 				'transfer_type': 'Online',
-				'amount': '$' + str(amount),
+				'amount': '$' + str("%.2f" % round(amount,2)),
 				'account_name': source_funding_source['name'],
 				'recipient': provider.schoolName,
 				'schedule': schedule,
@@ -361,6 +361,7 @@ def list_invoice_by_child(request):
 				invoice_dict = invoice.to_dict()
 				invoice_dict['id'] = invoice.key.id()
 				invoice_dict['snippet'] = snippet
+				invoice_dict['amount'] = "%.2f" % round(invoice.amount, 2),
 				invoices.append(invoice_dict)
     response = HttpResponse(json.dumps([JEncoder().encode(invoice) for invoice in invoices]))
     logger.info("response is %s" % response)
