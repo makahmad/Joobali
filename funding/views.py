@@ -58,7 +58,7 @@ def makeTransfer(request):
     invoice = None
     if invoice_id:
         invoice = Invoice.get_by_id(invoice_id)
-        if invoice.amount != data['amount']:
+        if round(invoice.amount, 2) != round(float(data['amount']), 2):
             return HttpResponse("Payment amount must be equal to invoice amount")
         if invoice.is_paid():
             return HttpResponse("The invoice has already been paid")

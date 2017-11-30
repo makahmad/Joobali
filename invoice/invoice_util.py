@@ -204,7 +204,7 @@ def list_invoice_by_provider_and_child(provider_key, child_key):
 
 @ndb.transactional(xg=True)
 def pay(invoice, payment):
-    if payment.balance >= invoice.amount:
+    if round(payment.balance, 2) >= round(invoice.amount, 2):
         amount = invoice.amount
         create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
                                               -amount, payment)
