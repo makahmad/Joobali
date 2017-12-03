@@ -208,7 +208,7 @@ def pay(invoice, payment):
         amount = invoice.amount
         create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
                                               -amount, payment)
-        payment.balance = payment.balance - invoice.amount
+        payment.balance = round(payment.balance - invoice.amount, 2)
         invoice.status = Invoice._POSSIBLE_STATUS['PAID_OFFLINE']
         invoice.amount = 0
         payment.put()
@@ -217,7 +217,7 @@ def pay(invoice, payment):
         amount = payment.balance
         create_invoice_line_item(None, invoice, None, None, None, "Payment from %s" % payment.payer,
                                               -amount, payment)
-        invoice.amount = invoice.amount - payment.balance
+        invoice.amount = round(invoice.amount - payment.balance, 2)
         payment.balance = 0
         payment.put()
         invoice.put()
