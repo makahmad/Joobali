@@ -1,4 +1,4 @@
-﻿﻿<!DOCTYPE html>
+﻿<!DOCTYPE html>
 {% load staticfiles %}
 <html ng-app="password_module">
 <head>
@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
     <!-- <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css" /> -->
     <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css"/>
     <link rel="stylesheet" href="{{ STATIC_URL }}login/style.css"/>
@@ -21,14 +18,6 @@
 
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
     <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.2.0.js"></script>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
-    <!-- Angular Material Library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
-
     <script src="{{ STATIC_URL }}login/password_module.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <script src="{{ STATIC_URL }}home/script.js"></script>
@@ -53,41 +42,41 @@
 
 <body id="signUp">
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
             <a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png"
                                                   class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
             &nbsp;
         </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav navbar-right">
-                {% if loggedIn %}
-                <li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown">
-                        {{ email }}
-                        <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
-                        <li><a href="/home/dashboard#!/profile">Profile</a></li>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav navbar-right">
+					{% if loggedIn %}
+					<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                  {{ email }}
+                  <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+				<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
+                  <li><a href="/home/dashboard#!/profile">Profile</a></li>
 
-                        <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-                    </ul>
-                </li>
-                {% else %}
-                <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
-                <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-                {% endif %}
-            </ul>
-        </div> <!-- end .#myNavbar -->
-    </div> <!-- end .container -->
-</nav>
+                <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+              </ul>
+          </li>
+        {% else %}
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+          <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        {% endif %}
+	      </ul>
+	    </div> <!-- end .#myNavbar -->
+		</div> <!-- end .container -->
+	</nav>
 
 
 <div class="jumbotron">
@@ -96,7 +85,7 @@
             <div class="profileFormHeader">
                 <h2 class="profile-title">Provider Sign up <br/></h2>
                 <center>Are you a parent? <a href="/referral">Refer your provider &raquo;</a></center>
-                <br />
+								<br />
             </div>
             <div class="profileFormBody">
                 <div class="col-sm-6">
@@ -107,7 +96,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
                                 <input type="text" class="form-control" id="firstName" name="firstName"
-                                       required="true" value="{{ form.firstName.data|safe }}">
+                                        required="true" value="{{ form.firstName.data|safe }}">
                             </div>
                         </div>
 
@@ -116,7 +105,7 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-user-o fa-lg"></i></span>
                                 <input type="text" class="form-control" id="lastName" name="lastName"
-                                       required="true" value="{{ form.lastName.data|safe }}">
+                                      required="true" value="{{ form.lastName.data|safe }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -175,7 +164,7 @@
                             <label class="control-label" for="beta_code">Beta Code:</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-rocket fa-lg"></i></span>
-                                <input type="beta_code" class="form-control" id="beta_code"  name="beta_code">
+																<input type="beta_code" class="form-control" id="beta_code"  name="beta_code">
                             </div>
                         </div>
 
@@ -187,8 +176,8 @@
                         <div class="form-group">
                             <div class="checkbox">
                                 <label><input id="tos_pp_accepted" name="tos_pp_accepted" type="checkbox" ng-model="tos_pp_accepted">
-                                    By clicking this box you accept the Joobali <a target="_blank" href="http://{{host}}/login/termsofservice">Terms of Service</a>, <a target="_blank" href="http://{{host}}/login/privacypolicy">Privacy Policy</a> and Dwolla's (our payment partner) <a target="_blank" href="https://www.dwolla.com/legal/tos/?whitelabel">Terms of Service</a> and <a target="_blank" href="https://www.dwolla.com/legal/privacy/?whitelabel">Privacy Policy</a>.</label>
-                            </div>
+                                            By clicking this box you accept the Joobali <a target="_blank" href="http://{{host}}/login/termsofservice">Terms of Service</a>, <a target="_blank" href="http://{{host}}/login/privacypolicy">Privacy Policy</a> and Dwolla's (our payment partner) <a target="_blank" href="https://www.dwolla.com/legal/tos/?whitelabel">Terms of Service</a> and <a target="_blank" href="https://www.dwolla.com/legal/privacy/?whitelabel">Privacy Policy</a>.</label>
+                         </div>
                         </div>
 
 
@@ -196,7 +185,9 @@
                         <div class="formActions">
                             <div ng-show="'{{captcha}}'=='False'"
                                  class="g-recaptcha" data-sitekey="6Lf6Gh8UAAAAAEff-o-4cpwWabGi4JKvMSVqEQPK"></div>
-                            <md-button class="primary-button pull-right" type="submit" ng-disabled="loginForm.$invalid || !tos_pp_accepted">Sign Up</md-button>
+                            <button type="submit" ng-disabled="loginForm.$invalid || !tos_pp_accepted"
+                                    class="btn btn-default btn-lg pull-right joobali">Sign Up
+                            </button>
                         </div> <!-- end formActions -->
                     </form>
                     <div class="row text-center">
@@ -207,11 +198,11 @@
                     <div class="row">
                         <h1>Complimentary Business Tool for Child Care Providers.</h1>
                     </div>
-
+                    										
                     <div class="row featureList">
                         <ul>
                             <li>Early adopters, sign up today to take advantage of our complimentary service.</li>
-                            <li>Get paid on time, every time with automated invoicing and payments.</li>
+														<li>Get paid on time, every time with automated invoicing and payments.</li>
                             <li>Customer support powered by real people who care about your business.</li>
                         </ul>
                     </div>

@@ -4,28 +4,9 @@ body {
 	letter-spacing:.05em;
 }
 
-.md-button.primary-button {
-    background-color: #339999;
-    color: #ffffff;
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    line-height: 40px;
-    min-height: 40px;
-    padding: 0 16px;
-}
-
-.md-button.primary-button:not([disabled]):hover {
-    background-color: #339999;
-}
-
-.md-button.primary-button:disabled {
-    opacity: .65;
-}
-
 .jumbotron {
     background: #f1f1f1 url("./pics/img_headerbg2.jpg") no-repeat top center;
-    background-size:100%;
+		background-size:100%;
     color: #ffffff;
     padding: 150px 25px;
 }

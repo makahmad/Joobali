@@ -1,147 +1,134 @@
 ﻿<!DOCTYPE html>
-<html lang="en" ng-app='homePage'>
+<html lang="en" ng-app=''>
 <head>
-	<title>Joobali - Care for You</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
+  <title>Joobali - Care for You</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}home/pics/favicon.ico"/>
 
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{ STATIC_URL }}home/style.css" />
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="{{ STATIC_URL }}home/style.css" />
 
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-	<script src="{{ STATIC_URL }}home/script.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-	<script>
-		angular.module("homePage", ['ngMaterial']);
-	</script>
-
-	<!-- Angular Material Library -->
-	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+  <script src="{{ STATIC_URL }}home/script.js"></script>
 
 </head>
 <body id="myPage">
-<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>
-			&nbsp;
-		</div>
-		<div class="collapse navbar-collapse" id="myNavbar">
-			<ul class="nav navbar-nav navbar-right">
-				{% if loggedIn %}
-				<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
-				<li class="dropdown">
-					<a class="dropdown-toggle" data-toggle="dropdown">
-						{{ email }}
-						<span class="caret"></span>
-					</a>
-					<ul class="dropdown-menu">
-						<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
-						<li><a href="/home/dashboard#!/profile">Profile</a></li>
+	<nav class="navbar navbar-default navbar-fixed-top">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+						 <a class="logoLink" href="/home"><img src="{{ STATIC_URL }}home/pics/logo/img_navbarLogo.png" class="navbarHeaderLogo" alt="Logo" width="98" height="36"></a>					 
+	&nbsp; 
+			</div>
+	    <div class="collapse navbar-collapse" id="myNavbar">
+	      <ul class="nav navbar-nav navbar-right">
+					{% if loggedIn %}
+					<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
+          <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown">
+                  {{ email }}
+                  <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+				<!-- <li><a href="/home/dashboard">Dashboard</a></li> -->
+                  <li><a href="/home/dashboard#!/profile">Profile</a></li>
 
-						<li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
-					</ul>
-				</li>
-				{% else %}
-				<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
-				<li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
-				{% endif %}
-			</ul>
-		</div> <!-- end .#myNavbar -->
-	</div> <!-- end .container -->
-</nav>
+                <li><a href="/login/logout"><span class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+              </ul>
+          </li>
+        {% else %}
+          <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span>Log In</a></li>
+          <li><a href="/login/signup"><span class="glyphicon glyphicon-user"></span>Sign Up</a></li>
+        {% endif %}
+	      </ul>
+	    </div> <!-- end .#myNavbar -->
+		</div> <!-- end .container -->
+	</nav>
 
-<div class="jumbotron text-center">
-	<div class="row">
-		<div class="col-sm-1 text-center">&nbsp;</div>
-		<div class="col-sm-10 text-center">
-			<img src="{{ STATIC_URL }}home/pics/logo/img_joobalilogo.png" alt="Logo" width="509" height="166" class="logo">
-		</div>
-		<div class="col-sm-1 text-center">&nbsp;</div>
-	</div>
-	<br />
-	<div class="row">
-		<div class="col-sm-1 text-center">&nbsp;</div>
-		<div class="col-sm-10 text-center">
-			<md-button class="primary-button" ng-href="/login/signup">Get started</md-button>
-		</div>
-		<div class="col-sm-1 text-center">&nbsp;</div>
-		<!-- <form class="form-inline">
-          <input type="text" class="form-control" size="50" placeholder="Search for ...">
-          <button type="button" class="btn btn-danger">Search</button>
-        </form> -->
-	</div>
+	<div class="jumbotron text-center">
+        <div class="row">
+					<div class="col-sm-1 text-center">&nbsp;</div>
+					<div class="col-sm-10 text-center">
+						<img src="{{ STATIC_URL }}home/pics/logo/img_joobalilogo.png" alt="Logo" width="509" height="166" class="logo">
+					</div>
+					<div class="col-sm-1 text-center">&nbsp;</div>
+				</div>
+				<br />
+				<div class="row">
+					<div class="col-sm-1 text-center">&nbsp;</div>
+					<div class="col-sm-10 text-center">
+						<a href="/login/signup" class="btn">Get started</a>
+					</div>
+					<div class="col-sm-1 text-center">&nbsp;</div>
+  <!-- <form class="form-inline">
+    <input type="text" class="form-control" size="50" placeholder="Search for ...">
+    <button type="button" class="btn btn-danger">Search</button>
+  </form> -->
+				</div>
 </div>
 
-<div class="container-fluid elevPitch">
-	<div class="row">
-		<div class="col-sm-2 text-center">&nbsp;</div>
+	<div class="container-fluid elevPitch">
+  <div class="row">
+    <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
-			<h1>Child care payments made easy.</h1>
-		</div>
+      <h1>Child care payments made easy.</h1>
+    </div>
 		<div class="col-sm-2 text-center">&nbsp;</div>
-	</div>
+  </div>
 </div>
 
 <br />
 
-<div class="container-fluid text-center whyJoobali">
-	<!-- <h4>Why Joobali?</h4>
-    <br> -->
-	<div class="row">
-		<div class="col-sm-4">
-			<!-- <span class="glyphicon glyphicon-certificate logo-small"></span> -->
-			<div class="homeIcons clock"></div>
+	<div class="container-fluid text-center whyJoobali">
+  <!-- <h4>Why Joobali?</h4>
+  <br> -->
+  <div class="row">
+    <div class="col-sm-4">
+      <!-- <span class="glyphicon glyphicon-certificate logo-small"></span> -->
+      <div class="homeIcons clock"></div>
 			<div class="featureDescription">
 				<h4>Get Paid On Time, Every Time</h4>
-				<p>Automated invoicing and payments.</p>
+      	<p>Automated invoicing and payments.</p>
 			</div>
-		</div>
-		<div class="col-sm-4">
-			<div class="homeIcons money"></div>
-			<div class="featureDescription">
+    </div>
+    <div class="col-sm-4">
+      <div class="homeIcons money"></div>
+      <div class="featureDescription">
 				<h4>Budget-friendly Business tools</h4>
-				<p>Complimentary for early adopters!<!-- Transaction fee gives you access to all features. --></p>
+      	<p>Complimentary for early adopters!<!-- Transaction fee gives you access to all features. --></p>
 			</div>
-		</div>
-		<div class="col-sm-4 text-center">
-			<div class="homeIcons help"></div>
-			<div class="featureDescription">
+    </div>
+    <div class="col-sm-4 text-center">
+      <div class="homeIcons help"></div>
+      <div class="featureDescription">
 				<h4>Customer Centered Support</h4>
 				<p>Real people helping your business succeed.</p>
 			</div>
-		</div>
-	</div>
+    </div>
+  </div>
 </div>
 
-<div class="container-fluid text-center homePitch2">
-	<div class="row text-center">
+	<div class="container-fluid text-center homePitch2">
+  <div class="row text-center">
 		<div class="col-sm-2">&nbsp;</div>
-		<div class="col-sm-8">
+    <div class="col-sm-8">
 			<h2>We deliver thoughtful, friendly, and trustworthy solutions.</h2>
 			<!-- <h2>Spend less time on administrative tasks and more time on what you do best - caring for your children.</h2> -->
-		</div>
+    </div>
 		<div class="col-sm-2">&nbsp;</div>
 	</div>
 	<div class="row text-center">
 		<div class="col-sm-1 text-center">&nbsp;</div>
 		<div class="col-sm-10 text-center">
-			<md-button class="primary-button" ng-href="/login/signup">Get started</md-button>
+			<a href="/login/signup" class="btn">Pricing &amp; Sign Up </a>
 		</div>
 		<div class="col-sm-1 text-center">&nbsp;</div>
 	</div>
@@ -149,5 +136,5 @@
 
 <footer onload="home_url = '{{home_url}}'" ng-include="'{{ STATIC_URL }}home/footer.html'"></footer>
 
-</body>
+</body> 
 </html>

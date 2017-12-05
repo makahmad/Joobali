@@ -1,4 +1,4 @@
-angular.module('password_module', [ 'ui.bootstrap', 'ngMaterial'])
+angular.module('password_module', [ 'ui.bootstrap'])
   .controller('credentialsController', ['$scope', '$sce',
     function($scope, $sce) {
             function isSatisfied(criteria) {
