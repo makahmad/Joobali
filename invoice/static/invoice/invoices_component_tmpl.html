@@ -57,7 +57,7 @@
       </thead>
       <tbody>
         <!-- <tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-class="{invoiceMouseOver: invoice.hover}" ng-click="$ctrl.viewInvoice(invoice)" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false"> -->
-				<tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm track by $index" ng-click="$ctrl.viewInvoice(invoice)">
+        <tr class='invoiceRow' ng-repeat="invoice in $ctrl.invoices | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm as filteredInvoices track by $index" ng-click="$ctrl.viewInvoice(invoice)">
           <td>{{ invoice.child }}</td>
           <td>{{ invoice.due_date | date:'MM/dd/yyyy'}}</td>
           <td>{{ invoice.original_amount | currency}}</td>
@@ -70,6 +70,15 @@
             <button class="DeleteButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.deleteButtonClicked(invoice); $event.stopPropagation();" ng-show="$ctrl.isProvider && !invoice.paid && !invoice.processing"><i class="fa fa-trash fa-lg"></i> &nbsp;Delete</button>
             <button class="CancelAutopayButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.cancelAutopayClicked(invoice); $event.stopPropagation();" ng-show="!$ctrl.isProvider && invoice.autopay_source_id && !invoice.paid && !invoice.processing"><i class="fa fa-pencil fa-lg"></i>  Cancel Autopay</button>
           </td>
+        </tr>
+        <tr>
+          <td>Total</td>
+          <td></td>
+          <td></td>
+          <td>{{ sumInvoice(filteredInvoices) | currency}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
         </tr>
       </tbody>
     </table>
