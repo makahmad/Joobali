@@ -84,7 +84,7 @@
         </th>
       </thead>
       <tbody>
-        <tr class='invoiceRow' data-ng-repeat="payment in $ctrl.payments | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm  track by $index" >
+        <tr class='invoiceRow' data-ng-repeat="payment in $ctrl.payments | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm as filteredPayments  track by $index" >
           <td>{{ payment.child }}</td>
           <td>{{ payment.payer }}</td>
           <td>{{ payment.date }}</td>
@@ -95,6 +95,18 @@
           <td ng-show="$ctrl.isProvider == 'true'">{{ payment.fee | currency}}</td>
           <td>{{ payment.invoice }}</td>
           <td>{{ payment.note }}</td>
+        </tr>
+        <tr class='invoiceRow ng-scope'>
+           <td>Total</td>
+           <td></td>
+           <td></td>
+           <td>{{ sumPayments(filteredPayments) | currency}}</td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
+           <td></td>
         </tr>
       </tbody>
     </table>

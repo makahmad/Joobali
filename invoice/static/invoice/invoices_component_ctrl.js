@@ -5,9 +5,9 @@ InvoicesComponentController = function($scope, $window, $http, $uibModal) {
     self.sortReverse = true;  // set the default sort order
     self.searchTerm = '';     // set the default search/filter term
 
-    $scope.sumInvoice = function(value) {
+    $scope.sumInvoice = function(invoices) {
         let totalInvoice = 0;
-        for (let invoice of value) {
+        for (let invoice of invoices) {
             totalInvoice += parseFloat(invoice.amount);
         }
         return totalInvoice;
