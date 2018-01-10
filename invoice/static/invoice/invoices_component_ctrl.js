@@ -1,17 +1,9 @@
-InvoicesComponentController = function($scope, $window, $http, $uibModal) {
+InvoicesComponentController = function($window, $http, $uibModal) {
     console.log('InvoicesComponentController running');
     var self = this;
     self.sortType = 'due_date'; // set the default sort type
     self.sortReverse = true;  // set the default sort order
     self.searchTerm = '';     // set the default search/filter term
-
-    $scope.sumInvoice = function(invoices) {
-        let totalInvoice = 0;
-        for (let invoice of invoices) {
-            totalInvoice += parseFloat(invoice.amount);
-        }
-        return totalInvoice;
-    };
 
     self.openAdjustInvoiceModal = function(clicked_invoice) {
         console.log("Opening Adjust Invoice Modal");

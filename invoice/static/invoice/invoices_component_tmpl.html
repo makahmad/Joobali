@@ -71,15 +71,6 @@
             <button class="CancelAutopayButton btn btn-info btn-default joobali btn-sm" ng-click="$ctrl.cancelAutopayClicked(invoice); $event.stopPropagation();" ng-show="!$ctrl.isProvider && invoice.autopay_source_id && !invoice.paid && !invoice.processing"><i class="fa fa-pencil fa-lg"></i>  Cancel Autopay</button>
           </td>
         </tr>
-        <tr class='invoiceRow ng-scope'>
-          <td>Total</td>
-          <td></td>
-          <td></td>
-          <td>{{ sumInvoice(filteredInvoices) | currency}}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
       </tbody>
     </table>
   </div>
