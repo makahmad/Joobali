@@ -4,6 +4,7 @@ InvoicesComponentController = function($window, $http, $uibModal) {
     self.sortType = 'due_date'; // set the default sort type
     self.sortReverse = true;  // set the default sort order
     self.searchTerm = '';     // set the default search/filter term
+
     self.openAdjustInvoiceModal = function(clicked_invoice) {
         console.log("Opening Adjust Invoice Modal");
         var modalInstance = $uibModal.open({

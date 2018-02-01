@@ -30,7 +30,8 @@ EnrollmentEditorController = function EnrollmentEditorController($uibModalInstan
     }
     
     this.enrollmentEndDatePickerOptions = {
-        minDate: this.todayDate,
+      //Mak commented out below line to allow end date (unenrollment date) to be any date within the program
+      //  minDate: this.todayDate,
         dateDisabled: angular.bind(this, this.enrollmentDisabledEndDate)
     }
 

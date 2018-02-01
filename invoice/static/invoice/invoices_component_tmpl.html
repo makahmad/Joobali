@@ -57,7 +57,7 @@
       </thead>
       <tbody>
         <!-- <tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices track by $index" ng-class="{invoiceMouseOver: invoice.hover}" ng-click="$ctrl.viewInvoice(invoice)" ng-mouseover="invoice.hover = true" ng-mouseleave="invoice.hover = false"> -->
-				<tr class='invoiceRow' data-ng-repeat="invoice in $ctrl.invoices | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm track by $index" ng-click="$ctrl.viewInvoice(invoice)">
+        <tr class='invoiceRow' ng-repeat="invoice in $ctrl.invoices | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm as filteredInvoices track by $index" ng-click="$ctrl.viewInvoice(invoice)">
           <td>{{ invoice.child }}</td>
           <td>{{ invoice.due_date | date:'MM/dd/yyyy'}}</td>
           <td>{{ invoice.original_amount | currency}}</td>
