@@ -87,7 +87,7 @@
         <tr class='invoiceRow' data-ng-repeat="payment in $ctrl.payments | orderBy:$ctrl.sortType:$ctrl.sortReverse | filter:$ctrl.searchTerm as filteredPayments  track by $index" >
           <td>{{ payment.child }}</td>
           <td>{{ payment.payer }}</td>
-          <td>{{ payment.date }}</td>
+          <td>{{ payment.date | date: 'MM/dd/yyyy' }}</td>
           <td>{{ payment.amount | currency}}</td>
           <td>{{ payment.balance | currency}}</td>
           <td>{{ payment.type }}</td>

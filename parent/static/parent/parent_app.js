@@ -65,6 +65,8 @@ ParentController.prototype.initialize = function($uibModal) {
 	    this.scope_.invoices = [];
 	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(invoice) {
+	    	invoice.due_date_str = invoice.due_date;
+	        invoice.due_date = new Date(invoice.due_date_str);
 	    	this.scope_.invoices.push(invoice);
 	    }));
 
@@ -98,7 +100,10 @@ ParentController.prototype.initialize = function($uibModal) {
 	    // when the response is available
 	    this.scope_.payments = [];
 	    console.log(response.data);
+
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
+	        var paymentDate = new Date(payment.date);
+            payment.date = paymentDate;
 	    	this.scope_.payments.push(payment);
 	    }));
 

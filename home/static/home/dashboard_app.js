@@ -128,6 +128,8 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    this.scope_.payments = [];
 //	    console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
+            var paymentDate = new Date(payment.date);
+            payment.date = paymentDate;
 	    	this.scope_.payments.push(payment);
 	    }));
 
