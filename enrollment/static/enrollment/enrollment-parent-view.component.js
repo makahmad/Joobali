@@ -101,8 +101,8 @@ EnrollmentParentViewController.prototype.cancelAutoPay = function() {
         },
         callback: angular.bind(this, function(result) {
             if (result === true) {
-                console.log('canceling autopay');
-    console.log(this.enrollmentDetail);
+//                console.log('canceling autopay');
+//    console.log(this.enrollmentDetail);
 
 
                 this.http_({
