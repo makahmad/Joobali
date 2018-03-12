@@ -399,23 +399,19 @@ def cancelAutopay(request):
             'host': get_host_from_request(request.get_host()),
             'support_phone': support_phone,
         }
-        # send_autopay_cancelled_email('%s %s' % (
-        #     parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email,
-        #                              data)
-        ## End Send Confirm Email
+        send_autopay_cancelled_email('%s %s' % (
+            parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email,
+                                     data)
+        # End Send Confirm Email
 
         for invoice in invoice_util.get_enrollment_invoices(enrollment):
             if not invoice.is_paid():
                 invoice.autopay_source_id = None
-                # invoice.put()
-                print("\n\n\n")
-                print(invoice)
+                invoice.put()
 
         enrollment.autopay_source_id = None
         enrollment.pay_days_before = None
-        print("\n\n\n")
-        print(enrollment)
 
-        # enrollment.put()
+        enrollment.put()
 
     return HttpResponse("success")
