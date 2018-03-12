@@ -14,6 +14,7 @@ import enrollment_util
 from child import child_util
 from child.models import Child, ProviderChildView
 from common.email.enrollment import send_parent_enrollment_notify_email
+from common.email.autopay import send_autopay_cancelled_email
 from common.exception.JoobaliRpcException import JoobaliRpcException
 from common.dwolla import get_funding_source
 from common.json_encoder import JEncoder
@@ -359,6 +360,7 @@ def list_statuses(request):
 
 
 def cancelAutopay(request):
+
     data = json.loads(request.body)
 
     enrollment_id = data['enrollment']['id']
@@ -367,6 +369,8 @@ def cancelAutopay(request):
     enrollment = enrollment_util.get_enrollment(provider_id, enrollment_id)
 
     if enrollment:
+        parent = Parent.get_by_id(request.session.get('user_id'))
+
         source = enrollment.autopay_source_id
 
         ## Send Confirm Email
