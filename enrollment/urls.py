@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^update', views.update_enrollment, name='updateEnrollment'),
     url(r'^resendInvitation', views.resent_enrollment_invitation, name='resendInvitation'),
     url(r'^setupautopay', views.setupAutopay, name='setupAutopay'),
+    url(r'^cancelAutopay', views.cancelAutopay, name='cancelAutopay'),
 ]

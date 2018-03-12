@@ -52,6 +52,9 @@
                     ng-click="$ctrl.openEnrollmentAcceptanceDialog()">Accept
                 Enrollment
             </button>
+            <button class="btn btn-default btn-sm joobali" ng-show="$ctrl.isOnAutoPay()"
+                    ng-click="$ctrl.cancelAutoPay()">Cancel Autopay
+            </button>
         </div>
     </div>
 </div>

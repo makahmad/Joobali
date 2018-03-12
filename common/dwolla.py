@@ -29,6 +29,7 @@ client = dwollav2.Client(id=CLIENT_ID_UAT if environ.get('IS_DEV') == 'True' els
 
 def create_account_token():
     tokens = DwollaTokens.query().fetch(1)
+
     if not tokens:
         return # token empty. Page on call!!
 
@@ -142,8 +143,11 @@ def get_funding_source(funding_source_url):
     #     u'created': u'2017-01-23T05:31:33.000   Z'
     # }
     logger.info("Get Funding Source: %s" % funding_source_url)
+
+    funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_url)
+
     source = create_account_token().get(funding_source_url).body
-    logger.info("Get Funding Source: %s" % source)
+
     result = {}
     result['name'] = source['name']
     result['bank_name'] = source['bankName'] if 'bankName' in source else ''

@@ -15,6 +15,7 @@ from child import child_util
 from child.models import Child, ProviderChildView
 from common.email.enrollment import send_parent_enrollment_notify_email
 from common.exception.JoobaliRpcException import JoobaliRpcException
+from common.dwolla import get_funding_source
 from common.json_encoder import JEncoder
 from common.session import check_session
 from common.session import get_parent_id
@@ -24,9 +25,14 @@ from common.session import is_provider
 from login.models import Provider
 from models import Enrollment
 from parent.models import Parent
+from invoice import invoice_util
 from common import datetime_util
+from datetime import datetime, date
 
+DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
+support_phone = '301-538-6558'
+
 
 
 # TODO(zilong): Add session protection for all view methods here
@@ -250,11 +256,11 @@ def get_enrollment(request):
             if enrollment:
                 child = enrollment.child_key.get()
 
-
                 if filtering_parent_id is not None:
                     if filtering_parent_id != child.parent_key.id():
-                        logger.warning('parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
-                            filtering_parent_id, provider_id, enrollment_id, child.key.id()))
+                        logger.warning(
+                            'parent_id %s try to access {provider_id: %s, enrollment_id: %s} for child %s' % (
+                                filtering_parent_id, provider_id, enrollment_id, child.key.id()))
                         continue
 
                 program = enrollment.program_key.get()
@@ -294,10 +300,12 @@ def update_enrollment(request):
         if 'status' in request_body_dict:
             enrollment.status = request_body_dict['status']
         if 'start_date' in request_body_dict:
-            enrollment.start_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['start_date'], "%m/%d/%Y"))
+            enrollment.start_date = datetime_util.local_to_utc(
+                datetime.strptime(request_body_dict['start_date'], "%m/%d/%Y"))
         if 'end_date' in request_body_dict:
             if request_body_dict['end_date']:
-                enrollment.end_date = datetime_util.local_to_utc(datetime.strptime(request_body_dict['end_date'], "%m/%d/%Y"))
+                enrollment.end_date = datetime_util.local_to_utc(
+                    datetime.strptime(request_body_dict['end_date'], "%m/%d/%Y"))
             else:
                 enrollment.end_date = None
         if 'billing_fee' in request_body_dict:
@@ -348,3 +356,66 @@ def list_statuses(request):
         return JsonResponse(data, encoder=JEncoder, safe=False)
     else:
         return HttpResponse(status=401)
+
+
+def cancelAutopay(request):
+    data = json.loads(request.body)
+
+    enrollment_id = data['enrollment']['id']
+    provider_id = data['enrollment']['program_key']['Provider']
+
+    enrollment = enrollment_util.get_enrollment(provider_id, enrollment_id)
+
+    if enrollment:
+        source = enrollment.autopay_source_id
+
+        ## Send Confirm Email
+        program = enrollment.program_key.get()
+        amount = enrollment.billing_fee if enrollment.billing_fee else program.fee
+        schedule = None
+        if program.billingFrequency == 'Weekly':
+            schedule = program.weeklyBillDay + ' every week'
+        else:
+            if program.monthlyBillDay == 'Last Day':
+                schedule = ' the last day of every month'
+            else:
+                schedule = ' the ' + program.monthlyBillDay + 'th of every month'
+
+        provider = enrollment.key.parent().get()
+
+        source_funding_source = get_funding_source(source)
+
+        child = enrollment.child_key.get()
+        data = {
+            'date_cancelled': date.today().strftime(DATE_FORMAT),
+            'child_name': child.first_name if child.first_name else '',
+            'program_name': program.programName if program.programName else '',
+            'first_name': provider.firstName if provider.firstName else '',
+            'transfer_type': 'Online',
+            'amount': '$' + str("%.2f" % round(amount, 2)),
+            'account_name': source_funding_source['name'],
+            'recipient': provider.schoolName,
+            'schedule': schedule,
+            'host': get_host_from_request(request.get_host()),
+            'support_phone': support_phone,
+        }
+        # send_autopay_cancelled_email('%s %s' % (
+        #     parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email,
+        #                              data)
+        ## End Send Confirm Email
+
+        for invoice in invoice_util.get_enrollment_invoices(enrollment):
+            if not invoice.is_paid():
+                invoice.autopay_source_id = None
+                # invoice.put()
+                print("\n\n\n")
+                print(invoice)
+
+        enrollment.autopay_source_id = None
+        enrollment.pay_days_before = None
+        print("\n\n\n")
+        print(enrollment)
+
+        # enrollment.put()
+
+    return HttpResponse("success")

@@ -1,4 +1,5 @@
 EnrollmentParentViewController = function EnrollmentParentViewController($uibModal, $log, $http, $routeParams, $location, $timeout) {
+//    console.log('in EnrollmentParentViewController');
     this.uibModal_ = $uibModal;
     this.http_ = $http;
     this.routeParams_ = $routeParams;
@@ -81,6 +82,53 @@ EnrollmentParentViewController.prototype.openEnrollmentAcceptanceDialog = functi
 }
 
 
+EnrollmentParentViewController.prototype.cancelAutoPay = function() {
+
+
+
+
+        bootbox.confirm({
+        message: "Are you sure you want to cancel autopay?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn btn-default btn-lg pull-right joobali'
+            },
+            cancel: {
+                label: 'No',
+				className: 'btn btn-default btn-lg pull-right'
+            }
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+                console.log('canceling autopay');
+    console.log(this.enrollmentDetail);
+
+
+                this.http_({
+                  method: 'POST',
+                  url: '/enrollment/cancelAutopay',
+                  data: JSON.stringify(this.enrollmentDetail)
+                })
+                .then(
+                    angular.bind(this, function(response){
+                        if (response.data !== 'success') {
+                            bootbox.alert(response.data);
+                        } else {
+                            bootbox.alert("Autopay cancelled successfully.", function() {
+                                location.reload();
+                            });
+                        }
+                    }),
+                    angular.bind(this, function(response){
+                        bootbox.alert(response.data);
+                    })
+                 );
+            }
+        })
+    });
+}
+
 EnrollmentParentViewController.prototype.redirectToFirstInvoice = function () {
     // TODO(rongjian): redirect to specific invoice instead of general 'invoices' page
     this.counter--;
@@ -96,4 +144,8 @@ EnrollmentParentViewController.prototype.isWaitingAcceptance = function() {
             || this.enrollmentDetail.enrollment == null
             || this.enrollmentDetail.enrollment.status == 'initialized'
             || this.enrollmentDetail.enrollment.status == 'invited');
+}
+
+EnrollmentParentViewController.prototype.isOnAutoPay = function() {
+    return ( this.enrollmentDetail!=null && this.enrollmentDetail.enrollment.autopay_source_id != null);
 }
