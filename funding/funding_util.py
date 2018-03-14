@@ -82,6 +82,7 @@ def make_transfer(dest_customer_url, funding_source, amount, invoice=None, rate=
 
 def list_fundings(customer_url):
     fundings = []
+    logger.info("list_fundings customer_url: %s" % customer_url)
     funding_sources = dwolla.list_fundings(customer_url)
     logger.info("Funding sources: %s" % funding_sources.body['_embedded']['funding-sources'])
     for funding in funding_sources.body['_embedded']['funding-sources']:
