@@ -396,13 +396,14 @@ def cancelAutopay(request):
             'program_name': program.programName if program.programName else '',
             'first_name': provider.firstName if provider.firstName else '',
             'transfer_type': 'Online',
-            'amount': '$' + str("%.2f" % round(amount, 2)),
+            'amount': amount,
             'account_name': source_funding_source['name'],
             'recipient': provider.schoolName,
             'schedule': schedule,
             'host': get_host_from_request(request.get_host()),
             'support_phone': support_phone,
         }
+
         send_autopay_cancelled_email('%s %s' % (
             parent.first_name if parent.first_name else '', parent.last_name if parent.last_name else ''), parent.email,
                                      data)
