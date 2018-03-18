@@ -75,7 +75,7 @@
 &nbsp;</div>
 
 <div style="text-align: left;"><strong>Payment has been canceled.</strong><br>
-Your payment&nbsp;of ${{ amount | floatformat:2 | intcomma }} from {{ account_name }} to {{ recipient }} has been cancelled.<br>
+Your payment&nbsp;of ${{ amount | floatformat:2 | intcomma }} from {{ account_name }} to {{ recipient }} has been canceled.<br>
 </div>
 
 <div style="text-align: left;">This message is for informational purposes only. For account-specific inquiries, please sign in to your Joobali account and visit our support center or <a href="https://support.joobali.com/hc/en-us/requests/new" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #339999;font-weight: normal;text-decoration: none;">submit a request</a>.</div>
@@ -129,11 +129,11 @@ Your payment&nbsp;of ${{ amount | floatformat:2 | intcomma }} from {{ account_na
                         
                         <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;color: #363B3F;font-family: Roboto, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;font-style: normal;font-weight: normal;line-height: 150%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;font-size: 16px;">
                         
-                            <div style="text-align: left;"><strong>Transfer Status: </strong><em>Cancelled</em><br>
+                            <div style="text-align: left;"><strong>Transfer Status: </strong><em>Canceled</em><br>
                               <strong>Transfer Amount: </strong> ${{ amount | floatformat:2 | intcomma }} <br>
 
 <div style="text-align: left;"><strong>Account Name:&nbsp;</strong>{{ account_name }}<br>
-<strong>Date Cancelled:&nbsp;</strong>{{ created_date }}<br>
+<strong>Date Canceled:&nbsp;</strong>{{ created_date }}<br>
 <strong>Recipient of transfer:&nbsp;</strong> {{ recipient }}<br>
 
 {% if invoice_id %}
