@@ -4,15 +4,32 @@ body {
 	letter-spacing:.05em;
 }
 
+body#myPage {
+	background:#ffffff !important;
+}
+
 .jumbotron {
-    background: #f1f1f1 url("./pics/img_headerbg2.jpg") no-repeat top center;
+    /*background: #f1f1f1 url("./pics/img_headerbg2.jpg") no-repeat top center;*/
+		background: #ffffff url("./pics/img_headerbg3.jpg") no-repeat left 50px;
 		background-size:100%;
     color: #ffffff;
     padding: 150px 25px;
+		margin-bottom: 0px !important;
 }
 
 .jumbotron .btn, .homePitch2 .btn {
-  -webkit-border-radius: 3;
+  -webkit-border-radius: 5;
+  -moz-border-radius: 5;
+  border-radius: 5px;
+	min-width:80px;
+	height:40px;
+	font-family: 'Roboto', sans-serif;
+	color:#ffffff;
+	background: #1E988A;
+	padding:8px 16px;
+	text-transform:uppercase;
+	margin-bottom:0px;
+/*  -webkit-border-radius: 3;
   -moz-border-radius: 3;
   border-radius: 3px;
   -webkit-box-shadow: .5px .5px 1px #000000;
@@ -23,7 +40,7 @@ body {
   font-size: 20px;
   background: #339999;
   padding: 15px 24px 15px 24px;
-  text-decoration: none;
+  text-decoration: none;*/
 }
 
 .jumbotron .btn:hover, .homePitch2 .btn:hover {
@@ -31,8 +48,40 @@ body {
   text-decoration: none;
 }
 
-.elevPitch {
-	margin: 75px auto 70px auto;
+.elevPitch1 {
+	margin:0 auto;
+	padding: 75px 0;
+	background:#70ABA7;
+}
+
+.elevPitch2 {
+	margin:0 auto;
+	padding: 75px 0;
+	background:#ffffff;
+}
+
+.elevPitch3 {
+	margin:0 auto;
+	padding: 75px 0;
+	background:#f1f1f1;
+}
+
+.elevPitch3 .testimonialDiv
+{
+	/*background: url("./pics/testimonial_quotes.png") no-repeat top left;*/
+  background-image: url("./pics/testimonial_beginquote.png"), url("./pics/testimonial_endquote.png");
+  background-position: left top, right bottom;
+  background-repeat: no-repeat, no-repeat;
+  min-height: 50px;
+  padding: 50px;
+/*	max-width:50%;*/
+}
+
+.elevIconCont {
+	margin:10px 50px;
+	color:#F6E215;
+	text-transform:uppercase;
+	display:inline-block;
 }
 
 .whyJoobali {
@@ -97,7 +146,7 @@ body {
 }
 
 .logo {
-    color: #fa5d26;
+    color: #f6921e;
     font-size: 200px;
 }
 
@@ -110,7 +159,7 @@ a.logoLink:hover {
 
 /* Add an orange color to all icons and set the font-size */
 .logo-small {
-    color: #fa5d26;
+    color: #f6921e;
     font-size: 50px;
 }
 
@@ -134,6 +183,10 @@ a.logoLink:hover {
 }
 */
 @media screen and (max-width: 500px) {
+	.elevIconCont {
+		margin:0 50px;
+	}
+	
 	.btn-group {
 	    margin: 8px auto;
 	}
@@ -150,6 +203,7 @@ a.logoLink:hover {
 		}
 		.jumbotron, .homePitch2 {
 			padding:55px 10px 0 10px;
+			background:#ffffff no-repeat center 50px;
 		}
 		.jumbotron .btn, .homePitch2 .btn {
 	    margin: 0 auto 30px;
@@ -162,7 +216,7 @@ a.logoLink:hover {
 		}
 		.navbar-nav {
 	    margin: 0 -15px;
-	    background: #363B3F;
+	    background: #f6921e;
 		}
 		.navbar-default .navbar-nav>li>a {
 	    color: white;
@@ -187,12 +241,16 @@ a.logoLink:hover {
 		}
 }
 
+
 @media screen and (max-width: 950px) {
 	.jumbotron, .homePitch2 {
 		background-size: auto 100%;
 	}
 	label {
 	  white-space: normal !important;
+	}
+	.elevIconCont {
+		margin:0 20px;
 	}
 }
 
@@ -211,15 +269,15 @@ a.logoLink:hover {
 
 .carousel-control.right, .carousel-control.left {
     background-image: none;
-    color: #fa5d26;
+    color: #f6921e;
 }
 
 .carousel-indicators li {
-    border-color: #fa5d26;
+    border-color: #f6921e;
 }
 
 .carousel-indicators li.active {
-    background-color: #fa5d26;
+    background-color: #f6921e;
 }
 
 .item h4 {
@@ -259,7 +317,7 @@ a.logoLink:hover {
 }
 
 .ng-scope .navbar {
-	background: rgba(255, 91, 53, 1) !important;
+	background: rgba(246, 146, 30, 1) !important;
 }
 
 /*#myNavbar {
@@ -276,7 +334,7 @@ a.logoLink:hover {
 }
 
 .navbar-nav li a:hover,.navbar-nav .dropdown-menu a, .navbar-nav li.active a, .navbar-nav li a:active {
-    color: #fa5d26 !important;
+    color: #f6921e !important;
     background-color: #fff !important;
 		height:100%;
 }
@@ -309,7 +367,7 @@ a.logoLink:hover {
 }
 
 footer {
-	background: #363B3F;
+	background: #f6921e;
 	color: white;
   margin-top: -30px;
 }
@@ -419,6 +477,9 @@ footer .glyphicon {
 	.programsHelp.pageInstructions {
 		min-width:100%;
 	}
+	.elevIconCont {
+		margin:0 20px;
+	}	
 }
 
 .fa-question-circle-o:hover {
