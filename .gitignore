@@ -3,3 +3,5 @@
 .DS_Store
 /static/
 /logs/
+/joobali-dev/
+/lib/
