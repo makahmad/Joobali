@@ -58,20 +58,20 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 };
 
 DashboardController.prototype.initialize = function($uibModal) {
-    this.http_({
-	  method: 'GET',
-	  url: '/login/isinitsetupfinished'
-	}).then(angular.bind(this, function successCallback(response) {
-	    if (response.data == 'false') {
-            var modalInstance = $uibModal.open({
-                animation: true,
-                backdrop: 'static',
-                component: 'initSetupComponent',
-            });
-	    }
-	}), function errorCallback(response) {
-	    // Do nothing
-	});
+//    this.http_({
+//	  method: 'GET',
+//	  url: '/login/isinitsetupfinished'
+//	}).then(angular.bind(this, function successCallback(response) {
+//	    if (response.data == 'false') {
+//            var modalInstance = $uibModal.open({
+//                animation: true,
+//                backdrop: 'static',
+//                component: 'initSetupComponent',
+//            });
+//	    }
+//	}), function errorCallback(response) {
+//	    // Do nothing
+//	});
     this.http_({
 	  method: 'GET',
 	  url: '/profile/getdwollastatus'
