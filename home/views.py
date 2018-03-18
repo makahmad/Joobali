@@ -26,6 +26,18 @@ def index(request):
     )
 
 
+def team(request):
+
+    return render_to_response(
+        'home/team.html',
+        {
+            'loggedIn': check_session(request),
+            'email': request.session.get('email'),
+            'home_url': 'https://www.joobali.com'
+        },
+        template.RequestContext(request)
+    )
+
 def dashboard(request):
     if not check_session(request) or request.session['is_provider'] is False:
         return HttpResponseRedirect('/login')

@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-
+from home import views as homeviews
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^parent/', include('parent.urls')),
     url(r'^child/', include('child.urls')),
     url(r'^tasks/', include('tasks.urls')),
-    url(r'^verification/', include('verification.urls'))
+    url(r'^verification/', include('verification.urls')),
+    url(r'^team/', homeviews.team, name='team')
     # Examples:
     # url(r'^$', 'joobali.views.home', name='home'),
     # url(r'^joobali/', include('joobali.foo.urls')),

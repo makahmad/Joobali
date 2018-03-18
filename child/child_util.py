@@ -7,7 +7,6 @@ from models import ProviderChildView
 from enrollment import enrollment_util
 from datetime import datetime
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -39,9 +38,11 @@ def get_provider_child_view(child_key=None, provider_key=None):
     else:
         query = ProviderChildView.query(ProviderChildView.child_key == child_key,
                                         ProviderChildView.provider_key == provider_key)
+
     if query is not None:
         for provider_child_view in query.fetch():
             results.append(provider_child_view)
+
     return results
 
 
@@ -83,6 +84,10 @@ def list_child_by_provider(provider_key):
                 child['parent_name'] = view.child_key.get().parent_key.get().first_name + ' ' + view.child_key.get().parent_key.get().last_name
                 child['parent_phone'] = view.child_key.get().parent_key.get().phone
             children.append(child)
+
+    #todo hardcoded to UTF8
+    children = sorted(children, key = lambda d: (d['first_name'].encode('UTF8').lower()))
+
     return children
 
 
