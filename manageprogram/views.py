@@ -51,7 +51,9 @@ def listPrograms(request):
     user_id = request.session.get('user_id')
     if not check_session(request):
         return HttpResponseRedirect('/login')
-    programs = program_util.list_program_by_provider_user_id(user_id)
+
+    program_filter = request.GET.get('program_filter')
+    programs = program_util.list_program_by_provider_user_id(user_id, program_filter)
     output = list()
     for program in programs:
         logger.info("program %s" % program)

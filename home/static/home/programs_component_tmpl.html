@@ -7,13 +7,27 @@
 				<span class="programsHelp pageInstructions" ng-click="isPageInstructionsOpen = !isPageInstructionsOpen" ng-hide="isPageInstructionsOpen" id="pageInstructions">You can add multiple programs to a child. For example, a parent may be billed for both the <i>Full-time</i> and <i>Extended care</i> programs on one invoice. <!-- Think of programs as a line-item on an invoice. --></span>
 				
 		  <div class="well well-sm">
-			    <div class="buttonDiv">
+			    <div class="buttonDiv addChildButtonDiv pull-left">
 			        <a class="btn btn-default btn-lg pull-right programHeader joobali" data-toggle="modal" data-target="#addProgramModal"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Add a program</a>
+
 			    </div>
-		      <div class="btn-group hidden-xs">
+
+			  		      <div class="programs-filter-options  pull-right hidden-xs">
 						<a id="grid" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th"></span>Grid</a>
 		      	<a id="list" class="btn btn-default btn-sm joobali"><span class="glyphicon glyphicon-th-list"></span>List</a>
 		      </div>
+
+			  <div class="programs-filter-options  pull-left">
+					<select class="form-control"
+							ng-init="selectedProgramFilter = programFilters[1]"
+							ng-options="o as o for o in programFilters"
+							ng-model="selectedProgramFilter"
+							ng-change="updateProgramsFilter()">
+					</select>
+				</div>
+
+
+
 		  </div>
 			
 			<div class="listHeaders">

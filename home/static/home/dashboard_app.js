@@ -9,8 +9,13 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.scope_.payments = [];
 	this.scope_.numberOfChildren = 0;
 	this.scope_.dwollaStatus = 'Unknown';
-	this.initialize($uibModal);
+    this.scope_.selectedProgramFilter = 'Current'
+	this.initialize();
     this.animationsEnabled = true;
+
+
+    this.scope_.programFilters = ['All Programs','Current','Future','Past'];
+
 
     self = this;
 
@@ -55,9 +60,43 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
         return true;
     }
 
+
+
+    this.scope_.updateProgramsFilter = function() {
+
+        $http({
+            method: 'GET',
+            url: '/manageprogram/listprograms',
+            params: {'program_filter': this.selectedProgramFilter}
+        }).then(angular.bind(this, function successCallback(response) {
+            // this callback will be called asynchronously
+            // when the response is available
+            $scope.programs = [];
+    //	    console.log(response.data);
+            angular.forEach(response.data, angular.bind(this, function(program) {
+                program = JSON.parse(program);
+                if(program.indefinite)
+                    program.endDateStr = "Indefinite";
+                $scope.programs.push(program);
+            }));
+
+        }), function errorCallback(response) {
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+            console.log(response);
+        });
+
+
+//    if (filteringProgram == null) {
+//        this.location_.url('/child/list');
+//    } else {
+//        this.location_.url('/child/list/' + filteringProgram.id);
+//    }
+}
+
 };
 
-DashboardController.prototype.initialize = function($uibModal) {
+DashboardController.prototype.initialize = function() {
 //    this.http_({
 //	  method: 'GET',
 //	  url: '/login/isinitsetupfinished'
@@ -82,7 +121,8 @@ DashboardController.prototype.initialize = function($uibModal) {
 	});
 	this.http_({
 		method: 'GET',
-		url: '/manageprogram/listprograms'
+		url: '/manageprogram/listprograms',
+        params: {'program_filter': this.scope_.selectedProgramFilter}
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
@@ -145,7 +185,7 @@ DashboardController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.fundings = [];
-	    console.log(response);
+//	    console.log(response);
 	    angular.forEach(response.data, angular.bind(this, function(funding) {
 	    	this.scope_.fundings.push(JSON.parse(funding));
 	    }));
@@ -175,13 +215,17 @@ DashboardController.prototype.initialize = function($uibModal) {
 
 }
 
-DashboardController.prototype.selectProgram = function(program) {
-    for (index in this.scope_.programs) {
-        this.scope_.programs[index].selected = false;
-    }
-    program.selected = true;
-    this.location_.path('/program/' + program.id);
-}
+
+
+//DashboardController.prototype.selectProgram = function(program) {
+//    for (index in this.scope_.programs) {
+//        this.scope_.programs[index].selected = false;
+//    }
+//    program.selected = true;
+//    this.location_.path('/program/' + program.id);
+//}
+
+
 
 
 app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 'ngRoute', 'ng-currency', 'joobali.base','xeditable'])

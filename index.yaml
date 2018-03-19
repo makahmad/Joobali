@@ -48,7 +48,32 @@ indexes:
 - kind: Program
   ancestor: yes
   properties:
+  - name: endDate
   - name: startDate
+    direction: desc
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: endDate
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: endDate
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: startDate
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: startDate
+  - name: programName
 
 - kind: Program
   ancestor: yes

@@ -1,16 +1,35 @@
 from google.appengine.ext import ndb
 from models import Program
 from login.models import Provider
-from datetime import timedelta
+from datetime import datetime,timedelta
 from calendar import monthrange
 import logging
 
 logger = logging.getLogger(__name__)
 
-def list_program_by_provider_user_id(user_id):
+def list_program_by_provider_user_id(user_id, program_filter):
     """List all programs given a provider id"""
     provider = Provider.get_by_id(user_id)
-    programs = Program.query(ancestor=provider.key).order(-Program.startDate, Program.programName)
+
+    if program_filter is None or program_filter == 'All Programs':
+        programs = Program.query(ancestor=provider.key).order(-Program.startDate, Program.programName)
+    elif program_filter == 'Future':
+        programs = Program.query(ancestor=provider.key).filter(Program.startDate > datetime.today()).order(-Program.startDate, Program.programName)
+    elif program_filter == 'Past':
+        programs = Program.query(ancestor=provider.key).filter(Program.endDate < datetime.today(), Program.endDate != None).order(Program.endDate, Program.programName)
+    elif program_filter == 'Current':
+        programs = Program.query(ancestor=provider.key).filter(ndb.OR(Program.startDate <= datetime.today(), Program.endDate == None) ).order(
+            -Program.startDate, Program.programName)
+
+        #Since datastore doesn't allow multiple inequalities, I have to manually filter the endDate as startDate
+        #was already a filter in the 'Current' query
+        current_programs = list()
+        for program in programs:
+            print(program.startDate)
+            if program.endDate is None or program.endDate >= datetime.today():
+                current_programs.append(program)
+        programs = current_programs
+
     return programs
 
 
