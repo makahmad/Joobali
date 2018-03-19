@@ -49,19 +49,19 @@ indexes:
   ancestor: yes
   properties:
   - name: endDate
-  - name: startDate
-    direction: desc
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: endDate
   - name: programName
 
 - kind: Program
   ancestor: yes
   properties:
   - name: endDate
-
-- kind: Program
-  ancestor: yes
-  properties:
-  - name: endDate
+  - name: startDate
+    direction: desc
   - name: programName
 
 - kind: Program
