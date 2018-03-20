@@ -15,6 +15,9 @@ body#myPage {
     color: #ffffff;
     padding: 150px 25px;
 		margin-bottom: 0px !important;
+		background-attachment:fixed;
+		background-position:left 50px;
+		background-size:cover;
 }
 
 .jumbotron .btn, .final .btn {
@@ -54,7 +57,7 @@ body#myPage {
 
 .elevPitch1 {
 	margin:0 auto;
-	padding: 75px 0;
+	padding: 75px 0 150px 0;
 	background:#70ABA7;
 }
 
@@ -87,6 +90,10 @@ body#myPage {
 	color:#F6E215;
 	text-transform:uppercase;
 	display:inline-block;
+}
+
+.elevIconCont a {
+	color:#F6E215 !important;
 }
 
 .whyJoobali {

@@ -16,6 +16,24 @@
   <script src="{{ STATIC_URL }}home/script.js"></script>
 
 </head>
+
+<script>
+    $(document).ready(function () {
+			$('a[href^="#"]').on('click', function (e) {
+				e.preventDefault();
+				
+				var target = this.hash;
+				var $target = $(target);
+				
+				$('html, body').stop().animate({
+					'scrollTop': $target.offset().top
+				}, 900, 'swing', function (){
+					window.location.hash = target;
+				})
+			})
+    });
+</script>
+		
 <body id="myPage">
 	<nav class="navbar navbar-default navbar-fixed-top">
 	  <div class="container">
@@ -81,9 +99,9 @@
   <div class="row">
     <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
-			<div class="elevIconCont"><img src="{{ STATIC_URL }}home/pics/icon_billing.png" alt="Logo" width="150" height="160"><br>Billing</div>
-			<div class="elevIconCont"><img src="{{ STATIC_URL }}home/pics/icon_invoices.png" alt="Logo" width="150" height="160"><br>Invoices</div>
-			<div class="elevIconCont"><img src="{{ STATIC_URL }}home/pics/icon_payments.png" alt="Logo" width="150" height="160"><br>Payments</div>
+			<div class="elevIconCont"><a href="#billing"><img src="{{ STATIC_URL }}home/pics/icon_billing.png" alt="Logo" width="150" height="160"><br>Billing</a></div>
+			<div class="elevIconCont"><a href="#invoices"><img src="{{ STATIC_URL }}home/pics/icon_invoices.png" alt="Logo" width="150" height="160"><br>Invoices</a></div>
+			<div class="elevIconCont"><a href="#payments"><img src="{{ STATIC_URL }}home/pics/icon_payments.png" alt="Logo" width="150" height="160"><br>Payments</a></div>
       <!-- <h1>Child care payments made easy.</h1> -->
 			<br>
     </div>
@@ -93,7 +111,7 @@
 
 <br />
 
-	<div class="container-fluid elevPitch2">
+	<div class="container-fluid elevPitch2" id="billing">
   <div class="row">
     <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -104,30 +122,6 @@
 		<div class="col-sm-2 text-center">&nbsp;</div>
   </div>
 </div>
-		
-  <!-- <div class="row">
-    <div class="col-sm-4">
-      <div class="homeIcons clock"></div>
-			<div class="featureDescription">
-				<h4>Get Paid On Time, Every Time</h4>
-      	<p>Automated invoicing and payments.</p>
-			</div>
-    </div>
-    <div class="col-sm-4">
-      <div class="homeIcons money"></div>
-      <div class="featureDescription">
-				<h4>Budget-friendly Business tools</h4>
-      	<p>Complimentary for early adopters!</p>
-			</div>
-    </div>
-    <div class="col-sm-4 text-center">
-      <div class="homeIcons help"></div>
-      <div class="featureDescription">
-				<h4>Customer Centered Support</h4>
-				<p>Real people helping your business succeed.</p>
-			</div>
-    </div>
-  </div> -->
 	
 </div>
 
@@ -142,7 +136,7 @@
 </div>
 
 
-<div class="container-fluid elevPitch2">
+<div class="container-fluid elevPitch2" id="invoices">
 	<div class="row">
 	  <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -167,7 +161,7 @@
 </div>
 
 
-<div class="container-fluid elevPitch2">
+<div class="container-fluid elevPitch2" id="payments">
 	<div class="row">
 	  <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
