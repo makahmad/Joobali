@@ -17,7 +17,7 @@ body#myPage {
 		margin-bottom: 0px !important;
 }
 
-.jumbotron .btn, .homePitch2 .btn {
+.jumbotron .btn, .final .btn {
   -webkit-border-radius: 5;
   -moz-border-radius: 5;
   border-radius: 5px;
@@ -43,9 +43,13 @@ body#myPage {
   text-decoration: none;*/
 }
 
-.jumbotron .btn:hover, .homePitch2 .btn:hover {
+.jumbotron .btn:hover, .final .btn:hover {
   background: #2e8f8f;
   text-decoration: none;
+}
+
+.final {
+	margin-bottom:100px;
 }
 
 .elevPitch1 {
@@ -206,7 +210,7 @@ a.logoLink:hover {
 			padding:55px 10px 0 10px;
 			background:#ffffff no-repeat center 50px;
 		}
-		.jumbotron .btn, .homePitch2 .btn {
+		.jumbotron .btn, .final .btn {
 	    margin: 0 auto 30px;
 		}
 		.homePitch2 h2 {
