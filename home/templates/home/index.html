@@ -29,7 +29,7 @@
 					'scrollTop': $target.offset().top
 				}, 900, 'swing', function (){
 					window.location.hash = target;
-				})
+				})				
 			})
     });
 </script>
@@ -95,7 +95,13 @@
 				</div>
 </div>
 
-	<div class="container-fluid elevPitch1">
+	<div class="container-fluid elevPitch1" id="icons">
+		<div class="row downArrow">
+			<div class="col-sm-2 text-center">&nbsp;</div>
+			<div class="col-sm-8 text-center"><a href="#icons"><img src="{{ STATIC_URL }}home/pics/btn_down.png" alt="Logo" width="30" height="20"></a></div>
+			<div class="col-sm-2 text-center">&nbsp;</div>
+		</div>
+		
   <div class="row">
     <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -111,7 +117,8 @@
 
 <br />
 
-	<div class="container-fluid elevPitch2" id="billing">
+<div class="container-fluid elevPitch2" id="billing">
+	<!-- <div class="row backToTop" style="text-align:center;"><a href="#myPage">Back to top</a></div> -->
   <div class="row">
     <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -122,10 +129,18 @@
 		<div class="col-sm-2 text-center">&nbsp;</div>
   </div>
 </div>
-	
+
+<div class="container-fluid elevPitch4">
+	<div class="col-sm-2 text-center"></div>
+	<div class="col-sm-8 text-center video-container">
+	<iframe width="640" height="360" src="https://www.youtube.com/embed/4gk2jr9bYQE" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+</div>
+<div class="col-sm-2 text-center"></div>
 </div>
 
-	<div class="container-fluid elevPitch3">
+
+
+<div class="container-fluid elevPitch3">
   <div class="row">
     <div class="col-sm-6 text-center"><img src="{{ STATIC_URL }}home/pics/headshot_diane.png" alt="Logo" width="180" height="180"></div>
 		<div class="col-sm-5 text-center testimonialDiv">
@@ -137,6 +152,7 @@
 
 
 <div class="container-fluid elevPitch2" id="invoices">
+	<!-- <div class="row backToTop" style="text-align:center;"><a href="#myPage">Back to top</a></div> -->
 	<div class="row">
 	  <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -162,6 +178,7 @@
 
 
 <div class="container-fluid elevPitch2" id="payments">
+	<!-- <div class="row backToTop" style="text-align:center;"><a href="#myPage">Back to top</a></div> -->
 	<div class="row">
 	  <div class="col-sm-2 text-center">&nbsp;</div>
 		<div class="col-sm-8 text-center">
@@ -174,15 +191,20 @@
 </div>
 
 <div class="container-fluid final">
-				<div class="row">
-					<div class="col-sm-1 text-center">&nbsp;</div>
-					<div class="col-sm-10 text-center">
-						<a href="/login/signup" class="btn">Get started</a>
-						<br><br>
-						<span style="color:#70ABA7;">It's Free</span>
-					</div>
-					<div class="col-sm-1 text-center">&nbsp;</div>
+	<div class="row">
+		<div class="col-sm-1 text-center">&nbsp;</div>
+		<div class="col-sm-10 text-center">
+			<a href="/login/signup" class="btn">Get started</a>
+			<br><br>
+			<span style="color:#70ABA7;">It's Free</span>
+		</div>
+		<div class="col-sm-1 text-center">&nbsp;</div>
 </div>
+	<div class="row text-center" style="top:100px; position: relative;">
+		<div class="col-sm-12 text-center">
+		    <a href="#myPage" title="To Top"><span class="glyphicon glyphicon-chevron-up"></span></a>
+		</div>
+	</div>
 </div>
 
 
