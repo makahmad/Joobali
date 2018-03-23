@@ -8,6 +8,9 @@ body#myPage {
 	background:#ffffff !important;
 }
 
+.signupPage {
+	margin-top:49px;
+}
 .jumbotron {
     /*background: #f1f1f1 url("./pics/img_headerbg2.jpg") no-repeat top center;*/
 		background: #ffffff url("./pics/img_headerbg3.jpg") no-repeat left 50px;
