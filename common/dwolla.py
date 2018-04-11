@@ -144,7 +144,8 @@ def get_funding_source(funding_source_url):
     # }
     logger.info("Get Funding Source: %s" % funding_source_url)
 
-    funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_url)
+    if 'dwolla.com' not in funding_source_url:
+        funding_source_url = 'https://%s.dwolla.com/funding-sources/%s' % ('api-sandbox' if environ.get('IS_DEV') == 'True' else 'api', funding_source_url)
 
     source = create_account_token().get(funding_source_url).body
 
