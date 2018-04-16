@@ -106,6 +106,10 @@ def list_child_by_provider_program(provider_id, program_id):
                 child['parent_name'] = enrollment.child_key.get().parent_key.get().first_name + ' ' + enrollment.child_key.get().parent_key.get().last_name
                 child['parent_phone'] = enrollment.child_key.get().parent_key.get().phone
             children.append(child)
+
+    #todo hardcoded to UTF8
+    children = sorted(children, key = lambda d: (d['first_name'].encode('UTF8').lower()))
+
     return children
 
 
