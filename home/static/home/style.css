@@ -91,6 +91,10 @@ body#myPage {
 	background:white /*#F6921E*/;
 }
 
+.team {
+	padding: 100px 25px;
+}
+
 /*.video-container {
 position: relative;
 padding-bottom: 56.25%;
