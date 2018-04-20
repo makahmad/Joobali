@@ -175,7 +175,7 @@ a.delete:hover {
 }
 
 #signUp .profileFormHeader{
-  background: white;
+  background: none;
   border-radius: 4px 4px 0 0;
 }
 #signUp .profileFormBody {
