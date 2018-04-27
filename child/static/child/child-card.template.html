@@ -5,7 +5,7 @@
             <!-- <th><td></td></th> -->
             <tr>
                 <td>Name:</td>
-                <td><strong><a  href="#" editable-text="$ctrl.child.first_name" e-required e-formclass="enrollProgram" onaftersave="$ctrl.updateChild()">{{ $ctrl.child.first_name || 'Missing' }}</a> <a href="#" editable-text="$ctrl.child.last_name"  e-required e-formclass="enrollProgram"  onaftersave="$ctrl.updateChild()">{{ $ctrl.child.last_name || 'Missing' }}</a></strong></td>
+                <td><strong><a  href="#" editable-text="$ctrl.child.first_name" e-required e-formclass="enrollProgram" onaftersave="$ctrl.updateChild()">{{ $ctrl.child.first_name || 'Add' }}</a> <a href="#" editable-text="$ctrl.child.last_name"  e-required e-formclass="enrollProgram"  onaftersave="$ctrl.updateChild()">{{ $ctrl.child.last_name || 'Add' }}</a></strong></td>
 
             </tr>
             <tr>
@@ -17,7 +17,7 @@
                        e-required
                        e-datepicker-options="{maxDate: $ctrl.todayDate}"
                        e-is-open="opened.$data" e-ng-click="open($event,'$data')"
-                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Missing'}}</a>
+                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Add'}}</a>
                 </td>
             </tr>
             <tr>

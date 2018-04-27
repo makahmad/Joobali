@@ -15,7 +15,7 @@
                        e-required
                        e-datepicker-options="{maxDate: $ctrl.todayDate}"
                        e-is-open="opened.$data" e-ng-click="open($event,'$data')"
-                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Missing'}}</a>
+                      onaftersave="$ctrl.updateChild('dob')">{{ ($ctrl.child.date_of_birth| date:"MM/dd/yyyy") || 'Add'}}</a>
                 </td>
 			</tr>
 			<tr>
