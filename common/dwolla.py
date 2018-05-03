@@ -805,7 +805,13 @@ def parse_webhook_data(webhook_json):
     result = {}
     result['id'] = webhook_json['id']
     result['topic'] = webhook_json['topic']
-    result['customer_url'] = webhook_json['_links']['customer']['href']
+
+    if webhook_json['_links']['customer']:
+        result['customer_url'] = webhook_json['_links']['customer']['href']
+    else:
+        logger.info("Webhook topic "+webhook_json['topic']+" doesn't have a customer associated with it.")
+        result['customer_url'] = None
+
     result['event_url'] = webhook_json['_links']['self']['href']
     result['resource_url'] = webhook_json['_links']['resource']['href']
     result['account_url'] = webhook_json['_links']['account']['href']
