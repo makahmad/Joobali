@@ -997,13 +997,13 @@ a.delete:hover {
 	}
 }
 .tooltip-inner {
-    background-color: #ff5b35;
+    background-color: #f6921e;
     color: #fff;
     text-align: left;
 }
 
 .tooltip.top .tooltip-arrow {
-    border-top-color: #ff5b35;
+    border-top-color: #f6921e;
 }
 
 /*------------ Profile pw change --------------*/
