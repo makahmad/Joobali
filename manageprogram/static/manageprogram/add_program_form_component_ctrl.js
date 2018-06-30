@@ -60,10 +60,10 @@ AddProgramFormComponentController = function($scope,$http) {
 };
 
 
-AddProgramFormComponentController.prototype.indefiniteClicked = function() {
-        if (this.newProgram.indefinite)
-            this.newProgram.endDate = "";
-}
+// AddProgramFormComponentController.prototype.indefiniteClicked = function() {
+//         if (this.newProgram.indefinite)
+//             this.newProgram.endDate = "";
+// }
 
 // Disable invalid choices for billing end date
 AddProgramFormComponentController.prototype.disabledEndDate = function(dateAndMode) {

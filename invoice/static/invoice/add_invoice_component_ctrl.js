@@ -110,6 +110,7 @@ AddInvoiceController = function AddInvoiceController($uibModalInstance, $http) {
                 // this callback will be called asynchronously
                 // when the response is available
                 this.programs = [];
+                // response.data.shift();
                 angular.forEach(response.data, angular.bind(this, function(program) {
                     program = JSON.parse(program);
                     if(program.indefinite)

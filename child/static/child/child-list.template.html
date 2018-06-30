@@ -2,19 +2,19 @@
 	<!-- <span class="pageInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Children instructions here.</span> -->
 <div class="programsContainer">
 	<div class="programsDiv">
-		
-		<div class="full" ng-show="$ctrl.fundingSources==0"><br>You need to <a href="#!/billing">add a bank account</a> before enrolling children.
-		</div>
 				
 		<div class="buttonDiv addChildButtonDiv pull-left">
-			<button type="button" ng-disabled="$ctrl.dwollaStatus!='verified' || $ctrl.fundingSources==0"
+			<button type="button"
 			         class="btn btn-default btn-lg pull-right programHeader joobali"
 				ng-click="$ctrl.openAddChildModal()"><i class="fa fa-plus fa-1x"></i>&nbsp; &nbsp;Enroll a new child
 			</button>
 		</div>
-		
-		<div ng-show="$ctrl.dwollaStatus!='verified' && $ctrl.fundingSources>0">
-			<br><a href="#!/verification">Verify</a> your account<br>before enrolling.
+
+		<div class="buttonDiv addChildButtonDiv pull-left" ng-show="non_invited_parents && $ctrl.checkRequirements"><!--ng-show="non_invited_parents && $ctrl.checkRequirements"-->
+			<button type="button"
+			         class="btn btn-default btn-lg pull-right programHeader joobali"
+				ng-click="$ctrl.emailParents()"><i class="fa fa-envelope fa-1x"></i>&nbsp; &nbsp;Email Parents
+			</button>
 		</div>
 				
 		<div class="child-list-filter-options pull-right">
@@ -42,7 +42,7 @@
 	<div>
       <ol class="childrenList">
 				<li style="list-style-type: none">
-          <child-card data-ng-repeat="child in $ctrl.children | childAgeFilter: $ctrl.minAge:$ctrl.maxAge " child="child" programs="$ctrl.programs" flex></child-card>
+          <child-card data-ng-repeat="child in $ctrl.children | childAgeFilter: $ctrl.minAge:$ctrl.maxAge " child="child" programs="$ctrl.programs" check-requirements="$ctrl.checkRequirements" flex></child-card>
 				</li>
       </ol>
   </div>

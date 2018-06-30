@@ -2,33 +2,68 @@ from google.appengine.ext import ndb
 from models import Program
 from login.models import Provider
 from datetime import datetime,timedelta
-from calendar import monthrange
-import logging
 
+from calendar import monthrange,day_name
+from common import datetime_util
+
+import logging
+DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
+
+def add_program(provider, newProgram):
+    program = Program(parent=provider.key)
+    if newProgram['programName']:
+        program.programName = newProgram['programName']
+    else:
+        program.programName = "Program Fee"
+
+    program.registrationFee = newProgram['registrationFee']
+    program.fee = newProgram['fee']
+    program.lateFee = newProgram['lateFee']
+    program.billingFrequency = newProgram['billingFrequency']
+    program.startDate = datetime_util.local_to_utc(datetime.strptime(newProgram['startDate'], DATE_FORMAT))
+    program.adhoc = newProgram['adhoc']
+
+    if program.billingFrequency == 'Monthly':
+        #if program is monthly and last day of month is checked
+        if newProgram['lastDay']:
+            program.monthlyBillDay = "Last Day"
+        else:
+            program.monthlyBillDay = str(program.startDate.day)
+    else:
+        program.weeklyBillDay = day_name[program.startDate.weekday()]
+
+    if newProgram['endDate']:
+        program.endDate = datetime_util.local_to_utc(datetime.strptime(newProgram['endDate'], DATE_FORMAT))
+    else:
+        program.indefinite = True
+        program.endDate = None
+
+    program.put()
+    return program
 
 def list_program_by_provider_user_id(user_id, program_filter):
     """List all programs given a provider id"""
     provider = Provider.get_by_id(user_id)
 
     if program_filter is None or program_filter == 'All Programs':
-        programs = Program.query(ancestor=provider.key).order(-Program.startDate, Program.programName)
-    elif program_filter == 'Future':
-        programs = Program.query(ancestor=provider.key).filter(Program.startDate > datetime.today()).order(-Program.startDate, Program.programName)
+        programs = Program.query(ancestor=provider.key).filter(Program.adhoc == False).order(-Program.startDate, Program.programName)
+    # elif program_filter == 'Future':
+    #     programs = Program.query(ancestor=provider.key).filter(Program.startDate > datetime.today()).order(-Program.startDate, Program.programName)
     elif program_filter == 'Past':
-        programs = Program.query(ancestor=provider.key).filter(Program.endDate < datetime.today(), Program.endDate != None).order(Program.endDate, Program.programName)
-    elif program_filter == 'Current':
-        programs = Program.query(ancestor=provider.key).filter(ndb.OR(Program.startDate <= datetime.today(), Program.endDate == None) ).order(
-            -Program.startDate, Program.programName)
+        programs = Program.query(ancestor=provider.key).filter(Program.endDate < datetime.today(), Program.endDate != None, Program.adhoc == False).order(Program.endDate, Program.programName)
+    elif program_filter == 'Current/Upcoming':
+        programs = Program.query(ancestor=provider.key).filter(ndb.OR(Program.endDate >= datetime.today(), Program.endDate == None),Program.adhoc ==  False ).order(
+            -Program.endDate, Program.programName)
 
         #Since datastore doesn't allow multiple inequalities, I have to manually filter the endDate as startDate
         #was already a filter in the 'Current' query
-        current_programs = list()
-        for program in programs:
-            print(program.startDate)
-            if program.endDate is None or program.endDate >= datetime.today():
-                current_programs.append(program)
-        programs = current_programs
+        # current_programs = list()
+        # for program in programs:
+        #     # print(program.startDate)
+        #     if program.endDate is None or program.startDate >= datetime.today():
+        #         current_programs.append(program)
+        # programs = current_programs
 
     return programs
 

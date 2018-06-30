@@ -1,4 +1,5 @@
-ChildListController = function ChildListController($uibModal, $http, $routeParams, $location) {
+ChildListController = function ChildListController($uibModal, $scope, $http, $routeParams, $location) {
+
     this.uibModal_ = $uibModal;
     this.http_ = $http;
     this.routeParams_ = $routeParams;
@@ -7,6 +8,28 @@ ChildListController = function ChildListController($uibModal, $http, $routeParam
     this.programs = [];
     this.parent_emails = new Set();
     this.children = [];
+
+    $scope.non_invited_parents = false;
+
+	self.http_({
+	  method: 'GET',
+	  url: '/enrollment/listEnrollments'
+	}).then(angular.bind(this, function successCallback(response) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    angular.forEach(response.data, angular.bind(this, function(enrollment) {
+	        enrollment = JSON.parse(enrollment);
+
+            if(enrollment.sent_email_count==0 && enrollment.status=='initialized')
+	    	    $scope.non_invited_parents= true;
+	    }));
+
+	  }), function errorCallback(response) {
+	    // called asynchronously if an error occurs
+	    // or server returns response with an error status.
+	    console.log(response);
+	  });
+
 }
 
 ChildListController.prototype.$onInit = function() {
@@ -44,7 +67,8 @@ ChildListController.prototype.refreshList = function() {
 ChildListController.prototype.openAddChildModal = function() {
     console.log("Opening Add Enrollment Modal");
     var self = this;
-    if (this.checkRequirements()) { // Check prerequisites for provider to enroll a child
+
+  //  if (this.checkRequirements()) { // Check prerequisites for provider to enroll a child
         var modalInstance = this.uibModal_.open({
             animation: true,
             templateUrl: '/static/child/child-form.template.html',
@@ -53,13 +77,56 @@ ChildListController.prototype.openAddChildModal = function() {
             resolve: {
                 parent_emails: function () {
                   return self.parent_emails;
-                }
+                },
+                 check_requirements: this.checkRequirements
             }
         }).closed.then(angular.bind(this, function() {
             this.refreshList();
         }));
-    }
+  //  }
 };
+
+
+ChildListController.prototype.emailParents = function() {
+
+    console.log("Opening Email Parent Modal");
+
+    bootbox.confirm({
+        message: "Send enrollment email to all parents who have never been emailed before?",
+        buttons: {
+            confirm: {
+                label: 'Yes',
+                className: 'btn btn-default btn-lg pull-right joobali'
+            },
+            cancel: {
+                label: 'No',
+				className: 'btn btn-default btn-lg pull-right'
+            }
+        },
+        callback: angular.bind(this, function(result) {
+            if (result === true) {
+            console.log("yes");
+                this.http_({
+                    method: 'POST',
+                    url: '/enrollment/emailNonInvitedParents'
+                }).then(angular.bind(this, function successCallback(response) {
+                        if (response.data == 'success') {
+                            bootbox.alert("All non-invited parents emailed successfully.", function() {
+                                location.reload();
+                            })
+                        } else {
+                            bootbox.alert(response.data);
+                        }
+                }), angular.bind(this, function errorCallback(response){
+                        console.log('post failed');
+                        bootbox.alert("Something wrong happened. Please try again later");
+                }));
+            }
+        })
+    });
+};
+
+
 
 ChildListController.prototype.getProgramData = function() {
     this.http_({
@@ -68,6 +135,7 @@ ChildListController.prototype.getProgramData = function() {
     }).then(angular.bind(this, function successCallback(response) {
         // this callback will be called asynchronously
         // when the response is available
+        // response.data.shift();
         this.programs = [];
         angular.forEach(response.data, angular.bind(this, function(program) {
             this.programs.push(JSON.parse(program));

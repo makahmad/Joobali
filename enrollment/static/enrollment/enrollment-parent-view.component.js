@@ -30,6 +30,12 @@ EnrollmentParentViewController.prototype.getEnrollmentDetail = function() {
         .then(angular.bind(this, function successCallback(response) {
             this.enrollmentDetail = angular.fromJson(response.data)[0];
 
+            //
+            // if(enrollment.enrollment.sent_email_count==0 && enrollment.enrollment.status=='initialized')
+            //     enrollment.enrollment.status = 'pre-initialized'
+            //
+            // this.enrollments.push(enrollment);
+
             if (this.enrollmentDetail.enrollment==null)
             {
                 bootbox.alert("The program does not exist or has been removed by the provider."+

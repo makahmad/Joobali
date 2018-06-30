@@ -5,16 +5,25 @@ from django.http import HttpResponseRedirect
 from django import template
 from django.http import HttpResponse
 from login.models import Provider,Parent
+from enrollment.models import Enrollment
 from manageprogram.models import Program
 import json
 import logging
 from jose import jwt
 from datetime import datetime
 import random
+# import stripe
+#
+# stripe.api_key = "sk_test_5ZfFZydJcTQK0a1SRD8UTauv"
+#
+# stripe.Account.create(
+#   type="standard",
+#   country="US",
+#   email="bob321131@example.com"
+# )
 
 
 def index(request):
-
     return render_to_response(
         'home/index.html',
         {
@@ -41,6 +50,18 @@ def team(request):
 def dashboard(request):
     if not check_session(request) or request.session['is_provider'] is False:
         return HttpResponseRedirect('/login')
+
+
+
+    # enrollment_query = Enrollment.query()
+    # for enrollment in enrollment_query:
+    #     enrollment.sent_email_count = 1
+    #     enrollment.put()
+    #
+    # program_query = Program.query()
+    # for program in program_query:
+    #     program.adhoc = False
+    #     program.put()
 
     # get school name for provider only
     schoolName = None

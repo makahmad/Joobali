@@ -127,7 +127,8 @@ ChildCardController.prototype.openEnrollmentModal = function() {
             },
             programs: function() {
                 return self.programs;
-            }
+            },
+            checkRequirements: this.checkRequirements
         }
     });
 
@@ -155,7 +156,12 @@ ChildCardController.prototype.getEnrollmentData = function() {
     .then(angular.bind(this, function successCallback(response) {
         this.enrollments = [];
         angular.forEach(response.data, angular.bind(this, function(enrollment) {
-            this.enrollments.push(JSON.parse(enrollment));
+
+	        enrollment = JSON.parse(enrollment);
+            if(enrollment.enrollment.sent_email_count==0 && enrollment.enrollment.status=='initialized')
+	    	    enrollment.enrollment.status = 'pre-initialized'
+
+            this.enrollments.push(enrollment);
         }));
     }), angular.bind(this, function errorCallback(response){
     }));

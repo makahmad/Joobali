@@ -163,6 +163,12 @@ def list_enrollment_by_provider_and_child_and_program(provider_key, child_key, p
     return enrollments
 
 
+def resend_enrollment_invitation(enrollment,host):
+    send_parent_enrollment_notify_email(enrollment=enrollment, host=host)
+    enrollment.sent_email_count += 1
+    enrollment.put();
+
+
 def list_enrollment_by_provider(provider_id):
     """List all enrollment given a provider id"""
     provider_key = ndb.Key('Provider', provider_id)
@@ -174,6 +180,11 @@ def list_enrollment_by_provider(provider_id):
         enrollments.append(enrollment_dict)
     return enrollments
 
+def list_never_sent_enrollments_by_provider(provider_id):
+    """List all enrollment given a provider id that have never been emailed"""
+    provider_key = ndb.Key('Provider', provider_id)
+    enrollments = Enrollment.query(Enrollment.sent_email_count == 0, ancestor=provider_key)
+    return enrollments
 
 def list_enrollment_object_by_provider(provider_id):
     """List all enrollment ndb object given a provider id"""

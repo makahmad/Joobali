@@ -1,4 +1,4 @@
-ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalInstance, $http, enrollmentDateChecker, child, programs) {
+ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalInstance, $http, enrollmentDateChecker, child, programs, checkRequirements) {
     /*
      * @input: child
      * @input: programs
@@ -6,6 +6,7 @@ ChildEnrollmentController = function ChildEnrollmentController($log, $uibModalIn
     var self = this;
     self.child = child;
     self.programs = programs;
+    self.checkRequirements = checkRequirements;
     self.currentStep = 0;
     self.newEnrollment = {};
     self.newEnrollment.error = {};

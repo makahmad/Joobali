@@ -75,6 +75,7 @@ def list_child_by_provider(provider_key):
     children = list()
 
     for view in provider_children_views:
+
         child = view.child_key.get().to_dict()
         if not child['is_deleted']:
             child['id'] = view.child_key.get().key.id()

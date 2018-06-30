@@ -105,20 +105,43 @@ def add_enrollment(request):
     return HttpResponse(json.dumps({'status': status, 'message': message}), content_type="application/json")
 
 
-def list_enrollment(request):
+def list_enrollments(request):
     """Handles user's request to list all enrollment"""
-    enrollments = []
     if not check_session(request):
-        return HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
-    provider_id = request.session.get('email')
-    enrollments = enrollment_util.list_enrollment_by_provider(provider_id)
-    for enrollment in enrollments:
-        enrollment['start_date'] = datetime_util.utc_to_local(enrollment['start_date'])
-        enrollment['end_date'] = datetime_util.utc_to_local(enrollment['end_date'])
-    response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
+        return HttpResponseRedirect('/login')
+
+    if is_provider(request):
+        provider_id = get_provider_id(request)
+
+        enrollments = enrollment_util.list_enrollment_by_provider(provider_id)
+        for enrollment in enrollments:
+            enrollment['start_date'] = datetime_util.utc_to_local(enrollment['start_date'])
+            enrollment['end_date'] = datetime_util.utc_to_local(enrollment['end_date'])
+
+        response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollments]))
+
     logger.info("response is %s" % response)
     return response
 
+
+def email_non_invited_parents(request):
+    """Email enrollment invitation to all non-invited parents"""
+    if not check_session(request):
+        return HttpResponseRedirect('/login')
+
+    if request.method != 'POST':
+        logger.info("get non-post http request")
+        return
+
+    if is_provider(request):
+        provider_id = get_provider_id(request)
+
+        enrollments = enrollment_util.list_never_sent_enrollments_by_provider(provider_id)
+        for enrollment in enrollments:
+            if enrollment.can_resend_invitation():
+                enrollment_util.resend_enrollment_invitation(enrollment, get_host_from_request(request.get_host()))
+
+    return HttpResponse("success")
 
 def list_enrollment_by_child(request):
     status = "failure"
@@ -155,23 +178,24 @@ def list_enrollment_by_child(request):
                                                                                  child_key=child_key)
         enrollment_results = list()
         for enrollment in enrollments:
-            program = enrollment.program_key.get()
-            provider = program.key.parent().get()
-            enrollment_results.append({
-                'enrollment': enrollment,
-                'child': enrollment.child_key.get(),
-                'program': {
-                    'programName': program.programName,
-                    'registrationFee': program.registrationFee,
-                    'fee': program.fee,
-                    'lateFee': program.lateFee,
-                    'billingFrequency': program.billingFrequency
-                },
-                'provider': {
-                    'id': provider.key.id(),
-                    'schoolName': provider.schoolName
-                }
-            })
+            if enrollment.sent_email_count > 0:
+                program = enrollment.program_key.get()
+                provider = program.key.parent().get()
+                enrollment_results.append({
+                    'enrollment': enrollment,
+                    'child': enrollment.child_key.get(),
+                    'program': {
+                        'programName': program.programName,
+                        'registrationFee': program.registrationFee,
+                        'fee': program.fee,
+                        'lateFee': program.lateFee,
+                        'billingFrequency': program.billingFrequency
+                    },
+                    'provider': {
+                        'id': provider.key.id(),
+                        'schoolName': provider.schoolName
+                    }
+                })
         response = HttpResponse(json.dumps([JEncoder().encode(enrollment) for enrollment in enrollment_results]))
         return response
 
@@ -219,7 +243,11 @@ def get_enrollment(request):
     """
     if not check_session(request):
         return
+
+
+
     if request.method == 'GET':
+
         provider_id = request.session.get('email')
         enrollment_id = request.GET.get('enrollmentId', '')
         program_id = request.GET.get('programId', '')
@@ -277,10 +305,15 @@ def get_enrollment(request):
                         'billingFrequency': program.billingFrequency
                     }
                 }
+
+                if is_parent(request) and enrollment.sent_email_count==0:
+                    enrollment_detail = None
+
             else:
                 enrollment_detail = {
                     'enrollment': enrollment
                 }
+
             enrollments_details.append(enrollment_detail)
         return HttpResponse(json.dumps(JEncoder().encode(enrollments_details)), content_type='application/json')
 
@@ -330,10 +363,8 @@ def resent_enrollment_invitation(request):
     if not enrollment.can_resend_invitation():
         return HttpResponse(json.dumps({'status': status}), content_type="application/json")
     logger.info("request.get_host() %s", request.get_host())
-    send_parent_enrollment_notify_email(enrollment=enrollment, host=get_host_from_request(request.get_host()))
 
-    enrollment.resent_email_count += 1
-    enrollment.put();
+    enrollment_util.resend_enrollment_invitation(enrollment,get_host_from_request(request.get_host()))
 
     status = 'success'
     return HttpResponse(json.dumps({'status': status}), content_type="application/json")

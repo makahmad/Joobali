@@ -14,6 +14,7 @@ class Program(ndb.Model):
     weeklyBillDay = ndb.StringProperty(required=False)  #enum: Monday, Tuesday, Wednesday....Sunday
     monthlyBillDay = ndb.StringProperty(required=False)  # enum: 1-28 + Last Day
     indefinite = ndb.BooleanProperty(required=False)
+    adhoc = ndb.BooleanProperty(required=False)
 
     # Timestamps
     time_created = ndb.DateTimeProperty(auto_now_add=True)

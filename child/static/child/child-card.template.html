@@ -42,7 +42,7 @@
     <div class="child-enrollment-container">
         <!-- <div class="child-enrollment-container" ng-show="$ctrl.showEnrollment && ($ctrl.enrollments.length > 0)"> -->
         <!-- <label>Enrollment Information:</label><br> -->
-        <enrollment-list child="$ctrl.child" enrollments="$ctrl.enrollments"></enrollment-list>
+        <enrollment-list child="$ctrl.child" enrollments="$ctrl.enrollments" check-requirements="$ctrl.checkRequirements"></enrollment-list>
         <div class="addToProgram">
             <!-- <a class="enrollProgram" ng-click="$ctrl.openEnrollmentModal()">Add to Program</a> -->
             <a class="enrollProgram" ng-click="$ctrl.openEnrollmentModal()"><i class="fa fa-plus-circle fa-lg"></i>&nbsp; Enroll this Child</a>

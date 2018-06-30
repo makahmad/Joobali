@@ -12,6 +12,7 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
     ];
 
     this.enrollmentMap = {
+        'pre-initialized':'Not Invited',
         'initialized':'Invited (but not accepted)',
         'cancel':'Canceled',
         'inactive':'Inactive',
@@ -49,7 +50,13 @@ EnrollmentListController = function EnrollmentListController($uibModal, $log, $h
             this.enrollments = [];
             console.log('enrollment/listByChild: ' + response.data)
             angular.forEach(response.data, angular.bind(this, function(enrollment) {
-                this.enrollments.push(JSON.parse(enrollment));
+
+                enrollment = JSON.parse(enrollment);
+                if(enrollment.enrollment.sent_email_count==0 && enrollment.enrollment.status=='initialized')
+                    enrollment.enrollment.status = 'pre-initialized'
+
+                this.enrollments.push(enrollment);
+
             }));
         }), angular.bind(this, function errorCallback(response){
         }));
@@ -80,5 +87,6 @@ EnrollmentListController.prototype.openEnrollmentResendInvitationModal = functio
 }
 
 EnrollmentListController.prototype.canResendEnrollmentInvitation = function(enrollment) {
-    return (enrollment.status == 'initialized' || enrollment.status == 'invited')
+console.log();
+    return (this.checkRequirements && (enrollment.status == 'initialized' || enrollment.status == 'invited') )
 }

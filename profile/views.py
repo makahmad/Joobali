@@ -14,6 +14,7 @@ from common.dwolla import update_customer, get_customer, upload_document, list_d
 from datetime import datetime
 from dwollav2.error import ValidationError
 from io import StringIO, BytesIO
+from profile import profile_util
 
 logger = logging.getLogger(__name__)
 
@@ -104,17 +105,9 @@ def get_dwolla_status(request):
         return HttpResponseRedirect('/login')
 
     provider = Provider.get_by_id(request.session['user_id'])
-    if provider is not None:
-        if provider.dwolla_status is None or provider.dwolla_status != 'verified':
-            try:
-                dwolla_customer = get_customer(provider.customerId)
-                if dwolla_customer:
-                    provider.dwolla_status = dwolla_customer['status']
-                    provider.put()
-            except ValidationError:
-                provider.dwolla_status = None
-        return HttpResponse(provider.dwolla_status)
-    return HttpResponse('Unknown')
+
+    return HttpResponse(profile_util.get_dwolla_status(provider))
+
 
 def updateProfile(request):
     """Updates the provider profile"""

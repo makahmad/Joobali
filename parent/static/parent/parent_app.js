@@ -63,7 +63,7 @@ ParentController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.invoices = [];
-	    console.log(response.data);
+	    // console.log(response.data);
 	    angular.forEach(response.data, angular.bind(this, function(invoice) {
 	    	invoice.due_date_str = invoice.due_date;
 	        invoice.due_date = new Date(invoice.due_date_str);
@@ -99,7 +99,7 @@ ParentController.prototype.initialize = function($uibModal) {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.payments = [];
-	    console.log(response.data);
+	    // console.log(response.data);
 
 	    angular.forEach(response.data, angular.bind(this, function(payment) {
 	        var paymentDate = new Date(payment.date);

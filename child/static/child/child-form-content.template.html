@@ -50,6 +50,9 @@
                 ng-model="$ctrl.newChildEnrollmentInfo.child_parent_email"
                 ng-value="$ctrl.newChildEnrollmentInfo.child_parent_email">
         </select>
+         <span class="input-group-addon angular-with-newlines fee formInstructions"  ng-show="!$ctrl.checkRequirements" >
+             Once you have verified your Joobali Account and linked a bank account to receive payments, you can send enrollment invitations to parents from the Children tab.
+         </span>
     </div>
     <div class="form-group"
          ng-class="{'has-error': addChildForm.email.$invalid && addChild.email.$touched}"
@@ -66,17 +69,21 @@
                class="form-control" ng-required="$ctrl.isAddNewParent"
                ng-readonly="$ctrl.readOnly"
                ng-model="$ctrl.newChildEnrollmentInfo.child_parent_email">
+         <span class="input-group-addon angular-with-newlines fee formInstructions"  ng-show="!$ctrl.checkRequirements" >
+             Once you have verified your Joobali Account and linked a bank account to receive payments, you can send enrollment invitations to parents from the Children tab.
+         </span>
+
     </div>
 
     <div class="form-group" ng-class="{'has-error': $ctrl.newChildEnrollmentInfo.error['program']}">
         <label class="control-label" for="program">Program</label>
-        <select class="form-control" id="program" required
+        <select class="form-control" id="program"
                 ng-readonly="$ctrl.readOnly"
                 ng-options="program.programName + ' - ' + program.billingFrequency for program in $ctrl.programs track by program.id"
                 ng-model="$ctrl.newChildEnrollmentInfo.program" ng-change="$ctrl.whenSelectedProgramChange()">
-            <option value="">Select a program</option>
+            <option value="">No program</option>
         </select>
-        <div class="panel panel-body" ng-show="$ctrl.newChildEnrollmentInfo.program">
+        <div class="panel panel-body" ng-show="$ctrl.newChildEnrollmentInfo.program.fee">
             <div>
                 <label>Registration fee:</label> <b>${{$ctrl.newChildEnrollmentInfo.program.registrationFee}}</b>
             </div>
@@ -100,11 +107,33 @@
             </div>
         </div>
     </div>
+
+   <div class="form-group"
+         ng-class="{'has-error': addEnrollmentForm.fee.$invalid && addEnrollmentForm.fee.$touched}"
+         ><!--ng-show="$ctrl.newChildEnrollmentInfo.program"-->
+        <label class="control-label">Fee for this Child
+        </label>
+            <div class="input-group">
+        <input type="number" min="0"  step="0.01" class="form-control" id="fee" name="fee" ng-readonly="$ctrl.readOnly"
+                ng-model="$ctrl.newChildEnrollmentInfo.fee" ng-required="true">
+
+            <span class="input-group-addon" >
+                <label class="radio-inline" ng-show="!$ctrl.newChildEnrollmentInfo.program.fee"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.newChildEnrollmentInfo.program.billingFrequency"
+                                                   ng-required="true" value="Weekly" checked="checked">Weekly</label>
+                <label class="radio-inline" ng-show="!$ctrl.newChildEnrollmentInfo.program.fee"><input type="radio" ng-change="$ctrl.whenChangeStartDateOrFrequency()" name="billingFrequency" ng-model="$ctrl.newChildEnrollmentInfo.program.billingFrequency"
+                                                   ng-required="true" value="Monthly">Monthly</label>
+              </span>
+            </div>
+    </div>
+
+
+
+
     <div class="form-group"
          ng-class="{'has-error': addEnrollmentForm.startDate.$invalid && addEnrollmentForm.startDate.$touched}"
-         ng-show="$ctrl.newChildEnrollmentInfo.program">
-        <label class="control-label" ng-click="isFeeFormInstructionsOpen = !isFeeFormInstructionsOpen">When is the first
-            (or next) fee due? <sup><i class="fa fa-question-circle-o fa-2x"></i></sup>&nbsp;<small>(MM/DD/YYYY)</small>
+         ><!--ng-show="$ctrl.newChildEnrollmentInfo.program"-->
+        <label class="control-label" >When is the first
+            (or next) fee due? &nbsp;<small>(MM/DD/YYYY)</small>
         </label>
         <p class="input-group">
             <input name="startDate"
@@ -117,25 +146,37 @@
                    style="background-color: white"
                    is-open="$ctrl.startDatePickerOpened"
                    ng-required="true"
-                   ng-change="$ctrl.whenChangeStartDate(true)"
+                   ng-change="$ctrl.whenChangeStartDateOrFrequency()"
                    ng-click="$ctrl.openStartDatePicker()"
                    close-text="Close"/>
             <span class="input-group-btn">
                                     <button type="button" class="btn btn-default"
                                             ng-click="$ctrl.openStartDatePicker()">
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
+            <span class="input-group-addon" style="padding:1px"
+               ng-show="$ctrl.newChildEnrollmentInfo.program.billingFrequency=='Monthly' && $ctrl.newChildEnrollmentInfo.program.showLastDayCheckbox">
+                                                Last day? <input name="last_day" type="checkbox"
+                                required="false" ng-required="false"
+                                 ng-disabled="$ctrl.disableLastDayCheckbox" ng-change="$ctrl.whenChangeLastDay()"
+                             ng-model="$ctrl.newChildEnrollmentInfo.program.lastDay">
+
+            </span>
         </p>
 
         <div class="input-group">
             <span class="input-group-addon angular-with-newlines fee formInstructions"
-                  ng-show="isFeeFormInstructionsOpen" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; You can only select a due date based on your selected program.</span>
+                  ng-show="$ctrl.newChildEnrollmentInfo.program.fee" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp; Your due date must be based on your program.</span>
+
+               <span class="input-group-addon angular-with-newlines fee formInstructions" ng-show="!$ctrl.newChildEnrollmentInfo.program.fee" id="formInstructions"><i class="fa fa-caret-up fa-3"></i> &nbsp;{{$ctrl.programInfoDisplay}}</span>
+
         </div>
+
 
     </div>
 		
     <div class="form-group"
          ng-class="{'has-error': addEnrollmentForm.endDate.$invalid && addEnrollmentForm.endDate.$touched}"
-         ng-show="$ctrl.newChildEnrollmentInfo.program">
+         ><!--ng-show="$ctrl.newChildEnrollmentInfo.program"-->
         <label class="control-label">When is the LAST fee due? (optional) <small>(MM/DD/YYYY)</small></label>
         <p class="input-group">
             <input name="endDate"
@@ -145,6 +186,7 @@
                    datepicker-options="$ctrl.enrollmentEndDatePickerOptions"
                    ng-model="$ctrl.newChildEnrollmentInfo.end_date"
                    ng-readonly="true"
+                   ng-change="$ctrl.whenChangeEndDate()"
                    style="background-color: white"
                    is-open="$ctrl.endDatePickerOpened"
                    close-text="Close"
@@ -155,23 +197,43 @@
                                         <i class="glyphicon glyphicon-calendar"></i></button></span>
         </p>
     </div>
-    <div class="form-group"
-         ng-class="{'has-error': addEnrollmentForm.fee.$invalid && addEnrollmentForm.fee.$touched}"
-         ng-show="$ctrl.newChildEnrollmentInfo.program">
-        <label class="control-label">Program Fee for this Child
-        </label>
-        <input type="number" min="0" class="form-control" id="fee" name="fee" ng-readonly="$ctrl.readOnly"
-                ng-model="$ctrl.newChildEnrollmentInfo.fee">
 
+
+    <div class="form-group" ng-show="!$ctrl.newChildEnrollmentInfo.program.fee">
+        <div class="col-1">
+            <label class="control-label" for="registrationFee">Registration Fee:</label>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="number" min="0" step="0.01" class="form-control" id="registrationFee"
+                       name="registrationFee" ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.program.registrationFee">
+            </div>
+        </div>
+        <div class="col-1">
+            <label class="control-label" for="lateFee">Late Fee:</label>
+            <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input type="number" min="0" step="0.01" class="form-control" id="lateFee" name="lateFee"
+                       ng-required="true" ng-model="$ctrl.newChildEnrollmentInfo.program.lateFee">
+            </div>
+
+        </div>
+        <div class="input-group" >
+          <span class="input-group-addon angular-with-newlines fee formInstructions" >Late fee grace period can be set through invoice settings.</span>
+       </div>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.program">
+
+
+
+
+
+    <div class="form-group" ><!--ng-show="$ctrl.newChildEnrollmentInfo.program"-->
         <label class="control-label">Waive registration fee (${{ $ctrl.newChildEnrollmentInfo.program.registrationFee }})?
             <input name="waive_registration" type="checkbox"
                    ng-required="false" ng-readonly="$ctrl.readOnly"
                    ng-model="$ctrl.newChildEnrollmentInfo.waive_registration">
         </label>
     </div>
-    <div class="form-group" ng-show="$ctrl.newChildEnrollmentInfo.program && !$ctrl.newChildEnrollmentInfo.waive_registration">
+    <div class="form-group" ng-show="!$ctrl.newChildEnrollmentInfo.waive_registration"><!--ng-show="$ctrl.newChildEnrollmentInfo.program"-->
         <label class="control-label">Registration fee already paid?
             <input name="registration_fee_paid" type="checkbox"
                    ng-required="false" ng-readonly="$ctrl.readOnly"
@@ -230,7 +292,7 @@
     <div class="modal-footer">
         <div class="formActions">
             <center>
-                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" ng-disabled="!addChildForm.$valid || $ctrl.disableSaveButton">Enroll</button>
+                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" >Enroll</button>
                 <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false" ng-click="$ctrl.cancel()" ng-show="$ctrl.enrollmentStatus!='success'">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->

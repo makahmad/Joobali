@@ -30,6 +30,11 @@ indexes:
   - name: start_date
     direction: desc
 
+- kind: Enrollment
+  ancestor: yes
+  properties:
+  - name: sent_email_count
+
 - kind: Invoice
   properties:
   - name: cancel_payment_link
@@ -48,6 +53,29 @@ indexes:
 - kind: Program
   ancestor: yes
   properties:
+  - name: adhoc
+  - name: endDate
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: adhoc
+  - name: endDate
+    direction: desc
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: adhoc
+  - name: startDate
+    direction: desc
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
   - name: endDate
 
 - kind: Program
@@ -61,6 +89,13 @@ indexes:
   properties:
   - name: endDate
   - name: startDate
+    direction: desc
+  - name: programName
+
+- kind: Program
+  ancestor: yes
+  properties:
+  - name: endDate
     direction: desc
   - name: programName
 

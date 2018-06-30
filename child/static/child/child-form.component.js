@@ -1,6 +1,7 @@
-ChildFormController = function ChildFormController($uibModalInstance, $http, parent_emails) {
+ChildFormController = function ChildFormController($uibModalInstance, $http, parent_emails, check_requirements) {
 
     this.parent_emails = Array.from(parent_emails);
+    this.check_requirements = check_requirements;
     this.programs = {};
     this.http_ = $http;
     this.uibModalInstance_ = $uibModalInstance;
@@ -29,6 +30,7 @@ ChildFormController.prototype.getPrograms = function() {
     }).then(angular.bind(this, function successCallback(response) {
         // this callback will be called asynchronously
         // when the response is available
+        // response.data.shift();
         this.programs = [];
         angular.forEach(response.data, angular.bind(this, function(program) {
             this.programs.push(JSON.parse(program));

@@ -4,17 +4,18 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 	this.location_ = $location;
 	this.scope_ = $scope;
 	this.scope_.programs = [];
+	// this.scope_.numberOfPrograms = 0;
 	this.scope_.fundings = [];
 	this.scope_.invoices = [];
 	this.scope_.payments = [];
 	this.scope_.numberOfChildren = 0;
 	this.scope_.dwollaStatus = 'Unknown';
-    this.scope_.selectedProgramFilter = 'Current'
+    this.scope_.selectedProgramFilter = 'Current/Upcoming'
 	this.initialize();
     this.animationsEnabled = true;
 
 
-    this.scope_.programFilters = ['All Programs','Current','Future','Past'];
+    this.scope_.programFilters = ['All Programs','Current/Upcoming','Past'];
 
 
     self = this;
@@ -48,13 +49,14 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
 
     this.scope_.checkRequirements = function() {
 //        console.log("Checking provider requirements");
+
         if (self.scope_.fundings.length == 0) {
-            bootbox.alert("You haven't added any bank account to receive payments. Let's do it now.");
-            self.scope_.changeView('/billing');
+           // bootbox.alert("You haven't added any bank account to receive payments. Let's do it now.");
+            //self.scope_.changeView('/billing');
             return false;
         } else if (self.scope_.dwollaStatus != 'verified') {
-            bootbox.alert("You haven't add enough profile information to be a verified user. Let's do it now.");
-            self.scope_.changeView('/profile');
+           // bootbox.alert("You haven't add enough profile information to be a verified user. Let's do it now.");
+           // self.scope_.changeView('/profile');
             return false;
         }
         return true;
@@ -73,6 +75,8 @@ DashboardController = function($scope, $http, $window, $location, $uibModal) {
             // when the response is available
             $scope.programs = [];
     //	    console.log(response.data);
+    //         $scope.numberOfPrograms = JSON.parse(response.data.shift()).count;
+
             angular.forEach(response.data, angular.bind(this, function(program) {
                 program = JSON.parse(program);
                 if(program.indefinite)
@@ -127,7 +131,9 @@ DashboardController.prototype.initialize = function() {
 	    // this callback will be called asynchronously
 	    // when the response is available
 	    this.scope_.programs = [];
+        // this.scope_.numberOfPrograms = JSON.parse(response.data.shift()).count;
 //	    console.log(response.data);
+
 	    angular.forEach(response.data, angular.bind(this, function(program) {
             program = JSON.parse(program);
             if(program.indefinite)
@@ -203,7 +209,7 @@ DashboardController.prototype.initialize = function() {
 	    // when the response is available
 	    this.scope_.numberOfChildren = 0;
 
-	    angular.forEach(response.data, angular.bind(this, function(funding) {
+	    angular.forEach(response.data, angular.bind(this, function(child) {
 	    	this.scope_.numberOfChildren +=1;
 	    }));
 
@@ -497,9 +503,9 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
     })
     .component('childList', {
         templateUrl: '/static/child/child-list.template.html',
-        controller: ['$uibModal','$http', '$routeParams','$location', ChildListController],
+        controller: ['$uibModal','$scope','$http', '$routeParams','$location', ChildListController],
         bindings: {
-            checkRequirements : '&',
+            checkRequirements : '<',
             dwollaStatus : '@',
             fundingSources : '@'
         }
@@ -508,6 +514,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         templateUrl: '/static/child/child-card.template.html',
         controller : ['$uibModal', '$scope', '$http', '$routeParams', '$location', 'EnrollmentDateChecker', ChildCardController],
         bindings: {
+          checkRequirements : '<',
           child: '<',
           index: '<',
           programs: '<'
@@ -518,6 +525,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller: ['$http', 'EnrollmentDateChecker', ChildFormContentController],
         bindings: {
             emails: '<',
+            checkRequirements : '<',
             programs : '<',
             onSave : '&',
             onClose : '&'
@@ -528,6 +536,7 @@ app = angular.module('dashboardApp', ['ngAnimate','ngSanitize', 'ui.bootstrap', 
         controller : ['$uibModal', '$log', '$http', EnrollmentListController],
         bindings: {
             enrollments: '<',
+            checkRequirements : '<',
             child: '<'
         }
     })

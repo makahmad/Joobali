@@ -52,9 +52,13 @@ def listPrograms(request):
     if not check_session(request):
         return HttpResponseRedirect('/login')
 
+    # programs = program_util.list_program_by_provider_user_id(user_id, None)
+    output = list()
+    # output.append({"count": programs.count()})
+
     program_filter = request.GET.get('program_filter')
     programs = program_util.list_program_by_provider_user_id(user_id, program_filter)
-    output = list()
+
     for program in programs:
         logger.info("program %s" % program)
         logger.info("JEncoder().encode(program) %s" % JEncoder().encode(program))
@@ -188,6 +192,7 @@ def copyProgram(request):
     new_program.weeklyBillDay = program.weeklyBillDay
     new_program.endDate = program.endDate
     new_program.indefinite = program.indefinite
+    new_program.adhoc = False
     new_program.put()
 
     return HttpResponse("success")
@@ -201,33 +206,35 @@ def addProgram(request):
     data = json.loads(request.body)
 
     newProgram = data['program']
+    newProgram['adhoc'] = False
 
     provider = Provider.get_by_id(user_id)
-    program = models.Program(parent=provider.key)
-    program.programName = newProgram['programName']
-
-    program.registrationFee = newProgram['registrationFee']
-    program.fee = newProgram['fee']
-    program.lateFee = newProgram['lateFee']
-    program.billingFrequency = newProgram['billingFrequency']
-    program.startDate = datetime_util.local_to_utc(datetime.strptime(newProgram['startDate'], DATE_FORMAT))
-
-    if program.billingFrequency == 'Monthly':
-        #if program is monthly and last day of month is checked
-        if newProgram['lastDay']:
-            program.monthlyBillDay = "Last Day"
-        else:
-            program.monthlyBillDay = str(program.startDate.day)
-    else:
-        program.weeklyBillDay = day_name[program.startDate.weekday()]
-
-    if newProgram['endDate']:
-        program.endDate = datetime_util.local_to_utc(datetime.strptime(newProgram['endDate'], DATE_FORMAT))
-    else:
-        program.indefinite = True
-        program.endDate = None
-
-    program.put()
+    program_util.add_program(provider, newProgram)
+    # program = models.Program(parent=provider.key)
+    # program.programName = newProgram['programName']
+    #
+    # program.registrationFee = newProgram['registrationFee']
+    # program.fee = newProgram['fee']
+    # program.lateFee = newProgram['lateFee']
+    # program.billingFrequency = newProgram['billingFrequency']
+    # program.startDate = datetime_util.local_to_utc(datetime.strptime(newProgram['startDate'], DATE_FORMAT))
+    #
+    # if program.billingFrequency == 'Monthly':
+    #     #if program is monthly and last day of month is checked
+    #     if newProgram['lastDay']:
+    #         program.monthlyBillDay = "Last Day"
+    #     else:
+    #         program.monthlyBillDay = str(program.startDate.day)
+    # else:
+    #     program.weeklyBillDay = day_name[program.startDate.weekday()]
+    #
+    # if newProgram['endDate']:
+    #     program.endDate = datetime_util.local_to_utc(datetime.strptime(newProgram['endDate'], DATE_FORMAT))
+    # else:
+    #     program.indefinite = True
+    #     program.endDate = None
+    #
+    # program.put()
 
     # Deprecated
     # if 'sessions' in data:

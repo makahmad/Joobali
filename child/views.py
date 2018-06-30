@@ -22,11 +22,15 @@ from payments import payments_util
 from datetime import datetime
 from common import datetime_util
 from invoice import invoice_util
+from profile import profile_util
+from funding import funding_util
+from manageprogram import program_util
 
 # Create your views here.
 
 DATE_FORMAT = '%m/%d/%Y'
 logger = logging.getLogger(__name__)
+
 
 def list_child(request):
     if not session.check_session(request):
@@ -39,6 +43,7 @@ def list_child(request):
         else:
             provider_key = Provider.generate_key(provider_id)
             children = child_util.list_child_by_provider(provider_key=provider_key)
+
     else:
         parent_id = request.session['user_id']
         parent_key = Parent.generate_key(parent_id)
@@ -50,6 +55,7 @@ def add_child(request):
     if not session.check_session(request) or not session.is_provider(request):
         return HttpResponseRedirect('/login')
     response = dict()
+
     try:
         if request.method != 'POST':
             logger.info('request.method is %s', request.method)
@@ -72,6 +78,16 @@ def add_child(request):
 
             overriding_billing_fee = None if 'fee' not in request_content else request_content['fee']
 
+            #if the program has no name then it must be an adhoc program, so create a dummy program
+            if not program['programName']:
+                program['fee'] = overriding_billing_fee
+                program['startDate'] = billing_start_date
+                program['endDate'] = None
+                program['adhoc'] = True
+                user_id = request.session.get('user_id')
+                provider = Provider.get_by_id(user_id)
+                program['id'] = program_util.add_program(provider, program).key.id()
+
             # Validate enrollment start date and end date
             program_key = Program.generate_key(provider_id=session.get_provider_id(request), program_id=program['id'])
             start_date = datetime_util.local_to_utc(
@@ -90,7 +106,8 @@ def add_child(request):
                                                                               child_first_name=child_first_name)
 
             # Setup Child entity
-            to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth, parent_email)
+            to_be_added_child = Child.generate_child_entity(child_first_name, child_last_name, date_of_birth,
+                                                            parent_email)
             existing_child = child_util.get_existing_child(to_be_added_child, parent.key)
             if existing_child is not None:
                 logger.warning("Child already existed: %s", existing_child)
@@ -116,26 +133,38 @@ def add_child(request):
             logger.info("Adding new enrollment: %s", enrollment_input)
             enrollment, invoice = enrollment_util.upsert_enrollment(enrollment_input)
 
-
             if registration_fee_paid:
                 payer = request_content['payer'] if 'payer' in request_content else ''
-                payment_date = datetime_util.local_to_utc(datetime.strptime(request_content['payment_date'], DATE_FORMAT))
+                payment_date = datetime_util.local_to_utc(
+                    datetime.strptime(request_content['payment_date'], DATE_FORMAT))
                 payment_type = request_content['payment_type'] if 'payment_type' in request_content else ''
                 note = request_content['note'] if 'note' in request_content else ''
                 payments_util.add_payment_maybe_for_invoice(provider_key.get(), new_child, invoice.amount,
                                                             payer, payment_date, payment_type, note, invoice)
 
+            customer_url = request.session.get('dwolla_customer_url')
+            fundings = funding_util.list_fundings(customer_url)
+            provider = Provider.get_by_id(request.session['user_id'])
+            dwolla_status = profile_util.get_dwolla_status(provider)
+
             if parent.status is 'active':
                 # The parent already signup
-                send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()))
+
+                # Send email only if provider has added a bank and been verified
+                if len(fundings) > 0 and dwolla_status == 'verified':
+                    send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()))
             else:
                 # The parent has not yet signup
                 parent.invitation.enrollment_key = enrollment.key
                 parent.invitation.child_first_name = child_first_name
                 parent.invitation.provider_key = provider_key
                 parent.put()
-                send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()),
+
+                # Send email only if provider has added a bank and been verified
+                if len(fundings) > 0 and dwolla_status == 'verified':
+                    send_parent_enrollment_notify_email(enrollment, host=get_host_from_request(request.get_host()),
                                                     verification_token=verification_token)
+
             response['status'] = 'success'
     except JoobaliRpcException as e:
         logger.error(e.get_client_messasge())
@@ -211,9 +240,10 @@ def remove_child(request):
                 invited_enrollment_key = parent.invitation.enrollment_key
             for enrollment in enrollment_util.list_enrollment_by_provider_and_child(provider_key, child_key):
                 for invoice in invoice_util.get_enrollment_invoices(enrollment):
-                    invoice_util.force_delete_invoice(invoice) # delete all related invoices and payments (mostly the registration fee). It's safe because the parent haven't signed up.
+                    invoice_util.force_delete_invoice(
+                        invoice)  # delete all related invoices and payments (mostly the registration fee). It's safe because the parent haven't signed up.
                 if invited_enrollment_key == enrollment.key:
-                    parent.invitation = None # Delete the invitation if we remove the child.
+                    parent.invitation = None  # Delete the invitation if we remove the child.
                     parent.put()
                 enrollment_util.cancel_enrollment(provider_id, enrollment.key.id(), request.get_host())
             children_views = child_util.get_provider_child_view(child_key=child_key, provider_key=provider_key)
@@ -221,9 +251,11 @@ def remove_child(request):
             for view in children_views:
                 view.key.delete()
 
+            child.is_deleted = True
+            child.put()
+
         else:
             logger.warning("Active enrollment. Child not removeable: %s", new_child['id'])
             return HttpResponse("This child is actively enrolled. Please unenroll and try again.")
-
 
     return HttpResponse("success")

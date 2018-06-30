@@ -33,7 +33,8 @@ ProgramController = function($scope, $http, $window) {
 	}).then(angular.bind(this, function successCallback(response) {
 	    // this callback will be called asynchronously
 	    // when the response is available
-	    console.log(response);
+//	    console.log(response);
+//         response.data.shift();
 	    this.scope_.programs = [];
 	    angular.forEach(response.data, angular.bind(this, function(program) {
 	    	this.scope_.programs.push(JSON.parse(program));
