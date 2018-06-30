@@ -51,18 +51,6 @@ def dashboard(request):
     if not check_session(request) or request.session['is_provider'] is False:
         return HttpResponseRedirect('/login')
 
-
-
-    # enrollment_query = Enrollment.query()
-    # for enrollment in enrollment_query:
-    #     enrollment.sent_email_count = 1
-    #     enrollment.put()
-    #
-    # program_query = Program.query()
-    # for program in program_query:
-    #     program.adhoc = False
-    #     program.put()
-
     # get school name for provider only
     schoolName = None
     provider = Provider.get_by_id(request.session['user_id'])
