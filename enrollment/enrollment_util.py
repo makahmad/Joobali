@@ -165,8 +165,8 @@ def list_enrollment_by_provider_and_child_and_program(provider_key, child_key, p
 
 def resend_enrollment_invitation(enrollment,host):
     send_parent_enrollment_notify_email(enrollment=enrollment, host=host)
-    enrollment.sent_email_count += 1
-    enrollment.put();
+    # enrollment.sent_email_count += 1
+    # enrollment.put()
 
 
 def list_enrollment_by_provider(provider_id):

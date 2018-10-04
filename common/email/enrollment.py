@@ -45,7 +45,7 @@ def send_unenroll_email(enrollment, host, sender_address="Joobali <howdy@joobali
         send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
         return True
     except OverQuotaError:
-        logger.error("Getting over quota error when sending enrollmen")
+        logger.error("Getting over quota error when sending enrollment")
         return False
 
 
@@ -106,7 +106,9 @@ def send_parent_enrollment_notify_email(enrollment, host, sender_address="Joobal
         email_html_content = _enrollment_notification_template.render(rendering_data)
     try:
         send_email(sender=sender_address, to=email_to, subject=email_subject, html_content=email_html_content)
+        enrollment.sent_email_count += 1
+        enrollment.put()
         return True
     except OverQuotaError:
-        logger.error("Getting over quota error when sending enrollmen")
+        logger.error("Getting over quota error when sending enrollment")
         return False
