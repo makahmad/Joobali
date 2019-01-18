@@ -51,7 +51,11 @@
 			</div>
 	    <div class="collapse navbar-collapse" id="myNavbar">
 	      <ul class="nav navbar-nav navbar-right">
+			            <li><a href="http://joobali.providerform.sgizmo.com/s3/" target="_blank"><span class="glyphicon glyphicon-list-alt"></span>Child Care Providers</a></li>
+          <li><a href="http://joobali.newparentform.sgizmo.com/s3/" target="_blank"><span class="glyphicon glyphicon-list-alt"></span>Parents</a></li>
+          <li><a href="http://joobali.alumniclub.sgizmo.com/s3/" target="_blank"><span class="glyphicon glyphicon-list-alt"></span>Alumni Club</a></li>
 					{% if loggedIn %}
+
 					<li><a href="/home/dashboard"><i class="fa fa-dashboard fa-lg"></i>&nbsp; Dashboard</a></li>
           <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown">
@@ -73,12 +77,11 @@
 	    </div> <!-- end .#myNavbar -->
 		</div> <!-- end .container -->
 	</nav>
-
 	<div class="jumbotron text-center">
         <div class="row">
 					<div class="col-sm-1 text-center">&nbsp;</div>
 					<div class="col-sm-10 text-center">
-						<img src="{{ STATIC_URL }}home/pics/logo/img_joobaliMainLogo.png" alt="Logo" width="500" height="200" class="logo">
+						<img src="{{ STATIC_URL }}home/pics/logo/img_joobalilogoorange.png" alt="Logo" width="500" height="200" class="logo">
 					</div>
 					<div class="col-sm-1 text-center">&nbsp;</div>
 				</div>
@@ -86,13 +89,9 @@
 				<div class="row">
 					<div class="col-sm-1 text-center">&nbsp;</div>
 					<div class="col-sm-10 text-center">
-						<a href="http://joobali.providerform.sgizmo.com/s3/ "  class="btn btn-success" target="_blank">Child Care Providers</a>
-							<a href="http://joobali.newparentform.sgizmo.com/s3/ " class="btn btn-success" target="_blank">Parents</a>
-								<a href="http://joobali.alumniclub.sgizmo.com/s3/ "  class="btn btn-success" target="_blank">Alumni Club</a>
-
-
+						<a href="/login/signup" class="btn">Get started</a>
 						<br><br>
-
+						<span style="color:#70ABA7;">It's Free</span>
 					</div>
 					<div class="col-sm-1 text-center">&nbsp;</div>
   <!-- <form class="form-inline">
@@ -201,8 +200,9 @@
 	<div class="row">
 		<div class="col-sm-1 text-center">&nbsp;</div>
 		<div class="col-sm-10 text-center">
-			<a href="/login/signup" class="btn">Get started </a>
+	       <a href="/login/signup" class="btn">Get started</a>
 			<br><br>
+			<span style="color:#70ABA7;">It's Free</span>
 		</div>
 		<div class="col-sm-1 text-center">&nbsp;</div>
 </div>
