@@ -292,7 +292,10 @@
     <div class="modal-footer">
         <div class="formActions">
             <center>
-                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton" >Enroll</button>
+
+                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton && $ctrl.checkRequirements" >Enroll Child and Email Parent</button>
+                <button class="btn btn-default btn-lg pull-right joobali" ng-click="$ctrl.save()" ng-show="$ctrl.showSaveButton && !$ctrl.checkRequirements" >Enroll Child</button>
+
                 <a type="button" class="pull-left delete" data-dismiss="modal" data-backdrop="false" ng-click="$ctrl.cancel()" ng-show="$ctrl.enrollmentStatus!='success'">&laquo; Cancel</a>
             </center>
         </div> <!-- end formActions -->
