@@ -10,17 +10,17 @@
             <div class="" >
 
             <div class="form-group">
-                    <label class="control-label" for="generalInvoiceNote">General Invoice Note (automatically sent with all invoices):</label>
+                    <label class="control-label" for="generalInvoiceNote">General Invoice Note (included on all invoices):</label>
                         <textarea rows="5" cols="70" class="form-control"  id="generalInvoiceNote" name="generalInvoiceNote" ng-required="false"
                            ng-model="$ctrl.generalBilling.generalInvoiceNote" ></textarea>
                 </div>
             <div class="form-group">
-                    <label class="control-label" for="lateFeeInvoiceNote">Late Fee Invoice Note (automatically added to general invoice note in case of late fees):</label>
+                    <label class="control-label" for="lateFeeInvoiceNote">Late Fee Invoice Note (included with general invoice note in case late fees are applied):</label>
                         <textarea rows="5" cols="70" class="form-control"  id="lateFeeInvoiceNote" name="lateFeeInvoiceNote" ng-required="false"
                            ng-model="$ctrl.generalBilling.lateFeeInvoiceNote" ></textarea>
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="lateFee">Default Late Fee (can be overridden by at program level):</label>
+                    <label class="control-label" for="lateFee">Default Late Fee (can be overridden at program level):</label>
                         <input type="text" class="form-control"  ng-min="0" ng-max="100" ng-pattern="/^[0-9]{1,7}(\.[0-9]+)?$/" id="lateFee" name="lateFee" ng-required="false"
                            ng-model="$ctrl.generalBilling.lateFee">
                 </div>
