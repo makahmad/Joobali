@@ -117,7 +117,7 @@ def get_invoice_snippet(invoice):
     if program:
         return program.programName
     for lineItem in lineItems:
-        if 'Registration' in lineItem.description:
+        if lineItem.description is not None and 'Registration' in lineItem.description:
             return lineItem.description
     return ''
 
